@@ -2,7 +2,7 @@
 ### Scalable Ethernet-based Network-on-Chip
 
 <p align="center">
-   <img width="25%" src="docs/images/openENOC-hexsticker.png">
+   <img width="25%" src="openENOC-hexsticker.png">
 </p>
 
 openENOC is an open-source hardware and software project that develops a scalable Ethernet-based Network-on-Chip (NoC) architecture to enable modular and interoperable MPSoC designs. By using standard Ethernet Layer-2 as the native on-chip transport protocol, openENOC connects processors, accelerators, and peripherals in a flexible, packet-switched network that lowers barriers to building complex systems and bridges the gap between on-chip and off-chip networking. The project provides a complete, permissively licensed stack, including RTL components, integration APIs, verification infrastructure, and reference designs and targets workloads where traditional interconnects struggle to scale, such as cryptography and edge computing. All results will be released openly to support reuse, strengthen the open hardware ecosystem, and empower developers and organizations to build future-proof, interoperable, and community-driven MPSoC solutions.
