@@ -16,7 +16,68 @@ Its primary goal is to unlock the potential of networked reconfigurable computin
 
 All results will be released openly to encourage reuse, strengthen the open hardware ecosystem, and empower developers and organizations to build interoperable, future proof, and community driven MPSoC solutions.
 
-### Acknowledgements
+## Project plan
+
+The project is organized around four global milestones (M1-M4) representing successive development phases of the openENOC platform: architecture definition, functional prototyping, system integration, and final platform release. Each work package contributes to these milestones through a set of incremental subtasks that implement, validate and demonstrate different aspects of the system. This structure ensures that hardware development, software integration, verification, tooling and documentation progress in parallel throughout the project. Early milestones focus on establishing the architecture and initial prototypes, while later milestones concentrate on system integration, validation and public release of a complete open platform. Each subtask (e.g. RTL1, SW1, DV1, etc.) contributes to one or more milestones and produces tangible intermediate results that collectively lead to the final openENOC platform.
+
+### WP1 - RTL Gateware Development
+
+This work package delivers the complete openENOC RTL implementation forming the hardware datapath of the Ethernet-based Network-on-Chip. The development progresses from basic switching primitives and datapath elements (RTL1), through packet processing pipeline components (RTL2), to forwarding engines and DMA-capable endpoint connectivity (RTL3). The final stage integrates all components into a configurable Ethernet Layer-2 switching fabric suitable for MPSoC integration (RTL4).
+
+- [ ] RTL1 - Core Switching Primitives
+- [ ] RTL2 - Packet Processing Pipeline
+- [ ] RTL3 - Forwarding & DMA Engines
+- [ ] RTL4 - Integrated NoC Fabric
+
+### WP2 - Integration HAL and Software API Development
+
+This work package provides the software interface layer required to configure and control the NoC. It begins with the definition of the hardware abstraction layer and register-level interface (SW1), followed by integration with representative RISC-V platforms (SW2). Runtime configuration capabilities are then implemented through a compact baremetal C/C++ API (SW3), while the final stage delivers reference applications demonstrating practical NoC usage scenarios (SW4).
+
+- [ ] SW1 - HAL Architecture Specification
+- [ ] SW2 - RISC-V Platform Integration
+- [ ] SW3 - Runtime Control API
+- [ ] SW4 - Reference Applications
+
+### WP3 - Verification Infrastructure Development
+
+This work package establishes the verification infrastructure required to validate both the hardware and software components of the platform. It begins with the creation of a simulation environment using Verilator, cocotb and related tools (DV1). Layered testbenches are then developed to verify core datapath modules and packet processing logic (DV2). Hardware/software interaction is validated through co-simulation with instruction set simulation (DV3), and finally continuous regression testing is deployed through automated CI pipelines (DV4).
+
+- [ ] DV1 - Simulation Framework
+- [ ] DV2 - Module-Level Verification
+- [ ] DV3 - HW/SW Co-Verification
+- [ ] DV4 - Continuous Verification Infrastructure
+
+### WP4 - Demo SoCs and Educational Kits Development
+
+This work package demonstrates the practical applicability of openENOC through deployable FPGA-based systems. The first stage delivers a minimal reference SoC integrating a RISC-V core and openENOC on a low-cost FPGA board (DEM1). The second stage expands the platform with additional endpoints and external Ethernet connectivity, enabling full system demonstrations that bridge on-chip and off-chip networking (DEM2).
+
+- [ ] DEM1 - Initial FPGA NoC Demo
+- [ ] DEM2 - Extended FPGA Demonstration Platform
+
+### WP5 - FOSS Synthesis & PnR Toolchains Integration
+
+This work package ensures that openENOC can be built using a fully open-source FPGA toolchain. Initial work integrates the RTL design with synthesis tools such as Yosys and openXC7 (PNR1). The final stage establishes automated place-and-route flows and CI-driven bitstream generation using openXC7/nextpnr, enabling reproducible builds and continuous integration (PNR2).
+
+- [ ] PNR1 - Open Synthesis Flow
+- [ ] PNR2 - Automated Bitstream Build Flow
+
+### WP6 - Repository & Documentation
+
+This work package produces the technical documentation and developer resources necessary to make the project accessible and reusable by the wider open hardware community. Initial architecture documentation describing the design concepts and packet model is produced first (DOC1). Detailed design documentation of RTL modules and interfaces follows (DOC2). Tutorials and developer guides are then prepared to demonstrate simulation and FPGA deployment workflows (DOC3), and the final stage documents reproducible build and verification processes (DOC4).
+
+- [ ] DOC1 - Initial Architecture Documentation
+- [ ] DOC2 - Design Documentation
+- [ ] DOC3 - Tutorials & Developer Guides
+- [ ] DOC4 - Reproducible Build & Verification Documentation
+
+### WP7 - Results Dissemination
+
+This work package focuses on communicating the results of the project to the broader open hardware and research communities. The work includes preparation of a technical publication describing the architecture and implementation of openENOC (DIS1) as well as presentation of the project results at relevant open hardware or FPGA-related events (DIS2).
+
+- [ ] DIS1 - Technical Publication
+- [ ] DIS2 - Conference Presentation
+
+## Acknowledgements
 We are grateful to **NLnet Foundation** for their sponsorship of this development activity.
 
 <p align="center">
