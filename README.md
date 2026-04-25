@@ -95,6 +95,6 @@ We are grateful to **NLnet Foundation** for their sponsorship of this developmen
    <img width="25%" src="https://nlnet.nl/image/logos/NGI0Core_tag.svg">
 </p>
 
-This project was funded through the NGI0 Commons Fund, a fund established by NLnet with financial support from the European Commission's Next Generation Internet programme, under the aegis of DG Communications Networks, Content and Technology under grant agreement No 101135429. Additional funding is made available by the Swiss State Secretariat for Education, Research and Innovation (SERI).
+This project was funded through the NGI0 Commons Fund, a fund established by NLnet with financial support from the European Commission's Next Generation Internet programme, under the aegis of DG Communications Networks, Content and Technology under grant agreement N<sup>o</sup> 101135429. Additional funding is made available by the Swiss State Secretariat for Education, Research and Innovation (SERI).
 
 ### End of Document
