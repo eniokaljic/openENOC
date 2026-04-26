@@ -22,7 +22,7 @@ All results will be released openly to encourage reuse, strengthen the open hard
 
 ## Project Plan
 
-The project is organized around four global milestones (M1-M4) representing successive development phases of the openENOC platform: architecture definition, functional prototyping, system integration, and final platform release. Each work package contributes to these milestones through a set of incremental subtasks that implement, validate and demonstrate different aspects of the system. 
+The project is organized around [four global milestones (M1-M4)](https://github.com/eniokaljic/openENOC/milestones) representing successive development phases of the openENOC platform: architecture definition, functional prototyping, system integration, and final platform release. Each work package contributes to these milestones through a set of incremental subtasks that implement, validate and demonstrate different aspects of the system. 
 
 <p align="center">
    <img width="100%" src="docs/images/ProjectExecutionPlan.png">
