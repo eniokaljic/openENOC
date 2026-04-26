@@ -34,58 +34,58 @@ This structure ensures that hardware development, software integration, verifica
 
 This work package delivers the complete openENOC RTL implementation forming the hardware datapath of the Ethernet-based Network-on-Chip. The development progresses from basic switching primitives and datapath elements (RTL1), through packet processing pipeline components (RTL2), to forwarding engines and DMA-capable endpoint connectivity (RTL3). The final stage integrates all components into a configurable Ethernet Layer-2 switching fabric suitable for MPSoC integration (RTL4).
 
-- [ ] RTL1 - Core Switching Primitives
-- [ ] RTL2 - Packet Processing Pipeline
-- [ ] RTL3 - Forwarding & DMA Engines
-- [ ] RTL4 - Integrated NoC Fabric
+- [ ] [RTL1 - Core Switching Primitives](https://github.com/eniokaljic/openENOC/issues/1)
+- [ ] [RTL2 - Packet Processing Pipeline](https://github.com/eniokaljic/openENOC/issues/2)
+- [ ] [RTL3 - Forwarding & DMA Engines](https://github.com/eniokaljic/openENOC/issues/3)
+- [ ] [RTL4 - Integrated NoC Fabric](https://github.com/eniokaljic/openENOC/issues/4)
 
 ### WP2 - Integration HAL and Software API Development
 
 This work package provides the software interface layer required to configure and control the NoC. It begins with the definition of the hardware abstraction layer and register-level interface (SW1), followed by integration with representative RISC-V platforms (SW2). Runtime configuration capabilities are then implemented through a compact baremetal C/C++ API (SW3), while the final stage delivers reference applications demonstrating practical NoC usage scenarios (SW4).
 
-- [ ] SW1 - HAL Architecture Specification
-- [ ] SW2 - RISC-V Platform Integration
-- [ ] SW3 - Runtime Control API
-- [ ] SW4 - Reference Applications
+- [ ] [SW1 - HAL Architecture Specification](https://github.com/eniokaljic/openENOC/issues/5)
+- [ ] [SW2 - RISC-V Platform Integration](https://github.com/eniokaljic/openENOC/issues/6)
+- [ ] [SW3 - Runtime Control API](https://github.com/eniokaljic/openENOC/issues/7)
+- [ ] [SW4 - Reference Applications](https://github.com/eniokaljic/openENOC/issues/8)
 
 ### WP3 - Verification Infrastructure Development
 
 This work package establishes the verification infrastructure required to validate both the hardware and software components of the platform. It begins with the creation of a simulation environment using Verilator, cocotb and related tools (DV1). Layered testbenches are then developed to verify core datapath modules and packet processing logic (DV2). Hardware/software interaction is validated through co-simulation with instruction set simulation (DV3), and finally continuous regression testing is deployed through automated CI pipelines (DV4).
 
-- [ ] DV1 - Simulation Framework
-- [ ] DV2 - Module-Level Verification
-- [ ] DV3 - HW/SW Co-Verification
-- [ ] DV4 - Continuous Verification Infrastructure
+- [ ] [DV1 - Simulation Framework](https://github.com/eniokaljic/openENOC/issues/9)
+- [ ] [DV2 - Module-Level Verification](https://github.com/eniokaljic/openENOC/issues/10)
+- [ ] [DV3 - HW/SW Co-Verification](https://github.com/eniokaljic/openENOC/issues/11)
+- [ ] [DV4 - Continuous Verification Infrastructure](https://github.com/eniokaljic/openENOC/issues/12)
 
 ### WP4 - Demo SoCs and Educational Kits Development
 
 This work package demonstrates the practical applicability of openENOC through deployable FPGA-based systems. The first stage delivers a minimal reference SoC integrating a RISC-V core and openENOC on a low-cost FPGA board (DEM1). The second stage expands the platform with additional endpoints and external Ethernet connectivity, enabling full system demonstrations that bridge on-chip and off-chip networking (DEM2).
 
-- [ ] DEM1 - Initial FPGA NoC Demo
-- [ ] DEM2 - Extended FPGA Demonstration Platform
+- [ ] [DEM1 - Initial FPGA NoC Demo](https://github.com/eniokaljic/openENOC/issues/13)
+- [ ] [DEM2 - Extended FPGA Demonstration Platform](https://github.com/eniokaljic/openENOC/issues/14)
 
 ### WP5 - FOSS Synthesis & PnR Toolchains Integration
 
 This work package ensures that openENOC can be built using a fully open-source FPGA toolchain. Initial work integrates the RTL design with synthesis tools such as Yosys and openXC7 (PNR1). The final stage establishes automated place-and-route flows and CI-driven bitstream generation using openXC7/nextpnr, enabling reproducible builds and continuous integration (PNR2).
 
-- [ ] PNR1 - Open Synthesis Flow
-- [ ] PNR2 - Automated Bitstream Build Flow
+- [ ] [PNR1 - Open Synthesis Flow](https://github.com/eniokaljic/openENOC/issues/19)
+- [ ] [PNR2 - Automated Bitstream Build Flow](https://github.com/eniokaljic/openENOC/issues/20)
 
 ### WP6 - Repository & Documentation
 
 This work package produces the technical documentation and developer resources necessary to make the project accessible and reusable by the wider open hardware community. Initial architecture documentation describing the design concepts and packet model is produced first (DOC1). Detailed design documentation of RTL modules and interfaces follows (DOC2). Tutorials and developer guides are then prepared to demonstrate simulation and FPGA deployment workflows (DOC3), and the final stage documents reproducible build and verification processes (DOC4).
 
-- [ ] DOC1 - Initial Architecture Documentation
-- [ ] DOC2 - Design Documentation
-- [ ] DOC3 - Tutorials & Developer Guides
-- [ ] DOC4 - Reproducible Build & Verification Documentation
+- [ ] [DOC1 - Initial Architecture Documentation](https://github.com/eniokaljic/openENOC/issues/15)
+- [ ] [DOC2 - Design Documentation](https://github.com/eniokaljic/openENOC/issues/16)
+- [ ] [DOC3 - Tutorials & Developer Guides](https://github.com/eniokaljic/openENOC/issues/17)
+- [ ] [DOC4 - Reproducible Build & Verification Documentation](https://github.com/eniokaljic/openENOC/issues/18)
 
 ### WP7 - Results Dissemination
 
 This work package focuses on communicating the results of the project to the broader open hardware and research communities. The work includes preparation of a technical publication describing the architecture and implementation of openENOC (DIS1) as well as presentation of the project results at relevant open hardware or FPGA-related events (DIS2).
 
-- [ ] DIS1 - Technical Publication
-- [ ] DIS2 - Conference Presentation
+- [ ] [DIS1 - Technical Publication](https://github.com/eniokaljic/openENOC/issues/21)
+- [ ] [DIS2 - Conference Presentation](https://github.com/eniokaljic/openENOC/issues/22)
 
 ## Acknowledgements
 We are grateful to **NLnet Foundation** for their sponsorship of this development activity.
