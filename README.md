@@ -2,6 +2,9 @@
 SPDX-FileCopyrightText: 2026 Enio Kaljic
 SPDX-License-Identifier: CC-BY-SA-4.0
 -->
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://eniokaljic.github.io/openENOC/)
+[![GitHub stars](https://img.shields.io/github/stars/eniokaljic/openENOC?style=social)](https://github.com/eniokaljic/openENOC/stargazers)
+
 # Scalable Ethernet-based Network-on-Chip
 
 **openENOC** is an open-source hardware and software initiative that develops a modular and scalable Ethernet-based Network-on-Chip (NoC) architecture for FPGA SoCs and advanced MPSoC designs. By adopting standard Ethernet Layer 2 as the native on-chip transport protocol, rather than relying on traditional mesh or proprietary interconnects, openENOC enables seamless integration with existing Ethernet infrastructure and establishes a unified communication and programming model across both on-chip and off-chip systems. 
