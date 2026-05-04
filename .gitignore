@@ -1,0 +1,14 @@
+# Sphinx build output
+docs/build/
+
+# Sphinx cache
+docs/source/_build/
+docs/source/.doctrees/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.env/
