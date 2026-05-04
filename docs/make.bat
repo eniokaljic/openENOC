@@ -1,3 +1,6 @@
+@REM SPDX-FileCopyrightText: 2026 Tarik Hamedovic
+@REM SPDX-License-Identifier: CC-BY-SA-4.0
+
 @ECHO OFF
 
 pushd %~dp0

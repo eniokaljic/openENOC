@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Tarik Hamedovic
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 # Minimal makefile for Sphinx documentation
 #
 
