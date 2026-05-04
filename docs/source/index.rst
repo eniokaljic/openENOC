@@ -1,3 +1,7 @@
+.. SPDX-FileCopyrightText: 2026 Enio Kaljic
+.. SPDX-FileCopyrightText: 2026 Tarik Hamedovic
+.. SPDX-License-Identifier: CC-BY-SA-4.0
+
 Scalable Ethernet-based Network-on-Chip
 =======================================
 

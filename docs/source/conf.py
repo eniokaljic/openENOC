@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Tarik Hamedovic
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -6,9 +9,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'uberClock'
-copyright = '2026,'
-author = 'Enio Kaljić'
+project = 'openENOC'
+copyright = '2026, openENOC\'s contributors. For detailed authorship, please refer to the SPDX headers in the source code of individual files'
+author = 'openENOC\'s contributors'
 release = '0.0.1'
 
 # -- General configuration ---------------------------------------------------
