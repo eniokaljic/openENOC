@@ -3,7 +3,8 @@ SPDX-FileCopyrightText: 2026 Enio Kaljic
 SPDX-License-Identifier: CC-BY-SA-4.0
 -->
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://eniokaljic.github.io/openENOC/)
-[![NLnet Foundation](https://img.shields.io/badge/funded%20by-NLnet%20Foundation-00ADEF?style=flat-square)](https://nlnet.nl/)
+[![NLnet Foundation](https://img.shields.io/badge/funded%20by-NLnet%20Foundation-74AA00)](https://nlnet.nl/)
+[![Discord](https://img.shields.io/discord/1492900141886341313?logo=discord&logoColor=white&label=Discord&color=5662F6)](https://discord.gg/PNh3TfH8ZZ)
 [![GitHub stars](https://img.shields.io/github/stars/eniokaljic/openENOC?style=social)](https://github.com/eniokaljic/openENOC/stargazers)
 
 # Scalable Ethernet-based Network-on-Chip
