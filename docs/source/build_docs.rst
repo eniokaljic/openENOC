@@ -4,7 +4,7 @@
 Build the Documentation
 =======================
 
-This section explains how to build the uberClock documentation locally and how
+This section explains how to build the openENOC documentation locally and how
 it is configured for Read the Docs.
 
 Prerequisites
