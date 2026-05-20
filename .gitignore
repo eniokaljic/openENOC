@@ -1,6 +1,5 @@
-# SPDX-FileCopyrightText: 2026 Enio Kaljic
-# SPDX-FileCopyrightText: 2026 Tarik Hamedovic
-# SPDX-License-Identifier: CERN-OHL-S-2.0
+# SPDX-FileCopyrightText: NONE
+# SPDX-License-Identifier: CERN-OHL-S-2.0 OR CC-BY-SA-4.0
 
 # Sphinx build output
 docs/build/
