@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Enio Kaljic
+# SPDX-License-Identifier: CERN-OHL-S-2.0
+
+[submodule "libs/taxi"]
+	path = libs/taxi
+	url = git@github.com:alexforencich/taxi.git
