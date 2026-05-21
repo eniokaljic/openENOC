@@ -2,7 +2,7 @@
 
 
 """
-Unit Tests for the csr register model Python Wrapper
+Unit Tests for the openENOC register model Python Wrapper
 
 This code was generated from the PeakRDL-python package version 3.1.1
 """
@@ -25,9 +25,9 @@ import random
 from ..sim_lib.register import Register,MemoryRegister
 from ..sim_lib.field import ReadOnlyField, WriteOnlyField, ReadWriteField
 
-from ._csr_sim_test_base import csr_SimTestCase_BlockAccess
-from ._csr_sim_test_base import __name__ as base_name
-from ._csr_test_base import random_enum_reg_value
+from ._openENOC_sim_test_base import openENOC_SimTestCase_BlockAccess
+from ._openENOC_sim_test_base import __name__ as base_name
+from ._openENOC_test_base import random_enum_reg_value
 
 
 from ..lib import SystemRDLEnum
@@ -35,7 +35,7 @@ from ..lib import SystemRDLEnum
 
 from ..lib_test import reverse_bits
 
-class csr_block_access(csr_SimTestCase_BlockAccess): # type: ignore[valid-type,misc]
+class openENOC_csr_block_access(openENOC_SimTestCase_BlockAccess): # type: ignore[valid-type,misc]
     """
     tests for all the block access methods
     """

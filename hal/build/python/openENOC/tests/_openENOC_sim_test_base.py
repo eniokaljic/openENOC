@@ -2,7 +2,7 @@
 
 
 """
-Unit Tests for the csr register model Python Wrapper
+Unit Tests for the openENOC register model Python Wrapper
 
 This code was generated from the PeakRDL-python package version 3.1.1
 """
@@ -21,7 +21,7 @@ from ..lib import RegisterWriteVerifyError
 from ..lib import NormalCallbackSet
 
 
-from ._csr_test_base import csr_TestCase, csr_TestCase_BlockAccess
+from ._openENOC_test_base import openENOC_TestCase, openENOC_TestCase_BlockAccess
 
 from ..reg_model import RegModel
 from ..sim import Simulator
@@ -30,7 +30,7 @@ from ..sim import Simulator
 TestCaseBase = unittest.TestCase
 
 
-class csr_SimTestCase_BlockAccess(TestCaseBase): # type: ignore[valid-type,misc]
+class openENOC_SimTestCase_BlockAccess(TestCaseBase): # type: ignore[valid-type,misc]
 
     def setUp(self) -> None:
         self.sim = Simulator(address=0)

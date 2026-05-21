@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2026 Enio Kaljic
-SPDX-License-Identifier: CC-BY-SA-4.0
+SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
 -->
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://eniokaljic.github.io/openENOC/)
 [![NLnet Foundation](https://img.shields.io/badge/funded%20by-NLnet%20Foundation-74AA00)](https://nlnet.nl/)

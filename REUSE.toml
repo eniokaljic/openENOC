@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
-# SPDX-License-Identifier: CERN-OHL-S-2.0 OR AGPL-3.0-or-later OR CC-BY-SA-4.0
+# SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
 
 version = 1
 
@@ -10,7 +10,7 @@ SPDX-FileCopyrightText = "2026 Enio Kaljic"
 SPDX-License-Identifier = "CERN-OHL-S-2.0"
 
 [[annotations]]
-path = ["hal/build/*.h", "hal/build/python/**"]
+path = ["hal/build/*.h", "hal/build/python/**", "hal/tests/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Enio Kaljic"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
