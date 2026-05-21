@@ -1,0 +1,49 @@
+// SPDX-FileCopyrightText: 2026 Enio Kaljic
+// SPDX-License-Identifier: CERN-OHL-S-2.0
+
+addrmap csr {
+   name = "csr";
+   desc = "openENOC CSR";
+
+   littleendian;
+   default accesswidth = 32;
+   default regwidth = 32;
+   default alignment = 4;
+   addressing = compact;
+
+   reg test_reg {
+      name = "csr.test_reg";
+      desc = "Test register";
+
+      field {
+         name = "csr.test_reg.test_field[31:0]";
+         desc = "4-byte test field";
+         sw = rw;
+         hw = rw;
+      } test_field[32] = 0;
+   } test_reg;
+};
+
+addrmap openENOC {
+   littleendian;
+   default accesswidth = 32;
+   default regwidth = 32;
+   default alignment = 4;
+   addressing = compact;
+
+   external mem imem {
+      name = "imem";
+      desc = "CPU Program Memory";
+      mementries = 8192;
+      memwidth = 32;
+   } imem @ 0x0000_0000;
+
+   external mem dmem {
+      name = "dmem";
+      desc = "CPU Data Memory";
+      mementries = 8192;
+      memwidth = 32;
+   } dmem @ 0x1000_0000;
+
+   csr csr @ 0x2000_0000;
+};
