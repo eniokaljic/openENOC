@@ -1,15 +1,15 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# Dummy Hardware simulator
+# Dummy hardware interface - to be replaced with JTAG or similar interface
 
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from build.python.openENOC.sim.openENOC import openENOC_simulator_cls
+from build.python.csr.sim.csr import csr_simulator_cls
 
-class HardwareSimulator(openENOC_simulator_cls):
+class HardwareInterface(csr_simulator_cls):
     def read(self, addr: int, width: int = 32, accesswidth: int = 32) -> int:
         data = self._read(addr, width, accesswidth)
         print(f"Read value 0x{data:08X} from address 0x{addr:08X}")

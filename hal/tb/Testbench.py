@@ -16,23 +16,13 @@ from build.python.csr.lib import NormalCallbackSet
 from build.python.csr.reg_model.csr import csr_cls
 
 from RTLSimulator import RTLSimulator
+from Application import Application
 
 error_q = queue.Queue()
 
 def reg_thread(csr):
     try:
-        csr.test_reg.test_field.write(123)
-        assert csr.test_reg.test_field.read() == 123
-
-        csr.regB.f0.write(45)
-        assert csr.regB.f0.read() == 45
-
-        csr.regB.f1.write(67)
-        assert csr.regB.f1.read() == 67
-        
-        assert csr.regB.f2.read() == 0
-        
-        assert csr.regB.f3.read() == 0
+        Application(csr)
 
     except Exception as e:
         error_q.put(e)

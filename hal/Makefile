@@ -33,9 +33,12 @@ $(PEAKRDLMD): $(RDLSRC)
 
 unittest: $(PEAKRDLPYTHON)
 	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLTOP)/tests -t . -v
-	
-test: $(PEAKRDLPYTHON)
-	python tests/Test.py
+
+sim: $(PEAKRDLPYTHON)
+	cd tb && make clean all
+
+hwtest: $(PEAKRDLPYTHON)
+	python tb/HardwareTest.py
 
 clean:
 	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD)

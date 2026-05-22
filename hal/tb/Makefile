@@ -5,15 +5,15 @@ TOPLEVEL_LANG = verilog
 SIM = verilator
 
 #
-# RTL sources
-#
-VERILOG_SOURCES += $(PWD)/../build/rtl/csr_pkg.sv
-VERILOG_SOURCES += $(PWD)/../build/rtl/csr.sv
-
-#
 # Top-level module
 #
 TOPLEVEL = csr
+
+#
+# RTL sources
+#
+VERILOG_SOURCES += $(PWD)/../build/rtl/$(TOPLEVEL)_pkg.sv
+VERILOG_SOURCES += $(PWD)/../build/rtl/$(TOPLEVEL).sv
 
 #
 # cocotb test module (without .py)
