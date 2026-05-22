@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
 
 TOPLEVEL_LANG = verilog
 SIM = verilator
@@ -9,12 +9,11 @@ SIM = verilator
 #
 VERILOG_SOURCES += $(PWD)/../build/rtl/csr_pkg.sv
 VERILOG_SOURCES += $(PWD)/../build/rtl/csr.sv
-VERILOG_SOURCES += $(PWD)/csr_wrapper.sv
 
 #
 # Top-level module
 #
-TOPLEVEL = csr_wrapper
+TOPLEVEL = csr
 
 #
 # cocotb test module (without .py)
