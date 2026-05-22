@@ -17,3 +17,9 @@ if __name__ == '__main__':
 
     reg_model.csr.test_reg.test_field.write(123)
     print(reg_model.csr.test_reg.test_field.read())
+    
+    reg_model.csr.regB.f0.write(45)
+    print(reg_model.csr.regB.f0.read())
+    
+    reg_model.csr.regB.f1.write(67)
+    print(reg_model.csr.regB.f1.read())

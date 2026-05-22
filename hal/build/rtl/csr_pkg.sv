@@ -5,19 +5,7 @@ package csr_pkg;
 
     localparam CSR_DATA_WIDTH = 32;
     localparam CSR_MIN_ADDR_WIDTH = 3;
-    localparam CSR_SIZE = 'h4;
-
-    typedef struct {
-        logic [31:0] next;
-    } csr__test_reg__test_field__in_t;
-
-    typedef struct {
-        csr__test_reg__test_field__in_t test_field;
-    } csr__test_reg__in_t;
-
-    typedef struct {
-        csr__test_reg__in_t test_reg;
-    } csr__in_t;
+    localparam CSR_SIZE = 'h8;
 
     typedef struct {
         logic [31:0] value;
@@ -28,6 +16,30 @@ package csr_pkg;
     } csr__test_reg__out_t;
 
     typedef struct {
+        logic [7:0] value;
+    } csr__regB__f0__out_t;
+
+    typedef struct {
+        logic [7:0] value;
+    } csr__regB__f1__out_t;
+
+    typedef struct {
+        logic [7:0] value;
+    } csr__regB__f2__out_t;
+
+    typedef struct {
+        logic [7:0] value;
+    } csr__regB__f3__out_t;
+
+    typedef struct {
+        csr__regB__f0__out_t f0;
+        csr__regB__f1__out_t f1;
+        csr__regB__f2__out_t f2;
+        csr__regB__f3__out_t f3;
+    } csr__regB__out_t;
+
+    typedef struct {
         csr__test_reg__out_t test_reg;
+        csr__regB__out_t regB;
     } csr__out_t;
 endpackage

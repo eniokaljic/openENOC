@@ -19,9 +19,28 @@ addrmap csr {
          name = "csr.test_reg.test_field[31:0]";
          desc = "4-byte test field";
          sw = rw;
-         hw = rw;
+         hw = r;
       } test_field[32] = 0;
    } test_reg;
+
+   reg regB {
+      field {
+         sw = rw;
+         hw = r;
+      } f0[8] = 0;
+      field {
+         sw = rw;
+         hw = r;
+      } f1[8] = 0;
+      field {
+         sw = rw;
+         hw = r;
+      } f2[8] = 0;
+      field {
+         sw = rw;
+         hw = r;
+      } f3[8] = 0;
+   } regB;
 };
 
 addrmap openENOC {

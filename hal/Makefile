@@ -20,10 +20,10 @@ $(PEAKRDLHEADER): $(RDLSRC)
 	peakrdl c-header $^ -b ltoh -o $@
 
 $(PEAKRDLRTL): $(RDLSRC)
-	peakrdl regblock $^ -o $@ --cpuif passthrough --top $(RDLCSR)
+	peakrdl regblock $^ -o $@ --cpuif axi4-lite-flat --top $(RDLCSR)
 
 $(PEAKRDLPYTHON): $(RDLSRC)
-	peakrdl python $^ -t $(RDLTOP) -o $@
+	peakrdl python $^ -t $(RDLCSR) -o $@
 
 $(PEAKRDLHTML): $(RDLSRC)
 	peakrdl html $^ -o $@ --top $(RDLCSR)

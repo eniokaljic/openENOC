@@ -2,7 +2,7 @@
 
 
 """
-Unit Tests for the openENOC register model Python Wrapper
+Unit Tests for the csr register model Python Wrapper
 
 This code was generated from the PeakRDL-python package version 3.1.1
 """
@@ -66,7 +66,7 @@ def random_enum_reg_value(enum_class: type[SystemRDLEnum]) -> SystemRDLEnum:
     return random.choice(list(enum_class))
 
 
-class openENOC_TestCase(TestCaseBase): # type: ignore[valid-type,misc]
+class csr_TestCase(TestCaseBase): # type: ignore[valid-type,misc]
 
     def read_callback(self, addr: int, width: int, accesswidth: int) -> int:
         return self.sim.read(addr=addr, width=width, accesswidth=accesswidth)
@@ -87,7 +87,7 @@ class openENOC_TestCase(TestCaseBase): # type: ignore[valid-type,misc]
         self.dut = RegModel(callbacks=NormalCallbackSet(read_callback=self.outer_read_callback,
                                                           write_callback=self.outer_write_callback))
 
-class openENOC_TestCase_BlockAccess(BlockTestBase): # type: ignore[valid-type,misc]
+class csr_TestCase_BlockAccess(BlockTestBase): # type: ignore[valid-type,misc]
 
     def setUp(self) -> None:
         self.dut = RegModel(callbacks=NormalCallbackSet(read_callback=read_callback,
@@ -95,7 +95,7 @@ class openENOC_TestCase_BlockAccess(BlockTestBase): # type: ignore[valid-type,mi
                                                           read_block_callback=read_block_callback,
                                                           write_block_callback=write_block_callback))
 
-class openENOC_TestCase_AltBlockAccess(BlockTestBase): # type: ignore[valid-type,misc]
+class csr_TestCase_AltBlockAccess(BlockTestBase): # type: ignore[valid-type,misc]
     """
     Based test to use with the alternative call backs, this allow the legacy output API to be tested
     with the new callbacks and visa versa.

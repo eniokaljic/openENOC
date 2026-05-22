@@ -1,7 +1,7 @@
 
 
 """
-Python Wrapper for the openENOC register model
+Python Wrapper for the csr register model
 
 This code was generated from the PeakRDL-python package version 3.1.1
 
@@ -22,7 +22,7 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class csr_test_reg_test_field_neg_0x6e90c80f0c58003c_cls(FieldReadWrite):
+class csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 

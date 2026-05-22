@@ -1,7 +1,7 @@
 
 
 """
-Python Wrapper for the openENOC register model
+Python Wrapper for the csr register model
 
 This code was generated from the PeakRDL-python package version 3.1.1
 
@@ -44,12 +44,12 @@ from ...lib import FieldSizeProps, FieldMiscProps
 
 
 
-from .fields import csr_test_reg_test_field_neg_0x6e90c80f0c58003c_cls
+from .fields import csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls
 
 # register definitions
     
     
-class csr_test_reg_neg_0x11ed3ba64059592c_cls(RegReadWrite):
+class csr_test_reg_0x3aad11b1e60c0832_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -82,7 +82,7 @@ class csr_test_reg_neg_0x11ed3ba64059592c_cls(RegReadWrite):
 
         # build the field attributes
         
-        self.__test_field:csr_test_reg_test_field_neg_0x6e90c80f0c58003c_cls = csr_test_reg_test_field_neg_0x6e90c80f0c58003c_cls(
+        self.__test_field:csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls = csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -90,7 +90,7 @@ class csr_test_reg_neg_0x11ed3ba64059592c_cls(RegReadWrite):
                 low=0, high=31),
             misc_props=FieldMiscProps(
                 default=0,
-                is_volatile=True),
+                is_volatile=False),
             logger_handle=logger_handle+'.test_field',
             inst_name='test_field',
             field_type=int)
@@ -108,7 +108,7 @@ class csr_test_reg_neg_0x11ed3ba64059592c_cls(RegReadWrite):
     # build the properties for the fields
     
     @property
-    def test_field(self) -> csr_test_reg_test_field_neg_0x6e90c80f0c58003c_cls:
+    def test_field(self) -> csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls:
         """
         Property to access test_field field of the register
 
@@ -140,7 +140,7 @@ class csr_test_reg_neg_0x11ed3ba64059592c_cls(RegReadWrite):
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'csr_test_reg_test_field_neg_0x6e90c80f0c58003c_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -165,6 +165,182 @@ class csr_test_reg_neg_0x11ed3ba64059592c_cls(RegReadWrite):
         
         
         yield self.test_field
+        
+        
+    
+
+    
+    
+class csr_regB_0x560e9c752a271fbd_cls(RegReadWrite):
+    """
+    Class to represent a register in the register model
+
+    
+    """
+
+    __slots__ : list[str] = ['__f0', '__f1', '__f2', '__f3']
+
+    def __init__(self,
+                 address: int,
+                 logger_handle: str,
+                 inst_name: str,
+                 parent: Union[AddressMap,RegFile,MemoryReadWrite]):
+
+        super().__init__(address=address,
+                         logger_handle=logger_handle,
+                         inst_name=inst_name,
+                         parent=parent)
+
+        # build the field attributes
+        
+        self.__f0:FieldReadWrite = FieldReadWrite(
+            parent_register=self,
+            size_props=FieldSizeProps(
+                width=8,
+                lsb=0, msb=7,
+                low=0, high=7),
+            misc_props=FieldMiscProps(
+                default=0,
+                is_volatile=False),
+            logger_handle=logger_handle+'.f0',
+            inst_name='f0',
+            field_type=int)
+        self.__f1:FieldReadWrite = FieldReadWrite(
+            parent_register=self,
+            size_props=FieldSizeProps(
+                width=8,
+                lsb=8, msb=15,
+                low=8, high=15),
+            misc_props=FieldMiscProps(
+                default=0,
+                is_volatile=False),
+            logger_handle=logger_handle+'.f1',
+            inst_name='f1',
+            field_type=int)
+        self.__f2:FieldReadWrite = FieldReadWrite(
+            parent_register=self,
+            size_props=FieldSizeProps(
+                width=8,
+                lsb=16, msb=23,
+                low=16, high=23),
+            misc_props=FieldMiscProps(
+                default=0,
+                is_volatile=False),
+            logger_handle=logger_handle+'.f2',
+            inst_name='f2',
+            field_type=int)
+        self.__f3:FieldReadWrite = FieldReadWrite(
+            parent_register=self,
+            size_props=FieldSizeProps(
+                width=8,
+                lsb=24, msb=31,
+                low=24, high=31),
+            misc_props=FieldMiscProps(
+                default=0,
+                is_volatile=False),
+            logger_handle=logger_handle+'.f3',
+            inst_name='f3',
+            field_type=int)
+
+    @property
+    def width(self) -> int:
+        return 32
+
+    @property
+    def accesswidth(self) -> int:
+        return 32
+
+    
+
+    # build the properties for the fields
+    
+    @property
+    def f0(self) -> FieldReadWrite:
+        """
+        Property to access f0 field of the register
+
+        
+        """
+        return self.__f0
+    @property
+    def f1(self) -> FieldReadWrite:
+        """
+        Property to access f1 field of the register
+
+        
+        """
+        return self.__f1
+    @property
+    def f2(self) -> FieldReadWrite:
+        """
+        Property to access f2 field of the register
+
+        
+        """
+        return self.__f2
+    @property
+    def f3(self) -> FieldReadWrite:
+        """
+        Property to access f3 field of the register
+
+        
+        """
+        return self.__f3
+
+    
+    @property
+    def systemrdl_python_child_name_map(self) -> dict[str, str]:
+        return {'f0':'f0','f1':'f1','f2':'f2','f3':'f3',
+            }
+
+    
+    
+    
+    
+    
+    
+    # nodes:4
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["f0"]) -> 'FieldReadWrite': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["f1"]) -> 'FieldReadWrite': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["f2"]) -> 'FieldReadWrite': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["f3"]) -> 'FieldReadWrite': ...
+                
+
+    @overload
+    def get_child_by_system_rdl_name(self, name: str) -> Union['FieldReadWrite', 'FieldReadWrite', 'FieldReadWrite', 'FieldReadWrite', ]: ...
+
+    def get_child_by_system_rdl_name(self, name: Any) -> Any:
+        return super().get_child_by_system_rdl_name(name)
+    
+
+
+    
+
+    
+    
+
+    
+    
+
+    
+    def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
+        
+        
+        yield self.f0
+        yield self.f1
+        yield self.f2
+        yield self.f3
         
         
     

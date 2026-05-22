@@ -5,20 +5,26 @@ module csr (
         input wire clk,
         input wire rst,
 
-        input wire s_cpuif_req,
-        input wire s_cpuif_req_is_wr,
-        input wire [2:0] s_cpuif_addr,
-        input wire [31:0] s_cpuif_wr_data,
-        input wire [31:0] s_cpuif_wr_biten,
-        output wire s_cpuif_req_stall_wr,
-        output wire s_cpuif_req_stall_rd,
-        output wire s_cpuif_rd_ack,
-        output wire s_cpuif_rd_err,
-        output wire [31:0] s_cpuif_rd_data,
-        output wire s_cpuif_wr_ack,
-        output wire s_cpuif_wr_err,
+        output logic s_axil_awready,
+        input wire s_axil_awvalid,
+        input wire [2:0] s_axil_awaddr,
+        input wire [2:0] s_axil_awprot,
+        output logic s_axil_wready,
+        input wire s_axil_wvalid,
+        input wire [31:0] s_axil_wdata,
+        input wire [3:0]s_axil_wstrb,
+        input wire s_axil_bready,
+        output logic s_axil_bvalid,
+        output logic [1:0] s_axil_bresp,
+        output logic s_axil_arready,
+        input wire s_axil_arvalid,
+        input wire [2:0] s_axil_araddr,
+        input wire [2:0] s_axil_arprot,
+        input wire s_axil_rready,
+        output logic s_axil_rvalid,
+        output logic [31:0] s_axil_rdata,
+        output logic [1:0] s_axil_rresp,
 
-        input csr_pkg::csr__in_t hwif_in,
         output csr_pkg::csr__out_t hwif_out
     );
 
@@ -40,18 +46,170 @@ module csr (
     logic cpuif_wr_ack;
     logic cpuif_wr_err;
 
-    assign cpuif_req = s_cpuif_req;
-    assign cpuif_req_is_wr = s_cpuif_req_is_wr;
-    assign cpuif_addr = s_cpuif_addr;
-    assign cpuif_wr_data = s_cpuif_wr_data;
-    assign cpuif_wr_biten = s_cpuif_wr_biten;
-    assign s_cpuif_req_stall_wr = cpuif_req_stall_wr;
-    assign s_cpuif_req_stall_rd = cpuif_req_stall_rd;
-    assign s_cpuif_rd_ack = cpuif_rd_ack;
-    assign s_cpuif_rd_err = cpuif_rd_err;
-    assign s_cpuif_rd_data = cpuif_rd_data;
-    assign s_cpuif_wr_ack = cpuif_wr_ack;
-    assign s_cpuif_wr_err = cpuif_wr_err;
+    // Max Outstanding Transactions: 2
+    logic [1:0] axil_n_in_flight;
+    logic axil_prev_was_rd;
+    logic axil_arvalid;
+    logic [2:0] axil_araddr;
+    logic axil_ar_accept;
+    logic axil_awvalid;
+    logic [2:0] axil_awaddr;
+    logic axil_wvalid;
+    logic [31:0] axil_wdata;
+    logic [3:0] axil_wstrb;
+    logic axil_aw_accept;
+    logic axil_resp_acked;
+
+    // Transaction request acceptance
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            axil_prev_was_rd <= '0;
+            axil_arvalid <= '0;
+            axil_araddr <= '0;
+            axil_awvalid <= '0;
+            axil_awaddr <= '0;
+            axil_wvalid <= '0;
+            axil_wdata <= '0;
+            axil_wstrb <= '0;
+            axil_n_in_flight <= '0;
+        end else begin
+            // AR* acceptance register
+            if(axil_ar_accept) begin
+                axil_prev_was_rd <= '1;
+                axil_arvalid <= '0;
+            end
+            if(s_axil_arvalid && s_axil_arready) begin
+                axil_arvalid <= '1;
+                axil_araddr <= s_axil_araddr;
+            end
+
+            // AW* & W* acceptance registers
+            if(axil_aw_accept) begin
+                axil_prev_was_rd <= '0;
+                axil_awvalid <= '0;
+                axil_wvalid <= '0;
+            end
+            if(s_axil_awvalid && s_axil_awready) begin
+                axil_awvalid <= '1;
+                axil_awaddr <= s_axil_awaddr;
+            end
+            if(s_axil_wvalid && s_axil_wready) begin
+                axil_wvalid <= '1;
+                axil_wdata <= s_axil_wdata;
+                axil_wstrb <= s_axil_wstrb;
+            end
+
+            // Keep track of in-flight transactions
+            if((axil_ar_accept || axil_aw_accept) && !axil_resp_acked) begin
+                axil_n_in_flight <= axil_n_in_flight + 1'b1;
+            end else if(!(axil_ar_accept || axil_aw_accept) && axil_resp_acked) begin
+                axil_n_in_flight <= axil_n_in_flight - 1'b1;
+            end
+        end
+    end
+
+    always_comb begin
+        s_axil_arready = (!axil_arvalid || axil_ar_accept);
+        s_axil_awready = (!axil_awvalid || axil_aw_accept);
+        s_axil_wready = (!axil_wvalid || axil_aw_accept);
+    end
+
+    // Request dispatch
+    always_comb begin
+        cpuif_wr_data = axil_wdata;
+        for(int i=0; i<4; i++) begin
+            cpuif_wr_biten[i*8 +: 8] = {8{axil_wstrb[i]}};
+        end
+        cpuif_req = '0;
+        cpuif_req_is_wr = '0;
+        cpuif_addr = '0;
+        axil_ar_accept = '0;
+        axil_aw_accept = '0;
+
+        if(axil_n_in_flight < 2'd2) begin
+            // Can safely issue more transactions without overwhelming response buffer
+            if(axil_arvalid && !axil_prev_was_rd) begin
+                cpuif_req = '1;
+                cpuif_req_is_wr = '0;
+                cpuif_addr = {axil_araddr[2:2], 2'b0};
+                if(!cpuif_req_stall_rd) axil_ar_accept = '1;
+            end else if(axil_awvalid && axil_wvalid) begin
+                cpuif_req = '1;
+                cpuif_req_is_wr = '1;
+                cpuif_addr = {axil_awaddr[2:2], 2'b0};
+                if(!cpuif_req_stall_wr) axil_aw_accept = '1;
+            end else if(axil_arvalid) begin
+                cpuif_req = '1;
+                cpuif_req_is_wr = '0;
+                cpuif_addr = {axil_araddr[2:2], 2'b0};
+                if(!cpuif_req_stall_rd) axil_ar_accept = '1;
+            end
+        end
+    end
+
+
+    // AXI4-Lite Response Logic
+    logic axil_resp_buffer_is_wr[2];
+    logic axil_resp_buffer_err[2];
+    logic [31:0] axil_resp_buffer_rdata[2];
+
+    logic [1:0] axil_resp_wptr;
+    logic [1:0] axil_resp_rptr;
+
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            for(int i=0; i<2; i++) begin
+                axil_resp_buffer_is_wr[i] <= '0;
+                axil_resp_buffer_err[i] <= '0;
+                axil_resp_buffer_rdata[i] <= '0;
+            end
+            axil_resp_wptr <= '0;
+            axil_resp_rptr <= '0;
+        end else begin
+            // Store responses in buffer until AXI response channel accepts them
+            if(cpuif_rd_ack || cpuif_wr_ack) begin
+                if(cpuif_rd_ack) begin
+                    axil_resp_buffer_is_wr[axil_resp_wptr[0:0]] <= '0;
+                    axil_resp_buffer_err[axil_resp_wptr[0:0]] <= cpuif_rd_err;
+                    axil_resp_buffer_rdata[axil_resp_wptr[0:0]] <= cpuif_rd_data;
+
+                end else if(cpuif_wr_ack) begin
+                    axil_resp_buffer_is_wr[axil_resp_wptr[0:0]] <= '1;
+                    axil_resp_buffer_err[axil_resp_wptr[0:0]] <= cpuif_wr_err;
+                end
+                axil_resp_wptr <= axil_resp_wptr + 1'b1;
+            end
+
+            // Advance read pointer when acknowledged
+            if(axil_resp_acked) begin
+                axil_resp_rptr <= axil_resp_rptr + 1'b1;
+            end
+        end
+    end
+
+    always_comb begin
+        axil_resp_acked = '0;
+        s_axil_bvalid = '0;
+        s_axil_rvalid = '0;
+        if(axil_resp_rptr != axil_resp_wptr) begin
+            if(axil_resp_buffer_is_wr[axil_resp_rptr[0:0]]) begin
+                s_axil_bvalid = '1;
+                if(s_axil_bready) axil_resp_acked = '1;
+            end else begin
+                s_axil_rvalid = '1;
+                if(s_axil_rready) axil_resp_acked = '1;
+            end
+        end
+
+        s_axil_rdata = axil_resp_buffer_rdata[axil_resp_rptr[0:0]];
+        if(axil_resp_buffer_err[axil_resp_rptr[0:0]]) begin
+            s_axil_bresp = 2'b10;
+            s_axil_rresp = 2'b10;
+        end else begin
+            s_axil_bresp = 2'b00;
+            s_axil_rresp = 2'b00;
+        end
+    end
 
     logic cpuif_req_masked;
 
@@ -67,6 +225,7 @@ module csr (
     //--------------------------------------------------------------------------
     typedef struct {
         logic test_reg;
+        logic regB;
     } decoded_reg_strb_t;
     decoded_reg_strb_t decoded_reg_strb;
     logic decoded_err;
@@ -82,6 +241,7 @@ module csr (
         is_valid_addr = '1; // No valid address check
         is_valid_rw = '1; // No valid RW check
         decoded_reg_strb.test_reg = cpuif_req_masked & (cpuif_addr == 3'h0);
+        decoded_reg_strb.regB = cpuif_req_masked & (cpuif_addr == 3'h4);
         decoded_err = '0;
     end
 
@@ -102,6 +262,24 @@ module csr (
                 logic load_next;
             } test_field;
         } test_reg;
+        struct {
+            struct {
+                logic [7:0] next;
+                logic load_next;
+            } f0;
+            struct {
+                logic [7:0] next;
+                logic load_next;
+            } f1;
+            struct {
+                logic [7:0] next;
+                logic load_next;
+            } f2;
+            struct {
+                logic [7:0] next;
+                logic load_next;
+            } f3;
+        } regB;
     } field_combo_t;
     field_combo_t field_combo;
 
@@ -111,6 +289,20 @@ module csr (
                 logic [31:0] value;
             } test_field;
         } test_reg;
+        struct {
+            struct {
+                logic [7:0] value;
+            } f0;
+            struct {
+                logic [7:0] value;
+            } f1;
+            struct {
+                logic [7:0] value;
+            } f2;
+            struct {
+                logic [7:0] value;
+            } f3;
+        } regB;
     } field_storage_t;
     field_storage_t field_storage;
 
@@ -122,9 +314,6 @@ module csr (
         load_next_c = '0;
         if(decoded_reg_strb.test_reg && decoded_req_is_wr) begin // SW write
             next_c = (field_storage.test_reg.test_field.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
-            load_next_c = '1;
-        end else begin // HW Write
-            next_c = hwif_in.test_reg.test_field.next;
             load_next_c = '1;
         end
         field_combo.test_reg.test_field.next = next_c;
@@ -140,6 +329,98 @@ module csr (
         end
     end
     assign hwif_out.test_reg.test_field.value = field_storage.test_reg.test_field.value;
+    // Field: csr.regB.f0
+    always_comb begin
+        automatic logic [7:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.regB.f0.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.regB && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.regB.f0.value & ~decoded_wr_biten[7:0]) | (decoded_wr_data[7:0] & decoded_wr_biten[7:0]);
+            load_next_c = '1;
+        end
+        field_combo.regB.f0.next = next_c;
+        field_combo.regB.f0.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.regB.f0.value <= 8'h0;
+        end else begin
+            if(field_combo.regB.f0.load_next) begin
+                field_storage.regB.f0.value <= field_combo.regB.f0.next;
+            end
+        end
+    end
+    assign hwif_out.regB.f0.value = field_storage.regB.f0.value;
+    // Field: csr.regB.f1
+    always_comb begin
+        automatic logic [7:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.regB.f1.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.regB && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.regB.f1.value & ~decoded_wr_biten[15:8]) | (decoded_wr_data[15:8] & decoded_wr_biten[15:8]);
+            load_next_c = '1;
+        end
+        field_combo.regB.f1.next = next_c;
+        field_combo.regB.f1.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.regB.f1.value <= 8'h0;
+        end else begin
+            if(field_combo.regB.f1.load_next) begin
+                field_storage.regB.f1.value <= field_combo.regB.f1.next;
+            end
+        end
+    end
+    assign hwif_out.regB.f1.value = field_storage.regB.f1.value;
+    // Field: csr.regB.f2
+    always_comb begin
+        automatic logic [7:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.regB.f2.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.regB && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.regB.f2.value & ~decoded_wr_biten[23:16]) | (decoded_wr_data[23:16] & decoded_wr_biten[23:16]);
+            load_next_c = '1;
+        end
+        field_combo.regB.f2.next = next_c;
+        field_combo.regB.f2.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.regB.f2.value <= 8'h0;
+        end else begin
+            if(field_combo.regB.f2.load_next) begin
+                field_storage.regB.f2.value <= field_combo.regB.f2.next;
+            end
+        end
+    end
+    assign hwif_out.regB.f2.value = field_storage.regB.f2.value;
+    // Field: csr.regB.f3
+    always_comb begin
+        automatic logic [7:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.regB.f3.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.regB && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.regB.f3.value & ~decoded_wr_biten[31:24]) | (decoded_wr_data[31:24] & decoded_wr_biten[31:24]);
+            load_next_c = '1;
+        end
+        field_combo.regB.f3.next = next_c;
+        field_combo.regB.f3.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.regB.f3.value <= 8'h0;
+        end else begin
+            if(field_combo.regB.f3.load_next) begin
+                field_storage.regB.f3.value <= field_combo.regB.f3.next;
+            end
+        end
+    end
+    assign hwif_out.regB.f3.value = field_storage.regB.f3.value;
 
     //--------------------------------------------------------------------------
     // Write response
@@ -163,6 +444,12 @@ module csr (
         readback_data_var = '0;
         if(rd_mux_addr == 3'h0) begin
             readback_data_var[31:0] = field_storage.test_reg.test_field.value;
+        end
+        if(rd_mux_addr == 3'h4) begin
+            readback_data_var[7:0] = field_storage.regB.f0.value;
+            readback_data_var[15:8] = field_storage.regB.f1.value;
+            readback_data_var[23:16] = field_storage.regB.f2.value;
+            readback_data_var[31:24] = field_storage.regB.f3.value;
         end
         readback_data = readback_data_var;
         readback_done = decoded_req & ~decoded_req_is_wr;

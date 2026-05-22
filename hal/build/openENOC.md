@@ -9,7 +9,7 @@ Don't override. Generated from: openENOC
 
 - Absolute Address: 0x0
 - Base Offset: 0x0
-- Size: 0x20000004
+- Size: 0x20000008
 
 |  Offset  |Identifier|Name|
 |----------|----------|----|
@@ -43,13 +43,14 @@ No supported members.
 
 - Absolute Address: 0x20000000
 - Base Offset: 0x20000000
-- Size: 0x4
+- Size: 0x8
 
 <p>openENOC CSR</p>
 
 |Offset|Identifier|    Name    |
 |------|----------|------------|
 |  0x0 | test_reg |csr.test_reg|
+|  0x4 |   regB   |      —     |
 
 ### test_reg register
 
@@ -66,3 +67,16 @@ No supported members.
 #### test_field field
 
 <p>4-byte test field</p>
+
+### regB register
+
+- Absolute Address: 0x20000004
+- Base Offset: 0x4
+- Size: 0x4
+
+| Bits|Identifier|Access|Reset|Name|
+|-----|----------|------|-----|----|
+| 7:0 |    f0    |  rw  | 0x0 |  — |
+| 15:8|    f1    |  rw  | 0x0 |  — |
+|23:16|    f2    |  rw  | 0x0 |  — |
+|31:24|    f3    |  rw  | 0x0 |  — |

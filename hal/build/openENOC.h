@@ -32,9 +32,37 @@ typedef union {
     uint32_t w;
 } csr__test_reg_t;
 
+// reg - csr::regB
+#define CSR__REGB__F0_bm 0xff
+#define CSR__REGB__F0_bp 0
+#define CSR__REGB__F0_bw 8
+#define CSR__REGB__F0_reset 0x0
+#define CSR__REGB__F1_bm 0xff00
+#define CSR__REGB__F1_bp 8
+#define CSR__REGB__F1_bw 8
+#define CSR__REGB__F1_reset 0x0
+#define CSR__REGB__F2_bm 0xff0000
+#define CSR__REGB__F2_bp 16
+#define CSR__REGB__F2_bw 8
+#define CSR__REGB__F2_reset 0x0
+#define CSR__REGB__F3_bm 0xff000000
+#define CSR__REGB__F3_bp 24
+#define CSR__REGB__F3_bw 8
+#define CSR__REGB__F3_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t f0 :8;
+        uint32_t f1 :8;
+        uint32_t f2 :8;
+        uint32_t f3 :8;
+    } f;
+    uint32_t w;
+} csr__regB_t;
+
 // addrmap - csr
 typedef struct __attribute__ ((__packed__)) {
     csr__test_reg_t test_reg;
+    csr__regB_t regB;
 } csr_t;
 
 // addrmap - openENOC
@@ -47,7 +75,7 @@ typedef struct __attribute__ ((__packed__)) {
 } openENOC_t;
 
 
-static_assert(sizeof(openENOC_t) == 0x20000004, "Packing error");
+static_assert(sizeof(openENOC_t) == 0x20000008, "Packing error");
 
 #ifdef __cplusplus
 }
