@@ -3,11 +3,7 @@
 
 # Dummy hardware interface - to be replaced with JTAG or similar interface
 
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
-from build.python.csr.sim.csr import csr_simulator_cls
+from csr.sim.csr import csr_simulator_cls
 
 class HardwareInterface(csr_simulator_cls):
     def read(self, addr: int, width: int = 32, accesswidth: int = 32) -> int:

@@ -1,36 +1,19 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
 import cocotb
 import threading
-import queue
 from cocotb.clock import Clock
 from cocotb.triggers import Timer
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 
-from build.python.csr.lib import NormalCallbackSet
-from build.python.csr.reg_model.csr import csr_cls
+from csr.lib import NormalCallbackSet
+from csr.reg_model.csr import csr_cls
 
-from RTLSimulator import RTLSimulator
-from Application import Application
+from .RTLSimulator import RTLSimulator
+from .Tests import *
 
-error_q = queue.Queue()
-
-def reg_thread(csr):
-    try:
-        Application(csr)
-
-    except Exception as e:
-        error_q.put(e)
-
-
-@cocotb.test()
-async def test_csr(dut):
-
+async def create_csr(dut):
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
 
     dut.rst.value = 1
@@ -49,16 +32,42 @@ async def test_csr(dut):
             write_callback=hw.write
         )
     )
-    
-    t = threading.Thread(target=reg_thread, args=(csr,))
+
+    return csr
+
+
+async def run_reg_test(dut, test_func):
+    csr = await create_csr(dut)
+
+    exc = None
+
+    def worker():
+        nonlocal exc
+
+        try:
+            test_func(csr)
+
+        except Exception as e:
+            exc = e
+
+    t = threading.Thread(target=worker)
     t.start()
 
     while t.is_alive():
         await Timer(1, unit="ns")
 
-        if not error_q.empty():
-            exc = error_q.get()
-            raise exc
-
     t.join()
+
+    if exc is not None:
+        raise exc
+
+
+@cocotb.test()
+async def test1(dut):
+    await run_reg_test(dut, Test1)
+
+
+@cocotb.test()
+async def test2(dut):
+    await run_reg_test(dut, Test2)
 

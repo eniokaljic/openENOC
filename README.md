@@ -92,6 +92,11 @@ This work package focuses on communicating the results of the project to the bro
 - [ ] [DIS1 - Technical Publication](https://github.com/eniokaljic/openENOC/issues/21)
 - [ ] [DIS2 - Conference Presentation](https://github.com/eniokaljic/openENOC/issues/22)
 
+## License
+This project uses open copyleft licenses to ensure compatibility with existing open hardware and open-source software ecosystems while preserving transparency, reproducibility, and long-term community collaboration.
+
+See [`LICENSE.md`](LICENSE.md) for detailed licensing information.
+
 ## Acknowledgements
 We are grateful to **NLnet Foundation** for their sponsorship of this development activity.
 

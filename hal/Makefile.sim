@@ -12,13 +12,13 @@ TOPLEVEL = csr
 #
 # RTL sources
 #
-VERILOG_SOURCES += $(PWD)/../build/rtl/$(TOPLEVEL)_pkg.sv
-VERILOG_SOURCES += $(PWD)/../build/rtl/$(TOPLEVEL).sv
+VERILOG_SOURCES += $(PWD)/build/rtl/$(TOPLEVEL)_pkg.sv
+VERILOG_SOURCES += $(PWD)/build/rtl/$(TOPLEVEL).sv
 
 #
 # cocotb test module (without .py)
 #
-MODULE = Testbench
+MODULE = verif.Testbench
 
 #
 # Verilator flags

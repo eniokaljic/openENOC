@@ -22,7 +22,7 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls(FieldReadWrite):
+class csr_test_reg_test_field_0x1c821e7e2db93eaa_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 

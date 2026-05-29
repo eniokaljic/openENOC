@@ -1,21 +1,17 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
 import cocotb
 import threading
 import queue
 from cocotb.triggers import Timer
 
-from build.python.csr.sim.csr import csr_simulator_cls
+from csr.sim.csr import csr_simulator_cls
 
 class RTLSimulator(csr_simulator_cls):
     def __init__(self, axi_master, address=0):
         super().__init__(address=address)
-        
+
         self.axi = axi_master
         self.req_queue = queue.Queue()
 
@@ -79,4 +75,3 @@ class RTLSimulator(csr_simulator_cls):
         self.req_queue.put(req)
 
         event.wait()
-

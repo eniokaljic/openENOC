@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
-# SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
+# SPDX-License-Identifier: CERN-OHL-S-2.0
 
 RDLTOP    = openENOC
 RDLCSR    = csr
@@ -35,11 +35,11 @@ unittest: $(PEAKRDLPYTHON)
 	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLTOP)/tests -t . -v
 
 sim: $(PEAKRDLPYTHON)
-	cd tb && make clean all
+	make -f Makefile.sim clean all
 
 hwtest: $(PEAKRDLPYTHON)
-	python tb/HardwareTest.py
+	python -m verif.HardwareTest
 
 clean:
+	make -f Makefile.sim clean
 	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD)
-

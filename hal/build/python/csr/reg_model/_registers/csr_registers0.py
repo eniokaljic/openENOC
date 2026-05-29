@@ -44,12 +44,12 @@ from ...lib import FieldSizeProps, FieldMiscProps
 
 
 
-from .fields import csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls
+from .fields import csr_test_reg_test_field_0x1c821e7e2db93eaa_cls
 
 # register definitions
     
     
-class csr_test_reg_0x3aad11b1e60c0832_cls(RegReadWrite):
+class csr_test_reg_0x7de4d4f7be4f8655_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -82,7 +82,7 @@ class csr_test_reg_0x3aad11b1e60c0832_cls(RegReadWrite):
 
         # build the field attributes
         
-        self.__test_field:csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls = csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls(
+        self.__test_field:csr_test_reg_test_field_0x1c821e7e2db93eaa_cls = csr_test_reg_test_field_0x1c821e7e2db93eaa_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -108,7 +108,7 @@ class csr_test_reg_0x3aad11b1e60c0832_cls(RegReadWrite):
     # build the properties for the fields
     
     @property
-    def test_field(self) -> csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls:
+    def test_field(self) -> csr_test_reg_test_field_0x1c821e7e2db93eaa_cls:
         """
         Property to access test_field field of the register
 
@@ -140,7 +140,7 @@ class csr_test_reg_0x3aad11b1e60c0832_cls(RegReadWrite):
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'csr_test_reg_test_field_0x3a4ec3aeec6ad0c_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'csr_test_reg_test_field_0x1c821e7e2db93eaa_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -171,7 +171,7 @@ class csr_test_reg_0x3aad11b1e60c0832_cls(RegReadWrite):
 
     
     
-class csr_regB_0x560e9c752a271fbd_cls(RegReadWrite):
+class csr_regB_0x72bbf9b12b1a8c8e_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
