@@ -2,27 +2,19 @@
 .. SPDX-FileCopyrightText: 2026 Tarik Hamedovic
 .. SPDX-License-Identifier: CC-BY-SA-4.0
 
+openENOC
+========
 Scalable Ethernet-based Network-on-Chip
-=======================================
+---------------------------------------
 
-This documentation currently contains the initial project overview for
-openENOC, including background, goals, architecture motivation, and
-project plan.
-
-As the project evolves, this documentation will be expanded to include
-detailed architecture descriptions, RTL documentation, software APIs,
-verification flows, and build instructions.
-
-Quick links
------------
-
-* :doc:`project_overview` - Full project description, goals, and work packages
+**openENOC** is an open-source hardware and software initiative that develops a modular and scalable Ethernet-based Network-on-Chip (NoC) architecture for FPGA SoCs and advanced MPSoC designs.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Documentation
 
    project_overview
+   architecture
    build_docs
 
 Future Sections
@@ -30,7 +22,6 @@ Future Sections
 
 The documentation is planned to grow into the following areas:
 
-* ``Architecture`` — Ethernet-based NoC design and packet model
 * ``RTL`` — Gateware components and datapath design
 * ``Software`` — HAL, APIs, and runtime control
 * ``Verification`` — Simulation and co-verification flows
