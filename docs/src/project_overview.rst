@@ -10,7 +10,7 @@ Introduction
 **openENOC** is an open-source hardware and software initiative that develops a modular and scalable Ethernet-based Network-on-Chip (NoC) architecture for FPGA SoCs and advanced MPSoC designs. By adopting standard Ethernet Layer 2 as the native on-chip transport protocol, rather than relying on traditional mesh or proprietary interconnects, openENOC enables seamless integration with existing Ethernet infrastructure and establishes a unified communication and programming model across both on-chip and off-chip systems.
 
 .. image:: ../images/openENOC.logo.svg
-   :width: 25%
+   :width: 220px
    :align: center
    
 .. raw:: html
@@ -138,11 +138,10 @@ Users and contributors are responsible for complying with the license requiremen
 Acknowledgements
 ----------------
 
-We are grateful to **NLnet Foundation** for their sponsorship of this
-development activity.
+We are grateful to **NLnet Foundation** for their `sponsorship <https://nlnet.nl/project/openENOC/>`_ of this development activity.
 
 .. image:: https://nlnet.nl/logo/banner.svg
-   :width: 25%
+   :width: 220px
    :align: center
    
 .. raw:: html
@@ -150,12 +149,12 @@ development activity.
    <br>
 
 .. image:: https://nlnet.nl/image/logos/NGI0Core_tag.svg
-   :width: 25%
+   :width: 220px
    :align: center
 
 .. raw:: html
 
    <br>
    
-This project was funded through the NGI0 Commons Fund, a fund established by NLnet with financial support from the European Commission's Next Generation Internet programme, under the aegis of DG Communications Networks, Content and Technology under grant agreement N\ :sup:`o`. 101135429. Additional funding is made available by the Swiss State Secretariat for Education, Research and Innovation.
+This project was funded through the `NGI0 Commons Fund <https://nlnet.nl/commonsfund>`_, a fund established by `NLnet <https://nlnet.nl/>`_ with financial support from the European Commission's `Next Generation Internet <https://ngi.eu>`_ programme, under the aegis of `DG Communications Networks, Content and Technology <https://commission.europa.eu/about-european-commission/departments-and-executive-agencies/communications-networks-content-and-technology_en>`_ under grant agreement N\ :sup:`o` `101135429 <https://cordis.europa.eu/project/id/101135429>`_. Additional funding is made available by the `Swiss State Secretariat for Education, Research and Innovation <https://www.sbfi.admin.ch/sbfi/en/home.html>`_ (SERI).
 

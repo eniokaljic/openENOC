@@ -15,6 +15,7 @@ Scalable Ethernet-based Network-on-Chip
 
    project_overview
    architecture
+   oetp
    build_docs
 
 Future Sections

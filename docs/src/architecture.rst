@@ -1,10 +1,23 @@
 .. SPDX-FileCopyrightText: 2026 Enio Kaljic
 .. SPDX-License-Identifier: CC-BY-SA-4.0
 
-System Architecture
-===================
+openENOC Architecture
+=====================
 
-The **openENOC** architecture is based on an Ethernet-inspired Network-on-Chip (NoC) that uses Layer-2 packet switching to interconnect CPUs, accelerators, peripherals, and memories within scalable MPSoC systems through a uniform communication model. This approach allows both on-chip and off-chip communication to be handled in a consistent way, making the architecture modular, extensible, and well suited for heterogeneous computing platforms targeting cryptography, AI, and edge workloads.
+Introduction
+------------
+
+The proposed openENOC system architecture is motivated by the need for a scalable and modular communication substrate for modern MPSoC platforms. As the number of integrated processing elements, accelerators, memories, and peripherals continues to grow, traditional shared buses and point-to-point interconnects become increasingly difficult to scale in terms of bandwidth, latency, and design complexity. For this reason, the Network-on-Chip (NoC) paradigm has become a widely adopted architectural direction for complex SoCs, replacing ad hoc global wiring with structured packet-based communication and better supporting system expansion and integration [1]_.
+
+The openENOC architecture is based on an Ethernet-inspired Network-on-Chip (NoC) that uses Layer-2 packet switching to interconnect CPUs, accelerators, peripherals, and memories within scalable MPSoC systems through a uniform communication model. This approach allows both on-chip and off-chip communication to be handled in a consistent way, making the architecture modular, extensible, and well suited for heterogeneous computing platforms targeting cryptography, AI, and edge workloads.
+
+This architectural choice is further supported by the increasing heterogeneity of contemporary computing systems. Modern workloads combine general-purpose processors with specialized accelerators, producing communication patterns that are more diverse and demanding than those in conventional multicore designs. Recent research shows that NoC architectures for heterogeneous systems must provide flexible and scalable transport mechanisms capable of efficiently supporting different traffic types and bandwidth requirements [2]_. Designing openENOC as a packet-switched communication backbone directly addresses these needs.
+
+The decision to adopt Ethernet-inspired Layer-2 packet switching is also practical from both implementation and system-design perspectives. Packet-based communication improves modularity and composability because system components interact through standardized frames rather than tightly coupled dedicated links. Prior work on scalable interconnection architectures has shown the value of using a unified communication model across both on-chip and off-chip domains, improving system integration and extensibility in complex MPSoC platforms [3]_. This makes Layer-2 switching a suitable foundation for an open and extensible hardware communication fabric.
+
+Recent open-source NoC research also highlights the importance of scalable transport, support for parallel data streams, and efficient handling of both high-throughput and latency-sensitive traffic in accelerator-rich systems [4]_. These observations are aligned with the goals of openENOC, which seeks to provide a unified interconnect for CPUs, accelerators, peripherals, and memories across a broad range of application domains.
+
+Finally, the proposed architecture is consistent with broader trends in open heterogeneous SoC design, where modular integration, standardized interfaces, and FPGA prototyping are key enablers for experimentation and deployment [5]_. In this context, an Ethernet-based NoC provides a forward-looking balance between scalability, implementation simplicity, and system interoperability.
 
 .. image:: ../images/openENOC-Architecture.svg
    :alt: Overall openENOC system architecture
@@ -133,3 +146,20 @@ styles.
 
 The diagram demonstrates how this architecture supports several important deployment patterns: software-managed switching, DMA-based memory transfers, direct streaming data paths, dedicated subnetworks for accelerator clusters, dedicated low-speed peripheral domains, and transparent off-chip scaling across multiple FPGA systems. Together, these capabilities make openENOC suitable for building modular and scalable platforms across a wide range of embedded and high-performance applications.
 
+References
+----------
+
+.. [1] T. Bjerregaard and S. Mahadevan, "A survey of research and practices of network-on-chip," in *ACM Computing Surveys*, vol. 38, no. 1, pp. 1–51, 2006. 
+   `(link) <https://dl.acm.org/doi/10.1145/1132952.1132953>`_
+
+.. [2] S. Biglari, F. Hosseini, A. Upadhyay and H. Zhao, "Survey of Network-on-Chip (NoC) for Heterogeneous Multicore Systems," *2024 IEEE 17th International Symposium on Embedded Multicore/Many-core Systems-on-Chip (MCSoC)*, Kuala Lumpur, Malaysia, 2024, pp. 155-162, doi: 10.1109/MCSoC64144.2024.00036.
+   `(link) <https://par.nsf.gov/servlets/purl/10552564>`_
+
+.. [3] A. Biagioni, F. Lo Cicero, A. Lonardo, P. S. Paolucci, M. Perra, D. Rossetti, C. Sidore, F. Simula, L. Tosoratto and P. Vicini, "The Distributed Network Processor: a novel off-chip and on-chip interconnection network architecture," arXiv preprint arXiv:1203.1536, 2012.
+   `(link) <https://arxiv.org/abs/1203.1536>`_
+
+.. [4] T. Fischer, M. Rogenmoser, T. Benz, F. K. Gürkaynak and L. Benini, "FlooNoC: A 645-Gb/s/link 0.15-pJ/B/hop Open-Source NoC With Wide Physical Links and End-to-End AXI4 Parallel Multistream Support," in *IEEE Transactions on Very Large Scale Integration (VLSI) Systems*, vol. 33, no. 4, pp. 1094-1107, April 2025, doi: 10.1109/TVLSI.2025.3527225.
+   `(link) <https://arxiv.org/abs/2409.17606>`_
+
+.. [5] J. Zuckerman, P. Mantovani, D. Giri and L. P. Carloni, "Enabling Heterogeneous, Multicore SoC Research with RISC-V and ESP," arXiv preprint arXiv:2206.01901, 2022.
+   `(link) <https://arxiv.org/abs/2206.01901>`_
