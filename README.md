@@ -5,7 +5,6 @@ SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
 [![NLnet Foundation](https://img.shields.io/badge/funded%20by-NLnet%20Foundation-74AA00)](https://nlnet.nl/)
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://eniokaljic.github.io/openENOC/)
 [![Discord](https://img.shields.io/discord/1492900141886341313?logo=discord&logoColor=white&label=Discord&color=5662F6)](https://discord.gg/PNh3TfH8ZZ)
-[![GitHub stars](https://img.shields.io/github/stars/eniokaljic/openENOC?style=social&cacheSeconds=3600)](https://github.com/eniokaljic/openENOC/stargazers)
 
 # Scalable Ethernet-based Network-on-Chip
 
