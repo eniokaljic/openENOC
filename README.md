@@ -25,6 +25,25 @@ Its primary goal is to unlock the potential of networked reconfigurable computin
 
 All results will be released openly to encourage reuse, strengthen the open hardware ecosystem, and empower developers and organizations to build interoperable, future proof, and community driven MPSoC solutions.
 
+## Repository Structure
+
+The openENOC repository is organized into a set of clearly separated functional areas covering hardware design, software development, hardware abstraction, verification, documentation, platform integration, and project automation. The following table provides a high-level overview of the repository structure and the purpose of each top-level directory.
+
+| Directory | Description |
+|-----------|-------------|
+| `docs/` | Project documentation sources and assets. |
+| `hal/` | Hardware Abstraction Layer sources, register definitions, code generators, and related tooling. |
+| `hw/` | Reusable synthesizable hardware IP blocks, RTL sources, and third-party hardware libraries. |
+| `sw/` | Software libraries, drivers, utilities, and application support code. |
+| `dv/` | Design verification environment, including shared verification infrastructure, component-level verification, example verification, demo verification, and hardware validation. |
+| `examples/` | Reference designs, application examples, and integration examples demonstrating openENOC capabilities. |
+| `platforms/` | Board- and device-specific integration layers, including top-level designs, constraints, and build scripts. |
+| `demos/` | Ready-to-run demonstration projects combining examples with specific hardware platforms. |
+| `build/` | Generated build artifacts, simulation outputs, generated code, and intermediate files. |
+| `ci/` | Continuous integration scripts and automation utilities used by development and release workflows. |
+| `.github/workflows/` | GitHub Actions workflow definitions for documentation generation, automated testing, and release processes. |
+| `LICENSES/` | License texts and third-party licensing information. |
+
 ## Project Plan
 
 The project is organized around [four global milestones (M1-M4)](https://github.com/eniokaljic/openENOC/milestones) representing successive development phases of the openENOC platform: architecture definition, functional prototyping, system integration, and final platform release. Each work package contributes to these milestones through a set of incremental subtasks that implement, validate and demonstrate different aspects of the system. 
