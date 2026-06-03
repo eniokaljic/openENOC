@@ -34,10 +34,9 @@ The openENOC repository is organized into a set of clearly separated functional 
 | `hal/` | Hardware Abstraction Layer sources, register definitions, code generators, and related tooling. |
 | `hw/` | Reusable synthesizable hardware IP blocks, RTL sources, and third-party hardware libraries. |
 | `sw/` | Software libraries, drivers, utilities, and application support code. |
-| `dv/` | Design verification environment, including shared verification infrastructure, component-level verification, example verification, demo verification, and hardware validation. |
+| `dv/` | Design verification environment, including shared verification infrastructure, component-level verification, example verification, and hardware demos verification. |
 | `examples/` | Reference designs, application examples, and integration examples demonstrating openENOC capabilities. |
-| `platforms/` | Board- and device-specific integration layers, including top-level designs, constraints, and build scripts. |
-| `demos/` | Ready-to-run demonstration projects combining examples with specific hardware platforms. |
+| `demos/` | Complete demonstration projects for supported hardware platforms, including platform integration, top-level designs, constraints, build scripts, and example applications. |
 | `build/` | Generated build artifacts, simulation outputs, generated code, and intermediate files. |
 | `ci/` | Continuous integration scripts and automation utilities used by development and release workflows. |
 | `.github/workflows/` | GitHub Actions workflow definitions for documentation generation, automated testing, and release processes. |

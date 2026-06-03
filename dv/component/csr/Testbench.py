@@ -10,8 +10,8 @@ from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 from csr.lib import NormalCallbackSet
 from csr.reg_model.csr import csr_cls
 
-from .RTLSimulator import RTLSimulator
-from .Tests import *
+from RTLSimulator import RTLSimulator
+from Tests import *
 
 async def create_csr(dut):
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())

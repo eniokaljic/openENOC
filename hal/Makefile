@@ -6,7 +6,7 @@ RDLCSR    = csr
 RDLSRC    = $(SOURCEDIR)/$(RDLTOP).rdl
 
 SOURCEDIR = src
-BUILDDIR  = build
+BUILDDIR  = ../build/hal
 
 PEAKRDLHEADER = $(BUILDDIR)/$(RDLTOP).h
 PEAKRDLRTL    = $(BUILDDIR)/rtl/
@@ -17,6 +17,7 @@ PEAKRDLMD     = $(BUILDDIR)/$(RDLTOP).md
 all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD)
 
 $(PEAKRDLHEADER): $(RDLSRC)
+	mkdir -p $(BUILDDIR)
 	peakrdl c-header $^ -b ltoh -o $@
 
 $(PEAKRDLRTL): $(RDLSRC)
@@ -32,14 +33,7 @@ $(PEAKRDLMD): $(RDLSRC)
 	peakrdl markdown $^ -o $@ --top $(RDLTOP)
 
 unittest: $(PEAKRDLPYTHON)
-	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLTOP)/tests -t . -v
-
-sim: $(PEAKRDLPYTHON)
-	make -f Makefile.sim clean all
-
-hwtest: $(PEAKRDLPYTHON)
-	python -m verif.HardwareTest
+	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLCSR)/tests -t $(PEAKRDLPYTHON) -v
 
 clean:
-	make -f Makefile.sim clean
 	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD)

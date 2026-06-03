@@ -59,14 +59,14 @@ from ..lib import NormalCallbackSet, NormalCallbackSetLegacy
 
 
 
-from ._registers import csr_test_reg_0x7de4d4f7be4f8655_cls
-from ._registers import csr_regB_0x72bbf9b12b1a8c8e_cls
+from ._registers import csr_test_reg_neg_0x512509643fe82ee3_cls
+from ._registers import csr_regB_neg_0x53c0f96b55c9ea23_cls
 
 
 # addrmap, regfile, memor and register definitions
     
     
-class csr_0x33063e34325e3861_cls(AddressMap):
+class csr_neg_0x7c7672eac66f3c7c_cls(AddressMap):
     """
     Class to represent a address map in the register model
 
@@ -105,13 +105,13 @@ class csr_0x33063e34325e3861_cls(AddressMap):
 
         
             
-        self.__test_reg:csr_test_reg_0x7de4d4f7be4f8655_cls = csr_test_reg_0x7de4d4f7be4f8655_cls(
+        self.__test_reg:csr_test_reg_neg_0x512509643fe82ee3_cls = csr_test_reg_neg_0x512509643fe82ee3_cls(
                                                                      address=self.address+0,
                                                                      logger_handle=logger_handle+'.test_reg',
                                                                      inst_name='test_reg', parent=self)
         
             
-        self.__regB:csr_regB_0x72bbf9b12b1a8c8e_cls = csr_regB_0x72bbf9b12b1a8c8e_cls(
+        self.__regB:csr_regB_neg_0x53c0f96b55c9ea23_cls = csr_regB_neg_0x53c0f96b55c9ea23_cls(
                                                                      address=self.address+4,
                                                                      logger_handle=logger_handle+'.regB',
                                                                      inst_name='regB', parent=self)
@@ -121,7 +121,7 @@ class csr_0x33063e34325e3861_cls(AddressMap):
     def size(self) -> int:
         return 8
     @property
-    def test_reg(self) -> 'csr_test_reg_0x7de4d4f7be4f8655_cls':
+    def test_reg(self) -> 'csr_test_reg_neg_0x512509643fe82ee3_cls':
         """
         Property to access test_reg 
 
@@ -141,7 +141,7 @@ class csr_0x33063e34325e3861_cls(AddressMap):
         return self.__test_reg
         
     @property
-    def regB(self) -> 'csr_regB_0x72bbf9b12b1a8c8e_cls':
+    def regB(self) -> 'csr_regB_neg_0x53c0f96b55c9ea23_cls':
         """
         Property to access regB 
 
@@ -165,15 +165,15 @@ class csr_0x33063e34325e3861_cls(AddressMap):
     # nodes:2
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["test_reg"]) -> 'csr_test_reg_0x7de4d4f7be4f8655_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["test_reg"]) -> 'csr_test_reg_neg_0x512509643fe82ee3_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["regB"]) -> 'csr_regB_0x72bbf9b12b1a8c8e_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["regB"]) -> 'csr_regB_neg_0x53c0f96b55c9ea23_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['csr_test_reg_0x7de4d4f7be4f8655_cls', 'csr_regB_0x72bbf9b12b1a8c8e_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['csr_test_reg_neg_0x512509643fe82ee3_cls', 'csr_regB_neg_0x53c0f96b55c9ea23_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -205,7 +205,7 @@ class csr_0x33063e34325e3861_cls(AddressMap):
     
 
 
-csr_cls = csr_0x33063e34325e3861_cls
+csr_cls = csr_neg_0x7c7672eac66f3c7c_cls
 
 if __name__ == '__main__':
     # dummy functions to demonstrate the class
