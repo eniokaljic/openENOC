@@ -28,6 +28,44 @@ Its primary goal is to unlock the potential of networked reconfigurable computin
 
 All results will be released openly to encourage reuse, strengthen the open hardware ecosystem, and empower developers and organizations to build interoperable, future proof, and community driven MPSoC solutions.
 
+Repository Structure
+--------------------
+
+The openENOC repository is organized into a set of clearly separated functional areas covering hardware design, software development, hardware abstraction, verification, documentation, platform integration, and project automation. The following overview summarizes the purpose of each top-level directory within the repository.
+
+``docs/``
+   Project documentation sources and assets.
+
+``hal/``
+   Hardware Abstraction Layer sources, register definitions, code generators, and related tooling.
+   
+``hw/``
+   Reusable synthesizable hardware IP blocks, RTL sources, and third-party hardware libraries.
+
+``sw/``
+   Software libraries, drivers, utilities, and application support code.
+
+``dv/``
+   Design verification environment, including shared verification infrastructure, component-level verification, example verification, and hardware demos verification.
+
+``examples/``
+   Reference designs, application examples, and integration examples demonstrating openENOC capabilities.
+
+``demos/``
+   Complete demonstration projects for supported hardware platforms, including platform integration, top-level designs, constraints, build scripts, and example applications.
+
+``build/``
+   Generated build artifacts, simulation outputs, generated code, and intermediate files.
+
+``ci/``
+   Continuous integration scripts and automation utilities used by development and release workflows. 
+
+``.github/workflows/``
+   GitHub Actions workflow definitions for documentation generation, automated testing, and release processes.
+
+``LICENSES/``
+   License texts and third-party licensing information.
+
 Project Plan
 ------------
 

@@ -108,7 +108,7 @@ The following examples refer to the architectural diagram shown earlier and illu
 EP A1: Managed switch operation with processor-coordinated DMA
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**EP A1** illustrates a configuration in which *openENOC Switch A* operates in managed mode. A processor is connected to the switch configuration port through the openENOC Control Interface, and the corresponding endpoint uses DMA-capable communication through the openENOC Endpoint Interface.
+**EP A1** illustrates a configuration in which **openENOC Switch A** operates in managed mode. A processor is connected to the switch configuration port through the openENOC Control Interface, and the corresponding endpoint uses DMA-capable communication through the openENOC Endpoint Interface.
 
 This use case is suitable for systems that require explicit software control over network behavior, for example when traffic policies must be tuned at runtime or when integration with higher-level resource management software is required.
 
@@ -159,14 +159,44 @@ On **FPGA 2**, **openENOC Switch D** mirrors the same architectural principles u
 
 In other words, openENOC is not limited to a single-chip NoC; it can be extended into distributed Ethernet-connected multi-FPGA deployments. Because the same switch, endpoint, control, and transport concepts are preserved, the architecture remains conceptually uniform even as it scales from local integration to geographically distributed systems.
 
+Development and Integration Flow
+--------------------------------
+
+The openENOC project is designed around a model-driven development workflow that enables a consistent transition from hardware and software design to verification, system integration, and deployment. The development and integration flow shown below illustrates how the various project artefacts are generated and used throughout the design lifecycle.
+
+.. image:: ../images/openENOC-DevelopmentFlow.svg
+   :alt: openENOC Development and Integration Flow
+   :align: center
+   :width: 80%
+
+.. raw:: html
+
+   <br>
+
+The process begins with the development of openENOC hardware and software components together with a SystemRDL specification describing the Control and Status Register (CSR) interface. The SystemRDL description serves as a single source of truth for the register map and enables automatic generation of implementation and verification artefacts using PeakRDL.
+
+From the SystemRDL specification, the build system generates synthesizable CSR RTL, software-accessible CSR APIs, a Python register model, and associated documentation. This approach ensures consistency between hardware, software, and verification environments while significantly reducing manual maintenance effort.
+
+The generated Python register model is integrated into the verification framework, which is based on cocotb and Verilator. Together with simulator interfaces, hardware interfaces, and automated test suites, this environment enables functional verification of individual openENOC components as well as complete subsystem configurations. By deriving verification artefacts from the same register specification used by hardware and software, the risk of inconsistencies between implementation and test environments is minimized.
+
+To support continuous validation of the design, the verification infrastructure is intended to be integrated into a Continuous Integration (CI) workflow. Automated execution of simulation, verification, and build tasks enables functional regressions to be detected early and ensures that modifications to RTL, software components, register definitions, or verification infrastructure do not introduce unintended behavior. While GitHub Actions currently serves as the primary CI platform, the underlying procedures are designed to remain platform-independent. Verification and build workflows are implemented using portable scripts and standardized tooling interfaces, allowing them to be executed in alternative CI environments such as GitLab CI, Jenkins, Buildbot, or self-hosted automation systems without modification to the overall methodology.
+
+Following successful verification, the generated RTL and openENOC components are integrated into a target platform design. This stage includes the creation of top-level designs, implementation constraints, vendor-specific integration logic, and external access mechanisms such as JTAG or Ethernet-based control interfaces.
+
+The resulting design can then be processed using either vendor toolchains or open-source FPGA implementation flows to generate a deployable hardware image. Once programmed onto the target platform, the complete system can be validated using software-driven functional tests and application-level workloads.
+
+This workflow establishes a unified development methodology in which hardware design, software development, verification, continuous integration, and deployment are derived from a common set of specifications. The approach improves maintainability, reproducibility, and scalability while facilitating collaboration across different hardware platforms, toolchains, and deployment environments.
+
 Summary
 -------
 
 Overall, the openENOC system architecture combines Ethernet-style packet switching with configurable endpoint integration and a lightweight transport model to provide a scalable communication substrate for heterogeneous MPSoC systems. The resulting design separates switching, control, endpoint adaptation, and transport semantics into distinct but cooperating architectural components.
 
-The diagram demonstrates how this architecture supports several important deployment patterns: software-managed switching, DMA-based memory transfers, direct streaming data paths, dedicated subnetworks for specialized traffic classes, and off-chip scaling across multi-FPGA systems. By introducing oETP alongside the existing switch and interface abstractions, openENOC also establishes a transport layer suitable for efficient memory-centric communication across both on-chip and off-chip Ethernet domains.
+The architecture supports several important deployment patterns, including software-managed switching, DMA-based memory transfers, direct streaming data paths, dedicated subnetworks for specialized traffic classes, and off-chip scaling across multi-FPGA systems. By introducing oETP alongside the existing switch and interface abstractions, openENOC establishes a transport layer suitable for efficient memory-centric communication across both on-chip and off-chip Ethernet domains.
 
-A defining characteristic of openENOC is the use of a common Ethernet-based communication model across both on-chip and off-chip domains, enabling the same architectural concepts to scale from individual FPGA devices to distributed multi-FPGA systems.
+A defining characteristic of openENOC is the use of a common Ethernet-based communication model across both on-chip and off-chip domains, enabling the same architectural concepts to scale from individual FPGA devices to distributed multi-FPGA systems. This approach promotes architectural consistency while simplifying integration with existing Ethernet-oriented hardware and software ecosystems.
+
+Beyond the communication architecture itself, openENOC adopts a model-driven development methodology in which hardware, software, verification, and documentation artefacts are derived from a common set of specifications. Automated artefact generation, reusable verification infrastructure, and platform-independent Continuous Integration workflows help ensure consistency across the development lifecycle while improving maintainability, reproducibility, and portability. Together, these architectural and development principles provide a foundation for building scalable, verifiable, and extensible Ethernet-based interconnect systems.
 
 References
 ----------
