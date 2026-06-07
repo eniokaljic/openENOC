@@ -97,7 +97,7 @@ This work package ensures that openENOC can be built using a fully open-source F
 
 This work package produces the technical documentation and developer resources necessary to make the project accessible and reusable by the wider open hardware community. Initial architecture documentation describing the design concepts and packet model is produced first (DOC1). Detailed design documentation of RTL modules and interfaces follows (DOC2). Tutorials and developer guides are then prepared to demonstrate simulation and FPGA deployment workflows (DOC3), and the final stage documents reproducible build and verification processes (DOC4).
 
-- [ ] [DOC1 - Initial Architecture Documentation](https://github.com/eniokaljic/openENOC/issues/15)
+- [x] [DOC1 - Initial Architecture Documentation](https://github.com/eniokaljic/openENOC/issues/15)
 - [ ] [DOC2 - Design Documentation](https://github.com/eniokaljic/openENOC/issues/16)
 - [ ] [DOC3 - Tutorials & Developer Guides](https://github.com/eniokaljic/openENOC/issues/17)
 - [ ] [DOC4 - Reproducible Build & Verification Documentation](https://github.com/eniokaljic/openENOC/issues/18)
