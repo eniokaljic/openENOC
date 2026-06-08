@@ -15,6 +15,7 @@ Scalable Ethernet-based Network-on-Chip
 
    project_overview
    architecture
+   verification
    build_docs
 
 Future Sections
@@ -22,8 +23,7 @@ Future Sections
 
 The documentation will evolve alongside the project and gradually expand into a complete set of architectural, implementation, software, verification, and deployment resources:
 
-* ``HAL Architecture Specification`` - Hardware abstraction layer, register model, CSR access mechanisms, and software integration concepts (SW1)
-* ``Verification Architecture`` — Simulation framework, testbench infrastructure, co-verification methodology, and continuous verification workflows (DV1-DV4)
+* ``HAL Architecture Specification`` — Hardware abstraction layer, register model, CSR access mechanisms, and software integration concepts (SW1)
 * ``RTL Reference`` — Detailed documentation of RTL modules, datapaths, interfaces, and integration patterns (DOC2)
 * ``Runtime API Reference`` — Software APIs, runtime services, DMA operations, and application-facing interfaces (SW3)
 * ``Developer Guide`` — Tutorials, software usage, simulation workflows, FPGA deployment procedures, and reference applications (DOC3, SW2, SW4)

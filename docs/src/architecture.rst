@@ -1,8 +1,8 @@
 .. SPDX-FileCopyrightText: 2026 Enio Kaljic
 .. SPDX-License-Identifier: CC-BY-SA-4.0
 
-openENOC System Architecture
-============================
+System Architecture
+===================
 
 Introduction
 ------------
