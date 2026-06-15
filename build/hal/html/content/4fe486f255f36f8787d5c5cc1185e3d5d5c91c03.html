@@ -8,9 +8,9 @@
     <dt>Absolute Address:</dt><dd id="_AbsAddr" class="address"></dd>
     <div id="_AbsAddrDetails"></div>
     <dt>Base Offset:</dt><dd class="address">0x0</dd>
-    <dt>Size:</dt><dd class="address">0x8</dd>
+    <dt>Size:</dt><dd class="address">0x800</dd>
     
-    <dt>Source:</dt><dd><a href="https://github.com/eniokaljic/openENOC/blob/main/hal/src/openENOC.rdl#L4" target="_blank">openENOC.rdl</a></dd>
+    <dt>Source:</dt><dd><a href="https://github.com/eniokaljic/openENOC/blob/main/hal/src/openENOC.rdl#L6" target="_blank">openENOC.rdl</a></dd>
     
 </dl>
 <h2>Description</h2>
@@ -28,7 +28,7 @@
         <th></th>
     </tr>
     <tr id="test_reg">
-        <td class="address">0x0</td>
+        <td class="address">0x000</td>
         <td><a href="?p=csr.test_reg" data-id="1" onclick="onClickNodeLink(event); return(false)">test_reg</a></td>
         <td>csr.test_reg</td>
         <td>
@@ -36,11 +36,39 @@
         </td>
     </tr>
     <tr id="regB">
-        <td class="address">0x4</td>
+        <td class="address">0x004</td>
         <td><a href="?p=csr.regB" data-id="2" onclick="onClickNodeLink(event); return(false)">regB</a></td>
         <td>-</td>
         <td>
             <a class="headerlink" href="#regB" title="Permalink to this row"></a>
+        </td>
+    </tr>
+    <tr class="reserved-addr">
+    <td class="address">0x008</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+</tr>
+    <tr id="switch1">
+        <td class="address">0x100</td>
+        <td><a href="?p=csr.switch1" data-id="3" onclick="onClickNodeLink(event); return(false)">switch1</a></td>
+        <td>csr.switch1</td>
+        <td>
+            <a class="headerlink" href="#switch1" title="Permalink to this row"></a>
+        </td>
+    </tr>
+    <tr class="reserved-addr">
+    <td class="address">0x200</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+</tr>
+    <tr id="switch2">
+        <td class="address">0x400</td>
+        <td><a href="?p=csr.switch2" data-id="12" onclick="onClickNodeLink(event); return(false)">switch2</a></td>
+        <td>csr.switch2</td>
+        <td>
+            <a class="headerlink" href="#switch2" title="Permalink to this row"></a>
         </td>
     </tr>
 </table>

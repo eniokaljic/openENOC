@@ -59,10 +59,246 @@ typedef union {
     uint32_t w;
 } csr__regB_t;
 
+// reg - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::info
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__TABLE_DEPTH_bm 0xffff
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__TABLE_DEPTH_bp 0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__TABLE_DEPTH_bw 16
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__TABLE_DEPTH_reset 0x8
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__NUM_OF_INTERFACES_bm 0x3f0000
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__NUM_OF_INTERFACES_bp 16
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__NUM_OF_INTERFACES_bw 6
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__INFO__NUM_OF_INTERFACES_reset 0x4
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t table_depth :16;
+        uint32_t num_of_interfaces :6;
+        uint32_t :10;
+    } f;
+    uint32_t w;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__info_t;
+
+// reg - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::forwarding_control
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__OPERATION_MODE_bm 0x1
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__OPERATION_MODE_bp 0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__OPERATION_MODE_bw 1
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__OPERATION_MODE_reset 0x0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__PAUSE_REQUEST_bm 0x80
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__PAUSE_REQUEST_bp 7
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__PAUSE_REQUEST_bw 1
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__PAUSE_REQUEST_reset 0x0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__PAUSE_DONE_bm 0x8000
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__PAUSE_DONE_bp 15
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_CONTROL__PAUSE_DONE_bw 1
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t operation_mode :1;
+        uint32_t :6;
+        uint32_t pause_request :1;
+        uint32_t :7;
+        uint32_t pause_done :1;
+        uint32_t :16;
+    } f;
+    uint32_t w;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_control_t;
+
+// reg - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::default_forwarding
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__DEFAULT_FORWARDING__BITMAP_bm 0xf
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__DEFAULT_FORWARDING__BITMAP_bp 0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__DEFAULT_FORWARDING__BITMAP_bw 4
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__DEFAULT_FORWARDING__BITMAP_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t bitmap :4;
+        uint32_t :28;
+    } f;
+    uint32_t w;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__default_forwarding_t;
+
+// reg - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::forwarding_table::entry::macaddr
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__MACADDR__LO_WORD_bm 0xffffffff
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__MACADDR__LO_WORD_bp 0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__MACADDR__LO_WORD_bw 32
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__MACADDR__HI_WORD_bm 0xffff00000000
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__MACADDR__HI_WORD_bp 32
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__MACADDR__HI_WORD_bw 16
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint64_t lo_word :32;
+        uint64_t hi_word :16;
+        uint64_t :16;
+    } f;
+    uint64_t w;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry__macaddr_t;
+
+// reg - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::forwarding_table::entry::iface
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__IFACE__BITMAP_bm 0xf
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__IFACE__BITMAP_bp 0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__IFACE__BITMAP_bw 4
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t bitmap :4;
+        uint32_t :28;
+    } f;
+    uint32_t w;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry__iface_t;
+
+// reg - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::forwarding_table::entry::config
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__CONFIG__ENABLED_bm 0x1
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__CONFIG__ENABLED_bp 0
+#define OPENENOC_SWITCH_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_F086DD55__FORWARDING_TABLE__ENTRY__CONFIG__ENABLED_bw 1
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t enabled :1;
+        uint32_t :31;
+    } f;
+    uint32_t w;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry__config_t;
+
+// regfile - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::forwarding_table::entry
+typedef struct __attribute__ ((__packed__)) {
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry__macaddr_t macaddr;
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry__iface_t iface;
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry__config_t config;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry_t;
+
+// regfile - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55::forwarding_table
+typedef struct __attribute__ ((__packed__)) {
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table__entry_t entry[8];
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table_t;
+
+// addrmap - openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55
+typedef struct __attribute__ ((__packed__)) {
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__info_t info;
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_control_t forwarding_control;
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__default_forwarding_t default_forwarding;
+    uint8_t RESERVED_c_7f[0x74];
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__forwarding_table_t forwarding_table;
+} openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55_t;
+
+// reg - openENOC_switch_INST_NAME_e9cd9861::info
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__TABLE_DEPTH_bm 0xffff
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__TABLE_DEPTH_bp 0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__TABLE_DEPTH_bw 16
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__TABLE_DEPTH_reset 0x20
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__NUM_OF_INTERFACES_bm 0x3f0000
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__NUM_OF_INTERFACES_bp 16
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__NUM_OF_INTERFACES_bw 6
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__INFO__NUM_OF_INTERFACES_reset 0x8
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t table_depth :16;
+        uint32_t num_of_interfaces :6;
+        uint32_t :10;
+    } f;
+    uint32_t w;
+} openENOC_switch_INST_NAME_e9cd9861__info_t;
+
+// reg - openENOC_switch_INST_NAME_e9cd9861::forwarding_control
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__OPERATION_MODE_bm 0x1
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__OPERATION_MODE_bp 0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__OPERATION_MODE_bw 1
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__OPERATION_MODE_reset 0x0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__PAUSE_REQUEST_bm 0x80
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__PAUSE_REQUEST_bp 7
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__PAUSE_REQUEST_bw 1
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__PAUSE_REQUEST_reset 0x0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__PAUSE_DONE_bm 0x8000
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__PAUSE_DONE_bp 15
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_CONTROL__PAUSE_DONE_bw 1
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t operation_mode :1;
+        uint32_t :6;
+        uint32_t pause_request :1;
+        uint32_t :7;
+        uint32_t pause_done :1;
+        uint32_t :16;
+    } f;
+    uint32_t w;
+} openENOC_switch_INST_NAME_e9cd9861__forwarding_control_t;
+
+// reg - openENOC_switch_INST_NAME_e9cd9861::default_forwarding
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__DEFAULT_FORWARDING__BITMAP_bm 0xff
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__DEFAULT_FORWARDING__BITMAP_bp 0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__DEFAULT_FORWARDING__BITMAP_bw 8
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__DEFAULT_FORWARDING__BITMAP_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t bitmap :8;
+        uint32_t :24;
+    } f;
+    uint32_t w;
+} openENOC_switch_INST_NAME_e9cd9861__default_forwarding_t;
+
+// reg - openENOC_switch_INST_NAME_e9cd9861::forwarding_table::entry::macaddr
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__MACADDR__LO_WORD_bm 0xffffffff
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__MACADDR__LO_WORD_bp 0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__MACADDR__LO_WORD_bw 32
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__MACADDR__HI_WORD_bm 0xffff00000000
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__MACADDR__HI_WORD_bp 32
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__MACADDR__HI_WORD_bw 16
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint64_t lo_word :32;
+        uint64_t hi_word :16;
+        uint64_t :16;
+    } f;
+    uint64_t w;
+} openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry__macaddr_t;
+
+// reg - openENOC_switch_INST_NAME_e9cd9861::forwarding_table::entry::iface
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__IFACE__BITMAP_bm 0xff
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__IFACE__BITMAP_bp 0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__IFACE__BITMAP_bw 8
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t bitmap :8;
+        uint32_t :24;
+    } f;
+    uint32_t w;
+} openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry__iface_t;
+
+// reg - openENOC_switch_INST_NAME_e9cd9861::forwarding_table::entry::config
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__CONFIG__ENABLED_bm 0x1
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__CONFIG__ENABLED_bp 0
+#define OPENENOC_SWITCH_INST_NAME_E9CD9861__FORWARDING_TABLE__ENTRY__CONFIG__ENABLED_bw 1
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t enabled :1;
+        uint32_t :31;
+    } f;
+    uint32_t w;
+} openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry__config_t;
+
+// regfile - openENOC_switch_INST_NAME_e9cd9861::forwarding_table::entry
+typedef struct __attribute__ ((__packed__)) {
+    openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry__macaddr_t macaddr;
+    openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry__iface_t iface;
+    openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry__config_t config;
+} openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry_t;
+
+// regfile - openENOC_switch_INST_NAME_e9cd9861::forwarding_table
+typedef struct __attribute__ ((__packed__)) {
+    openENOC_switch_INST_NAME_e9cd9861__forwarding_table__entry_t entry[32];
+} openENOC_switch_INST_NAME_e9cd9861__forwarding_table_t;
+
+// addrmap - openENOC_switch_INST_NAME_e9cd9861
+typedef struct __attribute__ ((__packed__)) {
+    openENOC_switch_INST_NAME_e9cd9861__info_t info;
+    openENOC_switch_INST_NAME_e9cd9861__forwarding_control_t forwarding_control;
+    openENOC_switch_INST_NAME_e9cd9861__default_forwarding_t default_forwarding;
+    uint8_t RESERVED_c_1ff[0x1f4];
+    openENOC_switch_INST_NAME_e9cd9861__forwarding_table_t forwarding_table;
+} openENOC_switch_INST_NAME_e9cd9861_t;
+
 // addrmap - csr
 typedef struct __attribute__ ((__packed__)) {
     csr__test_reg_t test_reg;
     csr__regB_t regB;
+    uint8_t RESERVED_8_ff[0xf8];
+    openENOC_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55_t switch1;
+    uint8_t RESERVED_200_3ff[0x200];
+    openENOC_switch_INST_NAME_e9cd9861_t switch2;
 } csr_t;
 
 // addrmap - openENOC
@@ -75,7 +311,7 @@ typedef struct __attribute__ ((__packed__)) {
 } openENOC_t;
 
 
-static_assert(sizeof(openENOC_t) == 0x20000008, "Packing error");
+static_assert(sizeof(openENOC_t) == 0x20000800, "Packing error");
 
 #ifdef __cplusplus
 }

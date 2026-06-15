@@ -38,14 +38,11 @@ CSR-Based Verification
 
 Control and Status Register (CSR) definitions are described using SystemRDL and serve as the single source of truth for register-level interfaces.
 
-.. image:: ../images/openENOC-CSRVerification.svg
-   :alt: CSR-Based Verification
+.. figure:: ../images/openENOC-CSRVerification.svg
    :align: center
    :width: 60%
 
-.. raw:: html
-
-   <br>
+   CSR-Based Verification Framework
 
 PeakRDL-generated Python models are used within the verification environment to provide a consistent abstraction of the register map. This approach enables automated verification of control-plane functionality while ensuring alignment between RTL implementations, software APIs, documentation, and verification artefacts.
 
@@ -60,14 +57,11 @@ Traffic-Based Verification
 
 Since openENOC is built around Ethernet-based communication, the verification framework adopts a PCAP-based traffic methodology inspired by previous work on verification and benchmarking of networking and cryptographic hardware. In this approach, packet traces are used as reproducible test vectors that can be injected into both simulated and physical implementations.
 
-.. image:: ../images/EthernetTrafficVerification.png
-   :alt: Traffic-Based Verification Framework
+.. figure:: ../images/EthernetTrafficVerification.png
    :align: center
    :width: 100%
 
-.. raw:: html
-
-   <br>
+   Traffic-Based Verification Framework
 
 Traffic stimuli are generated from recorded or synthesized Ethernet traces and injected into simulations through dedicated source models. Corresponding sink models capture resulting Ethernet frames and store them as PCAP files for post-processing and analysis. This approach is conceptually aligned with the PCAP reader and PCAP writer methodology, where network traffic is replayed through a device under test and captured again for functional and performance evaluation. 
 

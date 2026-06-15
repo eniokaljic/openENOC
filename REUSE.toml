@@ -16,7 +16,7 @@ SPDX-FileCopyrightText = "2026 Enio Kaljic"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
 
 [[annotations]]
-path = ["build/hal/html/**", "build/hal/*.md"]
+path = ["build/hal/html/**", "build/hal/*.md", "docs/src/generated/*.md"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Enio Kaljic"
 SPDX-License-Identifier = "CC-BY-SA-4.0"

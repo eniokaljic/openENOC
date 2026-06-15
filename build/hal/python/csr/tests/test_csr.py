@@ -63,6 +63,16 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         """
         Walk the address map and check user defined properties are correctly pulled up
         """
+        with self.subTest(msg='register: csr.switch1'):
+            
+            
+            self.assertDictEqual(self.dut.switch1.udp,{})
+            
+        with self.subTest(msg='register: csr.switch2'):
+            
+            
+            self.assertDictEqual(self.dut.switch2.udp,{})
+            
         with self.subTest(msg='register: csr.test_reg'):
             
             
@@ -177,7 +187,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         
         with self.subTest(msg='addrmap: top_node'):
             self._single_addrmap_property_test(dut=self.dut,
-                                               size=8,
+                                               size=2048,
                                                rdl_name="csr",
                                                rdl_desc="openENOC CSR",
                                                inst_name='csr',
@@ -185,12 +195,36 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._test_addrmap_iterators(dut=self.dut,
                                          writeable_registers=NodeIterators('test_reg','regB',),
                                          readable_registers=NodeIterators('test_reg','regB',),
-                                         sections=NodeIterators(),
+                                         sections=NodeIterators('switch1','switch2',),
                                          memories=NodeIterators())
         
 
 
         # test all the address maps
+        with self.subTest(msg='addrmap: csr.switch1'):
+            self._single_addrmap_property_test(dut=self.dut.switch1,
+                                               size=256,
+                                               rdl_name="csr.switch1",
+                                               rdl_desc="Control and status register map for an openENOC Switch instance. It includes configuration registers and a forwarding table used to map destination MAC address keys to output interface selections for frame forwarding.",
+                                               inst_name='switch1',
+                                               parent_full_inst_name='csr')
+            self._test_addrmap_iterators(dut=self.dut.switch1,
+                                         writeable_registers=NodeIterators('forwarding_control','default_forwarding',),
+                                         readable_registers=NodeIterators('info','forwarding_control','default_forwarding',),
+                                         sections=NodeIterators('forwarding_table',),
+                                         memories=NodeIterators())
+        with self.subTest(msg='addrmap: csr.switch2'):
+            self._single_addrmap_property_test(dut=self.dut.switch2,
+                                               size=1024,
+                                               rdl_name="csr.switch2",
+                                               rdl_desc="Control and status register map for an openENOC Switch instance. It includes configuration registers and a forwarding table used to map destination MAC address keys to output interface selections for frame forwarding.",
+                                               inst_name='switch2',
+                                               parent_full_inst_name='csr')
+            self._test_addrmap_iterators(dut=self.dut.switch2,
+                                         writeable_registers=NodeIterators('forwarding_control','default_forwarding',),
+                                         readable_registers=NodeIterators('info','forwarding_control','default_forwarding',),
+                                         sections=NodeIterators('forwarding_table',),
+                                         memories=NodeIterators())
         
 
     def test_regfile(self) -> None:

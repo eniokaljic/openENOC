@@ -13,8 +13,9 @@ PEAKRDLRTL    = $(BUILDDIR)/rtl/
 PEAKRDLPYTHON = $(BUILDDIR)/python/
 PEAKRDLHTML   = $(BUILDDIR)/html/
 PEAKRDLMD     = $(BUILDDIR)/$(RDLTOP).md
+PEAKRDLMDSW   = $(BUILDDIR)/openENOC_switch.md
 
-all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD)
+all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD) $(PEAKRDLMDSW)
 
 $(PEAKRDLHEADER): $(RDLSRC)
 	mkdir -p $(BUILDDIR)
@@ -31,9 +32,14 @@ $(PEAKRDLHTML): $(RDLSRC)
 
 $(PEAKRDLMD): $(RDLSRC)
 	peakrdl markdown $^ -o $@ --top $(RDLTOP)
+	
+$(PEAKRDLMDSW): $(RDLSRC)
+	peakrdl markdown $^ -o $@ --top openENOC_switch
+	mkdir -p ../docs/src/generated
+	cp $@ ../docs/src/generated/openENOC_switch.md
 
 unittest: $(PEAKRDLPYTHON)
 	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLCSR)/tests -t $(PEAKRDLPYTHON) -v
 
 clean:
-	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD)
+	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD) $(PEAKRDLMDSW)

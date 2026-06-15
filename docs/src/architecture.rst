@@ -19,14 +19,11 @@ Recent open-source NoC research also highlights the importance of scalable trans
 
 Finally, the proposed architecture is consistent with broader trends in open heterogeneous SoC design, where modular integration, standardized interfaces, and FPGA prototyping are key enablers for experimentation and deployment [5]_. In this context, the term Ethernet-based NoC denotes a packet-switched architecture implemented using Layer-2 Ethernet frame switching, providing a forward-looking balance between scalability, implementation simplicity, and system interoperability.
 
-.. image:: ../images/openENOC-Architecture.svg
-   :alt: Overall openENOC system architecture
+.. figure:: ../images/openENOC-Architecture.svg
    :align: center
    :width: 100%
 
-.. raw:: html
-
-   <br>
+   Overall openENOC System Architecture
 
 The architecture illustrated above is built around four main building blocks: the **openENOC Switch**, the **openENOC Control Interface**, the **openENOC Endpoint Interface**, and the **openENOC Transport Protocol (oETP)**. Together, these building blocks separate forwarding, management, endpoint adaptation, and transport semantics into independent architectural layers.
 
@@ -84,16 +81,17 @@ Existing RDMA-over-Ethernet technologies, most notably RoCEv1, provide a natural
 
 To address these limitations, the openENOC project introduces oETP, a lightweight transport protocol specifically designed for Ethernet-based NoC systems. Rather than adopting the complete RDMA transport stack, oETP focuses on a minimal set of communication primitives required in hardware-centric MPSoC environments. The protocol employs compact message headers optimized for the small transactions typical of NoC workloads, reducing communication overhead and hardware resource consumption.
 
-The message structure used by oETP is illustrated in the figure below. The protocol is encapsulated directly within a standard Ethernet frame using EtherType value 0x88B5, which IEEE Std 802 reserves for local experimental use. This designation enables protocol development and evaluation without requiring allocation of a vendor-specific or standards-assigned EtherType value while remaining fully compatible with standard Ethernet framing. Each oETP message begins with a compact protocol header consisting of a magic field for protocol identification and a command field that specifies the requested operation. This header is followed by a variable number of protocol parameters, each encoded as a 32-bit value, enabling different transaction types to carry the information required for address specification, data transfer, flow-control management, or protocol extensions. The resulting format preserves Ethernet compatibility while minimizing protocol overhead and simplifying hardware implementation. The Frame Check Sequence (FCS) field shown in the figure is only present when an Ethernet frame is transmitted over an external Ethernet link. In such cases, the FCS is generated and verified by the Ethernet MAC, whereas purely on-chip openENOC links transport the frame without the FCS field. The supported oETP commands, associated parameter formats, transaction encodings, and their semantics are specified by the oETP protocol specification and are outside the scope of this architectural overview.
+The message structure used by oETP is illustrated in the figure below. The protocol is encapsulated directly within a standard Ethernet frame using EtherType value 0x88B5, which IEEE Std 802 reserves for local experimental use. This designation enables protocol development and evaluation without requiring allocation of a vendor-specific or standards-assigned EtherType value while remaining fully compatible with standard Ethernet framing.
 
-.. image:: ../images/openENOC-oETP-PDU.svg
-   :alt: oETP PDU Encapsulation
+.. figure:: ../images/openENOC-oETP-PDU.svg
    :align: center
    :width: 100%
 
-.. raw:: html
+   oETP PDU Encapsulation
 
-   <br>
+Although oETP does not mandate any particular MAC address allocation scheme for use within openENOC systems, all examples presented throughout this documentation follow a common convention. Unicast Ethernet frames are assumed to use locally administered MAC addresses with the OUI-like prefix 02:0E:0C, while multicast Ethernet frames use the prefix 03:0E:0C. This convention ensures that the locally administered address bit is set in accordance with IEEE addressing rules and that the unicast or multicast nature of the address is correctly encoded in the least significant bit of the first octet. In addition, the 0E:0C identifier provides a recognizable address space associated with the openENOC ecosystem while avoiding conflicts with globally assigned vendor OUIs.
+
+Each oETP message begins with a compact protocol header consisting of a magic field for protocol identification and a command field that specifies the requested operation. This header is followed by a variable number of protocol parameters, each encoded as a 32-bit value, enabling different transaction types to carry the information required for address specification, data transfer, flow-control management, or protocol extensions. The resulting format preserves Ethernet compatibility while minimizing protocol overhead and simplifying hardware implementation. The Frame Check Sequence (FCS) field shown in the figure is only present when an Ethernet frame is transmitted over an external Ethernet link. In such cases, the FCS is generated and verified by the Ethernet MAC, whereas purely on-chip openENOC links transport the frame without the FCS field. The supported oETP commands, associated parameter formats, transaction encodings, and their semantics are specified by the oETP protocol specification and are outside the scope of this architectural overview.
 
 oETP retains the most valuable aspect of the RDMA programming model by supporting one-sided memory operations, including remote read and remote write transactions, while eliminating Queue Pair infrastructure and other InfiniBand-specific transport semantics. Instead of relying on PFC, the protocol employs credit-based flow control, a widely used NoC technique that provides predictable behavior, efficient buffer utilization, and straightforward hardware implementation [9]_ [10]_.
 
@@ -175,14 +173,11 @@ Development and Integration Flow
 
 The openENOC project is designed around a model-driven development workflow that enables a consistent transition from hardware and software design to verification, system integration, and deployment. The development and integration flow shown below illustrates how the various project artefacts are generated and used throughout the design lifecycle.
 
-.. image:: ../images/openENOC-DevelopmentFlow.svg
-   :alt: openENOC Development and Integration Flow
+.. figure:: ../images/openENOC-DevelopmentFlow.svg
    :align: center
    :width: 80%
-
-.. raw:: html
-
-   <br>
+   
+   openENOC Development and Integration Flow
 
 The process begins with the development of openENOC hardware and software components alongside a `SystemRDL <https://github.com/systemrdl>`_ specification for the Control and Status Register (CSR) interface, serving as the single source of truth for the register map and enabling automatic generation of implementation and verification artefacts using `PeakRDL <https://github.com/SystemRDL/PeakRDL>`_.
 
