@@ -1,21 +1,23 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
 # SPDX-License-Identifier: CERN-OHL-S-2.0
 
-RDLTOP    = openENOC
-RDLCSR    = csr
+SOURCEDIR = $(PWD)/src
+BUILDDIR  = $(PWD)/../build/hal
+DOCSDIR   = $(PWD)/../docs/src/generated
+
+RDLTOP    = openenoc
+RDLCSR    = openenoc_csr
+RDLSW     = openenoc_switch
 RDLSRC    = $(SOURCEDIR)/$(RDLTOP).rdl
 
-SOURCEDIR = src
-BUILDDIR  = ../build/hal
-
-PEAKRDLHEADER = $(BUILDDIR)/$(RDLTOP).h
+PEAKRDLHEADER = $(BUILDDIR)/$(RDLCSR).h
 PEAKRDLRTL    = $(BUILDDIR)/rtl/
 PEAKRDLPYTHON = $(BUILDDIR)/python/
 PEAKRDLHTML   = $(BUILDDIR)/html/
-PEAKRDLMD     = $(BUILDDIR)/$(RDLTOP).md
-PEAKRDLMDSW   = $(BUILDDIR)/openENOC_switch.md
+PEAKRDLMD_TOP = $(DOCSDIR)/$(RDLTOP).md
+PEAKRDLMD_SW  = $(DOCSDIR)/$(RDLSW).md
 
-all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD) $(PEAKRDLMDSW)
+all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW)
 
 $(PEAKRDLHEADER): $(RDLSRC)
 	mkdir -p $(BUILDDIR)
@@ -30,16 +32,15 @@ $(PEAKRDLPYTHON): $(RDLSRC)
 $(PEAKRDLHTML): $(RDLSRC)
 	peakrdl html $^ -o $@ --top $(RDLCSR)
 
-$(PEAKRDLMD): $(RDLSRC)
+$(PEAKRDLMD_TOP): $(RDLSRC)
 	peakrdl markdown $^ -o $@ --top $(RDLTOP)
 	
-$(PEAKRDLMDSW): $(RDLSRC)
-	peakrdl markdown $^ -o $@ --top openENOC_switch
-	mkdir -p ../docs/src/generated
-	cp $@ ../docs/src/generated/openENOC_switch.md
+$(PEAKRDLMD_SW): $(RDLSRC)
+	mkdir -p $(DOCSDIR)
+	peakrdl markdown $^ -o $@ --top $(RDLSW)
 
 unittest: $(PEAKRDLPYTHON)
 	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLCSR)/tests -t $(PEAKRDLPYTHON) -v
 
 clean:
-	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD) $(PEAKRDLMDSW)
+	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW)

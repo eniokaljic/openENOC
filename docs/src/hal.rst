@@ -63,20 +63,14 @@ Register Definitions and CSR Memory Map
 
 The SystemRDL source shown below defines the CSR structure of the openENOC Switch. This source file is the maintained register specification used by the PeakRDL-based generation flow.
 
-.. literalinclude:: ../../hal/src/openENOC_switch.rdl
+.. literalinclude:: ../../hal/src/openenoc_switch.rdl
    :language: systemverilog
    :caption: SystemRDL specification of the openENOC Switch CSR map
    :linenos:
 
 The openENOC Switch CSR memory map and detailed register documentation are derived directly from this SystemRDL specification. The generated CSR documentation provides the corresponding human-readable description of the register hierarchy, address offsets, field layouts, access permissions, reset values, and associated register semantics.
 
-The complete generated CSR documentation is available in :doc:`/generated/openENOC_switch`.
-
-.. toctree::
-   :hidden:
-
-   generated/openENOC_switch
-
+The complete generated CSR documentation is available in :doc:`/generated/openenoc_switch`.
 
 openENOC Endpoint Interface HAL Architecture
 --------------------------------------------
@@ -112,3 +106,9 @@ Summary
 This document defines the HAL architecture and CSR organization for the openENOC Switch and the openENOC Endpoint Interface.
 
 The HAL establishes a consistent software-visible programming model based on memory-mapped Control and Status Registers, while the CSR specification provides the authoritative description of hardware/software interactions. Together, these mechanisms form the foundation for software development, system integration, and verification activities within the openENOC project.
+
+.. toctree::
+   :hidden:
+   
+   generated/openenoc
+   generated/openenoc_switch
