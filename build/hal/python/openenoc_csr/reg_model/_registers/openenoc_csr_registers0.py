@@ -3,7 +3,7 @@
 """
 Python Wrapper for the openenoc_csr register model
 
-This code was generated from the PeakRDL-python package version 3.1.1
+This code was generated from the PeakRDL-python package version 3.1.2
 
 """
 
@@ -44,32 +44,32 @@ from ...lib import FieldSizeProps, FieldMiscProps
 
 
 
-from .fields import openenoc_csr_test_reg_test_field_0x34e7d139f0d4f1ad_cls
-from .fields import openenoc_switch_info_table_depth_neg_0x66771ab8a73f8786_cls
-from .fields import openenoc_switch_info_num_of_interfaces_0x1ec9e1f71c4b7a5b_cls
-from .fields import openenoc_switch_forwarding_control_operation_mode_neg_0x79a5d64e45eb7fff_cls
-from .fields import openenoc_switch_forwarding_control_pause_request_0x19137ec98b372037_cls
-from .fields import openenoc_switch_forwarding_control_pause_done_neg_0x7a72f7cd1f7b8435_cls
-from .fields import openenoc_switch_default_forwarding_bitmap_neg_0x4ca91f715a54163e_cls
-from .fields import openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x73c59d05facb5931_cls
-from .fields import openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x74b70cb3fccf4b7a_cls
-from .fields import openenoc_switch_forwarding_table_entry_iface_bitmap_neg_0x3095a7b220f34c3_cls
-from .fields import openenoc_switch_forwarding_table_entry_config_enabled_neg_0x3d9e0e9fbcd5aeb6_cls
-from .fields import openenoc_switch_info_table_depth_0x1465531ef990f3c1_cls
-from .fields import openenoc_switch_info_num_of_interfaces_0x28c0fb9ced4b421a_cls
-from .fields import openenoc_switch_forwarding_control_operation_mode_neg_0x433ae9fe9cd1fcf8_cls
-from .fields import openenoc_switch_forwarding_control_pause_request_0x589d210d3c4f643b_cls
-from .fields import openenoc_switch_forwarding_control_pause_done_neg_0x6500cd4436cf5477_cls
-from .fields import openenoc_switch_default_forwarding_bitmap_0x792b4df9bb6ace53_cls
-from .fields import openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x321557169ade617e_cls
-from .fields import openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x673504984dd6fcf4_cls
-from .fields import openenoc_switch_forwarding_table_entry_iface_bitmap_0x417a6417e951153b_cls
-from .fields import openenoc_switch_forwarding_table_entry_config_enabled_0x5b20b8d33d158697_cls
+from .fields import openenoc_csr_test_reg_test_field_neg_0x476e25cb214ac8aa_cls
+from .fields import openenoc_switch_info_table_depth_0x68bd55d73777d304_cls
+from .fields import openenoc_switch_info_num_of_interfaces_neg_0x423de23bda410e60_cls
+from .fields import openenoc_switch_forwarding_control_operation_mode_neg_0x7b0630db069ab533_cls
+from .fields import openenoc_switch_forwarding_control_pause_request_0x65c85826c6c54bb7_cls
+from .fields import openenoc_switch_forwarding_control_pause_done_neg_0x20667a094369b26f_cls
+from .fields import openenoc_switch_default_forwarding_bitmap_0x257129532b64c6c1_cls
+from .fields import openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x401f5d102ef44fe1_cls
+from .fields import openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x35a9d1155aa39ddc_cls
+from .fields import openenoc_switch_forwarding_table_entry_iface_bitmap_0x747871441a4d77cf_cls
+from .fields import openenoc_switch_forwarding_table_entry_config_enabled_0x353241b8bf045770_cls
+from .fields import openenoc_switch_info_table_depth_neg_0x3f9a2cd1e9ad77cd_cls
+from .fields import openenoc_switch_info_num_of_interfaces_neg_0x562ca0ace792378d_cls
+from .fields import openenoc_switch_forwarding_control_operation_mode_0x5780453cd24cad77_cls
+from .fields import openenoc_switch_forwarding_control_pause_request_neg_0x2b9409c28f41c75c_cls
+from .fields import openenoc_switch_forwarding_control_pause_done_neg_0x4acfc220c6966198_cls
+from .fields import openenoc_switch_default_forwarding_bitmap_neg_0x2c01808eb364f792_cls
+from .fields import openenoc_switch_forwarding_table_entry_macaddr_lo_word_0xf991c0ffc6e7511_cls
+from .fields import openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x6ea049d3339059a_cls
+from .fields import openenoc_switch_forwarding_table_entry_iface_bitmap_0x6291453e32946f0c_cls
+from .fields import openenoc_switch_forwarding_table_entry_config_enabled_neg_0x312f6d6870ebec58_cls
 
 # register definitions
     
     
-class openenoc_csr_test_reg_neg_0x65066f1d6eeb18ff_cls(RegReadWrite):
+class openenoc_csr_test_reg_0x5da4cb4348e794f_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -102,7 +102,7 @@ class openenoc_csr_test_reg_neg_0x65066f1d6eeb18ff_cls(RegReadWrite):
 
         # build the field attributes
         
-        self.__test_field:openenoc_csr_test_reg_test_field_0x34e7d139f0d4f1ad_cls = openenoc_csr_test_reg_test_field_0x34e7d139f0d4f1ad_cls(
+        self.__test_field:openenoc_csr_test_reg_test_field_neg_0x476e25cb214ac8aa_cls = openenoc_csr_test_reg_test_field_neg_0x476e25cb214ac8aa_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -128,7 +128,7 @@ class openenoc_csr_test_reg_neg_0x65066f1d6eeb18ff_cls(RegReadWrite):
     # build the properties for the fields
     
     @property
-    def test_field(self) -> openenoc_csr_test_reg_test_field_0x34e7d139f0d4f1ad_cls:
+    def test_field(self) -> openenoc_csr_test_reg_test_field_neg_0x476e25cb214ac8aa_cls:
         """
         Property to access test_field field of the register
 
@@ -160,7 +160,7 @@ class openenoc_csr_test_reg_neg_0x65066f1d6eeb18ff_cls(RegReadWrite):
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_csr_test_reg_test_field_0x34e7d139f0d4f1ad_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_csr_test_reg_test_field_neg_0x476e25cb214ac8aa_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -191,7 +191,7 @@ class openenoc_csr_test_reg_neg_0x65066f1d6eeb18ff_cls(RegReadWrite):
 
     
     
-class openenoc_csr_regB_0x3b359602caa02968_cls(RegReadWrite):
+class openenoc_csr_regB_0x1a3dc8556819afec_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -367,7 +367,7 @@ class openenoc_csr_regB_0x3b359602caa02968_cls(RegReadWrite):
 
     
     
-class openenoc_switch_info_neg_0x69b5a0f5633ca2ca_cls(RegReadOnly):
+class openenoc_switch_info_0x12b1e8c6ce706d78_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -401,7 +401,7 @@ class openenoc_switch_info_neg_0x69b5a0f5633ca2ca_cls(RegReadOnly):
 
         # build the field attributes
         
-        self.__table_depth:openenoc_switch_info_table_depth_neg_0x66771ab8a73f8786_cls = openenoc_switch_info_table_depth_neg_0x66771ab8a73f8786_cls(
+        self.__table_depth:openenoc_switch_info_table_depth_0x68bd55d73777d304_cls = openenoc_switch_info_table_depth_0x68bd55d73777d304_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=16,
@@ -413,7 +413,7 @@ class openenoc_switch_info_neg_0x69b5a0f5633ca2ca_cls(RegReadOnly):
             logger_handle=logger_handle+'.table_depth',
             inst_name='table_depth',
             field_type=int)
-        self.__num_of_interfaces:openenoc_switch_info_num_of_interfaces_0x1ec9e1f71c4b7a5b_cls = openenoc_switch_info_num_of_interfaces_0x1ec9e1f71c4b7a5b_cls(
+        self.__num_of_interfaces:openenoc_switch_info_num_of_interfaces_neg_0x423de23bda410e60_cls = openenoc_switch_info_num_of_interfaces_neg_0x423de23bda410e60_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=6,
@@ -439,7 +439,7 @@ class openenoc_switch_info_neg_0x69b5a0f5633ca2ca_cls(RegReadOnly):
     # build the properties for the fields
     
     @property
-    def table_depth(self) -> openenoc_switch_info_table_depth_neg_0x66771ab8a73f8786_cls:
+    def table_depth(self) -> openenoc_switch_info_table_depth_0x68bd55d73777d304_cls:
         """
         Property to access table_depth field of the register
 
@@ -459,7 +459,7 @@ class openenoc_switch_info_neg_0x69b5a0f5633ca2ca_cls(RegReadOnly):
         """
         return self.__table_depth
     @property
-    def num_of_interfaces(self) -> openenoc_switch_info_num_of_interfaces_0x1ec9e1f71c4b7a5b_cls:
+    def num_of_interfaces(self) -> openenoc_switch_info_num_of_interfaces_neg_0x423de23bda410e60_cls:
         """
         Property to access num_of_interfaces field of the register
 
@@ -494,15 +494,15 @@ class openenoc_switch_info_neg_0x69b5a0f5633ca2ca_cls(RegReadOnly):
     # nodes:2
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["table_depth"]) -> 'openenoc_switch_info_table_depth_neg_0x66771ab8a73f8786_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["table_depth"]) -> 'openenoc_switch_info_table_depth_0x68bd55d73777d304_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["num_of_interfaces"]) -> 'openenoc_switch_info_num_of_interfaces_0x1ec9e1f71c4b7a5b_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["num_of_interfaces"]) -> 'openenoc_switch_info_num_of_interfaces_neg_0x423de23bda410e60_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_table_depth_neg_0x66771ab8a73f8786_cls', 'openenoc_switch_info_num_of_interfaces_0x1ec9e1f71c4b7a5b_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_table_depth_0x68bd55d73777d304_cls', 'openenoc_switch_info_num_of_interfaces_neg_0x423de23bda410e60_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -535,7 +535,7 @@ class openenoc_switch_info_neg_0x69b5a0f5633ca2ca_cls(RegReadOnly):
 
     
     
-class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite):
+class openenoc_switch_forwarding_control_neg_0x70044bf2405d6f55_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -569,7 +569,7 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
 
         # build the field attributes
         
-        self.__operation_mode:openenoc_switch_forwarding_control_operation_mode_neg_0x79a5d64e45eb7fff_cls = openenoc_switch_forwarding_control_operation_mode_neg_0x79a5d64e45eb7fff_cls(
+        self.__operation_mode:openenoc_switch_forwarding_control_operation_mode_neg_0x7b0630db069ab533_cls = openenoc_switch_forwarding_control_operation_mode_neg_0x7b0630db069ab533_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -581,7 +581,7 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
             logger_handle=logger_handle+'.operation_mode',
             inst_name='operation_mode',
             field_type=int)
-        self.__pause_request:openenoc_switch_forwarding_control_pause_request_0x19137ec98b372037_cls = openenoc_switch_forwarding_control_pause_request_0x19137ec98b372037_cls(
+        self.__pause_request:openenoc_switch_forwarding_control_pause_request_0x65c85826c6c54bb7_cls = openenoc_switch_forwarding_control_pause_request_0x65c85826c6c54bb7_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -593,7 +593,7 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
             logger_handle=logger_handle+'.pause_request',
             inst_name='pause_request',
             field_type=int)
-        self.__pause_done:openenoc_switch_forwarding_control_pause_done_neg_0x7a72f7cd1f7b8435_cls = openenoc_switch_forwarding_control_pause_done_neg_0x7a72f7cd1f7b8435_cls(
+        self.__pause_done:openenoc_switch_forwarding_control_pause_done_neg_0x20667a094369b26f_cls = openenoc_switch_forwarding_control_pause_done_neg_0x20667a094369b26f_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -619,7 +619,7 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
     # build the properties for the fields
     
     @property
-    def operation_mode(self) -> openenoc_switch_forwarding_control_operation_mode_neg_0x79a5d64e45eb7fff_cls:
+    def operation_mode(self) -> openenoc_switch_forwarding_control_operation_mode_neg_0x7b0630db069ab533_cls:
         """
         Property to access operation_mode field of the register
 
@@ -643,7 +643,7 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
         """
         return self.__operation_mode
     @property
-    def pause_request(self) -> openenoc_switch_forwarding_control_pause_request_0x19137ec98b372037_cls:
+    def pause_request(self) -> openenoc_switch_forwarding_control_pause_request_0x65c85826c6c54bb7_cls:
         """
         Property to access pause_request field of the register
 
@@ -665,7 +665,7 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
         """
         return self.__pause_request
     @property
-    def pause_done(self) -> openenoc_switch_forwarding_control_pause_done_neg_0x7a72f7cd1f7b8435_cls:
+    def pause_done(self) -> openenoc_switch_forwarding_control_pause_done_neg_0x20667a094369b26f_cls:
         """
         Property to access pause_done field of the register
 
@@ -701,19 +701,19 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
     # nodes:3
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["operation_mode"]) -> 'openenoc_switch_forwarding_control_operation_mode_neg_0x79a5d64e45eb7fff_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["operation_mode"]) -> 'openenoc_switch_forwarding_control_operation_mode_neg_0x7b0630db069ab533_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["pause_request"]) -> 'openenoc_switch_forwarding_control_pause_request_0x19137ec98b372037_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["pause_request"]) -> 'openenoc_switch_forwarding_control_pause_request_0x65c85826c6c54bb7_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["pause_done"]) -> 'openenoc_switch_forwarding_control_pause_done_neg_0x7a72f7cd1f7b8435_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["pause_done"]) -> 'openenoc_switch_forwarding_control_pause_done_neg_0x20667a094369b26f_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_control_operation_mode_neg_0x79a5d64e45eb7fff_cls', 'openenoc_switch_forwarding_control_pause_request_0x19137ec98b372037_cls', 'openenoc_switch_forwarding_control_pause_done_neg_0x7a72f7cd1f7b8435_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_control_operation_mode_neg_0x7b0630db069ab533_cls', 'openenoc_switch_forwarding_control_pause_request_0x65c85826c6c54bb7_cls', 'openenoc_switch_forwarding_control_pause_done_neg_0x20667a094369b26f_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -747,7 +747,7 @@ class openenoc_switch_forwarding_control_neg_0x54349e4a613bddc1_cls(RegReadWrite
 
     
     
-class openenoc_switch_default_forwarding_neg_0x2866c10f86786198_cls(RegReadWrite):
+class openenoc_switch_default_forwarding_neg_0x5cb240a578b8c880_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -781,7 +781,7 @@ class openenoc_switch_default_forwarding_neg_0x2866c10f86786198_cls(RegReadWrite
 
         # build the field attributes
         
-        self.__bitmap:openenoc_switch_default_forwarding_bitmap_neg_0x4ca91f715a54163e_cls = openenoc_switch_default_forwarding_bitmap_neg_0x4ca91f715a54163e_cls(
+        self.__bitmap:openenoc_switch_default_forwarding_bitmap_0x257129532b64c6c1_cls = openenoc_switch_default_forwarding_bitmap_0x257129532b64c6c1_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=4,
@@ -807,7 +807,7 @@ class openenoc_switch_default_forwarding_neg_0x2866c10f86786198_cls(RegReadWrite
     # build the properties for the fields
     
     @property
-    def bitmap(self) -> openenoc_switch_default_forwarding_bitmap_neg_0x4ca91f715a54163e_cls:
+    def bitmap(self) -> openenoc_switch_default_forwarding_bitmap_0x257129532b64c6c1_cls:
         """
         Property to access bitmap field of the register
 
@@ -842,7 +842,7 @@ class openenoc_switch_default_forwarding_neg_0x2866c10f86786198_cls(RegReadWrite
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_default_forwarding_bitmap_neg_0x4ca91f715a54163e_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_default_forwarding_bitmap_0x257129532b64c6c1_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -873,7 +873,7 @@ class openenoc_switch_default_forwarding_neg_0x2866c10f86786198_cls(RegReadWrite
 
     
     
-class openenoc_switch_forwarding_table_entry_macaddr_0x516f0b5eb53fd9a2_cls(RegReadWrite):
+class openenoc_switch_forwarding_table_entry_macaddr_neg_0x14d3d254a84b5846_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -907,7 +907,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x516f0b5eb53fd9a2_cls(RegR
 
         # build the field attributes
         
-        self.__lo_word:openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x73c59d05facb5931_cls = openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x73c59d05facb5931_cls(
+        self.__lo_word:openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x401f5d102ef44fe1_cls = openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x401f5d102ef44fe1_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -919,7 +919,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x516f0b5eb53fd9a2_cls(RegR
             logger_handle=logger_handle+'.lo_word',
             inst_name='lo_word',
             field_type=int)
-        self.__hi_word:openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x74b70cb3fccf4b7a_cls = openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x74b70cb3fccf4b7a_cls(
+        self.__hi_word:openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x35a9d1155aa39ddc_cls = openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x35a9d1155aa39ddc_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=16,
@@ -945,7 +945,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x516f0b5eb53fd9a2_cls(RegR
     # build the properties for the fields
     
     @property
-    def lo_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x73c59d05facb5931_cls:
+    def lo_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x401f5d102ef44fe1_cls:
         """
         Property to access lo_word field of the register
 
@@ -966,7 +966,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x516f0b5eb53fd9a2_cls(RegR
         """
         return self.__lo_word
     @property
-    def hi_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x74b70cb3fccf4b7a_cls:
+    def hi_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x35a9d1155aa39ddc_cls:
         """
         Property to access hi_word field of the register
 
@@ -1002,15 +1002,15 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x516f0b5eb53fd9a2_cls(RegR
     # nodes:2
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x73c59d05facb5931_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x401f5d102ef44fe1_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x74b70cb3fccf4b7a_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x35a9d1155aa39ddc_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x73c59d05facb5931_cls', 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x74b70cb3fccf4b7a_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x401f5d102ef44fe1_cls', 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x35a9d1155aa39ddc_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -1043,7 +1043,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x516f0b5eb53fd9a2_cls(RegR
 
     
     
-class openenoc_switch_forwarding_table_entry_iface_0x6ec8bb32ca28949a_cls(RegReadWrite):
+class openenoc_switch_forwarding_table_entry_iface_0xedc5c438162dca3_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1077,7 +1077,7 @@ class openenoc_switch_forwarding_table_entry_iface_0x6ec8bb32ca28949a_cls(RegRea
 
         # build the field attributes
         
-        self.__bitmap:openenoc_switch_forwarding_table_entry_iface_bitmap_neg_0x3095a7b220f34c3_cls = openenoc_switch_forwarding_table_entry_iface_bitmap_neg_0x3095a7b220f34c3_cls(
+        self.__bitmap:openenoc_switch_forwarding_table_entry_iface_bitmap_0x747871441a4d77cf_cls = openenoc_switch_forwarding_table_entry_iface_bitmap_0x747871441a4d77cf_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=4,
@@ -1103,7 +1103,7 @@ class openenoc_switch_forwarding_table_entry_iface_0x6ec8bb32ca28949a_cls(RegRea
     # build the properties for the fields
     
     @property
-    def bitmap(self) -> openenoc_switch_forwarding_table_entry_iface_bitmap_neg_0x3095a7b220f34c3_cls:
+    def bitmap(self) -> openenoc_switch_forwarding_table_entry_iface_bitmap_0x747871441a4d77cf_cls:
         """
         Property to access bitmap field of the register
 
@@ -1139,7 +1139,7 @@ class openenoc_switch_forwarding_table_entry_iface_0x6ec8bb32ca28949a_cls(RegRea
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_iface_bitmap_neg_0x3095a7b220f34c3_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_iface_bitmap_0x747871441a4d77cf_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -1170,7 +1170,7 @@ class openenoc_switch_forwarding_table_entry_iface_0x6ec8bb32ca28949a_cls(RegRea
 
     
     
-class openenoc_switch_forwarding_table_entry_config_0x1dfb86160d8cc3e0_cls(RegReadWrite):
+class openenoc_switch_forwarding_table_entry_config_neg_0x72ee666711cc8c54_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1204,7 +1204,7 @@ class openenoc_switch_forwarding_table_entry_config_0x1dfb86160d8cc3e0_cls(RegRe
 
         # build the field attributes
         
-        self.__enabled:openenoc_switch_forwarding_table_entry_config_enabled_neg_0x3d9e0e9fbcd5aeb6_cls = openenoc_switch_forwarding_table_entry_config_enabled_neg_0x3d9e0e9fbcd5aeb6_cls(
+        self.__enabled:openenoc_switch_forwarding_table_entry_config_enabled_0x353241b8bf045770_cls = openenoc_switch_forwarding_table_entry_config_enabled_0x353241b8bf045770_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -1230,7 +1230,7 @@ class openenoc_switch_forwarding_table_entry_config_0x1dfb86160d8cc3e0_cls(RegRe
     # build the properties for the fields
     
     @property
-    def enabled(self) -> openenoc_switch_forwarding_table_entry_config_enabled_neg_0x3d9e0e9fbcd5aeb6_cls:
+    def enabled(self) -> openenoc_switch_forwarding_table_entry_config_enabled_0x353241b8bf045770_cls:
         """
         Property to access enabled field of the register
 
@@ -1264,7 +1264,7 @@ class openenoc_switch_forwarding_table_entry_config_0x1dfb86160d8cc3e0_cls(RegRe
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_config_enabled_neg_0x3d9e0e9fbcd5aeb6_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_config_enabled_0x353241b8bf045770_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -1295,7 +1295,7 @@ class openenoc_switch_forwarding_table_entry_config_0x1dfb86160d8cc3e0_cls(RegRe
 
     
     
-class openenoc_switch_info_neg_0x65049a7b1c9b1b9a_cls(RegReadOnly):
+class openenoc_switch_info_neg_0x570f7c0834e2f2b4_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -1329,7 +1329,7 @@ class openenoc_switch_info_neg_0x65049a7b1c9b1b9a_cls(RegReadOnly):
 
         # build the field attributes
         
-        self.__table_depth:openenoc_switch_info_table_depth_0x1465531ef990f3c1_cls = openenoc_switch_info_table_depth_0x1465531ef990f3c1_cls(
+        self.__table_depth:openenoc_switch_info_table_depth_neg_0x3f9a2cd1e9ad77cd_cls = openenoc_switch_info_table_depth_neg_0x3f9a2cd1e9ad77cd_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=16,
@@ -1341,7 +1341,7 @@ class openenoc_switch_info_neg_0x65049a7b1c9b1b9a_cls(RegReadOnly):
             logger_handle=logger_handle+'.table_depth',
             inst_name='table_depth',
             field_type=int)
-        self.__num_of_interfaces:openenoc_switch_info_num_of_interfaces_0x28c0fb9ced4b421a_cls = openenoc_switch_info_num_of_interfaces_0x28c0fb9ced4b421a_cls(
+        self.__num_of_interfaces:openenoc_switch_info_num_of_interfaces_neg_0x562ca0ace792378d_cls = openenoc_switch_info_num_of_interfaces_neg_0x562ca0ace792378d_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=6,
@@ -1367,7 +1367,7 @@ class openenoc_switch_info_neg_0x65049a7b1c9b1b9a_cls(RegReadOnly):
     # build the properties for the fields
     
     @property
-    def table_depth(self) -> openenoc_switch_info_table_depth_0x1465531ef990f3c1_cls:
+    def table_depth(self) -> openenoc_switch_info_table_depth_neg_0x3f9a2cd1e9ad77cd_cls:
         """
         Property to access table_depth field of the register
 
@@ -1387,7 +1387,7 @@ class openenoc_switch_info_neg_0x65049a7b1c9b1b9a_cls(RegReadOnly):
         """
         return self.__table_depth
     @property
-    def num_of_interfaces(self) -> openenoc_switch_info_num_of_interfaces_0x28c0fb9ced4b421a_cls:
+    def num_of_interfaces(self) -> openenoc_switch_info_num_of_interfaces_neg_0x562ca0ace792378d_cls:
         """
         Property to access num_of_interfaces field of the register
 
@@ -1422,15 +1422,15 @@ class openenoc_switch_info_neg_0x65049a7b1c9b1b9a_cls(RegReadOnly):
     # nodes:2
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["table_depth"]) -> 'openenoc_switch_info_table_depth_0x1465531ef990f3c1_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["table_depth"]) -> 'openenoc_switch_info_table_depth_neg_0x3f9a2cd1e9ad77cd_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["num_of_interfaces"]) -> 'openenoc_switch_info_num_of_interfaces_0x28c0fb9ced4b421a_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["num_of_interfaces"]) -> 'openenoc_switch_info_num_of_interfaces_neg_0x562ca0ace792378d_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_table_depth_0x1465531ef990f3c1_cls', 'openenoc_switch_info_num_of_interfaces_0x28c0fb9ced4b421a_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_table_depth_neg_0x3f9a2cd1e9ad77cd_cls', 'openenoc_switch_info_num_of_interfaces_neg_0x562ca0ace792378d_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -1463,7 +1463,7 @@ class openenoc_switch_info_neg_0x65049a7b1c9b1b9a_cls(RegReadOnly):
 
     
     
-class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite):
+class openenoc_switch_forwarding_control_neg_0x39aac315524f6804_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1497,7 +1497,7 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
 
         # build the field attributes
         
-        self.__operation_mode:openenoc_switch_forwarding_control_operation_mode_neg_0x433ae9fe9cd1fcf8_cls = openenoc_switch_forwarding_control_operation_mode_neg_0x433ae9fe9cd1fcf8_cls(
+        self.__operation_mode:openenoc_switch_forwarding_control_operation_mode_0x5780453cd24cad77_cls = openenoc_switch_forwarding_control_operation_mode_0x5780453cd24cad77_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -1509,7 +1509,7 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
             logger_handle=logger_handle+'.operation_mode',
             inst_name='operation_mode',
             field_type=int)
-        self.__pause_request:openenoc_switch_forwarding_control_pause_request_0x589d210d3c4f643b_cls = openenoc_switch_forwarding_control_pause_request_0x589d210d3c4f643b_cls(
+        self.__pause_request:openenoc_switch_forwarding_control_pause_request_neg_0x2b9409c28f41c75c_cls = openenoc_switch_forwarding_control_pause_request_neg_0x2b9409c28f41c75c_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -1521,7 +1521,7 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
             logger_handle=logger_handle+'.pause_request',
             inst_name='pause_request',
             field_type=int)
-        self.__pause_done:openenoc_switch_forwarding_control_pause_done_neg_0x6500cd4436cf5477_cls = openenoc_switch_forwarding_control_pause_done_neg_0x6500cd4436cf5477_cls(
+        self.__pause_done:openenoc_switch_forwarding_control_pause_done_neg_0x4acfc220c6966198_cls = openenoc_switch_forwarding_control_pause_done_neg_0x4acfc220c6966198_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -1547,7 +1547,7 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
     # build the properties for the fields
     
     @property
-    def operation_mode(self) -> openenoc_switch_forwarding_control_operation_mode_neg_0x433ae9fe9cd1fcf8_cls:
+    def operation_mode(self) -> openenoc_switch_forwarding_control_operation_mode_0x5780453cd24cad77_cls:
         """
         Property to access operation_mode field of the register
 
@@ -1571,7 +1571,7 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
         """
         return self.__operation_mode
     @property
-    def pause_request(self) -> openenoc_switch_forwarding_control_pause_request_0x589d210d3c4f643b_cls:
+    def pause_request(self) -> openenoc_switch_forwarding_control_pause_request_neg_0x2b9409c28f41c75c_cls:
         """
         Property to access pause_request field of the register
 
@@ -1593,7 +1593,7 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
         """
         return self.__pause_request
     @property
-    def pause_done(self) -> openenoc_switch_forwarding_control_pause_done_neg_0x6500cd4436cf5477_cls:
+    def pause_done(self) -> openenoc_switch_forwarding_control_pause_done_neg_0x4acfc220c6966198_cls:
         """
         Property to access pause_done field of the register
 
@@ -1629,19 +1629,19 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
     # nodes:3
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["operation_mode"]) -> 'openenoc_switch_forwarding_control_operation_mode_neg_0x433ae9fe9cd1fcf8_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["operation_mode"]) -> 'openenoc_switch_forwarding_control_operation_mode_0x5780453cd24cad77_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["pause_request"]) -> 'openenoc_switch_forwarding_control_pause_request_0x589d210d3c4f643b_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["pause_request"]) -> 'openenoc_switch_forwarding_control_pause_request_neg_0x2b9409c28f41c75c_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["pause_done"]) -> 'openenoc_switch_forwarding_control_pause_done_neg_0x6500cd4436cf5477_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["pause_done"]) -> 'openenoc_switch_forwarding_control_pause_done_neg_0x4acfc220c6966198_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_control_operation_mode_neg_0x433ae9fe9cd1fcf8_cls', 'openenoc_switch_forwarding_control_pause_request_0x589d210d3c4f643b_cls', 'openenoc_switch_forwarding_control_pause_done_neg_0x6500cd4436cf5477_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_control_operation_mode_0x5780453cd24cad77_cls', 'openenoc_switch_forwarding_control_pause_request_neg_0x2b9409c28f41c75c_cls', 'openenoc_switch_forwarding_control_pause_done_neg_0x4acfc220c6966198_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -1675,7 +1675,7 @@ class openenoc_switch_forwarding_control_neg_0x3a6d284806f4642c_cls(RegReadWrite
 
     
     
-class openenoc_switch_default_forwarding_neg_0x1f9a4b6c5de51742_cls(RegReadWrite):
+class openenoc_switch_default_forwarding_0x365a03a6c9b82407_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1709,7 +1709,7 @@ class openenoc_switch_default_forwarding_neg_0x1f9a4b6c5de51742_cls(RegReadWrite
 
         # build the field attributes
         
-        self.__bitmap:openenoc_switch_default_forwarding_bitmap_0x792b4df9bb6ace53_cls = openenoc_switch_default_forwarding_bitmap_0x792b4df9bb6ace53_cls(
+        self.__bitmap:openenoc_switch_default_forwarding_bitmap_neg_0x2c01808eb364f792_cls = openenoc_switch_default_forwarding_bitmap_neg_0x2c01808eb364f792_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=8,
@@ -1735,7 +1735,7 @@ class openenoc_switch_default_forwarding_neg_0x1f9a4b6c5de51742_cls(RegReadWrite
     # build the properties for the fields
     
     @property
-    def bitmap(self) -> openenoc_switch_default_forwarding_bitmap_0x792b4df9bb6ace53_cls:
+    def bitmap(self) -> openenoc_switch_default_forwarding_bitmap_neg_0x2c01808eb364f792_cls:
         """
         Property to access bitmap field of the register
 
@@ -1770,7 +1770,7 @@ class openenoc_switch_default_forwarding_neg_0x1f9a4b6c5de51742_cls(RegReadWrite
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_default_forwarding_bitmap_0x792b4df9bb6ace53_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_default_forwarding_bitmap_neg_0x2c01808eb364f792_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -1801,7 +1801,7 @@ class openenoc_switch_default_forwarding_neg_0x1f9a4b6c5de51742_cls(RegReadWrite
 
     
     
-class openenoc_switch_forwarding_table_entry_macaddr_0x1084ab850515786b_cls(RegReadWrite):
+class openenoc_switch_forwarding_table_entry_macaddr_0x2a46247d9e8d94e9_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1835,7 +1835,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x1084ab850515786b_cls(RegR
 
         # build the field attributes
         
-        self.__lo_word:openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x321557169ade617e_cls = openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x321557169ade617e_cls(
+        self.__lo_word:openenoc_switch_forwarding_table_entry_macaddr_lo_word_0xf991c0ffc6e7511_cls = openenoc_switch_forwarding_table_entry_macaddr_lo_word_0xf991c0ffc6e7511_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -1847,7 +1847,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x1084ab850515786b_cls(RegR
             logger_handle=logger_handle+'.lo_word',
             inst_name='lo_word',
             field_type=int)
-        self.__hi_word:openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x673504984dd6fcf4_cls = openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x673504984dd6fcf4_cls(
+        self.__hi_word:openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x6ea049d3339059a_cls = openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x6ea049d3339059a_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=16,
@@ -1873,7 +1873,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x1084ab850515786b_cls(RegR
     # build the properties for the fields
     
     @property
-    def lo_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x321557169ade617e_cls:
+    def lo_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_lo_word_0xf991c0ffc6e7511_cls:
         """
         Property to access lo_word field of the register
 
@@ -1894,7 +1894,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x1084ab850515786b_cls(RegR
         """
         return self.__lo_word
     @property
-    def hi_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x673504984dd6fcf4_cls:
+    def hi_word(self) -> openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x6ea049d3339059a_cls:
         """
         Property to access hi_word field of the register
 
@@ -1930,15 +1930,15 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x1084ab850515786b_cls(RegR
     # nodes:2
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x321557169ade617e_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_lo_word_0xf991c0ffc6e7511_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x673504984dd6fcf4_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x6ea049d3339059a_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_lo_word_0x321557169ade617e_cls', 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_0x673504984dd6fcf4_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_lo_word_0xf991c0ffc6e7511_cls', 'openenoc_switch_forwarding_table_entry_macaddr_hi_word_neg_0x6ea049d3339059a_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -1971,7 +1971,7 @@ class openenoc_switch_forwarding_table_entry_macaddr_0x1084ab850515786b_cls(RegR
 
     
     
-class openenoc_switch_forwarding_table_entry_iface_neg_0x164fae0b1703ab97_cls(RegReadWrite):
+class openenoc_switch_forwarding_table_entry_iface_0x13d8400931b5c341_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -2005,7 +2005,7 @@ class openenoc_switch_forwarding_table_entry_iface_neg_0x164fae0b1703ab97_cls(Re
 
         # build the field attributes
         
-        self.__bitmap:openenoc_switch_forwarding_table_entry_iface_bitmap_0x417a6417e951153b_cls = openenoc_switch_forwarding_table_entry_iface_bitmap_0x417a6417e951153b_cls(
+        self.__bitmap:openenoc_switch_forwarding_table_entry_iface_bitmap_0x6291453e32946f0c_cls = openenoc_switch_forwarding_table_entry_iface_bitmap_0x6291453e32946f0c_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=8,
@@ -2031,7 +2031,7 @@ class openenoc_switch_forwarding_table_entry_iface_neg_0x164fae0b1703ab97_cls(Re
     # build the properties for the fields
     
     @property
-    def bitmap(self) -> openenoc_switch_forwarding_table_entry_iface_bitmap_0x417a6417e951153b_cls:
+    def bitmap(self) -> openenoc_switch_forwarding_table_entry_iface_bitmap_0x6291453e32946f0c_cls:
         """
         Property to access bitmap field of the register
 
@@ -2067,7 +2067,7 @@ class openenoc_switch_forwarding_table_entry_iface_neg_0x164fae0b1703ab97_cls(Re
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_iface_bitmap_0x417a6417e951153b_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_iface_bitmap_0x6291453e32946f0c_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -2098,7 +2098,7 @@ class openenoc_switch_forwarding_table_entry_iface_neg_0x164fae0b1703ab97_cls(Re
 
     
     
-class openenoc_switch_forwarding_table_entry_config_0x43f7206aa202ac67_cls(RegReadWrite):
+class openenoc_switch_forwarding_table_entry_config_neg_0x1d57bc6cb6d1c19_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -2132,7 +2132,7 @@ class openenoc_switch_forwarding_table_entry_config_0x43f7206aa202ac67_cls(RegRe
 
         # build the field attributes
         
-        self.__enabled:openenoc_switch_forwarding_table_entry_config_enabled_0x5b20b8d33d158697_cls = openenoc_switch_forwarding_table_entry_config_enabled_0x5b20b8d33d158697_cls(
+        self.__enabled:openenoc_switch_forwarding_table_entry_config_enabled_neg_0x312f6d6870ebec58_cls = openenoc_switch_forwarding_table_entry_config_enabled_neg_0x312f6d6870ebec58_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2158,7 +2158,7 @@ class openenoc_switch_forwarding_table_entry_config_0x43f7206aa202ac67_cls(RegRe
     # build the properties for the fields
     
     @property
-    def enabled(self) -> openenoc_switch_forwarding_table_entry_config_enabled_0x5b20b8d33d158697_cls:
+    def enabled(self) -> openenoc_switch_forwarding_table_entry_config_enabled_neg_0x312f6d6870ebec58_cls:
         """
         Property to access enabled field of the register
 
@@ -2192,7 +2192,7 @@ class openenoc_switch_forwarding_table_entry_config_0x43f7206aa202ac67_cls(RegRe
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_config_enabled_0x5b20b8d33d158697_cls':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_config_enabled_neg_0x312f6d6870ebec58_cls':
         return super().get_child_by_system_rdl_name(name)
                 
     

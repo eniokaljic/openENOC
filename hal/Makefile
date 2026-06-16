@@ -33,6 +33,7 @@ $(PEAKRDLHTML): $(RDLSRC)
 	peakrdl html $^ -o $@ --top $(RDLCSR)
 
 $(PEAKRDLMD_TOP): $(RDLSRC)
+	mkdir -p $(DOCSDIR)
 	peakrdl markdown $^ -o $@ --top $(RDLTOP)
 	
 $(PEAKRDLMD_SW): $(RDLSRC)

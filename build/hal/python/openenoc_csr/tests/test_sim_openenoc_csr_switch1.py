@@ -4,7 +4,7 @@
 """
 Unit Tests for the openenoc_csr register model Python Wrapper
 
-This code was generated from the PeakRDL-python package version 3.1.1
+This code was generated from the PeakRDL-python package version 3.1.2
 """
 
 
