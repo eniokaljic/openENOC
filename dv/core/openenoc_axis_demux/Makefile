@@ -11,7 +11,7 @@ COCOTB_HDL_TIMEPRECISION = 1ps
 
 HW_DIR = ../../../hw
 CORE_DIR = $(HW_DIR)/src/core
-TAXI_AXIS_DIR = $(HW_DIR)/libs/taxi/axis/rtl
+TAXI_AXIS_DIR = $(HW_DIR)/libs/taxi/src/axis/rtl
 
 DUT = openenoc_axis_demux
 COCOTB_TEST_MODULES = test_$(DUT)
