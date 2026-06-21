@@ -1,3 +1,6 @@
+<!-- SPDX-FileCopyrightText: 2026 Kerim Bavcic -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # openENOC Axis Demux Test Suite
 
 ## Overview
@@ -13,7 +16,7 @@ This project uses the following tooling:
 
 ## Routing Modes
 
-The demux supports three routing modes, but only two are currently tested:
+The demux supports four routing modes, but only two are currently tested:
 
 ### 1. **TID_ROUTE** (Unicast/ID-based Routing)
 - Routes packets based on the TID (Transaction ID) field
@@ -24,11 +27,16 @@ The demux supports three routing modes, but only two are currently tested:
 - Packets are distributed to a single output port determined by TDEST
 - Useful for traditional address-based routing
 
-### 2. **TUSER_BITMAP_ROUTE** (Multicast/User-Bitmap Routing)
+### 3. **TUSER_BITMAP_ROUTE** (Multicast/User-Bitmap Routing)
 - Routes packets based on TUSER field interpreted as a bitmap
 - Each bit in TUSER selects one or more output ports
 - Supports multicast (one packet to multiple ports)
 - Includes "all-or-nothing" atomic delivery: all targeted ports receive the packet simultaneously or none do
+
+### 4. **Route using "select" signal** (Manual/Select-based Routing)
+- Routes packets using an external select signal to directly specify output port(s)
+- Provides explicit control over routing decisions via a dedicated select input
+- ⚠️ **Currently not tested**
 
 ## Configuration
 
