@@ -59,26 +59,180 @@ from ..lib import NormalCallbackSet, NormalCallbackSetLegacy
 
 
 
-from ._registers import openenoc_csr_test_reg_0x5da4cb4348e794f_cls
-from ._registers import openenoc_csr_regB_0x1a3dc8556819afec_cls
-from ._registers import openenoc_switch_info_0x12b1e8c6ce706d78_cls
-from ._registers import openenoc_switch_forwarding_control_neg_0x70044bf2405d6f55_cls
-from ._registers import openenoc_switch_default_forwarding_neg_0x5cb240a578b8c880_cls
-from ._registers import openenoc_switch_forwarding_table_entry_macaddr_neg_0x14d3d254a84b5846_cls
-from ._registers import openenoc_switch_forwarding_table_entry_iface_0xedc5c438162dca3_cls
-from ._registers import openenoc_switch_forwarding_table_entry_config_neg_0x72ee666711cc8c54_cls
-from ._registers import openenoc_switch_info_neg_0x570f7c0834e2f2b4_cls
-from ._registers import openenoc_switch_forwarding_control_neg_0x39aac315524f6804_cls
-from ._registers import openenoc_switch_default_forwarding_0x365a03a6c9b82407_cls
-from ._registers import openenoc_switch_forwarding_table_entry_macaddr_0x2a46247d9e8d94e9_cls
-from ._registers import openenoc_switch_forwarding_table_entry_iface_0x13d8400931b5c341_cls
-from ._registers import openenoc_switch_forwarding_table_entry_config_neg_0x1d57bc6cb6d1c19_cls
+from ._registers import openenoc_csr_test_reg_0x3f30da3aa8dc9c75_cls
+from ._registers import openenoc_csr_regB_0x3c083fe13ca16b03_cls
+from ._registers import openenoc_switch_info_neg_0x7ae6f7afe2223cb6_cls
+from ._registers import openenoc_switch_forwarding_control_neg_0x2706647eeaac8595_cls
+from ._registers import openenoc_switch_default_forwarding_neg_0x67ec41965df8b626_cls
+from ._registers import openenoc_switch_forwarding_table_entry_macaddr_neg_0x50b30858704ffc6b_cls
+from ._registers import openenoc_switch_forwarding_table_entry_iface_0x6e7f55c0f04a23f_cls
+from ._registers import openenoc_switch_forwarding_table_entry_config_0x151239c9dd2f2e19_cls
+from ._registers import openenoc_switch_info_0x5fe2743488d051e8_cls
+from ._registers import openenoc_switch_forwarding_control_neg_0x3cbe7d1b6d7881c9_cls
+from ._registers import openenoc_switch_default_forwarding_0x72e0f488544122f6_cls
+from ._registers import openenoc_switch_forwarding_table_entry_macaddr_neg_0x5d62fd6566329f98_cls
+from ._registers import openenoc_switch_forwarding_table_entry_iface_neg_0x2dd01d9e9041477_cls
+from ._registers import openenoc_switch_forwarding_table_entry_config_neg_0x4ec294a067c7cd5d_cls
+from ._registers import openenoc_endpoint_info_0x10849a1f39de2855_cls
+from ._memories import openenoc_endpoint_rmem_0x49532131ca055df6_cls
 
 
 # addrmap, regfile, memor and register definitions
     
     
-class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls(RegFile):
+class openenoc_endpoint_neg_0x25540c4abf5a7c60_cls(AddressMap):
+    """
+    Class to represent a address map in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint1                                                      |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Control and status register map for an openENOC Endpoint        |
+    |              |      Interface instance.</p>                                            |
+    +--------------+-------------------------------------------------------------------------+
+    """
+
+    __slots__ : list[str] = ['__info', '__rmem']
+
+    def __init__(self, *,
+                 address:int,
+                 logger_handle:str,
+                 inst_name:str,
+                 callbacks: Optional[Union[NormalCallbackSet, NormalCallbackSetLegacy]]=None,
+                 parent:Optional[AddressMap]=None):
+
+        if callbacks is not None:
+            if not isinstance(callbacks, (NormalCallbackSet, NormalCallbackSetLegacy)):
+                raise TypeError(f'callbacks should be NormalCallbackSet, NormalCallbackSetLegacy got {type(callbacks)}')
+
+        super().__init__(callbacks=callbacks,
+                         address=address,
+                         logger_handle=logger_handle,
+                         inst_name=inst_name,
+                         parent=parent)
+
+        
+            
+        self.__info:openenoc_endpoint_info_0x10849a1f39de2855_cls = openenoc_endpoint_info_0x10849a1f39de2855_cls(
+                                                                     address=self.address+0,
+                                                                     logger_handle=logger_handle+'.info',
+                                                                     inst_name='info', parent=self)
+        
+        self.__rmem:openenoc_endpoint_rmem_0x49532131ca055df6_cls = openenoc_endpoint_rmem_0x49532131ca055df6_cls(
+                                                                     address=self.address+1024,
+                                                                     logger_handle=logger_handle+'.rmem',
+                                                                                       inst_name='rmem', parent=self)
+        
+
+    @property
+    def size(self) -> int:
+        return 2048
+    @property
+    def info(self) -> 'openenoc_endpoint_info_0x10849a1f39de2855_cls':
+        """
+        Property to access info 
+
+        +--------------+-------------------------------------------------------------------------+
+        | SystemRDL    | Value                                                                   |
+        | Field        |                                                                         |
+        +==============+=========================================================================+
+        | Name         | .. raw:: html                                                           |
+        |              |                                                                         |
+        |              |      csr.endpoint1.info                                                 |
+        +--------------+-------------------------------------------------------------------------+
+        | Description  | .. raw:: html                                                           |
+        |              |                                                                         |
+        |              |      <p>Read-only information register for this openENOC Endpoint       |
+        |              |      Interface instance.</p>                                            |
+        +--------------+-------------------------------------------------------------------------+
+        """
+        return self.__info
+        
+    @property
+    def rmem(self) -> 'openenoc_endpoint_rmem_0x49532131ca055df6_cls':
+        """
+        Property to access rmem 
+
+        +--------------+-------------------------------------------------------------------------+
+        | SystemRDL    | Value                                                                   |
+        | Field        |                                                                         |
+        +==============+=========================================================================+
+        | Name         | .. raw:: html                                                           |
+        |              |                                                                         |
+        |              |      rmem                                                               |
+        +--------------+-------------------------------------------------------------------------+
+        | Description  | .. raw:: html                                                           |
+        |              |                                                                         |
+        |              |      <p>Remote Memory</p>                                               |
+        +--------------+-------------------------------------------------------------------------+
+        """
+        return self.__rmem
+        
+
+    
+    @property
+    def systemrdl_python_child_name_map(self) -> dict[str, str]:
+        return {'info':'info','rmem':'rmem',
+            }
+
+    
+    
+    
+    
+    
+    
+    # nodes:2
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["info"]) -> 'openenoc_endpoint_info_0x10849a1f39de2855_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["rmem"]) -> 'openenoc_endpoint_rmem_0x49532131ca055df6_cls': ...
+                
+
+    @overload
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_info_0x10849a1f39de2855_cls', 'openenoc_endpoint_rmem_0x49532131ca055df6_cls', ]: ...
+
+    def get_child_by_system_rdl_name(self, name: Any) -> Any:
+        return super().get_child_by_system_rdl_name(name)
+    
+
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint1"
+    @property
+    def rdl_desc(self) -> str:
+        return "Control and status register map for an openENOC Endpoint Interface instance."
+    
+    
+
+    
+    def __iter__(self) -> Iterator[Union[Node, NodeArray]]:
+        
+        
+        yield self.info
+        yield self.rmem
+        
+        
+    
+
+    
+    
+class openenoc_switch_forwarding_table_entry_0x6757c176d04ddd2b_cls(RegFile):
     """
     Class to represent a register file in the register model
 
@@ -113,19 +267,19 @@ class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls(RegFile)
         # instance of objects within the class
         
             
-        self.__macaddr:openenoc_switch_forwarding_table_entry_macaddr_0x2a46247d9e8d94e9_cls = openenoc_switch_forwarding_table_entry_macaddr_0x2a46247d9e8d94e9_cls(
+        self.__macaddr:openenoc_switch_forwarding_table_entry_macaddr_neg_0x5d62fd6566329f98_cls = openenoc_switch_forwarding_table_entry_macaddr_neg_0x5d62fd6566329f98_cls(
                                                                      address=self.address+0,
                                                                      logger_handle=logger_handle+'.macaddr',
                                                                      inst_name='macaddr', parent=self)
         
             
-        self.__iface:openenoc_switch_forwarding_table_entry_iface_0x13d8400931b5c341_cls = openenoc_switch_forwarding_table_entry_iface_0x13d8400931b5c341_cls(
+        self.__iface:openenoc_switch_forwarding_table_entry_iface_neg_0x2dd01d9e9041477_cls = openenoc_switch_forwarding_table_entry_iface_neg_0x2dd01d9e9041477_cls(
                                                                      address=self.address+8,
                                                                      logger_handle=logger_handle+'.iface',
                                                                      inst_name='iface', parent=self)
         
             
-        self.__config:openenoc_switch_forwarding_table_entry_config_neg_0x1d57bc6cb6d1c19_cls = openenoc_switch_forwarding_table_entry_config_neg_0x1d57bc6cb6d1c19_cls(
+        self.__config:openenoc_switch_forwarding_table_entry_config_neg_0x4ec294a067c7cd5d_cls = openenoc_switch_forwarding_table_entry_config_neg_0x4ec294a067c7cd5d_cls(
                                                                      address=self.address+12,
                                                                      logger_handle=logger_handle+'.config',
                                                                      inst_name='config', parent=self)
@@ -137,7 +291,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls(RegFile)
 
     # properties for Register and RegisterFiles
     @property
-    def macaddr(self) -> 'openenoc_switch_forwarding_table_entry_macaddr_0x2a46247d9e8d94e9_cls':
+    def macaddr(self) -> 'openenoc_switch_forwarding_table_entry_macaddr_neg_0x5d62fd6566329f98_cls':
         """
         Property to access macaddr 
 
@@ -158,7 +312,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls(RegFile)
         return self.__macaddr
     
     @property
-    def iface(self) -> 'openenoc_switch_forwarding_table_entry_iface_0x13d8400931b5c341_cls':
+    def iface(self) -> 'openenoc_switch_forwarding_table_entry_iface_neg_0x2dd01d9e9041477_cls':
         """
         Property to access iface 
 
@@ -179,7 +333,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls(RegFile)
         return self.__iface
     
     @property
-    def config(self) -> 'openenoc_switch_forwarding_table_entry_config_neg_0x1d57bc6cb6d1c19_cls':
+    def config(self) -> 'openenoc_switch_forwarding_table_entry_config_neg_0x4ec294a067c7cd5d_cls':
         """
         Property to access config 
 
@@ -215,19 +369,19 @@ class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls(RegFile)
     # nodes:3
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["macaddr"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_0x2a46247d9e8d94e9_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["macaddr"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_neg_0x5d62fd6566329f98_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["iface"]) -> 'openenoc_switch_forwarding_table_entry_iface_0x13d8400931b5c341_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["iface"]) -> 'openenoc_switch_forwarding_table_entry_iface_neg_0x2dd01d9e9041477_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["config"]) -> 'openenoc_switch_forwarding_table_entry_config_neg_0x1d57bc6cb6d1c19_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["config"]) -> 'openenoc_switch_forwarding_table_entry_config_neg_0x4ec294a067c7cd5d_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_0x2a46247d9e8d94e9_cls', 'openenoc_switch_forwarding_table_entry_iface_0x13d8400931b5c341_cls', 'openenoc_switch_forwarding_table_entry_config_neg_0x1d57bc6cb6d1c19_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_neg_0x5d62fd6566329f98_cls', 'openenoc_switch_forwarding_table_entry_iface_neg_0x2dd01d9e9041477_cls', 'openenoc_switch_forwarding_table_entry_config_neg_0x4ec294a067c7cd5d_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -257,7 +411,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls(RegFile)
         yield self.config
         
         
-class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls_array(RegFileArray):
+class openenoc_switch_forwarding_table_entry_0x6757c176d04ddd2b_cls_array(RegFileArray):
     """
     Class to represent a regfile array in the register model
 
@@ -279,12 +433,12 @@ class openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls_array(Re
 
     @property
     def _element_datatype(self) -> Type[RegFile]:
-        return openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls
+        return openenoc_switch_forwarding_table_entry_0x6757c176d04ddd2b_cls
     
 
     
     
-class openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls(RegFile):
+class openenoc_switch_forwarding_table_neg_0x43ff657cfedf0e09_cls(RegFile):
     """
     Class to represent a register file in the register model
 
@@ -318,7 +472,7 @@ class openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls(RegFile):
 
         # instance of objects within the class
         
-        self.__entry:openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls_array = openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls_array(address=self.address+0,
+        self.__entry:openenoc_switch_forwarding_table_entry_0x6757c176d04ddd2b_cls_array = openenoc_switch_forwarding_table_entry_0x6757c176d04ddd2b_cls_array(address=self.address+0,
                                                                                       stride=16,
                                                                                       dimensions=tuple([32]),
                                                                                       logger_handle=logger_handle+'.entry',
@@ -331,7 +485,7 @@ class openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls(RegFile):
 
     # properties for Register and RegisterFiles
     @property
-    def entry(self) -> 'openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls_array':
+    def entry(self) -> 'openenoc_switch_forwarding_table_entry_0x6757c176d04ddd2b_cls_array':
         """
         Property to access entry array
 
@@ -365,7 +519,7 @@ class openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls(RegFile):
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_neg_0x70648c98c5b06149_cls_array':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_0x6757c176d04ddd2b_cls_array':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -396,7 +550,7 @@ class openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls(RegFile):
 
     
     
-class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
+class openenoc_switch_0x7dac07727c29f605_cls(AddressMap):
     """
     Class to represent a address map in the register model
 
@@ -438,23 +592,23 @@ class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
 
         
             
-        self.__info:openenoc_switch_info_neg_0x570f7c0834e2f2b4_cls = openenoc_switch_info_neg_0x570f7c0834e2f2b4_cls(
+        self.__info:openenoc_switch_info_0x5fe2743488d051e8_cls = openenoc_switch_info_0x5fe2743488d051e8_cls(
                                                                      address=self.address+0,
                                                                      logger_handle=logger_handle+'.info',
                                                                      inst_name='info', parent=self)
         
             
-        self.__forwarding_control:openenoc_switch_forwarding_control_neg_0x39aac315524f6804_cls = openenoc_switch_forwarding_control_neg_0x39aac315524f6804_cls(
+        self.__forwarding_control:openenoc_switch_forwarding_control_neg_0x3cbe7d1b6d7881c9_cls = openenoc_switch_forwarding_control_neg_0x3cbe7d1b6d7881c9_cls(
                                                                      address=self.address+4,
                                                                      logger_handle=logger_handle+'.forwarding_control',
                                                                      inst_name='forwarding_control', parent=self)
         
             
-        self.__default_forwarding:openenoc_switch_default_forwarding_0x365a03a6c9b82407_cls = openenoc_switch_default_forwarding_0x365a03a6c9b82407_cls(
+        self.__default_forwarding:openenoc_switch_default_forwarding_0x72e0f488544122f6_cls = openenoc_switch_default_forwarding_0x72e0f488544122f6_cls(
                                                                      address=self.address+8,
                                                                      logger_handle=logger_handle+'.default_forwarding',
                                                                      inst_name='default_forwarding', parent=self)
-        self.__forwarding_table:openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls = openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls(
+        self.__forwarding_table:openenoc_switch_forwarding_table_neg_0x43ff657cfedf0e09_cls = openenoc_switch_forwarding_table_neg_0x43ff657cfedf0e09_cls(
                                                                                 address=self.address+512,
                                                                                 logger_handle=logger_handle+'.forwarding_table',
                                                                                 inst_name='forwarding_table',
@@ -465,7 +619,7 @@ class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
     def size(self) -> int:
         return 1024
     @property
-    def info(self) -> 'openenoc_switch_info_neg_0x570f7c0834e2f2b4_cls':
+    def info(self) -> 'openenoc_switch_info_0x5fe2743488d051e8_cls':
         """
         Property to access info 
 
@@ -486,7 +640,7 @@ class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
         return self.__info
         
     @property
-    def forwarding_control(self) -> 'openenoc_switch_forwarding_control_neg_0x39aac315524f6804_cls':
+    def forwarding_control(self) -> 'openenoc_switch_forwarding_control_neg_0x3cbe7d1b6d7881c9_cls':
         """
         Property to access forwarding_control 
 
@@ -507,7 +661,7 @@ class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
         return self.__forwarding_control
         
     @property
-    def default_forwarding(self) -> 'openenoc_switch_default_forwarding_0x365a03a6c9b82407_cls':
+    def default_forwarding(self) -> 'openenoc_switch_default_forwarding_0x72e0f488544122f6_cls':
         """
         Property to access default_forwarding 
 
@@ -528,7 +682,7 @@ class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
         return self.__default_forwarding
         
     @property
-    def forwarding_table(self) -> 'openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls':
+    def forwarding_table(self) -> 'openenoc_switch_forwarding_table_neg_0x43ff657cfedf0e09_cls':
         """
         Property to access forwarding_table 
 
@@ -564,23 +718,23 @@ class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
     # nodes:4
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["info"]) -> 'openenoc_switch_info_neg_0x570f7c0834e2f2b4_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["info"]) -> 'openenoc_switch_info_0x5fe2743488d051e8_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["forwarding_control"]) -> 'openenoc_switch_forwarding_control_neg_0x39aac315524f6804_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["forwarding_control"]) -> 'openenoc_switch_forwarding_control_neg_0x3cbe7d1b6d7881c9_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["default_forwarding"]) -> 'openenoc_switch_default_forwarding_0x365a03a6c9b82407_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["default_forwarding"]) -> 'openenoc_switch_default_forwarding_0x72e0f488544122f6_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["forwarding_table"]) -> 'openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["forwarding_table"]) -> 'openenoc_switch_forwarding_table_neg_0x43ff657cfedf0e09_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_neg_0x570f7c0834e2f2b4_cls', 'openenoc_switch_forwarding_control_neg_0x39aac315524f6804_cls', 'openenoc_switch_default_forwarding_0x365a03a6c9b82407_cls', 'openenoc_switch_forwarding_table_0x463ae9d6bf7ec721_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_0x5fe2743488d051e8_cls', 'openenoc_switch_forwarding_control_neg_0x3cbe7d1b6d7881c9_cls', 'openenoc_switch_default_forwarding_0x72e0f488544122f6_cls', 'openenoc_switch_forwarding_table_neg_0x43ff657cfedf0e09_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -615,7 +769,7 @@ class openenoc_switch_0x70a8cbe83e279d89_cls(AddressMap):
 
     
     
-class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls(RegFile):
+class openenoc_switch_forwarding_table_entry_0x4610dca74bf70fe0_cls(RegFile):
     """
     Class to represent a register file in the register model
 
@@ -650,19 +804,19 @@ class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls(RegFile)
         # instance of objects within the class
         
             
-        self.__macaddr:openenoc_switch_forwarding_table_entry_macaddr_neg_0x14d3d254a84b5846_cls = openenoc_switch_forwarding_table_entry_macaddr_neg_0x14d3d254a84b5846_cls(
+        self.__macaddr:openenoc_switch_forwarding_table_entry_macaddr_neg_0x50b30858704ffc6b_cls = openenoc_switch_forwarding_table_entry_macaddr_neg_0x50b30858704ffc6b_cls(
                                                                      address=self.address+0,
                                                                      logger_handle=logger_handle+'.macaddr',
                                                                      inst_name='macaddr', parent=self)
         
             
-        self.__iface:openenoc_switch_forwarding_table_entry_iface_0xedc5c438162dca3_cls = openenoc_switch_forwarding_table_entry_iface_0xedc5c438162dca3_cls(
+        self.__iface:openenoc_switch_forwarding_table_entry_iface_0x6e7f55c0f04a23f_cls = openenoc_switch_forwarding_table_entry_iface_0x6e7f55c0f04a23f_cls(
                                                                      address=self.address+8,
                                                                      logger_handle=logger_handle+'.iface',
                                                                      inst_name='iface', parent=self)
         
             
-        self.__config:openenoc_switch_forwarding_table_entry_config_neg_0x72ee666711cc8c54_cls = openenoc_switch_forwarding_table_entry_config_neg_0x72ee666711cc8c54_cls(
+        self.__config:openenoc_switch_forwarding_table_entry_config_0x151239c9dd2f2e19_cls = openenoc_switch_forwarding_table_entry_config_0x151239c9dd2f2e19_cls(
                                                                      address=self.address+12,
                                                                      logger_handle=logger_handle+'.config',
                                                                      inst_name='config', parent=self)
@@ -674,7 +828,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls(RegFile)
 
     # properties for Register and RegisterFiles
     @property
-    def macaddr(self) -> 'openenoc_switch_forwarding_table_entry_macaddr_neg_0x14d3d254a84b5846_cls':
+    def macaddr(self) -> 'openenoc_switch_forwarding_table_entry_macaddr_neg_0x50b30858704ffc6b_cls':
         """
         Property to access macaddr 
 
@@ -695,7 +849,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls(RegFile)
         return self.__macaddr
     
     @property
-    def iface(self) -> 'openenoc_switch_forwarding_table_entry_iface_0xedc5c438162dca3_cls':
+    def iface(self) -> 'openenoc_switch_forwarding_table_entry_iface_0x6e7f55c0f04a23f_cls':
         """
         Property to access iface 
 
@@ -716,7 +870,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls(RegFile)
         return self.__iface
     
     @property
-    def config(self) -> 'openenoc_switch_forwarding_table_entry_config_neg_0x72ee666711cc8c54_cls':
+    def config(self) -> 'openenoc_switch_forwarding_table_entry_config_0x151239c9dd2f2e19_cls':
         """
         Property to access config 
 
@@ -752,19 +906,19 @@ class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls(RegFile)
     # nodes:3
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["macaddr"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_neg_0x14d3d254a84b5846_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["macaddr"]) -> 'openenoc_switch_forwarding_table_entry_macaddr_neg_0x50b30858704ffc6b_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["iface"]) -> 'openenoc_switch_forwarding_table_entry_iface_0xedc5c438162dca3_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["iface"]) -> 'openenoc_switch_forwarding_table_entry_iface_0x6e7f55c0f04a23f_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["config"]) -> 'openenoc_switch_forwarding_table_entry_config_neg_0x72ee666711cc8c54_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["config"]) -> 'openenoc_switch_forwarding_table_entry_config_0x151239c9dd2f2e19_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_neg_0x14d3d254a84b5846_cls', 'openenoc_switch_forwarding_table_entry_iface_0xedc5c438162dca3_cls', 'openenoc_switch_forwarding_table_entry_config_neg_0x72ee666711cc8c54_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_forwarding_table_entry_macaddr_neg_0x50b30858704ffc6b_cls', 'openenoc_switch_forwarding_table_entry_iface_0x6e7f55c0f04a23f_cls', 'openenoc_switch_forwarding_table_entry_config_0x151239c9dd2f2e19_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -794,7 +948,7 @@ class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls(RegFile)
         yield self.config
         
         
-class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls_array(RegFileArray):
+class openenoc_switch_forwarding_table_entry_0x4610dca74bf70fe0_cls_array(RegFileArray):
     """
     Class to represent a regfile array in the register model
 
@@ -816,12 +970,12 @@ class openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls_array(Re
 
     @property
     def _element_datatype(self) -> Type[RegFile]:
-        return openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls
+        return openenoc_switch_forwarding_table_entry_0x4610dca74bf70fe0_cls
     
 
     
     
-class openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls(RegFile):
+class openenoc_switch_forwarding_table_neg_0x33d209693c71532_cls(RegFile):
     """
     Class to represent a register file in the register model
 
@@ -855,7 +1009,7 @@ class openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls(RegFile):
 
         # instance of objects within the class
         
-        self.__entry:openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls_array = openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls_array(address=self.address+0,
+        self.__entry:openenoc_switch_forwarding_table_entry_0x4610dca74bf70fe0_cls_array = openenoc_switch_forwarding_table_entry_0x4610dca74bf70fe0_cls_array(address=self.address+0,
                                                                                       stride=16,
                                                                                       dimensions=tuple([8]),
                                                                                       logger_handle=logger_handle+'.entry',
@@ -868,7 +1022,7 @@ class openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls(RegFile):
 
     # properties for Register and RegisterFiles
     @property
-    def entry(self) -> 'openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls_array':
+    def entry(self) -> 'openenoc_switch_forwarding_table_entry_0x4610dca74bf70fe0_cls_array':
         """
         Property to access entry array
 
@@ -902,7 +1056,7 @@ class openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls(RegFile):
     
     
                 
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_neg_0x2cdb93dc740fc4ee_cls_array':
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_switch_forwarding_table_entry_0x4610dca74bf70fe0_cls_array':
         return super().get_child_by_system_rdl_name(name)
                 
     
@@ -933,7 +1087,7 @@ class openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls(RegFile):
 
     
     
-class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
+class openenoc_switch_0x215cd4512c8c9df7_cls(AddressMap):
     """
     Class to represent a address map in the register model
 
@@ -975,23 +1129,23 @@ class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
 
         
             
-        self.__info:openenoc_switch_info_0x12b1e8c6ce706d78_cls = openenoc_switch_info_0x12b1e8c6ce706d78_cls(
+        self.__info:openenoc_switch_info_neg_0x7ae6f7afe2223cb6_cls = openenoc_switch_info_neg_0x7ae6f7afe2223cb6_cls(
                                                                      address=self.address+0,
                                                                      logger_handle=logger_handle+'.info',
                                                                      inst_name='info', parent=self)
         
             
-        self.__forwarding_control:openenoc_switch_forwarding_control_neg_0x70044bf2405d6f55_cls = openenoc_switch_forwarding_control_neg_0x70044bf2405d6f55_cls(
+        self.__forwarding_control:openenoc_switch_forwarding_control_neg_0x2706647eeaac8595_cls = openenoc_switch_forwarding_control_neg_0x2706647eeaac8595_cls(
                                                                      address=self.address+4,
                                                                      logger_handle=logger_handle+'.forwarding_control',
                                                                      inst_name='forwarding_control', parent=self)
         
             
-        self.__default_forwarding:openenoc_switch_default_forwarding_neg_0x5cb240a578b8c880_cls = openenoc_switch_default_forwarding_neg_0x5cb240a578b8c880_cls(
+        self.__default_forwarding:openenoc_switch_default_forwarding_neg_0x67ec41965df8b626_cls = openenoc_switch_default_forwarding_neg_0x67ec41965df8b626_cls(
                                                                      address=self.address+8,
                                                                      logger_handle=logger_handle+'.default_forwarding',
                                                                      inst_name='default_forwarding', parent=self)
-        self.__forwarding_table:openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls = openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls(
+        self.__forwarding_table:openenoc_switch_forwarding_table_neg_0x33d209693c71532_cls = openenoc_switch_forwarding_table_neg_0x33d209693c71532_cls(
                                                                                 address=self.address+128,
                                                                                 logger_handle=logger_handle+'.forwarding_table',
                                                                                 inst_name='forwarding_table',
@@ -1002,7 +1156,7 @@ class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
     def size(self) -> int:
         return 256
     @property
-    def info(self) -> 'openenoc_switch_info_0x12b1e8c6ce706d78_cls':
+    def info(self) -> 'openenoc_switch_info_neg_0x7ae6f7afe2223cb6_cls':
         """
         Property to access info 
 
@@ -1023,7 +1177,7 @@ class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
         return self.__info
         
     @property
-    def forwarding_control(self) -> 'openenoc_switch_forwarding_control_neg_0x70044bf2405d6f55_cls':
+    def forwarding_control(self) -> 'openenoc_switch_forwarding_control_neg_0x2706647eeaac8595_cls':
         """
         Property to access forwarding_control 
 
@@ -1044,7 +1198,7 @@ class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
         return self.__forwarding_control
         
     @property
-    def default_forwarding(self) -> 'openenoc_switch_default_forwarding_neg_0x5cb240a578b8c880_cls':
+    def default_forwarding(self) -> 'openenoc_switch_default_forwarding_neg_0x67ec41965df8b626_cls':
         """
         Property to access default_forwarding 
 
@@ -1065,7 +1219,7 @@ class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
         return self.__default_forwarding
         
     @property
-    def forwarding_table(self) -> 'openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls':
+    def forwarding_table(self) -> 'openenoc_switch_forwarding_table_neg_0x33d209693c71532_cls':
         """
         Property to access forwarding_table 
 
@@ -1101,23 +1255,23 @@ class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
     # nodes:4
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["info"]) -> 'openenoc_switch_info_0x12b1e8c6ce706d78_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["info"]) -> 'openenoc_switch_info_neg_0x7ae6f7afe2223cb6_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["forwarding_control"]) -> 'openenoc_switch_forwarding_control_neg_0x70044bf2405d6f55_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["forwarding_control"]) -> 'openenoc_switch_forwarding_control_neg_0x2706647eeaac8595_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["default_forwarding"]) -> 'openenoc_switch_default_forwarding_neg_0x5cb240a578b8c880_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["default_forwarding"]) -> 'openenoc_switch_default_forwarding_neg_0x67ec41965df8b626_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["forwarding_table"]) -> 'openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["forwarding_table"]) -> 'openenoc_switch_forwarding_table_neg_0x33d209693c71532_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_0x12b1e8c6ce706d78_cls', 'openenoc_switch_forwarding_control_neg_0x70044bf2405d6f55_cls', 'openenoc_switch_default_forwarding_neg_0x5cb240a578b8c880_cls', 'openenoc_switch_forwarding_table_neg_0xb4b3b087de1a4c6_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_switch_info_neg_0x7ae6f7afe2223cb6_cls', 'openenoc_switch_forwarding_control_neg_0x2706647eeaac8595_cls', 'openenoc_switch_default_forwarding_neg_0x67ec41965df8b626_cls', 'openenoc_switch_forwarding_table_neg_0x33d209693c71532_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -1152,7 +1306,7 @@ class openenoc_switch_0x20c7d8927d69eb84_cls(AddressMap):
 
     
     
-class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
+class openenoc_csr_neg_0xedf73a4b7090ba_cls(AddressMap):
     """
     Class to represent a address map in the register model
 
@@ -1170,7 +1324,7 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
     +--------------+-------------------------------------------------------------------------+
     """
 
-    __slots__ : list[str] = ['__test_reg', '__regB', '__switch1', '__switch2']
+    __slots__ : list[str] = ['__test_reg', '__regB', '__switch1', '__switch2', '__endpoint1']
 
     def __init__(self, *,
                  address:int=0,
@@ -1191,33 +1345,38 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
 
         
             
-        self.__test_reg:openenoc_csr_test_reg_0x5da4cb4348e794f_cls = openenoc_csr_test_reg_0x5da4cb4348e794f_cls(
+        self.__test_reg:openenoc_csr_test_reg_0x3f30da3aa8dc9c75_cls = openenoc_csr_test_reg_0x3f30da3aa8dc9c75_cls(
                                                                      address=self.address+0,
                                                                      logger_handle=logger_handle+'.test_reg',
                                                                      inst_name='test_reg', parent=self)
         
             
-        self.__regB:openenoc_csr_regB_0x1a3dc8556819afec_cls = openenoc_csr_regB_0x1a3dc8556819afec_cls(
+        self.__regB:openenoc_csr_regB_0x3c083fe13ca16b03_cls = openenoc_csr_regB_0x3c083fe13ca16b03_cls(
                                                                      address=self.address+4,
                                                                      logger_handle=logger_handle+'.regB',
                                                                      inst_name='regB', parent=self)
-        self.__switch1:openenoc_switch_0x20c7d8927d69eb84_cls = openenoc_switch_0x20c7d8927d69eb84_cls(
+        self.__switch1:openenoc_switch_0x215cd4512c8c9df7_cls = openenoc_switch_0x215cd4512c8c9df7_cls(
                                                                                 address=self.address+256,
                                                                                 logger_handle=logger_handle+'.switch1',
                                                                                 inst_name='switch1',
                                                                                 parent=self)
-        self.__switch2:openenoc_switch_0x70a8cbe83e279d89_cls = openenoc_switch_0x70a8cbe83e279d89_cls(
+        self.__switch2:openenoc_switch_0x7dac07727c29f605_cls = openenoc_switch_0x7dac07727c29f605_cls(
                                                                                 address=self.address+1024,
                                                                                 logger_handle=logger_handle+'.switch2',
                                                                                 inst_name='switch2',
+                                                                                parent=self)
+        self.__endpoint1:openenoc_endpoint_neg_0x25540c4abf5a7c60_cls = openenoc_endpoint_neg_0x25540c4abf5a7c60_cls(
+                                                                                address=self.address+2048,
+                                                                                logger_handle=logger_handle+'.endpoint1',
+                                                                                inst_name='endpoint1',
                                                                                 parent=self)
         
 
     @property
     def size(self) -> int:
-        return 2048
+        return 4096
     @property
-    def test_reg(self) -> 'openenoc_csr_test_reg_0x5da4cb4348e794f_cls':
+    def test_reg(self) -> 'openenoc_csr_test_reg_0x3f30da3aa8dc9c75_cls':
         """
         Property to access test_reg 
 
@@ -1237,7 +1396,7 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
         return self.__test_reg
         
     @property
-    def regB(self) -> 'openenoc_csr_regB_0x1a3dc8556819afec_cls':
+    def regB(self) -> 'openenoc_csr_regB_0x3c083fe13ca16b03_cls':
         """
         Property to access regB 
 
@@ -1246,7 +1405,7 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
         return self.__regB
         
     @property
-    def switch1(self) -> 'openenoc_switch_0x20c7d8927d69eb84_cls':
+    def switch1(self) -> 'openenoc_switch_0x215cd4512c8c9df7_cls':
         """
         Property to access switch1 
 
@@ -1269,7 +1428,7 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
         return self.__switch1
         
     @property
-    def switch2(self) -> 'openenoc_switch_0x70a8cbe83e279d89_cls':
+    def switch2(self) -> 'openenoc_switch_0x7dac07727c29f605_cls':
         """
         Property to access switch2 
 
@@ -1291,11 +1450,32 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
         """
         return self.__switch2
         
+    @property
+    def endpoint1(self) -> 'openenoc_endpoint_neg_0x25540c4abf5a7c60_cls':
+        """
+        Property to access endpoint1 
+
+        +--------------+-------------------------------------------------------------------------+
+        | SystemRDL    | Value                                                                   |
+        | Field        |                                                                         |
+        +==============+=========================================================================+
+        | Name         | .. raw:: html                                                           |
+        |              |                                                                         |
+        |              |      csr.endpoint1                                                      |
+        +--------------+-------------------------------------------------------------------------+
+        | Description  | .. raw:: html                                                           |
+        |              |                                                                         |
+        |              |      <p>Control and status register map for an openENOC Endpoint        |
+        |              |      Interface instance.</p>                                            |
+        +--------------+-------------------------------------------------------------------------+
+        """
+        return self.__endpoint1
+        
 
     
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
-        return {'test_reg':'test_reg','regB':'regB','switch1':'switch1','switch2':'switch2',
+        return {'test_reg':'test_reg','regB':'regB','switch1':'switch1','switch2':'switch2','endpoint1':'endpoint1',
             }
 
     
@@ -1304,26 +1484,30 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
     
     
     
-    # nodes:4
+    # nodes:5
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["test_reg"]) -> 'openenoc_csr_test_reg_0x5da4cb4348e794f_cls': ...
-                
-                
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["regB"]) -> 'openenoc_csr_regB_0x1a3dc8556819afec_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["test_reg"]) -> 'openenoc_csr_test_reg_0x3f30da3aa8dc9c75_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["switch1"]) -> 'openenoc_switch_0x20c7d8927d69eb84_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["regB"]) -> 'openenoc_csr_regB_0x3c083fe13ca16b03_cls': ...
                 
                 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["switch2"]) -> 'openenoc_switch_0x70a8cbe83e279d89_cls': ...
+    def get_child_by_system_rdl_name(self, name: Literal["switch1"]) -> 'openenoc_switch_0x215cd4512c8c9df7_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["switch2"]) -> 'openenoc_switch_0x7dac07727c29f605_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["endpoint1"]) -> 'openenoc_endpoint_neg_0x25540c4abf5a7c60_cls': ...
                 
 
     @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_csr_test_reg_0x5da4cb4348e794f_cls', 'openenoc_csr_regB_0x1a3dc8556819afec_cls', 'openenoc_switch_0x20c7d8927d69eb84_cls', 'openenoc_switch_0x70a8cbe83e279d89_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_csr_test_reg_0x3f30da3aa8dc9c75_cls', 'openenoc_csr_regB_0x3c083fe13ca16b03_cls', 'openenoc_switch_0x215cd4512c8c9df7_cls', 'openenoc_switch_0x7dac07727c29f605_cls', 'openenoc_endpoint_neg_0x25540c4abf5a7c60_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
@@ -1352,12 +1536,13 @@ class openenoc_csr_0x59f2d718e174b2c4_cls(AddressMap):
         yield self.regB
         yield self.switch1
         yield self.switch2
+        yield self.endpoint1
         
         
     
 
 
-openenoc_csr_cls = openenoc_csr_0x59f2d718e174b2c4_cls
+openenoc_csr_cls = openenoc_csr_neg_0xedf73a4b7090ba_cls
 
 if __name__ == '__main__':
     # dummy functions to demonstrate the class

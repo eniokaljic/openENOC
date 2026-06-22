@@ -86,19 +86,19 @@ The endpoint HAL is based on a memory-mapped CSR architecture that exposes endpo
 
 The HAL abstracts implementation-specific details and provides a stable programming interface across different endpoint implementations.
 
-CSR Memory Map
-~~~~~~~~~~~~~~
+Register Definitions and CSR Memory Map
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This section defines the organization of the Endpoint Interface CSR space.
+The SystemRDL source shown below defines the CSR structure of the openENOC Endpoint Interface. This source file is the maintained register specification used by the PeakRDL-based generation flow.
 
-The CSR memory map describes the address layout and grouping of software-accessible endpoint resources. The register organization is intended to provide a coherent programming model for endpoint configuration, operation, monitoring, and diagnostics.
+.. literalinclude:: ../../hal/src/openenoc_endpoint.rdl
+   :language: systemverilog
+   :caption: SystemRDL specification of the openENOC Endpoint Interface CSR map
+   :linenos:
 
-Register Definitions
-~~~~~~~~~~~~~~~~~~~~
+The openENOC Endpoint Interface CSR memory map and detailed register documentation are derived directly from this SystemRDL specification. The generated CSR documentation provides the corresponding human-readable description of the register hierarchy, address offsets, field layouts, access permissions, reset values, and associated register semantics.
 
-This section specifies the registers that form the Endpoint Interface programming model.
-
-Each register definition includes its address offset, access characteristics, reset value, field definitions, and associated behavior. Together, these registers define the complete software-visible functionality of the endpoint subsystem.
+The complete generated CSR documentation is available in :doc:`/generated/openenoc_endpoint`.
 
 Summary
 -------
@@ -109,6 +109,7 @@ The HAL establishes a consistent software-visible programming model based on mem
 
 .. toctree::
    :hidden:
-   
+
    generated/openenoc
    generated/openenoc_switch
+   generated/openenoc_endpoint

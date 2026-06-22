@@ -1,0 +1,37 @@
+// SPDX-FileCopyrightText: 2026 Enio Kaljic
+// SPDX-License-Identifier: CERN-OHL-S-2.0
+
+addrmap openenoc_endpoint #(
+    longint unsigned NUM_OF_INTERFACES = 8,
+    longint unsigned REMOTE_MEMORY_DEPTH = 256,
+    string INST_NAME = "openenoc_endpoint"
+) {
+    name = INST_NAME;
+    desc = "Control and status register map for an openENOC Endpoint Interface instance.";
+
+    default accesswidth = 32;
+    default regwidth = 32;
+    default alignment = 4;
+    addressing = regalign;
+
+    reg info {
+        name = {INST_NAME, ".info"};
+        desc = "Read-only information register for this openENOC Endpoint Interface instance.";
+
+        field {
+            name = {INST_NAME, ".info.placeholder[31:0]"};
+            desc = "Placeholder field for this openENOC Endpoint Interface instance.";
+
+            sw = r;
+            hw = r;
+        } placeholder[31:0];
+
+    } info;
+
+    external mem rmem {
+        name = "rmem";
+        desc = "Remote Memory";
+        mementries = REMOTE_MEMORY_DEPTH;
+        memwidth = 32;
+    } rmem;
+};

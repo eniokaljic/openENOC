@@ -537,10 +537,20 @@ class openenoc_csr_simulator_cls(Simulator):
     Register(width=32, full_inst_name='openenoc_csr.switch2.forwarding_table.entry[31].config', readable=True, writable=True,
                                          fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='enabled', field_type=FieldType.READWRITE),
                                                 ]),
+            2048 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.info', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='placeholder', field_type=FieldType.READONLY),
+                                                ]),
         }
 
     def _build_memories(self) -> list[MemoryEntry]:
         return [
+            MemoryEntry(start_address=3072,
+                        end_address=4095,
+                        memory=Memory(width=32,
+                                      length=256,
+                                      full_inst_name='openenoc_csr.endpoint1.rmem',
+                                      default_value=0)),
         ]
 
 if __name__ == '__main__':

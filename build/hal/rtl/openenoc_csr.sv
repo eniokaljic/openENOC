@@ -7,7 +7,7 @@ module openenoc_csr (
 
         output logic s_axil_awready,
         input wire s_axil_awvalid,
-        input wire [10:0] s_axil_awaddr,
+        input wire [11:0] s_axil_awaddr,
         input wire [2:0] s_axil_awprot,
         output logic s_axil_wready,
         input wire s_axil_wvalid,
@@ -18,7 +18,7 @@ module openenoc_csr (
         output logic [1:0] s_axil_bresp,
         output logic s_axil_arready,
         input wire s_axil_arvalid,
-        input wire [10:0] s_axil_araddr,
+        input wire [11:0] s_axil_araddr,
         input wire [2:0] s_axil_arprot,
         input wire s_axil_rready,
         output logic s_axil_rvalid,
@@ -34,7 +34,7 @@ module openenoc_csr (
     //--------------------------------------------------------------------------
     logic cpuif_req;
     logic cpuif_req_is_wr;
-    logic [10:0] cpuif_addr;
+    logic [11:0] cpuif_addr;
     logic [31:0] cpuif_wr_data;
     logic [31:0] cpuif_wr_biten;
     logic cpuif_req_stall_wr;
@@ -51,10 +51,10 @@ module openenoc_csr (
     logic [1:0] axil_n_in_flight;
     logic axil_prev_was_rd;
     logic axil_arvalid;
-    logic [10:0] axil_araddr;
+    logic [11:0] axil_araddr;
     logic axil_ar_accept;
     logic axil_awvalid;
-    logic [10:0] axil_awaddr;
+    logic [11:0] axil_awaddr;
     logic axil_wvalid;
     logic [31:0] axil_wdata;
     logic [3:0] axil_wstrb;
@@ -132,17 +132,17 @@ module openenoc_csr (
             if(axil_arvalid && !axil_prev_was_rd) begin
                 cpuif_req = '1;
                 cpuif_req_is_wr = '0;
-                cpuif_addr = {axil_araddr[10:2], 2'b0};
+                cpuif_addr = {axil_araddr[11:2], 2'b0};
                 if(!cpuif_req_stall_rd) axil_ar_accept = '1;
             end else if(axil_awvalid && axil_wvalid) begin
                 cpuif_req = '1;
                 cpuif_req_is_wr = '1;
-                cpuif_addr = {axil_awaddr[10:2], 2'b0};
+                cpuif_addr = {axil_awaddr[11:2], 2'b0};
                 if(!cpuif_req_stall_wr) axil_aw_accept = '1;
             end else if(axil_arvalid) begin
                 cpuif_req = '1;
                 cpuif_req_is_wr = '0;
-                cpuif_addr = {axil_araddr[10:2], 2'b0};
+                cpuif_addr = {axil_araddr[11:2], 2'b0};
                 if(!cpuif_req_stall_rd) axil_ar_accept = '1;
             end
         end
@@ -231,12 +231,13 @@ module openenoc_csr (
         logic regB;
         logic switch1;
         logic switch2;
+        logic endpoint1;
     } decoded_reg_strb_t;
     decoded_reg_strb_t decoded_reg_strb;
     logic decoded_err;
     logic decoded_req_is_external;
 
-    logic [10:0] decoded_addr;
+    logic [11:0] decoded_addr;
     logic decoded_req;
     logic decoded_req_is_wr;
     logic [31:0] decoded_wr_data;
@@ -249,14 +250,17 @@ module openenoc_csr (
         is_external = '0;
         is_valid_addr = '1; // No valid address check
         is_valid_rw = '1; // No valid RW check
-        decoded_reg_strb.test_reg = cpuif_req_masked & (cpuif_addr == 11'h0);
-        decoded_reg_strb.regB = cpuif_req_masked & (cpuif_addr == 11'h4);
-        decoded_reg_strb.switch1 = cpuif_req_masked & (cpuif_addr >= 11'h100) & (cpuif_addr <= 11'h100 + 11'hff);
-        is_external |= cpuif_req_masked & (cpuif_addr >= 11'h100) & (cpuif_addr <= 11'h100 + 11'hff);
-        is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 11'h100) & (cpuif_addr <= 11'h100 + 11'hff);
-        decoded_reg_strb.switch2 = cpuif_req_masked & (cpuif_addr >= 11'h400) & (cpuif_addr <= 11'h400 + 11'h3ff);
-        is_external |= cpuif_req_masked & (cpuif_addr >= 11'h400) & (cpuif_addr <= 11'h400 + 11'h3ff);
-        is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 11'h400) & (cpuif_addr <= 11'h400 + 11'h3ff);
+        decoded_reg_strb.test_reg = cpuif_req_masked & (cpuif_addr == 12'h0);
+        decoded_reg_strb.regB = cpuif_req_masked & (cpuif_addr == 12'h4);
+        decoded_reg_strb.switch1 = cpuif_req_masked & (cpuif_addr >= 12'h100) & (cpuif_addr <= 12'h100 + 12'hff);
+        is_external |= cpuif_req_masked & (cpuif_addr >= 12'h100) & (cpuif_addr <= 12'h100 + 12'hff);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 12'h100) & (cpuif_addr <= 12'h100 + 12'hff);
+        decoded_reg_strb.switch2 = cpuif_req_masked & (cpuif_addr >= 12'h400) & (cpuif_addr <= 12'h400 + 12'h3ff);
+        is_external |= cpuif_req_masked & (cpuif_addr >= 12'h400) & (cpuif_addr <= 12'h400 + 12'h3ff);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 12'h400) & (cpuif_addr <= 12'h400 + 12'h3ff);
+        decoded_reg_strb.endpoint1 = cpuif_req_masked & (cpuif_addr >= 12'h800) & (cpuif_addr <= 12'h800 + 12'h7ff);
+        is_external |= cpuif_req_masked & (cpuif_addr >= 12'h800) & (cpuif_addr <= 12'h800 + 12'h7ff);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 12'h800) & (cpuif_addr <= 12'h800 + 12'h7ff);
         decoded_err = '0;
         decoded_req_is_external = is_external;
     end
@@ -465,6 +469,12 @@ module openenoc_csr (
     assign hwif_out.switch2.req_is_wr = decoded_req_is_wr;
     assign hwif_out.switch2.wr_data = decoded_wr_data;
     assign hwif_out.switch2.wr_biten = decoded_wr_biten;
+    // External region: openenoc_csr.endpoint1
+    assign hwif_out.endpoint1.req = decoded_reg_strb.endpoint1;
+    assign hwif_out.endpoint1.addr = decoded_addr[10:0];
+    assign hwif_out.endpoint1.req_is_wr = decoded_req_is_wr;
+    assign hwif_out.endpoint1.wr_data = decoded_wr_data;
+    assign hwif_out.endpoint1.wr_biten = decoded_wr_biten;
 
     //--------------------------------------------------------------------------
     // Write response
@@ -474,6 +484,7 @@ module openenoc_csr (
         wr_ack = '0;
         wr_ack |= hwif_in.switch1.wr_ack;
         wr_ack |= hwif_in.switch2.wr_ack;
+        wr_ack |= hwif_in.endpoint1.wr_ack;
         external_wr_ack = wr_ack;
     end
     assign cpuif_wr_ack = external_wr_ack | (decoded_req & decoded_req_is_wr & ~decoded_req_is_external);
@@ -489,6 +500,7 @@ module openenoc_csr (
         rd_ack = '0;
         rd_ack |= hwif_in.switch1.rd_ack;
         rd_ack |= hwif_in.switch2.rd_ack;
+        rd_ack |= hwif_in.endpoint1.rd_ack;
         readback_external_rd_ack_c = rd_ack;
     end
 
@@ -496,8 +508,8 @@ module openenoc_csr (
 
     assign readback_external_rd_ack = readback_external_rd_ack_c;
 
-    logic [10:0] rd_mux_addr;
-    logic [10:0] pending_rd_addr;
+    logic [11:0] rd_mux_addr;
+    logic [11:0] pending_rd_addr;
     // Hold read mux address to guarantee it is stable throughout any external accesses
     always_ff @(posedge clk) begin
         if(rst) begin
@@ -514,20 +526,23 @@ module openenoc_csr (
     always_comb begin
         automatic logic [31:0] readback_data_var;
         readback_data_var = '0;
-        if(rd_mux_addr == 11'h0) begin
+        if(rd_mux_addr == 12'h0) begin
             readback_data_var[31:0] = field_storage.test_reg.test_field.value;
         end
-        if(rd_mux_addr == 11'h4) begin
+        if(rd_mux_addr == 12'h4) begin
             readback_data_var[7:0] = field_storage.regB.f0.value;
             readback_data_var[15:8] = field_storage.regB.f1.value;
             readback_data_var[23:16] = field_storage.regB.f2.value;
             readback_data_var[31:24] = field_storage.regB.f3.value;
         end
-        if((rd_mux_addr >= 11'h100) && (rd_mux_addr <= 11'h100 + 11'hff)) begin
+        if((rd_mux_addr >= 12'h100) && (rd_mux_addr <= 12'h100 + 12'hff)) begin
             readback_data_var = hwif_in.switch1.rd_data;
         end
-        if((rd_mux_addr >= 11'h400) && (rd_mux_addr <= 11'h400 + 11'h3ff)) begin
+        if((rd_mux_addr >= 12'h400) && (rd_mux_addr <= 12'h400 + 12'h3ff)) begin
             readback_data_var = hwif_in.switch2.rd_data;
+        end
+        if((rd_mux_addr >= 12'h800) && (rd_mux_addr <= 12'h800 + 12'h7ff)) begin
+            readback_data_var = hwif_in.endpoint1.rd_data;
         end
         readback_data = readback_data_var;
         readback_done = decoded_req & ~decoded_req_is_wr & ~decoded_req_is_external;

@@ -4,8 +4,8 @@
 package openenoc_csr_pkg;
 
     localparam OPENENOC_CSR_DATA_WIDTH = 32;
-    localparam OPENENOC_CSR_MIN_ADDR_WIDTH = 11;
-    localparam OPENENOC_CSR_SIZE = 'h800;
+    localparam OPENENOC_CSR_MIN_ADDR_WIDTH = 12;
+    localparam OPENENOC_CSR_SIZE = 'h1000;
 
     typedef struct {
         logic rd_ack;
@@ -20,8 +20,15 @@ package openenoc_csr_pkg;
     } openenoc_switch_INST_NAME_e9cd9861__external__in_t;
 
     typedef struct {
+        logic rd_ack;
+        logic [31:0] rd_data;
+        logic wr_ack;
+    } openenoc_endpoint_INST_NAME_33dcbb39__external__in_t;
+
+    typedef struct {
         openenoc_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__external__in_t switch1;
         openenoc_switch_INST_NAME_e9cd9861__external__in_t switch2;
+        openenoc_endpoint_INST_NAME_33dcbb39__external__in_t endpoint1;
     } openenoc_csr__in_t;
 
     typedef struct {
@@ -72,9 +79,18 @@ package openenoc_csr_pkg;
     } openenoc_switch_INST_NAME_e9cd9861__external__out_t;
 
     typedef struct {
+        logic req;
+        logic [10:0] addr;
+        logic req_is_wr;
+        logic [31:0] wr_data;
+        logic [31:0] wr_biten;
+    } openenoc_endpoint_INST_NAME_33dcbb39__external__out_t;
+
+    typedef struct {
         openenoc_csr__test_reg__out_t test_reg;
         openenoc_csr__regB__out_t regB;
         openenoc_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__external__out_t switch1;
         openenoc_switch_INST_NAME_e9cd9861__external__out_t switch2;
+        openenoc_endpoint_INST_NAME_33dcbb39__external__out_t endpoint1;
     } openenoc_csr__out_t;
 endpackage

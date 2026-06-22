@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: CERN-OHL-S-2.0
 
 `include "openenoc_switch.rdl"
+`include "openenoc_endpoint.rdl"
 
 addrmap openenoc_csr {
     name = "csr";
@@ -55,6 +56,11 @@ addrmap openenoc_csr {
         .TABLE_DEPTH(32),
         .INST_NAME("csr.switch2")
     ) switch2;
+
+    openenoc_endpoint #(
+        .REMOTE_MEMORY_DEPTH(256),
+        .INST_NAME("csr.endpoint1")
+    ) endpoint1;
 };
 
 addrmap openenoc {

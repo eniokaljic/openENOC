@@ -291,6 +291,29 @@ typedef struct __attribute__ ((__packed__)) {
     openenoc_switch_INST_NAME_e9cd9861__forwarding_table_t forwarding_table;
 } openenoc_switch_INST_NAME_e9cd9861_t;
 
+// reg - openenoc_endpoint_INST_NAME_33dcbb39::info
+#define OPENENOC_ENDPOINT_INST_NAME_33DCBB39__INFO__PLACEHOLDER_bm 0xffffffff
+#define OPENENOC_ENDPOINT_INST_NAME_33DCBB39__INFO__PLACEHOLDER_bp 0
+#define OPENENOC_ENDPOINT_INST_NAME_33DCBB39__INFO__PLACEHOLDER_bw 32
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t placeholder :32;
+    } f;
+    uint32_t w;
+} openenoc_endpoint_INST_NAME_33dcbb39__info_t;
+
+// mem - openenoc_endpoint_INST_NAME_33dcbb39::rmem
+typedef struct __attribute__ ((__packed__)) {
+    uint32_t mem[256];
+} openenoc_endpoint_INST_NAME_33dcbb39__rmem_t;
+
+// addrmap - openenoc_endpoint_INST_NAME_33dcbb39
+typedef struct __attribute__ ((__packed__)) {
+    openenoc_endpoint_INST_NAME_33dcbb39__info_t info;
+    uint8_t RESERVED_4_3ff[0x3fc];
+    openenoc_endpoint_INST_NAME_33dcbb39__rmem_t rmem;
+} openenoc_endpoint_INST_NAME_33dcbb39_t;
+
 // addrmap - openenoc_csr
 typedef struct __attribute__ ((__packed__)) {
     openenoc_csr__test_reg_t test_reg;
@@ -299,6 +322,7 @@ typedef struct __attribute__ ((__packed__)) {
     openenoc_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55_t switch1;
     uint8_t RESERVED_200_3ff[0x200];
     openenoc_switch_INST_NAME_e9cd9861_t switch2;
+    openenoc_endpoint_INST_NAME_33dcbb39_t endpoint1;
 } openenoc_csr_t;
 
 // addrmap - openenoc
@@ -311,7 +335,7 @@ typedef struct __attribute__ ((__packed__)) {
 } openenoc_t;
 
 
-static_assert(sizeof(openenoc_t) == 0x20000800, "Packing error");
+static_assert(sizeof(openenoc_t) == 0x20001000, "Packing error");
 
 #ifdef __cplusplus
 }

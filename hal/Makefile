@@ -8,6 +8,7 @@ DOCSDIR   = $(PWD)/../docs/src/generated
 RDLTOP    = openenoc
 RDLCSR    = openenoc_csr
 RDLSW     = openenoc_switch
+RDLEP     = openenoc_endpoint
 RDLSRC    = $(SOURCEDIR)/$(RDLTOP).rdl
 
 PEAKRDLHEADER = $(BUILDDIR)/$(RDLCSR).h
@@ -16,8 +17,9 @@ PEAKRDLPYTHON = $(BUILDDIR)/python/
 PEAKRDLHTML   = $(BUILDDIR)/html/
 PEAKRDLMD_TOP = $(DOCSDIR)/$(RDLTOP).md
 PEAKRDLMD_SW  = $(DOCSDIR)/$(RDLSW).md
+PEAKRDLMD_EP  = $(DOCSDIR)/$(RDLEP).md
 
-all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW)
+all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW) $(PEAKRDLMD_EP)
 
 $(PEAKRDLHEADER): $(RDLSRC)
 	mkdir -p $(BUILDDIR)
@@ -35,13 +37,17 @@ $(PEAKRDLHTML): $(RDLSRC)
 $(PEAKRDLMD_TOP): $(RDLSRC)
 	mkdir -p $(DOCSDIR)
 	peakrdl markdown $^ -o $@ --top $(RDLTOP)
-	
+
 $(PEAKRDLMD_SW): $(RDLSRC)
 	mkdir -p $(DOCSDIR)
 	peakrdl markdown $^ -o $@ --top $(RDLSW)
+
+$(PEAKRDLMD_EP): $(RDLSRC)
+	mkdir -p $(DOCSDIR)
+	peakrdl markdown $^ -o $@ --top $(RDLEP)
 
 unittest: $(PEAKRDLPYTHON)
 	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLCSR)/tests -t $(PEAKRDLPYTHON) -v
 
 clean:
-	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW)
+	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW) $(PEAKRDLMD_EP)
