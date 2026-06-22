@@ -9,7 +9,7 @@ Don't override. Generated from: openenoc
 
 - Absolute Address: 0x0
 - Base Offset: 0x0
-- Size: 0x20000800
+- Size: 0x20001000
 
 |  Offset  |Identifier|Name|
 |----------|----------|----|
@@ -43,16 +43,17 @@ No supported members.
 
 - Absolute Address: 0x20000000
 - Base Offset: 0x20000000
-- Size: 0x800
+- Size: 0x1000
 
 <p>openENOC CSR</p>
 
-|Offset|Identifier|    Name    |
-|------|----------|------------|
-| 0x000| test_reg |csr.test_reg|
-| 0x004|   regB   |      —     |
-| 0x100|  switch1 | csr.switch1|
-| 0x400|  switch2 | csr.switch2|
+|Offset|Identifier|     Name    |
+|------|----------|-------------|
+| 0x000| test_reg | csr.test_reg|
+| 0x004|   regB   |      —      |
+| 0x100|  switch1 | csr.switch1 |
+| 0x400|  switch2 | csr.switch2 |
+| 0x800| endpoint1|csr.endpoint1|
 
 ### test_reg register
 
@@ -3100,3 +3101,43 @@ No supported members.
 #### enabled field
 
 <p>Enables this forwarding table entry. When cleared, the entry is ignored during forwarding table lookup.</p>
+
+## endpoint1 address map
+
+- Absolute Address: 0x20000800
+- Base Offset: 0x800
+- Size: 0x800
+
+<p>Control and status register map for an openENOC Endpoint Interface instance.</p>
+
+|Offset|Identifier|       Name       |
+|------|----------|------------------|
+| 0x000|   info   |csr.endpoint1.info|
+| 0x400|   rmem   |       rmem       |
+
+### info register
+
+- Absolute Address: 0x20000800
+- Base Offset: 0x0
+- Size: 0x4
+
+<p>Read-only information register for this openENOC Endpoint Interface instance.</p>
+
+|Bits| Identifier|Access|Reset|                Name                |
+|----|-----------|------|-----|------------------------------------|
+|31:0|placeholder|   r  |  —  |csr.endpoint1.info.placeholder[31:0]|
+
+#### placeholder field
+
+<p>Placeholder field for this openENOC Endpoint Interface instance.</p>
+
+## rmem memory
+
+- Absolute Address: 0x20000C00
+- Base Offset: 0x400
+- Size: 0x400
+
+<p>Remote Memory</p>
+
+No supported members.
+

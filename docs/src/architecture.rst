@@ -61,16 +61,24 @@ Systems that rely exclusively on autonomous switching behavior may omit the cont
 openENOC Endpoint Interface
 ---------------------------
 
-The openENOC Endpoint Interface is the termination point for Ethernet communication arriving from the openENOC Switch. Every resource attached to the openENOC fabric, including processors, accelerators, memories, and peripherals, is represented on the network through an openENOC Endpoint Interface. It provides both *memory-mapped* and *streaming* integration models, allowing different classes of compute and memory resources to connect to the common network in a manner appropriate to their communication style.
+The openENOC Endpoint Interface is the termination point for Ethernet communication arriving from the openENOC Switch. Every resource attached to the openENOC fabric, including processors, accelerators, memories, and peripherals, is represented on the network through an openENOC Endpoint Interface. It provides both *memory-mapped* and *streaming* integration models, allowing different classes of compute and memory resources to connect to the common network in a manner appropriate to their communication style. On the local side, integration with processors, accelerators, and memory-mapped resources is provided through AXI4-Lite interface.
 
-Depending on the attached resource, an endpoint may incorporate DMA functionality, local buffering, protocol adaptation, address translation, or application-specific processing logic. The endpoint abstraction therefore represents a generic attachment mechanism rather than a specific communication engine.
+The internal structure of the openENOC Endpoint Interface is illustrated in the figure below. It consists of a CSR block, a DMA Engine, an oETP Engine, and supporting buffering logic that enables conversion between the memory-mapped access model used by the CSR and DMA blocks and the streaming transfer model used by oETP. This buffering logic absorbs processing latency and preserves transfer continuity during conversion between the two communication models. The CSR block provides configuration and control access to the endpoint, but may also support a passthrough path toward the AXI4-Stream (AXIS) interface, enabling a streaming integration model for low-latency dataflow-oriented components. In addition, the CSR block can use the Remote Memory (RMEM) Interface to enable direct mapping of remote memory regions without relying on the DMA Engine. This is useful in low-latency applications where simple, direct access is preferred over descriptor-based DMA transfers.
+
+.. figure:: ../images/openENOC-EndpointInterface.svg
+   :align: center
+   :width: 60%
+
+   Internal structure of the openENOC Endpoint Interface
+
+Individual endpoint implementations may configure, specialize, or extend these internal blocks depending on the attached resource. For example, an endpoint connected to memory may use DMA functionality and local buffering for bulk data movement, while an endpoint connected to an accelerator may rely more heavily on protocol adaptation, streaming access, or application-specific processing logic. The endpoint abstraction therefore represents a generic attachment mechanism rather than a single fixed communication engine.
 
 For memory-oriented deployments, endpoint implementations may operate in two common modes:
 
 * **Standalone mode**: the integrated controller autonomously handles DMA transfer coordination, memory range mapping, and data replication and synchronization.
-* **Non-standalone mode**: the endpoint is connected to a processor through its own CSR interface. In this case, the processor controls DMA-related functions such as interrupts, descriptors, and transfer management.
+* **Non-standalone mode**: the endpoint is connected to a processor through its own AXI4-Lite CSR interface. In this case, the processor controls DMA-related functions such as interrupts, descriptors, and transfer management.
 
-This makes the endpoint suitable both for memory-centric communication and for low-latency dataflow-oriented processing. More broadly, the endpoint interface serves as the adaptation layer between Ethernet-based transport and the local semantics of the attached block, whether that block is a CPU subsystem, an accelerator, a memory region, or a peripheral. When transport-level communication is required, endpoints may additionally implement oETP functionality to support remote memory operations and other higher-level communication services.
+This makes the endpoint suitable both for memory-centric communication and for low-latency dataflow-oriented processing. More broadly, the Endpoint Interface forms the boundary between the Ethernet-based openENOC fabric and the local logic attached to the endpoint. On the network side, it terminates Ethernet frame exchange and handles oETP protocol processing. On the local side, it exposes the corresponding control, memory-mapped, DMA, or streaming access model through AXI4-Lite and AXI4-Stream interfaces.
 
 openENOC Transport Protocol
 ---------------------------
@@ -176,7 +184,7 @@ The openENOC project is designed around a model-driven development workflow that
 .. figure:: ../images/openENOC-DevelopmentFlow.svg
    :align: center
    :width: 80%
-   
+
    openENOC Development and Integration Flow
 
 The process begins with the development of openENOC hardware and software components alongside a `SystemRDL <https://github.com/systemrdl>`_ specification for the Control and Status Register (CSR) interface, serving as the single source of truth for the register map and enabling automatic generation of implementation and verification artefacts using `PeakRDL <https://github.com/SystemRDL/PeakRDL>`_.
@@ -207,7 +215,7 @@ Beyond the communication architecture itself, openENOC adopts a model-driven dev
 References
 ----------
 
-.. [1] T. Bjerregaard and S. Mahadevan, "A survey of research and practices of network-on-chip," in *ACM Computing Surveys*, vol. 38, no. 1, pp. 1–51, 2006. 
+.. [1] T. Bjerregaard and S. Mahadevan, "A survey of research and practices of network-on-chip," in *ACM Computing Surveys*, vol. 38, no. 1, pp. 1–51, 2006.
    `(link) <https://dl.acm.org/doi/10.1145/1132952.1132953>`_
 
 .. [2] S. Biglari, F. Hosseini, A. Upadhyay and H. Zhao, "Survey of Network-on-Chip (NoC) for Heterogeneous Multicore Systems," *2024 IEEE 17th International Symposium on Embedded Multicore/Many-core Systems-on-Chip (MCSoC)*, Kuala Lumpur, Malaysia, 2024, pp. 155-162, doi: 10.1109/MCSoC64144.2024.00036.
@@ -221,7 +229,7 @@ References
 
 .. [5] J. Zuckerman, P. Mantovani, D. Giri and L. P. Carloni, "Enabling Heterogeneous, Multicore SoC Research with RISC-V and ESP," arXiv preprint arXiv:2206.01901, 2022.
    `(link) <https://arxiv.org/abs/2206.01901>`_
-   
+
 .. [6] NVIDIA, *RDMA Aware Networks Programming User Manual*, NVIDIA Networking Documentation.
    `(link) <https://docs.nvidia.com/networking/display/rdmaawareprogrammingv17>`_
 
