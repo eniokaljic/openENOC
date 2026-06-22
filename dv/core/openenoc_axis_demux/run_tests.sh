@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2026 Kerim Bavcic
-# SPDX-License-Identifier: AGPL-3.0-or-later
-
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 Kerim Bavcic
 # SPDX-License-Identifier: AGPL-3.0-or-later
