@@ -63,6 +63,16 @@ class openenoc_csr_single_access(openenoc_csr_TestCase): # type: ignore[valid-ty
         """
         Walk the address map and check user defined properties are correctly pulled up
         """
+        with self.subTest(msg='register: openenoc_csr.endpoint1'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint2'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint2.udp,{})
+            
         with self.subTest(msg='register: openenoc_csr.switch1'):
             
             
@@ -72,11 +82,6 @@ class openenoc_csr_single_access(openenoc_csr_TestCase): # type: ignore[valid-ty
             
             
             self.assertDictEqual(self.dut.switch2.udp,{})
-            
-        with self.subTest(msg='register: openenoc_csr.endpoint1'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint1.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.test_reg'):
             
@@ -192,7 +197,7 @@ class openenoc_csr_single_access(openenoc_csr_TestCase): # type: ignore[valid-ty
         
         with self.subTest(msg='addrmap: top_node'):
             self._single_addrmap_property_test(dut=self.dut,
-                                               size=4096,
+                                               size=7168,
                                                rdl_name="csr",
                                                rdl_desc="openENOC CSR",
                                                inst_name='openenoc_csr',
@@ -200,12 +205,36 @@ class openenoc_csr_single_access(openenoc_csr_TestCase): # type: ignore[valid-ty
             self._test_addrmap_iterators(dut=self.dut,
                                          writeable_registers=NodeIterators('test_reg','regB',),
                                          readable_registers=NodeIterators('test_reg','regB',),
-                                         sections=NodeIterators('switch1','switch2','endpoint1',),
+                                         sections=NodeIterators('endpoint1','endpoint2','switch1','switch2',),
                                          memories=NodeIterators())
         
 
 
         # test all the address maps
+        with self.subTest(msg='addrmap: openenoc_csr.endpoint1'):
+            self._single_addrmap_property_test(dut=self.dut.endpoint1,
+                                               size=2048,
+                                               rdl_name="csr.endpoint1",
+                                               rdl_desc="Control and status register map for an openENOC Endpoint Interface instance.",
+                                               inst_name='endpoint1',
+                                               parent_full_inst_name='openenoc_csr')
+            self._test_addrmap_iterators(dut=self.dut.endpoint1,
+                                         writeable_registers=NodeIterators(),
+                                         readable_registers=NodeIterators('info',),
+                                         sections=NodeIterators('config','peers',),
+                                         memories=NodeIterators('rmem',))
+        with self.subTest(msg='addrmap: openenoc_csr.endpoint2'):
+            self._single_addrmap_property_test(dut=self.dut.endpoint2,
+                                               size=1024,
+                                               rdl_name="csr.endpoint2",
+                                               rdl_desc="Control and status register map for an openENOC Endpoint Interface instance.",
+                                               inst_name='endpoint2',
+                                               parent_full_inst_name='openenoc_csr')
+            self._test_addrmap_iterators(dut=self.dut.endpoint2,
+                                         writeable_registers=NodeIterators(),
+                                         readable_registers=NodeIterators('info',),
+                                         sections=NodeIterators('config','peers',),
+                                         memories=NodeIterators('rmem',))
         with self.subTest(msg='addrmap: openenoc_csr.switch1'):
             self._single_addrmap_property_test(dut=self.dut.switch1,
                                                size=256,
@@ -230,18 +259,6 @@ class openenoc_csr_single_access(openenoc_csr_TestCase): # type: ignore[valid-ty
                                          readable_registers=NodeIterators('info','forwarding_control','default_forwarding',),
                                          sections=NodeIterators('forwarding_table',),
                                          memories=NodeIterators())
-        with self.subTest(msg='addrmap: openenoc_csr.endpoint1'):
-            self._single_addrmap_property_test(dut=self.dut.endpoint1,
-                                               size=2048,
-                                               rdl_name="csr.endpoint1",
-                                               rdl_desc="Control and status register map for an openENOC Endpoint Interface instance.",
-                                               inst_name='endpoint1',
-                                               parent_full_inst_name='openenoc_csr')
-            self._test_addrmap_iterators(dut=self.dut.endpoint1,
-                                         writeable_registers=NodeIterators(),
-                                         readable_registers=NodeIterators('info',),
-                                         sections=NodeIterators(),
-                                         memories=NodeIterators('rmem',))
         
 
     def test_regfile(self) -> None:

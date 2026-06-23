@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: CERN-OHL-S-2.0
 
 addrmap openenoc_endpoint #(
-    longint unsigned NUM_OF_INTERFACES = 8,
-    longint unsigned REMOTE_MEMORY_DEPTH = 256,
+    longint unsigned NUM_OF_PEERS = 4,
+    longint unsigned RMEM_TOTAL_DEPTH = 256,
     string INST_NAME = "openenoc_endpoint"
 ) {
     name = INST_NAME;
@@ -19,19 +19,159 @@ addrmap openenoc_endpoint #(
         desc = "Read-only information register for this openENOC Endpoint Interface instance.";
 
         field {
-            name = {INST_NAME, ".info.placeholder[31:0]"};
-            desc = "Placeholder field for this openENOC Endpoint Interface instance.";
+            name = {INST_NAME, ".info.num_of_peers[31:16]"};
+            desc = "Number of remote peers supported by this openENOC Endpoint Interface instance. This field reflects the NUM_OF_PEERS parameter value.";
 
             sw = r;
             hw = r;
-        } placeholder[31:0];
+        } num_of_peers[31:16] = NUM_OF_PEERS;
 
+        field {
+            name = {INST_NAME, ".info.rmem_total_depth[15:0]"};
+            desc = "Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.";
+
+            sw = r;
+            hw = r;
+        } rmem_total_depth[15:0] = RMEM_TOTAL_DEPTH;
     } info;
+
+    regfile config {
+        name = {INST_NAME, ".config"};
+        desc = "Configuration register file for this openENOC Endpoint Interface instance.";
+
+        reg mac_address {
+            name = {INST_NAME, ".config.mac_address"};
+            desc = "Local site 48-bit destination MAC address.";
+
+            regwidth = 64;
+
+            field {
+                name = {INST_NAME, ".config.mac_address.hi_word[47:32]"};
+                desc = "Upper 16 bits [47:32] of the 48-bit MAC address.";
+
+                sw = rw;
+                hw = rw;
+            } hi_word[47:32] = 0;
+
+            field {
+                name = {INST_NAME, ".config.mac_address.lo_word[31:0]"};
+                desc = "Lower 32 bits [31:0] of the 48-bit MAC address.";
+
+                sw = rw;
+                hw = rw;
+            } lo_word[31:0] = 0;
+        } mac_address;
+    } config;
+
+    regfile peers {
+        name = {INST_NAME, ".peers"};
+        desc = "Register file for remote peer configuration and memory region information.";
+
+        regfile entry {
+            name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1]"};
+            desc = "Register file for a single remote peer configuration and memory region information.";
+
+            reg mac_address {
+                name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].mac_address"};
+                desc = "Remote peer 48-bit destination MAC address.";
+
+                regwidth = 64;
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]"};
+                    desc = "Upper 16 bits [47:32] of the 48-bit MAC address.";
+
+                    sw = rw;
+                    hw = rw;
+                } hi_word[47:32];
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]"};
+                    desc = "Lower 32 bits [31:0] of the 48-bit MAC address.";
+
+                    sw = rw;
+                    hw = rw;
+                } lo_word[31:0];
+            } mac_address;
+
+            reg rmem_address {
+                name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].rmem_address"};
+                desc = "Address offset of the virtual memory region corresponding to the remote peer's memory.";
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]"};
+                    desc = "32-bit address offset of the virtual memory region corresponding to the remote peer's memory.";
+
+                    sw = rw;
+                    hw = r;
+                } offset[31:0];
+            } rmem_address;
+
+            reg local_address {
+                name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].local_address"};
+                desc = "Start address of the local memory region for DMA transfers.";
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]"};
+                    desc = "32-bit start address of the local memory region for DMA transfers.";
+
+                    sw = rw;
+                    hw = r;
+                } base[31:0];
+            } local_address;
+
+            reg remote_address {
+                name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].remote_address"};
+                desc = "Start address of the remote peer's memory region.";
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]"};
+                    desc = "32-bit start address of the remote peer's memory region.";
+
+                    sw = rw;
+                    hw = r;
+                } base[31:0];
+            } remote_address;
+
+            reg size {
+                name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].size"};
+                desc = "Size of the remote peer's memory region.";
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]"};
+                    desc = "32-bit size of the remote peer's memory region.";
+
+                    sw = rw;
+                    hw = r;
+                } value[31:0];
+            } size;
+
+            reg dma_config {
+                name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma_config"};
+                desc = "DMA configuration for the remote peer.";
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]"};
+                    desc = "
+                        DMA mode for transfers to/from the remote peer:<ul>
+                        <li>0: DMA transfers to/from the remote peer are disabled.</li>
+                        <li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
+                        <li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
+                        <li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+                        </ul>
+                    ";
+
+                    sw = rw;
+                    hw = r;
+                } mode[1:0];
+            } dma_config;
+        } entry[NUM_OF_PEERS];
+    } peers;
 
     external mem rmem {
         name = "rmem";
-        desc = "Remote Memory";
-        mementries = REMOTE_MEMORY_DEPTH;
+        desc = "Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.";
+        mementries = RMEM_TOTAL_DEPTH;
         memwidth = 32;
     } rmem;
 };

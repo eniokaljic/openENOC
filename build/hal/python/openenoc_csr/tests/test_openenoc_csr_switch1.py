@@ -123,10 +123,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.default_forwarding.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].iface'):
             
@@ -138,10 +138,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].config.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].iface'):
             
@@ -153,10 +153,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].config.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].iface'):
             
@@ -168,10 +168,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].config.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].iface'):
             
@@ -183,10 +183,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].config.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].iface'):
             
@@ -198,10 +198,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].config.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].iface'):
             
@@ -213,10 +213,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].config.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].iface'):
             
@@ -228,10 +228,10 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].config.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].macaddr'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].mac_address'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[7].macaddr.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[7].mac_address.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].iface'):
             
@@ -273,15 +273,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.default_forwarding.bitmap.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].iface.bitmap'):
             
@@ -293,15 +293,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[0].config.enabled.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].iface.bitmap'):
             
@@ -313,15 +313,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[1].config.enabled.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].iface.bitmap'):
             
@@ -333,15 +333,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[2].config.enabled.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].iface.bitmap'):
             
@@ -353,15 +353,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[3].config.enabled.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].iface.bitmap'):
             
@@ -373,15 +373,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[4].config.enabled.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].iface.bitmap'):
             
@@ -393,15 +393,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[5].config.enabled.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].iface.bitmap'):
             
@@ -413,15 +413,15 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             
             self.assertDictEqual(self.dut.switch1.forwarding_table.entry[6].config.enabled.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].macaddr.lo_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].mac_address.lo_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[7].macaddr.lo_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[7].mac_address.lo_word.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].macaddr.hi_word'):
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].mac_address.hi_word'):
             
             
-            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[7].macaddr.hi_word.udp,{})
+            self.assertDictEqual(self.dut.switch1.forwarding_table.entry[7].mac_address.hi_word.udp,{})
             
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].iface.bitmap'):
             
@@ -444,7 +444,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
         - it can be read and written to correctly
         """
         with self.subTest(msg='register: openenoc_csr.switch1.info'):
-            self._single_register_property_test(rut=self.dut.switch1.info, address=256, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.info, address=5120, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.info",
                                                 rdl_desc="Read-only information register for this openENOC Switch instance.",
                                                 inst_name='info',
@@ -453,7 +453,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['table_depth','num_of_interfaces', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_control'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_control, address=260, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_control, address=5124, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_control",
                                                 rdl_desc="Forwarding control register for the openENOC Switch instance.",
                                                 inst_name='forwarding_control',
@@ -462,7 +462,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['operation_mode','pause_request','pause_done', ]),
                                                                                           writeable_fields=set(['operation_mode','pause_request', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.default_forwarding'):
-            self._single_register_property_test(rut=self.dut.switch1.default_forwarding, address=264, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.default_forwarding, address=5128, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.default_forwarding",
                                                 rdl_desc="Defines the destination interface or interfaces for frames that do not match any enabled forwarding table entry.",
                                                 inst_name='default_forwarding',
@@ -470,17 +470,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.default_forwarding, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[0].macaddr, address=384, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[0].mac_address, address=5248, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[0]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[0].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[0].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[0].iface, address=392, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[0].iface, address=5256, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -489,7 +489,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[0].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[0].config, address=396, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[0].config, address=5260, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -497,17 +497,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[0].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[1].macaddr, address=400, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[1].mac_address, address=5264, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[1]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[1].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[1].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[1].iface, address=408, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[1].iface, address=5272, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -516,7 +516,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[1].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[1].config, address=412, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[1].config, address=5276, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -524,17 +524,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[1].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[2].macaddr, address=416, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[2].mac_address, address=5280, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[2]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[2].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[2].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[2].iface, address=424, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[2].iface, address=5288, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -543,7 +543,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[2].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[2].config, address=428, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[2].config, address=5292, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -551,17 +551,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[2].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[3].macaddr, address=432, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[3].mac_address, address=5296, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[3]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[3].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[3].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[3].iface, address=440, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[3].iface, address=5304, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -570,7 +570,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[3].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[3].config, address=444, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[3].config, address=5308, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -578,17 +578,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[3].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[4].macaddr, address=448, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[4].mac_address, address=5312, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[4]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[4].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[4].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[4].iface, address=456, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[4].iface, address=5320, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -597,7 +597,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[4].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[4].config, address=460, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[4].config, address=5324, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -605,17 +605,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[4].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[5].macaddr, address=464, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[5].mac_address, address=5328, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[5]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[5].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[5].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[5].iface, address=472, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[5].iface, address=5336, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -624,7 +624,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[5].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[5].config, address=476, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[5].config, address=5340, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -632,17 +632,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[5].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[6].macaddr, address=480, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[6].mac_address, address=5344, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[6]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[6].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[6].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[6].iface, address=488, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[6].iface, address=5352, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -651,7 +651,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[6].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[6].config, address=492, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[6].config, address=5356, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -659,17 +659,17 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
             self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[6].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].macaddr'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[7].macaddr, address=496, width=64, accesswidth=32, size=8,
-                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr",
+        with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].mac_address'):
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[7].mac_address, address=5360, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address",
                                                 rdl_desc="48-bit destination MAC address used as the key for this forwarding table entry.",
-                                                inst_name='macaddr',
+                                                inst_name='mac_address',
                                                 parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[7]')
-            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[7].macaddr, has_sw_readable=True, has_sw_writable=True,
+            self._single_register_read_and_write_test(rut=self.dut.switch1.forwarding_table.entry[7].mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].iface'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[7].iface, address=504, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[7].iface, address=5368, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface",
                                                 rdl_desc="Forwarding interface information associated with this forwarding table entry.",
                                                 inst_name='iface',
@@ -678,7 +678,7 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                                                           readable_fields=set(['bitmap', ]),
                                                                                           writeable_fields=set(['bitmap', ]) )
         with self.subTest(msg='register: openenoc_csr.switch1.forwarding_table.entry[7].config'):
-            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[7].config, address=508, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.switch1.forwarding_table.entry[7].config, address=5372, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config",
                                                 rdl_desc="Configuration information associated with this forwarding table entry.",
                                                 inst_name='config',
@@ -735,20 +735,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='bitmap',
                                              parent_full_inst_name='openenoc_csr.switch1.default_forwarding')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.default_forwarding.bitmap, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[0].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[0].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[0].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[0].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[0].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[0].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[0].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[0].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[0].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[0].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[0].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[0].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[0].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[0].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[0].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[0].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[0].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[0].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -763,20 +763,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='enabled',
                                              parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[0].config')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[0].config.enabled, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[1].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[1].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[1].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[1].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[1].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[1].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[1].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[1].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[1].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[1].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[1].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[1].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[1].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[1].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[1].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[1].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[1].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[1].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -791,20 +791,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='enabled',
                                              parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[1].config')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[1].config.enabled, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[2].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[2].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[2].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[2].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[2].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[2].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[2].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[2].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[2].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[2].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[2].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[2].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[2].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[2].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[2].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[2].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[2].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[2].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -819,20 +819,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='enabled',
                                              parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[2].config')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[2].config.enabled, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[3].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[3].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[3].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[3].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[3].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[3].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[3].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[3].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[3].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[3].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[3].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[3].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[3].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[3].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[3].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[3].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[3].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[3].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -847,20 +847,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='enabled',
                                              parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[3].config')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[3].config.enabled, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[4].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[4].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[4].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[4].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[4].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[4].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[4].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[4].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[4].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[4].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[4].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[4].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[4].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[4].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[4].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[4].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[4].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[4].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -875,20 +875,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='enabled',
                                              parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[4].config')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[4].config.enabled, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[5].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[5].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[5].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[5].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[5].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[5].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[5].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[5].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[5].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[5].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[5].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[5].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[5].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[5].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[5].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[5].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[5].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[5].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -903,20 +903,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='enabled',
                                              parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[5].config')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[5].config.enabled, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[6].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[6].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[6].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[6].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[6].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[6].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[6].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[6].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[6].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[6].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[6].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[6].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[6].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[6].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[6].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[6].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[6].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[6].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -931,20 +931,20 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                              inst_name='enabled',
                                              parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[6].config')
             self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[6].config.enabled, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[7].macaddr.lo_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[7].macaddr.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]",
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[7].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[7].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='lo_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[7].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[7].macaddr.lo_word, is_sw_readable=True, is_sw_writable=True)
-        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[7].macaddr.hi_word'):
-            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[7].macaddr.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
-                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]",
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[7].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[7].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[7].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[7].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.",
                                              inst_name='hi_word',
-                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[7].macaddr')
-            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[7].macaddr.hi_word, is_sw_readable=True, is_sw_writable=True)
+                                             parent_full_inst_name='openenoc_csr.switch1.forwarding_table.entry[7].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.switch1.forwarding_table.entry[7].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: openenoc_csr.switch1.forwarding_table.entry[7].iface.bitmap'):
             self._single_field_property_test(fut=self.dut.switch1.forwarding_table.entry[7].iface.bitmap, lsb=0, msb=3, low=0, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]",
@@ -996,8 +996,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[0]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[0],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: openenoc_csr.switch1.forwarding_table.entry[1]'):
             self._single_regfile_property_test(dut=self.dut.switch1.forwarding_table.entry[1],
@@ -1007,8 +1007,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[1]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[1],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: openenoc_csr.switch1.forwarding_table.entry[2]'):
             self._single_regfile_property_test(dut=self.dut.switch1.forwarding_table.entry[2],
@@ -1018,8 +1018,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[2]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[2],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: openenoc_csr.switch1.forwarding_table.entry[3]'):
             self._single_regfile_property_test(dut=self.dut.switch1.forwarding_table.entry[3],
@@ -1029,8 +1029,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[3]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[3],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: openenoc_csr.switch1.forwarding_table.entry[4]'):
             self._single_regfile_property_test(dut=self.dut.switch1.forwarding_table.entry[4],
@@ -1040,8 +1040,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[4]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[4],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: openenoc_csr.switch1.forwarding_table.entry[5]'):
             self._single_regfile_property_test(dut=self.dut.switch1.forwarding_table.entry[5],
@@ -1051,8 +1051,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[5]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[5],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: openenoc_csr.switch1.forwarding_table.entry[6]'):
             self._single_regfile_property_test(dut=self.dut.switch1.forwarding_table.entry[6],
@@ -1062,8 +1062,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[6]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[6],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: openenoc_csr.switch1.forwarding_table.entry[7]'):
             self._single_regfile_property_test(dut=self.dut.switch1.forwarding_table.entry[7],
@@ -1073,8 +1073,8 @@ class openenoc_csr_switch1_single_access(openenoc_csr_TestCase): # type: ignore[
                                                inst_name='entry[7]',
                                                parent_full_inst_name='openenoc_csr.switch1.forwarding_table')
             self._test_regfile_iterators(dut=self.dut.switch1.forwarding_table.entry[7],
-                                         writeable_registers=NodeIterators('macaddr','iface','config',),
-                                         readable_registers=NodeIterators('macaddr','iface','config',),
+                                         writeable_registers=NodeIterators('mac_address','iface','config',),
+                                         readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
         
 

@@ -63,6 +63,36 @@ class openenoc_csr_endpoint1_single_access(openenoc_csr_TestCase): # type: ignor
         """
         Walk the address map and check user defined properties are correctly pulled up
         """
+        with self.subTest(msg='register: openenoc_csr.endpoint1.config'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.config.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0]'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1]'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2]'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3]'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].udp,{})
+            
         with self.subTest(msg='register: openenoc_csr.endpoint1.rmem'):
             
             
@@ -73,10 +103,290 @@ class openenoc_csr_endpoint1_single_access(openenoc_csr_TestCase): # type: ignor
             
             self.assertDictEqual(self.dut.endpoint1.info.udp,{})
             
-        with self.subTest(msg='register: openenoc_csr.endpoint1.info.placeholder'):
+        with self.subTest(msg='register: openenoc_csr.endpoint1.config.mac_address'):
             
             
-            self.assertDictEqual(self.dut.endpoint1.info.placeholder.udp,{})
+            self.assertDictEqual(self.dut.endpoint1.config.mac_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].mac_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].mac_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].rmem_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].rmem_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].local_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].local_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].remote_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].remote_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].size'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].register_size.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].dma_config'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].dma_config.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].mac_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].mac_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].rmem_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].rmem_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].local_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].local_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].remote_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].remote_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].size'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].register_size.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].dma_config'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].dma_config.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].mac_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].mac_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].rmem_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].rmem_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].local_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].local_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].remote_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].remote_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].size'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].register_size.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].dma_config'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].dma_config.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].mac_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].mac_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].rmem_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].rmem_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].local_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].local_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].remote_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].remote_address.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].size'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].register_size.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].dma_config'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].dma_config.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.info.rmem_total_depth'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.info.rmem_total_depth.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.info.num_of_peers'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.info.num_of_peers.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.config.mac_address.lo_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.config.mac_address.lo_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.config.mac_address.hi_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.config.mac_address.hi_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].mac_address.lo_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].mac_address.lo_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].mac_address.hi_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].mac_address.hi_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].rmem_address.offset'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].rmem_address.offset.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].local_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].local_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].remote_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].remote_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].size.value'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].register_size.value.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].dma_config.mode'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[0].dma_config.mode.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].mac_address.lo_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].mac_address.lo_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].mac_address.hi_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].mac_address.hi_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].rmem_address.offset'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].rmem_address.offset.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].local_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].local_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].remote_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].remote_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].size.value'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].register_size.value.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].dma_config.mode'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[1].dma_config.mode.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].mac_address.lo_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].mac_address.lo_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].mac_address.hi_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].mac_address.hi_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].rmem_address.offset'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].rmem_address.offset.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].local_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].local_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].remote_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].remote_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].size.value'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].register_size.value.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].dma_config.mode'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[2].dma_config.mode.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].mac_address.lo_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].mac_address.lo_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].mac_address.hi_word'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].mac_address.hi_word.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].rmem_address.offset'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].rmem_address.offset.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].local_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].local_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].remote_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].remote_address.base.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].size.value'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].register_size.value.udp,{})
+            
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].dma_config.mode'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint1.peers.entry[3].dma_config.mode.udp,{})
             
         
 
@@ -90,7 +400,7 @@ class openenoc_csr_endpoint1_single_access(openenoc_csr_TestCase): # type: ignor
         with self.subTest(msg='memory: openenoc_csr.endpoint1.rmem'):
             self._single_memory_property_test(mut=self.dut.endpoint1.rmem, address=3072, width=32, entries=256, accesswidth=None, array_typecode=None, size=1024,
                                               rdl_name="rmem",
-                                              rdl_desc="Remote Memory",
+                                              rdl_desc="Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.",
                                               inst_name='rmem',
                                               parent_full_inst_name='openenoc_csr.endpoint1')
             self._single_memory_read_and_write_test(mut=self.dut.endpoint1.rmem, is_sw_readable=True, is_sw_writable=True,
@@ -112,8 +422,233 @@ class openenoc_csr_endpoint1_single_access(openenoc_csr_TestCase): # type: ignor
                                                 inst_name='info',
                                                 parent_full_inst_name='openenoc_csr.endpoint1')
             self._single_register_read_and_write_test(rut=self.dut.endpoint1.info, has_sw_readable=True, has_sw_writable=False,
-                                                                                          readable_fields=set(['placeholder', ]),
+                                                                                          readable_fields=set(['rmem_total_depth','num_of_peers', ]),
                                                                                           writeable_fields=set([ ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.config.mac_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.config.mac_address, address=2056, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.endpoint1.config.mac_address",
+                                                rdl_desc="Local site 48-bit destination MAC address.",
+                                                inst_name='mac_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.config')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.config.mac_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['lo_word','hi_word', ]),
+                                                                                          writeable_fields=set(['lo_word','hi_word', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].mac_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[0].mac_address, address=2176, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address",
+                                                rdl_desc="Remote peer 48-bit destination MAC address.",
+                                                inst_name='mac_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[0].mac_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['lo_word','hi_word', ]),
+                                                                                          writeable_fields=set(['lo_word','hi_word', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].rmem_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[0].rmem_address, address=2184, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                inst_name='rmem_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[0].rmem_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['offset', ]),
+                                                                                          writeable_fields=set(['offset', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].local_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[0].local_address, address=2188, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address",
+                                                rdl_desc="Start address of the local memory region for DMA transfers.",
+                                                inst_name='local_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[0].local_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].remote_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[0].remote_address, address=2192, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address",
+                                                rdl_desc="Start address of the remote peer\u0027s memory region.",
+                                                inst_name='remote_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[0].remote_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].size'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[0].register_size, address=2196, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size",
+                                                rdl_desc="Size of the remote peer\u0027s memory region.",
+                                                inst_name='size',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[0].register_size, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['value', ]),
+                                                                                          writeable_fields=set(['value', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[0].dma_config'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[0].dma_config, address=2200, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config",
+                                                rdl_desc="DMA configuration for the remote peer.",
+                                                inst_name='dma_config',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[0].dma_config, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['mode', ]),
+                                                                                          writeable_fields=set(['mode', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].mac_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[1].mac_address, address=2204, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address",
+                                                rdl_desc="Remote peer 48-bit destination MAC address.",
+                                                inst_name='mac_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[1].mac_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['lo_word','hi_word', ]),
+                                                                                          writeable_fields=set(['lo_word','hi_word', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].rmem_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[1].rmem_address, address=2212, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                inst_name='rmem_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[1].rmem_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['offset', ]),
+                                                                                          writeable_fields=set(['offset', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].local_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[1].local_address, address=2216, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address",
+                                                rdl_desc="Start address of the local memory region for DMA transfers.",
+                                                inst_name='local_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[1].local_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].remote_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[1].remote_address, address=2220, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address",
+                                                rdl_desc="Start address of the remote peer\u0027s memory region.",
+                                                inst_name='remote_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[1].remote_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].size'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[1].register_size, address=2224, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size",
+                                                rdl_desc="Size of the remote peer\u0027s memory region.",
+                                                inst_name='size',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[1].register_size, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['value', ]),
+                                                                                          writeable_fields=set(['value', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[1].dma_config'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[1].dma_config, address=2228, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config",
+                                                rdl_desc="DMA configuration for the remote peer.",
+                                                inst_name='dma_config',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[1].dma_config, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['mode', ]),
+                                                                                          writeable_fields=set(['mode', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].mac_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[2].mac_address, address=2232, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address",
+                                                rdl_desc="Remote peer 48-bit destination MAC address.",
+                                                inst_name='mac_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[2].mac_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['lo_word','hi_word', ]),
+                                                                                          writeable_fields=set(['lo_word','hi_word', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].rmem_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[2].rmem_address, address=2240, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                inst_name='rmem_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[2].rmem_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['offset', ]),
+                                                                                          writeable_fields=set(['offset', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].local_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[2].local_address, address=2244, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address",
+                                                rdl_desc="Start address of the local memory region for DMA transfers.",
+                                                inst_name='local_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[2].local_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].remote_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[2].remote_address, address=2248, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address",
+                                                rdl_desc="Start address of the remote peer\u0027s memory region.",
+                                                inst_name='remote_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[2].remote_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].size'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[2].register_size, address=2252, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size",
+                                                rdl_desc="Size of the remote peer\u0027s memory region.",
+                                                inst_name='size',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[2].register_size, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['value', ]),
+                                                                                          writeable_fields=set(['value', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[2].dma_config'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[2].dma_config, address=2256, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config",
+                                                rdl_desc="DMA configuration for the remote peer.",
+                                                inst_name='dma_config',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[2].dma_config, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['mode', ]),
+                                                                                          writeable_fields=set(['mode', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].mac_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[3].mac_address, address=2260, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address",
+                                                rdl_desc="Remote peer 48-bit destination MAC address.",
+                                                inst_name='mac_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[3].mac_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['lo_word','hi_word', ]),
+                                                                                          writeable_fields=set(['lo_word','hi_word', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].rmem_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[3].rmem_address, address=2268, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                inst_name='rmem_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[3].rmem_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['offset', ]),
+                                                                                          writeable_fields=set(['offset', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].local_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[3].local_address, address=2272, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address",
+                                                rdl_desc="Start address of the local memory region for DMA transfers.",
+                                                inst_name='local_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[3].local_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].remote_address'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[3].remote_address, address=2276, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address",
+                                                rdl_desc="Start address of the remote peer\u0027s memory region.",
+                                                inst_name='remote_address',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[3].remote_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].size'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[3].register_size, address=2280, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size",
+                                                rdl_desc="Size of the remote peer\u0027s memory region.",
+                                                inst_name='size',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[3].register_size, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['value', ]),
+                                                                                          writeable_fields=set(['value', ]) )
+        with self.subTest(msg='register: openenoc_csr.endpoint1.peers.entry[3].dma_config'):
+            self._single_register_property_test(rut=self.dut.endpoint1.peers.entry[3].dma_config, address=2284, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config",
+                                                rdl_desc="DMA configuration for the remote peer.",
+                                                inst_name='dma_config',
+                                                parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3]')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint1.peers.entry[3].dma_config, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['mode', ]),
+                                                                                          writeable_fields=set(['mode', ]) )
         
 
     def test_field(self) -> None:
@@ -121,13 +656,230 @@ class openenoc_csr_endpoint1_single_access(openenoc_csr_TestCase): # type: ignor
         Check the properties and function (read and write) on the fields both integer and enum
         """
         
-        with self.subTest(msg='field: openenoc_csr.endpoint1.info.placeholder'):
-            self._single_field_property_test(fut=self.dut.endpoint1.info.placeholder, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
-                                             rdl_name="csr.endpoint1.info.placeholder[31:0]",
-                                             rdl_desc="Placeholder field for this openENOC Endpoint Interface instance.",
-                                             inst_name='placeholder',
+        with self.subTest(msg='field: openenoc_csr.endpoint1.info.rmem_total_depth'):
+            self._single_field_property_test(fut=self.dut.endpoint1.info.rmem_total_depth, lsb=0, msb=15, low=0, high=15, is_volatile=False, default=256,
+                                             rdl_name="csr.endpoint1.info.rmem_total_depth[15:0]",
+                                             rdl_desc="Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.",
+                                             inst_name='rmem_total_depth',
                                              parent_full_inst_name='openenoc_csr.endpoint1.info')
-            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.info.placeholder, is_sw_readable=True, is_sw_writable=False)
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.info.rmem_total_depth, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.info.num_of_peers'):
+            self._single_field_property_test(fut=self.dut.endpoint1.info.num_of_peers, lsb=16, msb=31, low=16, high=31, is_volatile=False, default=4,
+                                             rdl_name="csr.endpoint1.info.num_of_peers[31:16]",
+                                             rdl_desc="Number of remote peers supported by this openENOC Endpoint Interface instance. This field reflects the NUM_OF_PEERS parameter value.",
+                                             inst_name='num_of_peers',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.info')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.info.num_of_peers, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.config.mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.config.mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=0,
+                                             rdl_name="csr.endpoint1.config.mac_address.lo_word[31:0]",
+                                             rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
+                                             inst_name='lo_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.config.mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.config.mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.config.mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.config.mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=0,
+                                             rdl_name="csr.endpoint1.config.mac_address.hi_word[47:32]",
+                                             rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
+                                             inst_name='hi_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.config.mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.config.mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[0].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[0].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
+                                             rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
+                                             inst_name='lo_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[0].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[0].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[0].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
+                                             rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
+                                             inst_name='hi_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[0].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[0].rmem_address.offset'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[0].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
+                                             rdl_desc="32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             inst_name='offset',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0].rmem_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[0].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[0].local_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[0].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the local memory region for DMA transfers.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0].local_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[0].local_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[0].remote_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[0].remote_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the remote peer\u0027s memory region.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0].remote_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[0].remote_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[0].size.value'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[0].register_size.value, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]",
+                                             rdl_desc="32-bit size of the remote peer\u0027s memory region.",
+                                             inst_name='value',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0].size')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[0].register_size.value, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[0].dma_config.mode'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[0].dma_config.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             inst_name='mode',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[0].dma_config')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[0].dma_config.mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[1].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[1].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
+                                             rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
+                                             inst_name='lo_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[1].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[1].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[1].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
+                                             rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
+                                             inst_name='hi_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[1].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[1].rmem_address.offset'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[1].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
+                                             rdl_desc="32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             inst_name='offset',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1].rmem_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[1].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[1].local_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[1].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the local memory region for DMA transfers.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1].local_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[1].local_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[1].remote_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[1].remote_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the remote peer\u0027s memory region.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1].remote_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[1].remote_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[1].size.value'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[1].register_size.value, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]",
+                                             rdl_desc="32-bit size of the remote peer\u0027s memory region.",
+                                             inst_name='value',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1].size')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[1].register_size.value, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[1].dma_config.mode'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[1].dma_config.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             inst_name='mode',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[1].dma_config')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[1].dma_config.mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[2].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[2].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
+                                             rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
+                                             inst_name='lo_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[2].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[2].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[2].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
+                                             rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
+                                             inst_name='hi_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[2].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[2].rmem_address.offset'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[2].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
+                                             rdl_desc="32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             inst_name='offset',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2].rmem_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[2].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[2].local_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[2].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the local memory region for DMA transfers.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2].local_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[2].local_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[2].remote_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[2].remote_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the remote peer\u0027s memory region.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2].remote_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[2].remote_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[2].size.value'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[2].register_size.value, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]",
+                                             rdl_desc="32-bit size of the remote peer\u0027s memory region.",
+                                             inst_name='value',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2].size')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[2].register_size.value, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[2].dma_config.mode'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[2].dma_config.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             inst_name='mode',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[2].dma_config')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[2].dma_config.mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[3].mac_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[3].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
+                                             rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
+                                             inst_name='lo_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[3].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[3].mac_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[3].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
+                                             rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
+                                             inst_name='hi_word',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3].mac_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[3].mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[3].rmem_address.offset'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[3].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
+                                             rdl_desc="32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             inst_name='offset',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3].rmem_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[3].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[3].local_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[3].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the local memory region for DMA transfers.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3].local_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[3].local_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[3].remote_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[3].remote_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]",
+                                             rdl_desc="32-bit start address of the remote peer\u0027s memory region.",
+                                             inst_name='base',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3].remote_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[3].remote_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[3].size.value'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[3].register_size.value, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]",
+                                             rdl_desc="32-bit size of the remote peer\u0027s memory region.",
+                                             inst_name='value',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3].size')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[3].register_size.value, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: openenoc_csr.endpoint1.peers.entry[3].dma_config.mode'):
+            self._single_field_property_test(fut=self.dut.endpoint1.peers.entry[3].dma_config.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
+                                             rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             inst_name='mode',
+                                             parent_full_inst_name='openenoc_csr.endpoint1.peers.entry[3].dma_config')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint1.peers.entry[3].dma_config.mode, is_sw_readable=True, is_sw_writable=True)
 
     def test_addrmap(self) -> None:
         """
@@ -146,6 +898,72 @@ class openenoc_csr_endpoint1_single_access(openenoc_csr_TestCase): # type: ignor
         """
 
         # test all the register files
+        with self.subTest(msg='regfile: openenoc_csr.endpoint1.config'):
+            self._single_regfile_property_test(dut=self.dut.endpoint1.config,
+                                               size=8,
+                                               rdl_name="csr.endpoint1.config",
+                                               rdl_desc="Configuration register file for this openENOC Endpoint Interface instance.",
+                                               inst_name='config',
+                                               parent_full_inst_name='openenoc_csr.endpoint1')
+            self._test_regfile_iterators(dut=self.dut.endpoint1.config,
+                                         writeable_registers=NodeIterators('mac_address',),
+                                         readable_registers=NodeIterators('mac_address',),
+                                         sections=NodeIterators())
+        with self.subTest(msg='regfile: openenoc_csr.endpoint1.peers'):
+            self._single_regfile_property_test(dut=self.dut.endpoint1.peers,
+                                               size=112,
+                                               rdl_name="csr.endpoint1.peers",
+                                               rdl_desc="Register file for remote peer configuration and memory region information.",
+                                               inst_name='peers',
+                                               parent_full_inst_name='openenoc_csr.endpoint1')
+            self._test_regfile_iterators(dut=self.dut.endpoint1.peers,
+                                         writeable_registers=NodeIterators(),
+                                         readable_registers=NodeIterators(),
+                                         sections=NodeIterators(('entry', [4]),))
+        with self.subTest(msg='regfile: openenoc_csr.endpoint1.peers.entry[0]'):
+            self._single_regfile_property_test(dut=self.dut.endpoint1.peers.entry[0],
+                                               size=28,
+                                               rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               inst_name='entry[0]',
+                                               parent_full_inst_name='openenoc_csr.endpoint1.peers')
+            self._test_regfile_iterators(dut=self.dut.endpoint1.peers.entry[0],
+                                         writeable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         readable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         sections=NodeIterators())
+        with self.subTest(msg='regfile: openenoc_csr.endpoint1.peers.entry[1]'):
+            self._single_regfile_property_test(dut=self.dut.endpoint1.peers.entry[1],
+                                               size=28,
+                                               rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               inst_name='entry[1]',
+                                               parent_full_inst_name='openenoc_csr.endpoint1.peers')
+            self._test_regfile_iterators(dut=self.dut.endpoint1.peers.entry[1],
+                                         writeable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         readable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         sections=NodeIterators())
+        with self.subTest(msg='regfile: openenoc_csr.endpoint1.peers.entry[2]'):
+            self._single_regfile_property_test(dut=self.dut.endpoint1.peers.entry[2],
+                                               size=28,
+                                               rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               inst_name='entry[2]',
+                                               parent_full_inst_name='openenoc_csr.endpoint1.peers')
+            self._test_regfile_iterators(dut=self.dut.endpoint1.peers.entry[2],
+                                         writeable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         readable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         sections=NodeIterators())
+        with self.subTest(msg='regfile: openenoc_csr.endpoint1.peers.entry[3]'):
+            self._single_regfile_property_test(dut=self.dut.endpoint1.peers.entry[3],
+                                               size=28,
+                                               rdl_name="csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               inst_name='entry[3]',
+                                               parent_full_inst_name='openenoc_csr.endpoint1.peers')
+            self._test_regfile_iterators(dut=self.dut.endpoint1.peers.entry[3],
+                                         writeable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         readable_registers=NodeIterators('mac_address','rmem_address','local_address','remote_address','size','dma_config',),
+                                         sections=NodeIterators())
         
 
     
@@ -155,6 +973,12 @@ class openenoc_csr_endpoint1_single_access(openenoc_csr_TestCase): # type: ignor
         Check slicing into array
         """
         full_slice:NodeArray
+        
+        with self.subTest(msg='hidden_node: openenoc_csr.endpoint1.peers.entry[]'):
+            
+            full_slice = self.dut.endpoint1.peers.get_child_by_system_rdl_name('entry')
+            
+            self.assertCountEqual(iter(full_slice[:]), iter(full_slice))
         
 
 

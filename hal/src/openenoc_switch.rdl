@@ -86,14 +86,14 @@ addrmap openenoc_switch #(
             name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1]"};
             desc = "Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.";
 
-            reg macaddr {
-                name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].macaddr"};
+            reg mac_address {
+                name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].mac_address"};
                 desc = "48-bit destination MAC address used as the key for this forwarding table entry.";
 
                 regwidth = 64;
 
                 field {
-                    name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]"};
+                    name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]"};
                     desc = "Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry.";
 
                     sw = rw;
@@ -101,13 +101,13 @@ addrmap openenoc_switch #(
                 } hi_word[47:32];
 
                 field {
-                    name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]"};
+                    name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]"};
                     desc = "Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry.";
 
                     sw = rw;
                     hw = rw;
                 } lo_word[31:0];
-            } macaddr;
+            } mac_address;
 
             reg iface {
                 name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].iface"};

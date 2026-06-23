@@ -44,7 +44,7 @@ from ...lib import Reg, RegArray
 # memory definitions
     
     
-class openenoc_endpoint_rmem_0x49532131ca055df6_cls(MemoryReadWrite):
+class openenoc_endpoint_rmem_0x2226a565f586b7dd_cls(MemoryReadWrite):
     """
     Class to represent a memory in the register model
 
@@ -58,7 +58,8 @@ class openenoc_endpoint_rmem_0x49532131ca055df6_cls(MemoryReadWrite):
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Remote Memory</p>                                               |
+    |              |      <p>Virtual memory region for all remote peers, with offsets and    |
+    |              |      sizes defined in the peers regfile.</p>                            |
     +--------------+-------------------------------------------------------------------------+
     """
 
@@ -115,7 +116,86 @@ class openenoc_endpoint_rmem_0x49532131ca055df6_cls(MemoryReadWrite):
         return "rmem"
     @property
     def rdl_desc(self) -> str:
-        return "Remote Memory"
+        return "Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_rmem_0x67b8bcd87c7d73cc_cls(MemoryReadWrite):
+    """
+    Class to represent a memory in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      rmem                                                               |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Virtual memory region for all remote peers, with offsets and    |
+    |              |      sizes defined in the peers regfile.</p>                            |
+    +--------------+-------------------------------------------------------------------------+
+    """
+
+    __slots__ : list[str] = []
+
+    def __init__(self,
+                 address: int,
+                 logger_handle: str,
+                 inst_name: str,
+                 parent:AddressMap):
+
+        super().__init__(address=address,
+                         entries=128,
+                         accesswidth=32,
+                         width=32,
+                         logger_handle=logger_handle,
+                         inst_name=inst_name,
+                         parent=parent)
+
+        
+
+    
+    def __iter__(self) -> Iterator[Union[Reg,RegArray]]:
+        
+        
+        # Empty generator in case there are no children of this type
+        if False: yield
+        
+
+    
+    @property
+    def systemrdl_python_child_name_map(self) -> dict[str, str]:
+        return {
+            }
+
+    
+    
+    
+    
+    
+    
+    def get_child_by_system_rdl_name(self, name: Any) -> NoReturn:
+        raise KeyError('This node has no children')
+    
+
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "rmem"
+    @property
+    def rdl_desc(self) -> str:
+        return "Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile."
     
     
     

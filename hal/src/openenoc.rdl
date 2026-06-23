@@ -45,6 +45,18 @@ addrmap openenoc_csr {
         } f3[8] = 0;
     } regB;
 
+    openenoc_endpoint #(
+        .NUM_OF_PEERS(4),
+        .RMEM_TOTAL_DEPTH(256),
+        .INST_NAME("csr.endpoint1")
+    ) endpoint1;
+
+    openenoc_endpoint #(
+        .NUM_OF_PEERS(2),
+        .RMEM_TOTAL_DEPTH(128),
+        .INST_NAME("csr.endpoint2")
+    ) endpoint2;
+
     openenoc_switch #(
         .NUM_OF_INTERFACES(4),
         .TABLE_DEPTH(8),
@@ -56,11 +68,6 @@ addrmap openenoc_csr {
         .TABLE_DEPTH(32),
         .INST_NAME("csr.switch2")
     ) switch2;
-
-    openenoc_endpoint #(
-        .REMOTE_MEMORY_DEPTH(256),
-        .INST_NAME("csr.endpoint1")
-    ) endpoint1;
 };
 
 addrmap openenoc {

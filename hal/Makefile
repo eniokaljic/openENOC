@@ -23,10 +23,12 @@ all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_
 
 $(PEAKRDLHEADER): $(RDLSRC)
 	mkdir -p $(BUILDDIR)
-	peakrdl c-header $^ -b ltoh -o $@
+	peakrdl c-header $^ -b ltoh -o $@ --type-style hier
 
 $(PEAKRDLRTL): $(RDLSRC)
 	peakrdl regblock $^ -o $@ --cpuif axi4-lite-flat --top $(RDLCSR)
+	peakrdl regblock $^ -o $@ --cpuif passthrough --top $(RDLSW)
+	peakrdl regblock $^ -o $@ --cpuif passthrough --top $(RDLEP)
 
 $(PEAKRDLPYTHON): $(RDLSRC)
 	peakrdl python $^ -t $(RDLCSR) -o $@

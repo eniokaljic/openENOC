@@ -8,7 +8,7 @@
     <dt>Absolute Address:</dt><dd id="_AbsAddr" class="address"></dd>
     <div id="_AbsAddrDetails"></div>
     <dt>Base Offset:</dt><dd class="address">0x0</dd>
-    <dt>Size:</dt><dd class="address">0x1000</dd>
+    <dt>Size:</dt><dd class="address">0x1c00</dd>
     
     <dt>Source:</dt><dd><a href="https://github.com/eniokaljic/openENOC/blob/main/hal/src/openenoc.rdl#L7" target="_blank">openenoc.rdl</a></dd>
     
@@ -28,7 +28,7 @@
         <th></th>
     </tr>
     <tr id="test_reg">
-        <td class="address">0x000</td>
+        <td class="address">0x0000</td>
         <td><a href="?p=openenoc_csr.test_reg" data-id="1" onclick="onClickNodeLink(event); return(false)">test_reg</a></td>
         <td>csr.test_reg</td>
         <td>
@@ -36,7 +36,7 @@
         </td>
     </tr>
     <tr id="regB">
-        <td class="address">0x004</td>
+        <td class="address">0x0004</td>
         <td><a href="?p=openenoc_csr.regB" data-id="2" onclick="onClickNodeLink(event); return(false)">regB</a></td>
         <td>-</td>
         <td>
@@ -44,39 +44,47 @@
         </td>
     </tr>
     <tr class="reserved-addr">
-    <td class="address">0x008</td>
+    <td class="address">0x0008</td>
     <td>-</td>
     <td>-</td>
     <td></td>
 </tr>
+    <tr id="endpoint1">
+        <td class="address">0x0800</td>
+        <td><a href="?p=openenoc_csr.endpoint1" data-id="3" onclick="onClickNodeLink(event); return(false)">endpoint1</a></td>
+        <td>csr.endpoint1</td>
+        <td>
+            <a class="headerlink" href="#endpoint1" title="Permalink to this row"></a>
+        </td>
+    </tr>
+    <tr id="endpoint2">
+        <td class="address">0x1000</td>
+        <td><a href="?p=openenoc_csr.endpoint2" data-id="16" onclick="onClickNodeLink(event); return(false)">endpoint2</a></td>
+        <td>csr.endpoint2</td>
+        <td>
+            <a class="headerlink" href="#endpoint2" title="Permalink to this row"></a>
+        </td>
+    </tr>
     <tr id="switch1">
-        <td class="address">0x100</td>
-        <td><a href="?p=openenoc_csr.switch1" data-id="3" onclick="onClickNodeLink(event); return(false)">switch1</a></td>
+        <td class="address">0x1400</td>
+        <td><a href="?p=openenoc_csr.switch1" data-id="29" onclick="onClickNodeLink(event); return(false)">switch1</a></td>
         <td>csr.switch1</td>
         <td>
             <a class="headerlink" href="#switch1" title="Permalink to this row"></a>
         </td>
     </tr>
     <tr class="reserved-addr">
-    <td class="address">0x200</td>
+    <td class="address">0x1500</td>
     <td>-</td>
     <td>-</td>
     <td></td>
 </tr>
     <tr id="switch2">
-        <td class="address">0x400</td>
-        <td><a href="?p=openenoc_csr.switch2" data-id="12" onclick="onClickNodeLink(event); return(false)">switch2</a></td>
+        <td class="address">0x1800</td>
+        <td><a href="?p=openenoc_csr.switch2" data-id="38" onclick="onClickNodeLink(event); return(false)">switch2</a></td>
         <td>csr.switch2</td>
         <td>
             <a class="headerlink" href="#switch2" title="Permalink to this row"></a>
-        </td>
-    </tr>
-    <tr id="endpoint1">
-        <td class="address">0x800</td>
-        <td><a href="?p=openenoc_csr.endpoint1" data-id="21" onclick="onClickNodeLink(event); return(false)">endpoint1</a></td>
-        <td>csr.endpoint1</td>
-        <td>
-            <a class="headerlink" href="#endpoint1" title="Permalink to this row"></a>
         </td>
     </tr>
 </table>
