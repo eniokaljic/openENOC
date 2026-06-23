@@ -67,7 +67,7 @@ The internal structure of the openENOC Endpoint Interface is illustrated in the 
 
 .. figure:: ../images/openENOC-EndpointInterface.svg
    :align: center
-   :width: 60%
+   :width: 80%
 
    Internal structure of the openENOC Endpoint Interface
 

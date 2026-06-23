@@ -137,13 +137,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x200
 - Base Offset: 0x0
@@ -151,10 +151,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -207,13 +207,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x210
 - Base Offset: 0x0
@@ -221,10 +221,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -277,13 +277,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x220
 - Base Offset: 0x0
@@ -291,10 +291,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -347,13 +347,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x230
 - Base Offset: 0x0
@@ -361,10 +361,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -417,13 +417,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x240
 - Base Offset: 0x0
@@ -431,10 +431,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -487,13 +487,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x250
 - Base Offset: 0x0
@@ -501,10 +501,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -557,13 +557,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x260
 - Base Offset: 0x0
@@ -571,10 +571,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -627,13 +627,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x270
 - Base Offset: 0x0
@@ -641,10 +641,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -697,13 +697,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x280
 - Base Offset: 0x0
@@ -711,10 +711,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -767,13 +767,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x290
 - Base Offset: 0x0
@@ -781,10 +781,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -837,13 +837,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x2A0
 - Base Offset: 0x0
@@ -851,10 +851,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -907,13 +907,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x2B0
 - Base Offset: 0x0
@@ -921,10 +921,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -977,13 +977,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x2C0
 - Base Offset: 0x0
@@ -991,10 +991,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1047,13 +1047,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x2D0
 - Base Offset: 0x0
@@ -1061,10 +1061,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1117,13 +1117,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x2E0
 - Base Offset: 0x0
@@ -1131,10 +1131,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1187,13 +1187,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x2F0
 - Base Offset: 0x0
@@ -1201,10 +1201,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1257,13 +1257,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x300
 - Base Offset: 0x0
@@ -1271,10 +1271,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1327,13 +1327,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x310
 - Base Offset: 0x0
@@ -1341,10 +1341,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1397,13 +1397,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x320
 - Base Offset: 0x0
@@ -1411,10 +1411,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1467,13 +1467,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x330
 - Base Offset: 0x0
@@ -1481,10 +1481,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1537,13 +1537,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x340
 - Base Offset: 0x0
@@ -1551,10 +1551,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1607,13 +1607,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x350
 - Base Offset: 0x0
@@ -1621,10 +1621,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1677,13 +1677,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x360
 - Base Offset: 0x0
@@ -1691,10 +1691,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1747,13 +1747,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x370
 - Base Offset: 0x0
@@ -1761,10 +1761,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1817,13 +1817,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x380
 - Base Offset: 0x0
@@ -1831,10 +1831,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1887,13 +1887,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x390
 - Base Offset: 0x0
@@ -1901,10 +1901,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1957,13 +1957,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x3A0
 - Base Offset: 0x0
@@ -1971,10 +1971,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2027,13 +2027,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x3B0
 - Base Offset: 0x0
@@ -2041,10 +2041,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2097,13 +2097,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x3C0
 - Base Offset: 0x0
@@ -2111,10 +2111,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2167,13 +2167,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x3D0
 - Base Offset: 0x0
@@ -2181,10 +2181,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2237,13 +2237,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x3E0
 - Base Offset: 0x0
@@ -2251,10 +2251,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2307,13 +2307,13 @@ Don't override. Generated from: openenoc_switch
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                              Name                              |
-|------|----------|----------------------------------------------------------------|
-|  0x0 |  macaddr |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                                Name                                |
+|------|-----------|--------------------------------------------------------------------|
+|  0x0 |mac_address|openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
 - Absolute Address: 0x3F0
 - Base Offset: 0x0
@@ -2321,10 +2321,10 @@ Don't override. Generated from: openenoc_switch
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                     |
-|-----|----------|------|-----|-------------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                        Name                                       |
+|-----|----------|------|-----|-----------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |openenoc_switch.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 

@@ -9,7 +9,7 @@ Don't override. Generated from: openenoc
 
 - Absolute Address: 0x0
 - Base Offset: 0x0
-- Size: 0x20001000
+- Size: 0x20001C00
 
 |  Offset  |Identifier|Name|
 |----------|----------|----|
@@ -43,17 +43,18 @@ No supported members.
 
 - Absolute Address: 0x20000000
 - Base Offset: 0x20000000
-- Size: 0x1000
+- Size: 0x1C00
 
 <p>openENOC CSR</p>
 
 |Offset|Identifier|     Name    |
 |------|----------|-------------|
-| 0x000| test_reg | csr.test_reg|
-| 0x004|   regB   |      —      |
-| 0x100|  switch1 | csr.switch1 |
-| 0x400|  switch2 | csr.switch2 |
-| 0x800| endpoint1|csr.endpoint1|
+|0x0000| test_reg | csr.test_reg|
+|0x0004|   regB   |      —      |
+|0x0800| endpoint1|csr.endpoint1|
+|0x1000| endpoint2|csr.endpoint2|
+|0x1400|  switch1 | csr.switch1 |
+|0x1800|  switch2 | csr.switch2 |
 
 ### test_reg register
 
@@ -84,10 +85,954 @@ No supported members.
 |23:16|    f2    |  rw  | 0x0 |  — |
 |31:24|    f3    |  rw  | 0x0 |  — |
 
+## endpoint1 address map
+
+- Absolute Address: 0x20000800
+- Base Offset: 0x800
+- Size: 0x800
+
+<p>Control and status register map for an openENOC Endpoint Interface instance.</p>
+
+|Offset|Identifier|        Name        |
+|------|----------|--------------------|
+| 0x000|   info   | csr.endpoint1.info |
+| 0x008|  config  |csr.endpoint1.config|
+| 0x080|   peers  | csr.endpoint1.peers|
+| 0x400|   rmem   |        rmem        |
+
+### info register
+
+- Absolute Address: 0x20000800
+- Base Offset: 0x0
+- Size: 0x4
+
+<p>Read-only information register for this openENOC Endpoint Interface instance.</p>
+
+| Bits|   Identifier   |Access|Reset|                   Name                  |
+|-----|----------------|------|-----|-----------------------------------------|
+| 15:0|rmem_total_depth|   r  |0x100|csr.endpoint1.info.rmem_total_depth[15:0]|
+|31:16|  num_of_peers  |   r  | 0x4 |  csr.endpoint1.info.num_of_peers[31:16] |
+
+#### rmem_total_depth field
+
+<p>Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.</p>
+
+#### num_of_peers field
+
+<p>Number of remote peers supported by this openENOC Endpoint Interface instance. This field reflects the NUM_OF_PEERS parameter value.</p>
+
+## config register file
+
+- Absolute Address: 0x20000808
+- Base Offset: 0x8
+- Size: 0x8
+
+<p>Configuration register file for this openENOC Endpoint Interface instance.</p>
+
+|Offset| Identifier|              Name              |
+|------|-----------|--------------------------------|
+|  0x0 |mac_address|csr.endpoint1.config.mac_address|
+
+### mac_address register
+
+- Absolute Address: 0x20000808
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Local site 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                      Name                     |
+|-----|----------|------|-----|-----------------------------------------------|
+| 31:0|  lo_word |  rw  | 0x0 | csr.endpoint1.config.mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  | 0x0 |csr.endpoint1.config.mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+## peers register file
+
+- Absolute Address: 0x20000880
+- Base Offset: 0x80
+- Size: 0x70
+
+<p>Register file for remote peer configuration and memory region information.</p>
+
+|Offset|Identifier|                    Name                    |
+|------|----------|--------------------------------------------|
+| 0x00 | entry[0] |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]|
+| 0x1C | entry[1] |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]|
+| 0x38 | entry[2] |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]|
+| 0x54 | entry[3] |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1]|
+
+## entry register file
+
+- Absolute Address: 0x20000880
+- Base Offset: 0x0
+- Size: 0x1C
+- Array Dimensions: [4]
+- Array Stride: 0x1C
+- Total Size: 0x70
+
+<p>Register file for a single remote peer configuration and memory region information.</p>
+
+|Offset|  Identifier  |                            Name                           |
+|------|--------------|-----------------------------------------------------------|
+| 0x00 |  mac_address |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address |
+| 0x08 | rmem_address | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address |
+| 0x0C | local_address| csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address|
+| 0x10 |remote_address|csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address|
+| 0x14 |     size     |     csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size     |
+| 0x18 |  dma_config  |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config  |
+
+### mac_address register
+
+- Absolute Address: 0x20000880
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Remote peer 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+### rmem_address register
+
+- Absolute Address: 0x20000888
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|  offset  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]|
+
+#### offset field
+
+<p>32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+### local_address register
+
+- Absolute Address: 0x2000088C
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Start address of the local memory region for DMA transfers.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                |
+|----|----------|------|-----|---------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the local memory region for DMA transfers.</p>
+
+### remote_address register
+
+- Absolute Address: 0x20000890
+- Base Offset: 0x10
+- Size: 0x4
+
+<p>Start address of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the remote peer's memory region.</p>
+
+### size register
+
+- Absolute Address: 0x20000894
+- Base Offset: 0x14
+- Size: 0x4
+
+<p>Size of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                             Name                            |
+|----|----------|------|-----|-------------------------------------------------------------|
+|31:0|   value  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]|
+
+#### value field
+
+<p>32-bit size of the remote peer's memory region.</p>
+
+### dma_config register
+
+- Absolute Address: 0x20000898
+- Base Offset: 0x18
+- Size: 0x4
+
+<p>DMA configuration for the remote peer.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                              |
+|----|----------|------|-----|-----------------------------------------------------------------|
+| 1:0|   mode   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]|
+
+#### mode field
+
+<p>DMA mode for transfers to/from the remote peer:<ul></p>
+<li>0: DMA transfers to/from the remote peer are disabled.</li>
+<li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
+<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
+<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+</ul>
+
+## entry register file
+
+- Absolute Address: 0x2000089C
+- Base Offset: 0x0
+- Size: 0x1C
+- Array Dimensions: [4]
+- Array Stride: 0x1C
+- Total Size: 0x70
+
+<p>Register file for a single remote peer configuration and memory region information.</p>
+
+|Offset|  Identifier  |                            Name                           |
+|------|--------------|-----------------------------------------------------------|
+| 0x00 |  mac_address |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address |
+| 0x08 | rmem_address | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address |
+| 0x0C | local_address| csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address|
+| 0x10 |remote_address|csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address|
+| 0x14 |     size     |     csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size     |
+| 0x18 |  dma_config  |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config  |
+
+### mac_address register
+
+- Absolute Address: 0x2000089C
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Remote peer 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+### rmem_address register
+
+- Absolute Address: 0x200008A4
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|  offset  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]|
+
+#### offset field
+
+<p>32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+### local_address register
+
+- Absolute Address: 0x200008A8
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Start address of the local memory region for DMA transfers.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                |
+|----|----------|------|-----|---------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the local memory region for DMA transfers.</p>
+
+### remote_address register
+
+- Absolute Address: 0x200008AC
+- Base Offset: 0x10
+- Size: 0x4
+
+<p>Start address of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the remote peer's memory region.</p>
+
+### size register
+
+- Absolute Address: 0x200008B0
+- Base Offset: 0x14
+- Size: 0x4
+
+<p>Size of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                             Name                            |
+|----|----------|------|-----|-------------------------------------------------------------|
+|31:0|   value  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]|
+
+#### value field
+
+<p>32-bit size of the remote peer's memory region.</p>
+
+### dma_config register
+
+- Absolute Address: 0x200008B4
+- Base Offset: 0x18
+- Size: 0x4
+
+<p>DMA configuration for the remote peer.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                              |
+|----|----------|------|-----|-----------------------------------------------------------------|
+| 1:0|   mode   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]|
+
+#### mode field
+
+<p>DMA mode for transfers to/from the remote peer:<ul></p>
+<li>0: DMA transfers to/from the remote peer are disabled.</li>
+<li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
+<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
+<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+</ul>
+
+## entry register file
+
+- Absolute Address: 0x200008B8
+- Base Offset: 0x0
+- Size: 0x1C
+- Array Dimensions: [4]
+- Array Stride: 0x1C
+- Total Size: 0x70
+
+<p>Register file for a single remote peer configuration and memory region information.</p>
+
+|Offset|  Identifier  |                            Name                           |
+|------|--------------|-----------------------------------------------------------|
+| 0x00 |  mac_address |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address |
+| 0x08 | rmem_address | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address |
+| 0x0C | local_address| csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address|
+| 0x10 |remote_address|csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address|
+| 0x14 |     size     |     csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size     |
+| 0x18 |  dma_config  |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config  |
+
+### mac_address register
+
+- Absolute Address: 0x200008B8
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Remote peer 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+### rmem_address register
+
+- Absolute Address: 0x200008C0
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|  offset  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]|
+
+#### offset field
+
+<p>32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+### local_address register
+
+- Absolute Address: 0x200008C4
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Start address of the local memory region for DMA transfers.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                |
+|----|----------|------|-----|---------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the local memory region for DMA transfers.</p>
+
+### remote_address register
+
+- Absolute Address: 0x200008C8
+- Base Offset: 0x10
+- Size: 0x4
+
+<p>Start address of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the remote peer's memory region.</p>
+
+### size register
+
+- Absolute Address: 0x200008CC
+- Base Offset: 0x14
+- Size: 0x4
+
+<p>Size of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                             Name                            |
+|----|----------|------|-----|-------------------------------------------------------------|
+|31:0|   value  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]|
+
+#### value field
+
+<p>32-bit size of the remote peer's memory region.</p>
+
+### dma_config register
+
+- Absolute Address: 0x200008D0
+- Base Offset: 0x18
+- Size: 0x4
+
+<p>DMA configuration for the remote peer.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                              |
+|----|----------|------|-----|-----------------------------------------------------------------|
+| 1:0|   mode   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]|
+
+#### mode field
+
+<p>DMA mode for transfers to/from the remote peer:<ul></p>
+<li>0: DMA transfers to/from the remote peer are disabled.</li>
+<li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
+<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
+<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+</ul>
+
+## entry register file
+
+- Absolute Address: 0x200008D4
+- Base Offset: 0x0
+- Size: 0x1C
+- Array Dimensions: [4]
+- Array Stride: 0x1C
+- Total Size: 0x70
+
+<p>Register file for a single remote peer configuration and memory region information.</p>
+
+|Offset|  Identifier  |                            Name                           |
+|------|--------------|-----------------------------------------------------------|
+| 0x00 |  mac_address |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address |
+| 0x08 | rmem_address | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address |
+| 0x0C | local_address| csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address|
+| 0x10 |remote_address|csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address|
+| 0x14 |     size     |     csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size     |
+| 0x18 |  dma_config  |  csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config  |
+
+### mac_address register
+
+- Absolute Address: 0x200008D4
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Remote peer 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+### rmem_address register
+
+- Absolute Address: 0x200008DC
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|  offset  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]|
+
+#### offset field
+
+<p>32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+### local_address register
+
+- Absolute Address: 0x200008E0
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Start address of the local memory region for DMA transfers.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                |
+|----|----------|------|-----|---------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the local memory region for DMA transfers.</p>
+
+### remote_address register
+
+- Absolute Address: 0x200008E4
+- Base Offset: 0x10
+- Size: 0x4
+
+<p>Start address of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the remote peer's memory region.</p>
+
+### size register
+
+- Absolute Address: 0x200008E8
+- Base Offset: 0x14
+- Size: 0x4
+
+<p>Size of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                             Name                            |
+|----|----------|------|-----|-------------------------------------------------------------|
+|31:0|   value  |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]|
+
+#### value field
+
+<p>32-bit size of the remote peer's memory region.</p>
+
+### dma_config register
+
+- Absolute Address: 0x200008EC
+- Base Offset: 0x18
+- Size: 0x4
+
+<p>DMA configuration for the remote peer.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                              |
+|----|----------|------|-----|-----------------------------------------------------------------|
+| 1:0|   mode   |  rw  |  —  |csr.endpoint1.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]|
+
+#### mode field
+
+<p>DMA mode for transfers to/from the remote peer:<ul></p>
+<li>0: DMA transfers to/from the remote peer are disabled.</li>
+<li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
+<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
+<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+</ul>
+
+## rmem memory
+
+- Absolute Address: 0x20000C00
+- Base Offset: 0x400
+- Size: 0x400
+
+<p>Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.</p>
+
+No supported members.
+
+
+## endpoint2 address map
+
+- Absolute Address: 0x20001000
+- Base Offset: 0x1000
+- Size: 0x400
+
+<p>Control and status register map for an openENOC Endpoint Interface instance.</p>
+
+|Offset|Identifier|        Name        |
+|------|----------|--------------------|
+| 0x000|   info   | csr.endpoint2.info |
+| 0x008|  config  |csr.endpoint2.config|
+| 0x040|   peers  | csr.endpoint2.peers|
+| 0x200|   rmem   |        rmem        |
+
+### info register
+
+- Absolute Address: 0x20001000
+- Base Offset: 0x0
+- Size: 0x4
+
+<p>Read-only information register for this openENOC Endpoint Interface instance.</p>
+
+| Bits|   Identifier   |Access|Reset|                   Name                  |
+|-----|----------------|------|-----|-----------------------------------------|
+| 15:0|rmem_total_depth|   r  | 0x80|csr.endpoint2.info.rmem_total_depth[15:0]|
+|31:16|  num_of_peers  |   r  | 0x2 |  csr.endpoint2.info.num_of_peers[31:16] |
+
+#### rmem_total_depth field
+
+<p>Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.</p>
+
+#### num_of_peers field
+
+<p>Number of remote peers supported by this openENOC Endpoint Interface instance. This field reflects the NUM_OF_PEERS parameter value.</p>
+
+## config register file
+
+- Absolute Address: 0x20001008
+- Base Offset: 0x8
+- Size: 0x8
+
+<p>Configuration register file for this openENOC Endpoint Interface instance.</p>
+
+|Offset| Identifier|              Name              |
+|------|-----------|--------------------------------|
+|  0x0 |mac_address|csr.endpoint2.config.mac_address|
+
+### mac_address register
+
+- Absolute Address: 0x20001008
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Local site 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                      Name                     |
+|-----|----------|------|-----|-----------------------------------------------|
+| 31:0|  lo_word |  rw  | 0x0 | csr.endpoint2.config.mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  | 0x0 |csr.endpoint2.config.mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+## peers register file
+
+- Absolute Address: 0x20001040
+- Base Offset: 0x40
+- Size: 0x38
+
+<p>Register file for remote peer configuration and memory region information.</p>
+
+|Offset|Identifier|                    Name                    |
+|------|----------|--------------------------------------------|
+| 0x00 | entry[0] |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1]|
+| 0x1C | entry[1] |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1]|
+
+## entry register file
+
+- Absolute Address: 0x20001040
+- Base Offset: 0x0
+- Size: 0x1C
+- Array Dimensions: [2]
+- Array Stride: 0x1C
+- Total Size: 0x38
+
+<p>Register file for a single remote peer configuration and memory region information.</p>
+
+|Offset|  Identifier  |                            Name                           |
+|------|--------------|-----------------------------------------------------------|
+| 0x00 |  mac_address |  csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].mac_address |
+| 0x08 | rmem_address | csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].rmem_address |
+| 0x0C | local_address| csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].local_address|
+| 0x10 |remote_address|csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].remote_address|
+| 0x14 |     size     |     csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size     |
+| 0x18 |  dma_config  |  csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].dma_config  |
+
+### mac_address register
+
+- Absolute Address: 0x20001040
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Remote peer 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+### rmem_address register
+
+- Absolute Address: 0x20001048
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|  offset  |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]|
+
+#### offset field
+
+<p>32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+### local_address register
+
+- Absolute Address: 0x2000104C
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Start address of the local memory region for DMA transfers.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                |
+|----|----------|------|-----|---------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the local memory region for DMA transfers.</p>
+
+### remote_address register
+
+- Absolute Address: 0x20001050
+- Base Offset: 0x10
+- Size: 0x4
+
+<p>Start address of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the remote peer's memory region.</p>
+
+### size register
+
+- Absolute Address: 0x20001054
+- Base Offset: 0x14
+- Size: 0x4
+
+<p>Size of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                             Name                            |
+|----|----------|------|-----|-------------------------------------------------------------|
+|31:0|   value  |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]|
+
+#### value field
+
+<p>32-bit size of the remote peer's memory region.</p>
+
+### dma_config register
+
+- Absolute Address: 0x20001058
+- Base Offset: 0x18
+- Size: 0x4
+
+<p>DMA configuration for the remote peer.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                              |
+|----|----------|------|-----|-----------------------------------------------------------------|
+| 1:0|   mode   |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]|
+
+#### mode field
+
+<p>DMA mode for transfers to/from the remote peer:<ul></p>
+<li>0: DMA transfers to/from the remote peer are disabled.</li>
+<li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
+<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
+<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+</ul>
+
+## entry register file
+
+- Absolute Address: 0x2000105C
+- Base Offset: 0x0
+- Size: 0x1C
+- Array Dimensions: [2]
+- Array Stride: 0x1C
+- Total Size: 0x38
+
+<p>Register file for a single remote peer configuration and memory region information.</p>
+
+|Offset|  Identifier  |                            Name                           |
+|------|--------------|-----------------------------------------------------------|
+| 0x00 |  mac_address |  csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].mac_address |
+| 0x08 | rmem_address | csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].rmem_address |
+| 0x0C | local_address| csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].local_address|
+| 0x10 |remote_address|csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].remote_address|
+| 0x14 |     size     |     csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size     |
+| 0x18 |  dma_config  |  csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].dma_config  |
+
+### mac_address register
+
+- Absolute Address: 0x2000105C
+- Base Offset: 0x0
+- Size: 0x8
+
+<p>Remote peer 48-bit destination MAC address.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+### rmem_address register
+
+- Absolute Address: 0x20001064
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|  offset  |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]|
+
+#### offset field
+
+<p>32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+
+### local_address register
+
+- Absolute Address: 0x20001068
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Start address of the local memory region for DMA transfers.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                |
+|----|----------|------|-----|---------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the local memory region for DMA transfers.</p>
+
+### remote_address register
+
+- Absolute Address: 0x2000106C
+- Base Offset: 0x10
+- Size: 0x4
+
+<p>Start address of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                 |
+|----|----------|------|-----|----------------------------------------------------------------------|
+|31:0|   base   |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]|
+
+#### base field
+
+<p>32-bit start address of the remote peer's memory region.</p>
+
+### size register
+
+- Absolute Address: 0x20001070
+- Base Offset: 0x14
+- Size: 0x4
+
+<p>Size of the remote peer's memory region.</p>
+
+|Bits|Identifier|Access|Reset|                             Name                            |
+|----|----------|------|-----|-------------------------------------------------------------|
+|31:0|   value  |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]|
+
+#### value field
+
+<p>32-bit size of the remote peer's memory region.</p>
+
+### dma_config register
+
+- Absolute Address: 0x20001074
+- Base Offset: 0x18
+- Size: 0x4
+
+<p>DMA configuration for the remote peer.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                              |
+|----|----------|------|-----|-----------------------------------------------------------------|
+| 1:0|   mode   |  rw  |  —  |csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].dma_config.mode[1:0]|
+
+#### mode field
+
+<p>DMA mode for transfers to/from the remote peer:<ul></p>
+<li>0: DMA transfers to/from the remote peer are disabled.</li>
+<li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
+<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
+<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+</ul>
+
+## rmem memory
+
+- Absolute Address: 0x20001200
+- Base Offset: 0x200
+- Size: 0x200
+
+<p>Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.</p>
+
+No supported members.
+
+
 ## switch1 address map
 
-- Absolute Address: 0x20000100
-- Base Offset: 0x100
+- Absolute Address: 0x20001400
+- Base Offset: 0x1400
 - Size: 0x100
 
 <p>Control and status register map for an openENOC Switch instance. It includes configuration registers and a forwarding table used to map destination MAC address keys to output interface selections for frame forwarding.</p>
@@ -101,7 +1046,7 @@ No supported members.
 
 ### info register
 
-- Absolute Address: 0x20000100
+- Absolute Address: 0x20001400
 - Base Offset: 0x0
 - Size: 0x4
 
@@ -122,7 +1067,7 @@ No supported members.
 
 ### forwarding_control register
 
-- Absolute Address: 0x20000104
+- Absolute Address: 0x20001404
 - Base Offset: 0x4
 - Size: 0x4
 
@@ -148,7 +1093,7 @@ No supported members.
 
 ### default_forwarding register
 
-- Absolute Address: 0x20000108
+- Absolute Address: 0x20001408
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -164,7 +1109,7 @@ No supported members.
 
 ## forwarding_table register file
 
-- Absolute Address: 0x20000180
+- Absolute Address: 0x20001480
 - Base Offset: 0x80
 - Size: 0x80
 
@@ -183,7 +1128,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000180
+- Absolute Address: 0x20001480
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -192,24 +1137,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000180
+- Absolute Address: 0x20001480
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -221,7 +1166,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000188
+- Absolute Address: 0x20001488
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -237,7 +1182,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000018C
+- Absolute Address: 0x2000148C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -253,7 +1198,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000190
+- Absolute Address: 0x20001490
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -262,24 +1207,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000190
+- Absolute Address: 0x20001490
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -291,7 +1236,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000198
+- Absolute Address: 0x20001498
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -307,7 +1252,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000019C
+- Absolute Address: 0x2000149C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -323,7 +1268,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200001A0
+- Absolute Address: 0x200014A0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -332,24 +1277,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200001A0
+- Absolute Address: 0x200014A0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -361,7 +1306,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200001A8
+- Absolute Address: 0x200014A8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -377,7 +1322,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200001AC
+- Absolute Address: 0x200014AC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -393,7 +1338,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200001B0
+- Absolute Address: 0x200014B0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -402,24 +1347,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200001B0
+- Absolute Address: 0x200014B0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -431,7 +1376,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200001B8
+- Absolute Address: 0x200014B8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -447,7 +1392,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200001BC
+- Absolute Address: 0x200014BC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -463,7 +1408,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200001C0
+- Absolute Address: 0x200014C0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -472,24 +1417,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200001C0
+- Absolute Address: 0x200014C0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -501,7 +1446,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200001C8
+- Absolute Address: 0x200014C8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -517,7 +1462,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200001CC
+- Absolute Address: 0x200014CC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -533,7 +1478,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200001D0
+- Absolute Address: 0x200014D0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -542,24 +1487,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200001D0
+- Absolute Address: 0x200014D0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -571,7 +1516,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200001D8
+- Absolute Address: 0x200014D8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -587,7 +1532,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200001DC
+- Absolute Address: 0x200014DC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -603,7 +1548,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200001E0
+- Absolute Address: 0x200014E0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -612,24 +1557,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200001E0
+- Absolute Address: 0x200014E0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -641,7 +1586,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200001E8
+- Absolute Address: 0x200014E8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -657,7 +1602,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200001EC
+- Absolute Address: 0x200014EC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -673,7 +1618,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200001F0
+- Absolute Address: 0x200014F0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [8]
@@ -682,24 +1627,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200001F0
+- Absolute Address: 0x200014F0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch1.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -711,7 +1656,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200001F8
+- Absolute Address: 0x200014F8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -727,7 +1672,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200001FC
+- Absolute Address: 0x200014FC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -743,8 +1688,8 @@ No supported members.
 
 ## switch2 address map
 
-- Absolute Address: 0x20000400
-- Base Offset: 0x400
+- Absolute Address: 0x20001800
+- Base Offset: 0x1800
 - Size: 0x400
 
 <p>Control and status register map for an openENOC Switch instance. It includes configuration registers and a forwarding table used to map destination MAC address keys to output interface selections for frame forwarding.</p>
@@ -758,7 +1703,7 @@ No supported members.
 
 ### info register
 
-- Absolute Address: 0x20000400
+- Absolute Address: 0x20001800
 - Base Offset: 0x0
 - Size: 0x4
 
@@ -779,7 +1724,7 @@ No supported members.
 
 ### forwarding_control register
 
-- Absolute Address: 0x20000404
+- Absolute Address: 0x20001804
 - Base Offset: 0x4
 - Size: 0x4
 
@@ -805,7 +1750,7 @@ No supported members.
 
 ### default_forwarding register
 
-- Absolute Address: 0x20000408
+- Absolute Address: 0x20001808
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -821,7 +1766,7 @@ No supported members.
 
 ## forwarding_table register file
 
-- Absolute Address: 0x20000600
+- Absolute Address: 0x20001A00
 - Base Offset: 0x200
 - Size: 0x200
 
@@ -864,7 +1809,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000600
+- Absolute Address: 0x20001A00
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -873,24 +1818,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000600
+- Absolute Address: 0x20001A00
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -902,7 +1847,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000608
+- Absolute Address: 0x20001A08
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -918,7 +1863,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000060C
+- Absolute Address: 0x20001A0C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -934,7 +1879,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000610
+- Absolute Address: 0x20001A10
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -943,24 +1888,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000610
+- Absolute Address: 0x20001A10
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -972,7 +1917,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000618
+- Absolute Address: 0x20001A18
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -988,7 +1933,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000061C
+- Absolute Address: 0x20001A1C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1004,7 +1949,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000620
+- Absolute Address: 0x20001A20
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1013,24 +1958,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000620
+- Absolute Address: 0x20001A20
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1042,7 +1987,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000628
+- Absolute Address: 0x20001A28
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1058,7 +2003,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000062C
+- Absolute Address: 0x20001A2C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1074,7 +2019,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000630
+- Absolute Address: 0x20001A30
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1083,24 +2028,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000630
+- Absolute Address: 0x20001A30
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1112,7 +2057,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000638
+- Absolute Address: 0x20001A38
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1128,7 +2073,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000063C
+- Absolute Address: 0x20001A3C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1144,7 +2089,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000640
+- Absolute Address: 0x20001A40
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1153,24 +2098,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000640
+- Absolute Address: 0x20001A40
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1182,7 +2127,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000648
+- Absolute Address: 0x20001A48
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1198,7 +2143,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000064C
+- Absolute Address: 0x20001A4C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1214,7 +2159,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000650
+- Absolute Address: 0x20001A50
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1223,24 +2168,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000650
+- Absolute Address: 0x20001A50
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1252,7 +2197,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000658
+- Absolute Address: 0x20001A58
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1268,7 +2213,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000065C
+- Absolute Address: 0x20001A5C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1284,7 +2229,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000660
+- Absolute Address: 0x20001A60
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1293,24 +2238,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000660
+- Absolute Address: 0x20001A60
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1322,7 +2267,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000668
+- Absolute Address: 0x20001A68
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1338,7 +2283,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000066C
+- Absolute Address: 0x20001A6C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1354,7 +2299,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000670
+- Absolute Address: 0x20001A70
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1363,24 +2308,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000670
+- Absolute Address: 0x20001A70
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1392,7 +2337,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000678
+- Absolute Address: 0x20001A78
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1408,7 +2353,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000067C
+- Absolute Address: 0x20001A7C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1424,7 +2369,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000680
+- Absolute Address: 0x20001A80
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1433,24 +2378,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000680
+- Absolute Address: 0x20001A80
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1462,7 +2407,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000688
+- Absolute Address: 0x20001A88
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1478,7 +2423,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000068C
+- Absolute Address: 0x20001A8C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1494,7 +2439,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000690
+- Absolute Address: 0x20001A90
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1503,24 +2448,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000690
+- Absolute Address: 0x20001A90
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1532,7 +2477,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000698
+- Absolute Address: 0x20001A98
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1548,7 +2493,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000069C
+- Absolute Address: 0x20001A9C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1564,7 +2509,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200006A0
+- Absolute Address: 0x20001AA0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1573,24 +2518,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200006A0
+- Absolute Address: 0x20001AA0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1602,7 +2547,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200006A8
+- Absolute Address: 0x20001AA8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1618,7 +2563,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200006AC
+- Absolute Address: 0x20001AAC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1634,7 +2579,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200006B0
+- Absolute Address: 0x20001AB0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1643,24 +2588,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200006B0
+- Absolute Address: 0x20001AB0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1672,7 +2617,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200006B8
+- Absolute Address: 0x20001AB8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1688,7 +2633,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200006BC
+- Absolute Address: 0x20001ABC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1704,7 +2649,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200006C0
+- Absolute Address: 0x20001AC0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1713,24 +2658,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200006C0
+- Absolute Address: 0x20001AC0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1742,7 +2687,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200006C8
+- Absolute Address: 0x20001AC8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1758,7 +2703,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200006CC
+- Absolute Address: 0x20001ACC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1774,7 +2719,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200006D0
+- Absolute Address: 0x20001AD0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1783,24 +2728,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200006D0
+- Absolute Address: 0x20001AD0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1812,7 +2757,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200006D8
+- Absolute Address: 0x20001AD8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1828,7 +2773,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200006DC
+- Absolute Address: 0x20001ADC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1844,7 +2789,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200006E0
+- Absolute Address: 0x20001AE0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1853,24 +2798,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200006E0
+- Absolute Address: 0x20001AE0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1882,7 +2827,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200006E8
+- Absolute Address: 0x20001AE8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1898,7 +2843,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200006EC
+- Absolute Address: 0x20001AEC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1914,7 +2859,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200006F0
+- Absolute Address: 0x20001AF0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1923,24 +2868,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200006F0
+- Absolute Address: 0x20001AF0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -1952,7 +2897,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200006F8
+- Absolute Address: 0x20001AF8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -1968,7 +2913,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200006FC
+- Absolute Address: 0x20001AFC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -1984,7 +2929,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000700
+- Absolute Address: 0x20001B00
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -1993,24 +2938,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000700
+- Absolute Address: 0x20001B00
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2022,7 +2967,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000708
+- Absolute Address: 0x20001B08
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2038,7 +2983,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000070C
+- Absolute Address: 0x20001B0C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2054,7 +2999,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000710
+- Absolute Address: 0x20001B10
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2063,24 +3008,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000710
+- Absolute Address: 0x20001B10
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2092,7 +3037,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000718
+- Absolute Address: 0x20001B18
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2108,7 +3053,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000071C
+- Absolute Address: 0x20001B1C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2124,7 +3069,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000720
+- Absolute Address: 0x20001B20
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2133,24 +3078,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000720
+- Absolute Address: 0x20001B20
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2162,7 +3107,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000728
+- Absolute Address: 0x20001B28
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2178,7 +3123,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000072C
+- Absolute Address: 0x20001B2C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2194,7 +3139,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000730
+- Absolute Address: 0x20001B30
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2203,24 +3148,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000730
+- Absolute Address: 0x20001B30
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2232,7 +3177,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000738
+- Absolute Address: 0x20001B38
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2248,7 +3193,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000073C
+- Absolute Address: 0x20001B3C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2264,7 +3209,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000740
+- Absolute Address: 0x20001B40
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2273,24 +3218,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000740
+- Absolute Address: 0x20001B40
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2302,7 +3247,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000748
+- Absolute Address: 0x20001B48
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2318,7 +3263,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000074C
+- Absolute Address: 0x20001B4C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2334,7 +3279,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000750
+- Absolute Address: 0x20001B50
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2343,24 +3288,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000750
+- Absolute Address: 0x20001B50
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2372,7 +3317,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000758
+- Absolute Address: 0x20001B58
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2388,7 +3333,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000075C
+- Absolute Address: 0x20001B5C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2404,7 +3349,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000760
+- Absolute Address: 0x20001B60
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2413,24 +3358,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000760
+- Absolute Address: 0x20001B60
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2442,7 +3387,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000768
+- Absolute Address: 0x20001B68
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2458,7 +3403,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000076C
+- Absolute Address: 0x20001B6C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2474,7 +3419,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000770
+- Absolute Address: 0x20001B70
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2483,24 +3428,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000770
+- Absolute Address: 0x20001B70
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2512,7 +3457,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000778
+- Absolute Address: 0x20001B78
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2528,7 +3473,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000077C
+- Absolute Address: 0x20001B7C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2544,7 +3489,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000780
+- Absolute Address: 0x20001B80
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2553,24 +3498,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000780
+- Absolute Address: 0x20001B80
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2582,7 +3527,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000788
+- Absolute Address: 0x20001B88
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2598,7 +3543,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000078C
+- Absolute Address: 0x20001B8C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2614,7 +3559,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x20000790
+- Absolute Address: 0x20001B90
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2623,24 +3568,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x20000790
+- Absolute Address: 0x20001B90
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2652,7 +3597,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x20000798
+- Absolute Address: 0x20001B98
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2668,7 +3613,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x2000079C
+- Absolute Address: 0x20001B9C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2684,7 +3629,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200007A0
+- Absolute Address: 0x20001BA0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2693,24 +3638,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200007A0
+- Absolute Address: 0x20001BA0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2722,7 +3667,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200007A8
+- Absolute Address: 0x20001BA8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2738,7 +3683,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200007AC
+- Absolute Address: 0x20001BAC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2754,7 +3699,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200007B0
+- Absolute Address: 0x20001BB0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2763,24 +3708,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200007B0
+- Absolute Address: 0x20001BB0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2792,7 +3737,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200007B8
+- Absolute Address: 0x20001BB8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2808,7 +3753,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200007BC
+- Absolute Address: 0x20001BBC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2824,7 +3769,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200007C0
+- Absolute Address: 0x20001BC0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2833,24 +3778,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200007C0
+- Absolute Address: 0x20001BC0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2862,7 +3807,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200007C8
+- Absolute Address: 0x20001BC8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2878,7 +3823,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200007CC
+- Absolute Address: 0x20001BCC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2894,7 +3839,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200007D0
+- Absolute Address: 0x20001BD0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2903,24 +3848,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200007D0
+- Absolute Address: 0x20001BD0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -2932,7 +3877,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200007D8
+- Absolute Address: 0x20001BD8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -2948,7 +3893,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200007DC
+- Absolute Address: 0x20001BDC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -2964,7 +3909,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200007E0
+- Absolute Address: 0x20001BE0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -2973,24 +3918,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200007E0
+- Absolute Address: 0x20001BE0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -3002,7 +3947,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200007E8
+- Absolute Address: 0x20001BE8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -3018,7 +3963,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200007EC
+- Absolute Address: 0x20001BEC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -3034,7 +3979,7 @@ No supported members.
 
 ## entry register file
 
-- Absolute Address: 0x200007F0
+- Absolute Address: 0x20001BF0
 - Base Offset: 0x0
 - Size: 0x10
 - Array Dimensions: [32]
@@ -3043,24 +3988,24 @@ No supported members.
 
 <p>Forwarding table entry containing the MAC address key, output interface selection, and entry configuration.</p>
 
-|Offset|Identifier|                            Name                            |
-|------|----------|------------------------------------------------------------|
-|  0x0 |  macaddr |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr|
-|  0x8 |   iface  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface |
-|  0xC |  config  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config|
+|Offset| Identifier|                              Name                              |
+|------|-----------|----------------------------------------------------------------|
+|  0x0 |mac_address|csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
+|  0x8 |   iface   |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
+|  0xC |   config  |   csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
 
-### macaddr register
+### mac_address register
 
-- Absolute Address: 0x200007F0
+- Absolute Address: 0x20001BF0
 - Base Offset: 0x0
 - Size: 0x8
 
 <p>48-bit destination MAC address used as the key for this forwarding table entry.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                   |
-|-----|----------|------|-----|---------------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.lo_word[31:0]|
-|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].macaddr.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                                      Name                                     |
+|-----|----------|------|-----|-------------------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  |  —  | csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  |  —  |csr.switch2.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -3072,7 +4017,7 @@ No supported members.
 
 ### iface register
 
-- Absolute Address: 0x200007F8
+- Absolute Address: 0x20001BF8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -3088,7 +4033,7 @@ No supported members.
 
 ### config register
 
-- Absolute Address: 0x200007FC
+- Absolute Address: 0x20001BFC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -3101,43 +4046,3 @@ No supported members.
 #### enabled field
 
 <p>Enables this forwarding table entry. When cleared, the entry is ignored during forwarding table lookup.</p>
-
-## endpoint1 address map
-
-- Absolute Address: 0x20000800
-- Base Offset: 0x800
-- Size: 0x800
-
-<p>Control and status register map for an openENOC Endpoint Interface instance.</p>
-
-|Offset|Identifier|       Name       |
-|------|----------|------------------|
-| 0x000|   info   |csr.endpoint1.info|
-| 0x400|   rmem   |       rmem       |
-
-### info register
-
-- Absolute Address: 0x20000800
-- Base Offset: 0x0
-- Size: 0x4
-
-<p>Read-only information register for this openENOC Endpoint Interface instance.</p>
-
-|Bits| Identifier|Access|Reset|                Name                |
-|----|-----------|------|-----|------------------------------------|
-|31:0|placeholder|   r  |  —  |csr.endpoint1.info.placeholder[31:0]|
-
-#### placeholder field
-
-<p>Placeholder field for this openENOC Endpoint Interface instance.</p>
-
-## rmem memory
-
-- Absolute Address: 0x20000C00
-- Base Offset: 0x400
-- Size: 0x400
-
-<p>Remote Memory</p>
-
-No supported members.
-
