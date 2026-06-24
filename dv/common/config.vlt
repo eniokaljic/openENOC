@@ -3,6 +3,8 @@
 
 `verilator_config
 
-lint_off -rule UNUSEDPARAM
-lint_off -rule MULTIDRIVEN
-lint_off -rule CMPCONST
+lint_off -rule PINCONNECTEMPTY
+lint_off -rule UNUSEDPARAM -file "*/openenoc_csr_pkg.sv" -match "*"
+lint_off -rule MULTIDRIVEN -file "*/openenoc_csr.sv" -match "*"
+lint_off -rule UNUSEDPARAM -file "*/taxi_axis_*.sv" -match "*"
+

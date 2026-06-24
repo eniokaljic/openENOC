@@ -12,5 +12,5 @@ elif [ "$1" = "waves" ]; then
     WAVES=1 make
     gtkwave dump.fst &
 else
-    echo "Usage: ./run.sh [pytest|waves]"
+    echo "Usage: ./run_tests.sh [pytest|waves]"
 fi

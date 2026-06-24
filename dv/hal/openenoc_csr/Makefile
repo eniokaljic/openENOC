@@ -28,7 +28,6 @@ EXTRA_ARGS += --sv
 EXTRA_ARGS += --trace
 EXTRA_ARGS += --trace-fst
 EXTRA_ARGS += --trace-structs
-#EXTRA_ARGS += -Wno-fatal
 EXTRA_ARGS += -Wall ../../common/config.vlt
 
 # Python path

@@ -24,7 +24,7 @@ module test_openenoc_axis_demux #
     parameter M_DEST_W = 8,
     parameter S_DEST_W = M_DEST_W+$clog2(M_COUNT),
     parameter logic USER_EN = 1'b1,
-    parameter USER_W = 1,
+    parameter USER_W = M_COUNT,
     parameter logic TID_ROUTE = 1'b0,
     parameter logic TDEST_ROUTE = 1'b0,
     parameter logic TUSER_BITMAP_ROUTE = 1'b0

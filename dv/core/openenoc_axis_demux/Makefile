@@ -49,16 +49,13 @@ export PARAM_TUSER_BITMAP_ROUTE := 1
 
 ifeq ($(SIM), icarus)
 	PLUSARGS += -fst
-
 	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-P $(COCOTB_TOPLEVEL).$(subst PARAM_,,$(v))=$($(v)))
 else ifeq ($(SIM), verilator)
-# 	COMPILE_ARGS += -Wno-SELRANGE -Wno-WIDTH
-
 	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-G$(subst PARAM_,,$(v))=$($(v)))
-
+	EXTRA_ARGS += -Wall ../../common/config.vlt
 	ifeq ($(WAVES), 1)
-		COMPILE_ARGS += --trace-fst
-		VERILATOR_TRACE = 1
+		EXTRA_ARGS += --trace
+		EXTRA_ARGS += --trace-fst
 	endif
 endif
 

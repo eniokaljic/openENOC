@@ -46,9 +46,7 @@ localparam DATA_W = s_axis.DATA_W;
 localparam logic KEEP_EN = s_axis.KEEP_EN && m_axis[0].KEEP_EN;
 localparam KEEP_W = s_axis.KEEP_W;
 localparam logic STRB_EN = s_axis.STRB_EN && m_axis[0].STRB_EN;
-localparam logic LAST_EN = s_axis.LAST_EN && m_axis[0].LAST_EN;
 localparam logic ID_EN = s_axis.ID_EN && m_axis[0].ID_EN;
-localparam ID_W = s_axis.ID_W;
 localparam logic DEST_EN = s_axis.DEST_EN && m_axis[0].DEST_EN;
 localparam S_ID_W = s_axis.ID_W;
 localparam M_ID_W = m_axis[0].ID_W;
@@ -59,10 +57,8 @@ localparam USER_W = s_axis.USER_W;
 
 localparam CL_M_COUNT = $clog2(M_COUNT);
 
-localparam M_DEST_W_INT = M_DEST_W > 0 ? M_DEST_W : 1;
-localparam M_ID_W_INT = M_ID_W > 0 ? M_ID_W : 1;
-
 // check configuration
+/* verilator lint_off GENUNNAMED */
 if (m_axis[0].DATA_W != DATA_W)
     $fatal(0, "Error: Interface DATA_W parameter mismatch (instance %m)");
 
@@ -98,20 +94,21 @@ if (TUSER_BITMAP_ROUTE) begin
     if (TID_ROUTE || TDEST_ROUTE)
         $fatal(0, "Error: Cannot enable TUSER_BITMAP_ROUTE with TID_ROUTE or TDEST_ROUTE");
 end
+/* verilator lint_on GENUNNAMED */
 
-logic [CL_M_COUNT-1:0] select_reg = '0, select_ctl, select_next;
-logic [M_COUNT-1:0] dest_mask_reg = '0, dest_mask_ctl, dest_mask_next;
-logic drop_reg = 1'b0, drop_ctl, drop_next;
-logic frame_reg = 1'b0, frame_ctl, frame_next;
+logic [CL_M_COUNT-1:0] select_reg, select_ctl, select_next;
+logic [M_COUNT-1:0] dest_mask_reg, dest_mask_ctl, dest_mask_next;
+logic drop_reg, drop_ctl, drop_next;
+logic frame_reg, frame_ctl, frame_next;
 
-logic s_axis_tready_reg = 1'b0, s_axis_tready_next;
+logic s_axis_tready_reg, s_axis_tready_next;
 
 // internal datapath
 logic [DATA_W-1:0]    m_axis_tdata_int;
 logic [KEEP_W-1:0]    m_axis_tkeep_int;
 logic [KEEP_W-1:0]    m_axis_tstrb_int;
 logic [M_COUNT-1:0]   m_axis_tvalid_int;
-logic                 m_axis_tready_int_reg = 1'b0;
+logic                 m_axis_tready_int_reg;
 logic                 m_axis_tlast_int;
 logic [M_ID_W-1:0]    m_axis_tid_int;
 logic [M_DEST_W-1:0]  m_axis_tdest_int;
@@ -211,25 +208,25 @@ always_ff @(posedge clk) begin
 end
 
 // output datapath logic
-logic [DATA_W-1:0]    m_axis_tdata_reg  = '0;
-logic [KEEP_W-1:0]    m_axis_tkeep_reg  = '0;
-logic [KEEP_W-1:0]    m_axis_tstrb_reg  = '0;
-logic [M_COUNT-1:0]   m_axis_mask_reg   = '0, m_axis_mask_next;
-logic                 m_axis_occupied_reg = 1'b0, m_axis_occupied_next;
-logic                 m_axis_tlast_reg  = 1'b0;
-logic [M_ID_W-1:0]    m_axis_tid_reg    = '0;
-logic [M_DEST_W-1:0]  m_axis_tdest_reg  = '0;
-logic [USER_W-1:0]    m_axis_tuser_reg  = '0;
+logic [DATA_W-1:0]    m_axis_tdata_reg;
+logic [KEEP_W-1:0]    m_axis_tkeep_reg;
+logic [KEEP_W-1:0]    m_axis_tstrb_reg;
+logic [M_COUNT-1:0]   m_axis_mask_reg, m_axis_mask_next;
+logic                 m_axis_occupied_reg, m_axis_occupied_next;
+logic                 m_axis_tlast_reg;
+logic [M_ID_W-1:0]    m_axis_tid_reg;
+logic [M_DEST_W-1:0]  m_axis_tdest_reg;
+logic [USER_W-1:0]    m_axis_tuser_reg;
 
-logic [DATA_W-1:0]    temp_m_axis_tdata_reg  = '0;
-logic [KEEP_W-1:0]    temp_m_axis_tkeep_reg  = '0;
-logic [KEEP_W-1:0]    temp_m_axis_tstrb_reg  = '0;
-logic [M_COUNT-1:0]   temp_m_axis_mask_reg   = '0, temp_m_axis_mask_next;
-logic                 temp_m_axis_occupied_reg = 1'b0, temp_m_axis_occupied_next;
-logic                 temp_m_axis_tlast_reg  = 1'b0;
-logic [M_ID_W-1:0]    temp_m_axis_tid_reg    = '0;
-logic [M_DEST_W-1:0]  temp_m_axis_tdest_reg  = '0;
-logic [USER_W-1:0]    temp_m_axis_tuser_reg  = '0;
+logic [DATA_W-1:0]    temp_m_axis_tdata_reg;
+logic [KEEP_W-1:0]    temp_m_axis_tkeep_reg;
+logic [KEEP_W-1:0]    temp_m_axis_tstrb_reg;
+logic [M_COUNT-1:0]   temp_m_axis_mask_reg, temp_m_axis_mask_next;
+logic                 temp_m_axis_occupied_reg, temp_m_axis_occupied_next;
+logic                 temp_m_axis_tlast_reg;
+logic [M_ID_W-1:0]    temp_m_axis_tid_reg;
+logic [M_DEST_W-1:0]  temp_m_axis_tdest_reg;
+logic [USER_W-1:0]    temp_m_axis_tuser_reg;
 
 // datapath control
 logic store_axis_int_to_output;
@@ -238,9 +235,9 @@ logic store_axis_temp_to_output;
 
 wire [M_COUNT-1:0] m_axis_tready;
 
-// check all all ports from the mask are ready 
+// check all all ports from the mask are ready
 function automatic logic all_targets_ready(
-    logic [M_COUNT-1:0] mask, 
+    logic [M_COUNT-1:0] mask,
     logic [M_COUNT-1:0] ready_vec
 );
     return &(ready_vec | ~mask);
@@ -249,7 +246,7 @@ endfunction
 wire output_targets_ready = all_targets_ready(m_axis_mask_reg, m_axis_tready);
 wire temp_targets_ready   = all_targets_ready(temp_m_axis_mask_reg, m_axis_tready);
 
-for (genvar k = 0; k < M_COUNT; k = k + 1) begin
+for (genvar k = 0; k < M_COUNT; k = k + 1) begin : m_axis_gen
     assign m_axis[k].tdata  = m_axis_tdata_reg;
     assign m_axis[k].tkeep  = KEEP_EN ? m_axis_tkeep_reg : '1;
     assign m_axis[k].tstrb  = STRB_EN ? m_axis_tstrb_reg : m_axis[k].tkeep;
@@ -291,7 +288,7 @@ always_comb begin
         store_axis_temp_to_output = 1'b1;
     end
 
-    // input is ready 
+    // input is ready
     if (m_axis_tready_int_reg && s_axis.tvalid && s_axis.tready && !drop_ctl) begin
         // output is ready, store directly to output
         if (!m_axis_occupied_reg || (output_targets_ready && !store_axis_temp_to_output)) begin
@@ -344,9 +341,27 @@ always_ff @(posedge clk) begin
     end
 
     if (rst) begin
-        m_axis_occupied_reg <= 1'b0;
         m_axis_tready_int_reg <= 1'b0;
+
+        m_axis_tdata_reg <= '0;
+        m_axis_tkeep_reg <= '0;
+        m_axis_tstrb_reg <= '0;
+        m_axis_mask_reg <= '0;
+        m_axis_occupied_reg <= 1'b0;
+        m_axis_tlast_reg <= 1'b0;
+        m_axis_tid_reg   <= '0;
+        m_axis_tdest_reg <= '0;
+        m_axis_tuser_reg <= '0;
+
+        temp_m_axis_tdata_reg <= '0;
+        temp_m_axis_tkeep_reg <= '0;
+        temp_m_axis_tstrb_reg <= '0;
+        temp_m_axis_mask_reg <= '0;
         temp_m_axis_occupied_reg <= 1'b0;
+        temp_m_axis_tlast_reg <= 1'b0;
+        temp_m_axis_tid_reg   <= '0;
+        temp_m_axis_tdest_reg <= '0;
+        temp_m_axis_tuser_reg <= '0;
     end
 end
 endmodule

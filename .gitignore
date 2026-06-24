@@ -18,7 +18,9 @@ venv/
 
 # cocotb + Verilator build output
 sim_build/
+.pytest_cache/
 *.vcd
 *.fst
 results.xml
+output.pcap
 
