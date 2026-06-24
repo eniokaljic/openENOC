@@ -74,7 +74,7 @@ This work package provides the software interface layer required to configure an
 
 This work package establishes the verification infrastructure required to validate both the hardware and software components of the platform. It begins with the creation of a simulation environment using Verilator, cocotb and related tools (DV1). Layered testbenches are then developed to verify core datapath modules and packet processing logic (DV2). Hardware/software interaction is validated through co-simulation with instruction set simulation (DV3), and finally continuous regression testing is deployed through automated CI pipelines (DV4).
 
-- [ ] [DV1 - Simulation Framework](https://github.com/eniokaljic/openENOC/issues/9)
+- [x] [DV1 - Simulation Framework](https://github.com/eniokaljic/openENOC/issues/9)
 - [ ] [DV2 - Module-Level Verification](https://github.com/eniokaljic/openENOC/issues/10)
 - [ ] [DV3 - HW/SW Co-Verification](https://github.com/eniokaljic/openENOC/issues/11)
 - [ ] [DV4 - Continuous Verification Infrastructure](https://github.com/eniokaljic/openENOC/issues/12)
