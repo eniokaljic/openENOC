@@ -39,7 +39,7 @@ Install the required Python packages:
 
 .. code-block:: bash
 
-   pip install -r 0.doc/docs/requirements.txt
+   pip install -r docs/requirements.txt
 
 Build the HTML Documentation
 ----------------------------
