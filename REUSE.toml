@@ -20,3 +20,9 @@ path = ["build/hal/html/**", "build/hal/*.md", "docs/src/generated/*.md"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Enio Kaljic"
 SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+[[annotations]]
+path = ["**/*.pcap"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "NONE"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
