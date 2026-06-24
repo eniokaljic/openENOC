@@ -60,20 +60,20 @@ typedef union {
 } openenoc__csr__regB_t;
 
 // reg - openenoc.csr.endpoint1.info
-#define OPENENOC__CSR__ENDPOINT1__INFO__RMEM_TOTAL_DEPTH_bm 0xffff
+#define OPENENOC__CSR__ENDPOINT1__INFO__RMEM_TOTAL_DEPTH_bm 0xffffffff
 #define OPENENOC__CSR__ENDPOINT1__INFO__RMEM_TOTAL_DEPTH_bp 0
-#define OPENENOC__CSR__ENDPOINT1__INFO__RMEM_TOTAL_DEPTH_bw 16
+#define OPENENOC__CSR__ENDPOINT1__INFO__RMEM_TOTAL_DEPTH_bw 32
 #define OPENENOC__CSR__ENDPOINT1__INFO__RMEM_TOTAL_DEPTH_reset 0x100
-#define OPENENOC__CSR__ENDPOINT1__INFO__NUM_OF_PEERS_bm 0xffff0000
-#define OPENENOC__CSR__ENDPOINT1__INFO__NUM_OF_PEERS_bp 16
-#define OPENENOC__CSR__ENDPOINT1__INFO__NUM_OF_PEERS_bw 16
+#define OPENENOC__CSR__ENDPOINT1__INFO__NUM_OF_PEERS_bm 0xffffffff00000000
+#define OPENENOC__CSR__ENDPOINT1__INFO__NUM_OF_PEERS_bp 32
+#define OPENENOC__CSR__ENDPOINT1__INFO__NUM_OF_PEERS_bw 32
 #define OPENENOC__CSR__ENDPOINT1__INFO__NUM_OF_PEERS_reset 0x4
 typedef union {
     struct __attribute__ ((__packed__)) {
-        uint32_t rmem_total_depth :16;
-        uint32_t num_of_peers :16;
+        uint64_t rmem_total_depth :32;
+        uint64_t num_of_peers :32;
     } f;
-    uint32_t w;
+    uint64_t w;
 } openenoc__csr__endpoint1__info_t;
 
 // reg - openenoc.csr.endpoint1.config.mac_address
@@ -98,6 +98,112 @@ typedef union {
 typedef struct __attribute__ ((__packed__)) {
     openenoc__csr__endpoint1__config__mac_address_t mac_address;
 } openenoc__csr__endpoint1__config_t;
+
+// reg - openenoc.csr.endpoint1.axis_if.source.data
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__DATA__TDATA_bm 0xffffffff
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__DATA__TDATA_bp 0
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__DATA__TDATA_bw 32
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__DATA__TDATA_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tdata :32;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint1__axis_if__source__data_t;
+
+// reg - openenoc.csr.endpoint1.axis_if.source.control
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TVALID_bm 0x1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TVALID_bp 0
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TVALID_bw 1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TVALID_reset 0x0
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TLAST_bm 0x100
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TLAST_bp 8
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TLAST_bw 1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__CONTROL__TLAST_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tvalid :1;
+        uint32_t :7;
+        uint32_t tlast :1;
+        uint32_t :23;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint1__axis_if__source__control_t;
+
+// reg - openenoc.csr.endpoint1.axis_if.source.status
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__STATUS__TREADY_bm 0x1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__STATUS__TREADY_bp 0
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__STATUS__TREADY_bw 1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SOURCE__STATUS__TREADY_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tready :1;
+        uint32_t :31;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint1__axis_if__source__status_t;
+
+// regfile - openenoc.csr.endpoint1.axis_if.source
+typedef struct __attribute__ ((__packed__)) {
+    openenoc__csr__endpoint1__axis_if__source__data_t data;
+    openenoc__csr__endpoint1__axis_if__source__control_t control;
+    openenoc__csr__endpoint1__axis_if__source__status_t status;
+} openenoc__csr__endpoint1__axis_if__source_t;
+
+// reg - openenoc.csr.endpoint1.axis_if.sink.data
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__DATA__TDATA_bm 0xffffffff
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__DATA__TDATA_bp 0
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__DATA__TDATA_bw 32
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tdata :32;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint1__axis_if__sink__data_t;
+
+// reg - openenoc.csr.endpoint1.axis_if.sink.control
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__CONTROL__TREADY_bm 0x1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__CONTROL__TREADY_bp 0
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__CONTROL__TREADY_bw 1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__CONTROL__TREADY_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tready :1;
+        uint32_t :31;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint1__axis_if__sink__control_t;
+
+// reg - openenoc.csr.endpoint1.axis_if.sink.status
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__STATUS__TVALID_bm 0x1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__STATUS__TVALID_bp 0
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__STATUS__TVALID_bw 1
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__STATUS__TLAST_bm 0x100
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__STATUS__TLAST_bp 8
+#define OPENENOC__CSR__ENDPOINT1__AXIS_IF__SINK__STATUS__TLAST_bw 1
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tvalid :1;
+        uint32_t :7;
+        uint32_t tlast :1;
+        uint32_t :23;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint1__axis_if__sink__status_t;
+
+// regfile - openenoc.csr.endpoint1.axis_if.sink
+typedef struct __attribute__ ((__packed__)) {
+    openenoc__csr__endpoint1__axis_if__sink__data_t data;
+    openenoc__csr__endpoint1__axis_if__sink__control_t control;
+    openenoc__csr__endpoint1__axis_if__sink__status_t status;
+} openenoc__csr__endpoint1__axis_if__sink_t;
+
+// regfile - openenoc.csr.endpoint1.axis_if
+typedef struct __attribute__ ((__packed__)) {
+    openenoc__csr__endpoint1__axis_if__source_t source;
+    uint8_t RESERVED_c_f[0x4];
+    openenoc__csr__endpoint1__axis_if__sink_t sink;
+} openenoc__csr__endpoint1__axis_if_t;
 
 // reg - openenoc.csr.endpoint1.peers.entry[].mac_address
 #define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__MAC_ADDRESS__LO_WORD_bm 0xffffffff
@@ -149,27 +255,47 @@ typedef union {
 } openenoc__csr__endpoint1__peers__entryx__remote_address_t;
 
 // reg - openenoc.csr.endpoint1.peers.entry[].size
-#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__SIZE__VALUE_bm 0xffffffff
-#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__SIZE__VALUE_bp 0
-#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__SIZE__VALUE_bw 32
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__SIZE__BYTES_bm 0xffffffff
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__SIZE__BYTES_bp 0
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__SIZE__BYTES_bw 32
 typedef union {
     struct __attribute__ ((__packed__)) {
-        uint32_t value :32;
+        uint32_t bytes :32;
     } f;
     uint32_t w;
 } openenoc__csr__endpoint1__peers__entryx__size_t;
 
-// reg - openenoc.csr.endpoint1.peers.entry[].dma_config
-#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA_CONFIG__MODE_bm 0x3
-#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA_CONFIG__MODE_bp 0
-#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA_CONFIG__MODE_bw 2
+// reg - openenoc.csr.endpoint1.peers.entry[].dma
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__MODE_bm 0x3
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__MODE_bp 0
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__MODE_bw 2
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__REQUEST_bm 0x100
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__REQUEST_bp 8
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__REQUEST_bw 1
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__REQUEST_reset 0x0
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__IDLE_bm 0x10000
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__IDLE_bp 16
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__IDLE_bw 1
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__DONE_bm 0x1000000
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__DONE_bp 24
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__DONE_bw 1
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__ERROR_bm 0x2000000
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__ERROR_bp 25
+#define OPENENOC__CSR__ENDPOINT1__PEERS__ENTRYX__DMA__ERROR_bw 1
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t mode :2;
-        uint32_t :30;
+        uint32_t :6;
+        uint32_t request :1;
+        uint32_t :7;
+        uint32_t idle :1;
+        uint32_t :7;
+        uint32_t done :1;
+        uint32_t error :1;
+        uint32_t :6;
     } f;
     uint32_t w;
-} openenoc__csr__endpoint1__peers__entryx__dma_config_t;
+} openenoc__csr__endpoint1__peers__entryx__dma_t;
 
 // regfile - openenoc.csr.endpoint1.peers.entry[]
 typedef struct __attribute__ ((__packed__)) {
@@ -178,7 +304,7 @@ typedef struct __attribute__ ((__packed__)) {
     openenoc__csr__endpoint1__peers__entryx__local_address_t local_address;
     openenoc__csr__endpoint1__peers__entryx__remote_address_t remote_address;
     openenoc__csr__endpoint1__peers__entryx__size_t size;
-    openenoc__csr__endpoint1__peers__entryx__dma_config_t dma_config;
+    openenoc__csr__endpoint1__peers__entryx__dma_t dma;
 } openenoc__csr__endpoint1__peers__entryx_t;
 
 // regfile - openenoc.csr.endpoint1.peers
@@ -194,29 +320,30 @@ typedef struct __attribute__ ((__packed__)) {
 // addrmap - openenoc.csr.endpoint1
 typedef struct __attribute__ ((__packed__)) {
     openenoc__csr__endpoint1__info_t info;
-    uint8_t RESERVED_4_7[0x4];
     openenoc__csr__endpoint1__config_t config;
-    uint8_t RESERVED_10_7f[0x70];
+    uint8_t RESERVED_10_1f[0x10];
+    openenoc__csr__endpoint1__axis_if_t axis_if;
+    uint8_t RESERVED_3c_7f[0x44];
     openenoc__csr__endpoint1__peers_t peers;
     uint8_t RESERVED_f0_3ff[0x310];
     openenoc__csr__endpoint1__rmem_t rmem;
 } openenoc__csr__endpoint1_t;
 
 // reg - openenoc.csr.endpoint2.info
-#define OPENENOC__CSR__ENDPOINT2__INFO__RMEM_TOTAL_DEPTH_bm 0xffff
+#define OPENENOC__CSR__ENDPOINT2__INFO__RMEM_TOTAL_DEPTH_bm 0xffffffff
 #define OPENENOC__CSR__ENDPOINT2__INFO__RMEM_TOTAL_DEPTH_bp 0
-#define OPENENOC__CSR__ENDPOINT2__INFO__RMEM_TOTAL_DEPTH_bw 16
+#define OPENENOC__CSR__ENDPOINT2__INFO__RMEM_TOTAL_DEPTH_bw 32
 #define OPENENOC__CSR__ENDPOINT2__INFO__RMEM_TOTAL_DEPTH_reset 0x80
-#define OPENENOC__CSR__ENDPOINT2__INFO__NUM_OF_PEERS_bm 0xffff0000
-#define OPENENOC__CSR__ENDPOINT2__INFO__NUM_OF_PEERS_bp 16
-#define OPENENOC__CSR__ENDPOINT2__INFO__NUM_OF_PEERS_bw 16
+#define OPENENOC__CSR__ENDPOINT2__INFO__NUM_OF_PEERS_bm 0xffffffff00000000
+#define OPENENOC__CSR__ENDPOINT2__INFO__NUM_OF_PEERS_bp 32
+#define OPENENOC__CSR__ENDPOINT2__INFO__NUM_OF_PEERS_bw 32
 #define OPENENOC__CSR__ENDPOINT2__INFO__NUM_OF_PEERS_reset 0x2
 typedef union {
     struct __attribute__ ((__packed__)) {
-        uint32_t rmem_total_depth :16;
-        uint32_t num_of_peers :16;
+        uint64_t rmem_total_depth :32;
+        uint64_t num_of_peers :32;
     } f;
-    uint32_t w;
+    uint64_t w;
 } openenoc__csr__endpoint2__info_t;
 
 // reg - openenoc.csr.endpoint2.config.mac_address
@@ -241,6 +368,112 @@ typedef union {
 typedef struct __attribute__ ((__packed__)) {
     openenoc__csr__endpoint2__config__mac_address_t mac_address;
 } openenoc__csr__endpoint2__config_t;
+
+// reg - openenoc.csr.endpoint2.axis_if.source.data
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__DATA__TDATA_bm 0xffffffff
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__DATA__TDATA_bp 0
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__DATA__TDATA_bw 32
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__DATA__TDATA_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tdata :32;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint2__axis_if__source__data_t;
+
+// reg - openenoc.csr.endpoint2.axis_if.source.control
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TVALID_bm 0x1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TVALID_bp 0
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TVALID_bw 1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TVALID_reset 0x0
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TLAST_bm 0x100
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TLAST_bp 8
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TLAST_bw 1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__CONTROL__TLAST_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tvalid :1;
+        uint32_t :7;
+        uint32_t tlast :1;
+        uint32_t :23;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint2__axis_if__source__control_t;
+
+// reg - openenoc.csr.endpoint2.axis_if.source.status
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__STATUS__TREADY_bm 0x1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__STATUS__TREADY_bp 0
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__STATUS__TREADY_bw 1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SOURCE__STATUS__TREADY_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tready :1;
+        uint32_t :31;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint2__axis_if__source__status_t;
+
+// regfile - openenoc.csr.endpoint2.axis_if.source
+typedef struct __attribute__ ((__packed__)) {
+    openenoc__csr__endpoint2__axis_if__source__data_t data;
+    openenoc__csr__endpoint2__axis_if__source__control_t control;
+    openenoc__csr__endpoint2__axis_if__source__status_t status;
+} openenoc__csr__endpoint2__axis_if__source_t;
+
+// reg - openenoc.csr.endpoint2.axis_if.sink.data
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__DATA__TDATA_bm 0xffffffff
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__DATA__TDATA_bp 0
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__DATA__TDATA_bw 32
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tdata :32;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint2__axis_if__sink__data_t;
+
+// reg - openenoc.csr.endpoint2.axis_if.sink.control
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__CONTROL__TREADY_bm 0x1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__CONTROL__TREADY_bp 0
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__CONTROL__TREADY_bw 1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__CONTROL__TREADY_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tready :1;
+        uint32_t :31;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint2__axis_if__sink__control_t;
+
+// reg - openenoc.csr.endpoint2.axis_if.sink.status
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__STATUS__TVALID_bm 0x1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__STATUS__TVALID_bp 0
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__STATUS__TVALID_bw 1
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__STATUS__TLAST_bm 0x100
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__STATUS__TLAST_bp 8
+#define OPENENOC__CSR__ENDPOINT2__AXIS_IF__SINK__STATUS__TLAST_bw 1
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t tvalid :1;
+        uint32_t :7;
+        uint32_t tlast :1;
+        uint32_t :23;
+    } f;
+    uint32_t w;
+} openenoc__csr__endpoint2__axis_if__sink__status_t;
+
+// regfile - openenoc.csr.endpoint2.axis_if.sink
+typedef struct __attribute__ ((__packed__)) {
+    openenoc__csr__endpoint2__axis_if__sink__data_t data;
+    openenoc__csr__endpoint2__axis_if__sink__control_t control;
+    openenoc__csr__endpoint2__axis_if__sink__status_t status;
+} openenoc__csr__endpoint2__axis_if__sink_t;
+
+// regfile - openenoc.csr.endpoint2.axis_if
+typedef struct __attribute__ ((__packed__)) {
+    openenoc__csr__endpoint2__axis_if__source_t source;
+    uint8_t RESERVED_c_f[0x4];
+    openenoc__csr__endpoint2__axis_if__sink_t sink;
+} openenoc__csr__endpoint2__axis_if_t;
 
 // reg - openenoc.csr.endpoint2.peers.entry[].mac_address
 #define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__MAC_ADDRESS__LO_WORD_bm 0xffffffff
@@ -292,27 +525,47 @@ typedef union {
 } openenoc__csr__endpoint2__peers__entryx__remote_address_t;
 
 // reg - openenoc.csr.endpoint2.peers.entry[].size
-#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__SIZE__VALUE_bm 0xffffffff
-#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__SIZE__VALUE_bp 0
-#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__SIZE__VALUE_bw 32
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__SIZE__BYTES_bm 0xffffffff
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__SIZE__BYTES_bp 0
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__SIZE__BYTES_bw 32
 typedef union {
     struct __attribute__ ((__packed__)) {
-        uint32_t value :32;
+        uint32_t bytes :32;
     } f;
     uint32_t w;
 } openenoc__csr__endpoint2__peers__entryx__size_t;
 
-// reg - openenoc.csr.endpoint2.peers.entry[].dma_config
-#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA_CONFIG__MODE_bm 0x3
-#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA_CONFIG__MODE_bp 0
-#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA_CONFIG__MODE_bw 2
+// reg - openenoc.csr.endpoint2.peers.entry[].dma
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__MODE_bm 0x3
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__MODE_bp 0
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__MODE_bw 2
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__REQUEST_bm 0x100
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__REQUEST_bp 8
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__REQUEST_bw 1
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__REQUEST_reset 0x0
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__IDLE_bm 0x10000
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__IDLE_bp 16
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__IDLE_bw 1
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__DONE_bm 0x1000000
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__DONE_bp 24
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__DONE_bw 1
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__ERROR_bm 0x2000000
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__ERROR_bp 25
+#define OPENENOC__CSR__ENDPOINT2__PEERS__ENTRYX__DMA__ERROR_bw 1
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t mode :2;
-        uint32_t :30;
+        uint32_t :6;
+        uint32_t request :1;
+        uint32_t :7;
+        uint32_t idle :1;
+        uint32_t :7;
+        uint32_t done :1;
+        uint32_t error :1;
+        uint32_t :6;
     } f;
     uint32_t w;
-} openenoc__csr__endpoint2__peers__entryx__dma_config_t;
+} openenoc__csr__endpoint2__peers__entryx__dma_t;
 
 // regfile - openenoc.csr.endpoint2.peers.entry[]
 typedef struct __attribute__ ((__packed__)) {
@@ -321,7 +574,7 @@ typedef struct __attribute__ ((__packed__)) {
     openenoc__csr__endpoint2__peers__entryx__local_address_t local_address;
     openenoc__csr__endpoint2__peers__entryx__remote_address_t remote_address;
     openenoc__csr__endpoint2__peers__entryx__size_t size;
-    openenoc__csr__endpoint2__peers__entryx__dma_config_t dma_config;
+    openenoc__csr__endpoint2__peers__entryx__dma_t dma;
 } openenoc__csr__endpoint2__peers__entryx_t;
 
 // regfile - openenoc.csr.endpoint2.peers
@@ -337,9 +590,10 @@ typedef struct __attribute__ ((__packed__)) {
 // addrmap - openenoc.csr.endpoint2
 typedef struct __attribute__ ((__packed__)) {
     openenoc__csr__endpoint2__info_t info;
-    uint8_t RESERVED_4_7[0x4];
     openenoc__csr__endpoint2__config_t config;
-    uint8_t RESERVED_10_3f[0x30];
+    uint8_t RESERVED_10_1f[0x10];
+    openenoc__csr__endpoint2__axis_if_t axis_if;
+    uint8_t RESERVED_3c_3f[0x4];
     openenoc__csr__endpoint2__peers_t peers;
     uint8_t RESERVED_78_1ff[0x188];
     openenoc__csr__endpoint2__rmem_t rmem;

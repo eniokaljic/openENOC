@@ -10,7 +10,7 @@
     <dt>Base Offset:</dt><dd class="address">0x14</dd>
     <dt>Size:</dt><dd class="address">0x4</dd>
     
-    <dt>Source:</dt><dd><a href="https://github.com/eniokaljic/openENOC/blob/main/hal/src/openenoc_endpoint.rdl#L136" target="_blank">openenoc_endpoint.rdl</a></dd>
+    <dt>Source:</dt><dd><a href="https://github.com/eniokaljic/openENOC/blob/main/hal/src/openenoc_endpoint.rdl#L250" target="_blank">openenoc_endpoint.rdl</a></dd>
     
 </dl>
 <h2>Description</h2>
@@ -29,24 +29,24 @@
         <th>Name</th>
         <th></th>
     </tr>
-    <tr id="value">
+    <tr id="bytes">
         <td>[31:0]</td>
-        <td><a href="#value.desc">value</a></td>
+        <td><a href="#bytes.desc">bytes</a></td>
         <td>
             <span title='Readable and Writable'>rw</span></td>
         <td>-
         </td>
         <td>
-            <input id="_FieldValueTestervalue" class="field-value-tester"
+            <input id="_FieldValueTesterbytes" class="field-value-tester"
                 type="text" autocomplete="off"
-                data-name="value" oninput="onDecodedFieldInput(this)"/>
+                data-name="bytes" oninput="onDecodedFieldInput(this)"/>
         </td>
-        <td>csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]</td>
+        <td>csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size.bytes[31:0]</td>
         <td>
-            <button type="button" id="_RadixButtonvalue" class="radix-button"
+            <button type="button" id="_RadixButtonbytes" class="radix-button"
                 title="Switch radix" aria-label="Switch radix"
-                data-name="value" onclick="onRadixSwitch(this)">H</button>
-            <a class="headerlink" href="#value" title="Permalink to this row"></a>
+                data-name="bytes" onclick="onRadixSwitch(this)">H</button>
+            <a class="headerlink" href="#bytes" title="Permalink to this row"></a>
         </td>
     </tr>
 </table>
@@ -59,10 +59,10 @@
 </p>
 <hr/><h2>Field Descriptions</h2>
 
-<h3 id="value.desc">value - csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size.value[31:0]
-    <a class="headerlink" href="#value.desc" title="Permalink to this headline"></a>
+<h3 id="bytes.desc">bytes - csr.endpoint2.peers.entry[0..NUM_OF_PEERS-1].size.bytes[31:0]
+    <a class="headerlink" href="#bytes.desc" title="Permalink to this headline"></a>
 </h3>
-<div id="_Content.value.desc">
-<p>32-bit size of the remote peer's memory region.</p>
+<div id="_Content.bytes.desc">
+<p>32-bit size of the remote peer's memory region in bytes.</p>
 </div>
 </div>

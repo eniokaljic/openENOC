@@ -6,8 +6,8 @@ package openenoc_endpoint_pkg;
     localparam OPENENOC_ENDPOINT_DATA_WIDTH = 32;
     localparam OPENENOC_ENDPOINT_MIN_ADDR_WIDTH = 11;
     localparam OPENENOC_ENDPOINT_SIZE = 'h800;
-    localparam NUM_OF_PEERS = 'h4;
     localparam RMEM_TOTAL_DEPTH = 'h100;
+    localparam NUM_OF_PEERS = 'h1;
     localparam INST_NAME = openenoc_endpoint;
 
     typedef struct {
@@ -28,6 +28,49 @@ package openenoc_endpoint_pkg;
     } openenoc_endpoint__config__in_t;
 
     typedef struct {
+        logic next;
+    } openenoc_endpoint__axis_if__source__status__tready__in_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__source__status__tready__in_t tready;
+    } openenoc_endpoint__axis_if__source__status__in_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__source__status__in_t status;
+    } openenoc_endpoint__axis_if__source__in_t;
+
+    typedef struct {
+        logic [31:0] next;
+    } openenoc_endpoint__axis_if__sink__data__tdata__in_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__sink__data__tdata__in_t tdata;
+    } openenoc_endpoint__axis_if__sink__data__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint__axis_if__sink__status__tvalid__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint__axis_if__sink__status__tlast__in_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__sink__status__tvalid__in_t tvalid;
+        openenoc_endpoint__axis_if__sink__status__tlast__in_t tlast;
+    } openenoc_endpoint__axis_if__sink__status__in_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__sink__data__in_t data;
+        openenoc_endpoint__axis_if__sink__status__in_t status;
+    } openenoc_endpoint__axis_if__sink__in_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__source__in_t source;
+        openenoc_endpoint__axis_if__sink__in_t sink;
+    } openenoc_endpoint__axis_if__in_t;
+
+    typedef struct {
         logic [31:0] next;
     } openenoc_endpoint__peers__entry__mac_address__lo_word__in_t;
 
@@ -41,11 +84,30 @@ package openenoc_endpoint_pkg;
     } openenoc_endpoint__peers__entry__mac_address__in_t;
 
     typedef struct {
+        logic next;
+    } openenoc_endpoint__peers__entry__dma__idle__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint__peers__entry__dma__done__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint__peers__entry__dma__error__in_t;
+
+    typedef struct {
+        openenoc_endpoint__peers__entry__dma__idle__in_t idle;
+        openenoc_endpoint__peers__entry__dma__done__in_t done;
+        openenoc_endpoint__peers__entry__dma__error__in_t error;
+    } openenoc_endpoint__peers__entry__dma__in_t;
+
+    typedef struct {
         openenoc_endpoint__peers__entry__mac_address__in_t mac_address;
+        openenoc_endpoint__peers__entry__dma__in_t dma;
     } openenoc_endpoint__peers__entry__in_t;
 
     typedef struct {
-        openenoc_endpoint__peers__entry__in_t entry[4];
+        openenoc_endpoint__peers__entry__in_t entry[1];
     } openenoc_endpoint__peers__in_t;
 
     typedef struct {
@@ -56,16 +118,17 @@ package openenoc_endpoint_pkg;
 
     typedef struct {
         openenoc_endpoint__config__in_t config_;
+        openenoc_endpoint__axis_if__in_t axis_if;
         openenoc_endpoint__peers__in_t peers;
         openenoc_endpoint__rmem__external__in_t rmem;
     } openenoc_endpoint__in_t;
 
     typedef struct {
-        logic [15:0] value;
+        logic [31:0] value;
     } openenoc_endpoint__info__rmem_total_depth__out_t;
 
     typedef struct {
-        logic [15:0] value;
+        logic [31:0] value;
     } openenoc_endpoint__info__num_of_peers__out_t;
 
     typedef struct {
@@ -89,6 +152,49 @@ package openenoc_endpoint_pkg;
     typedef struct {
         openenoc_endpoint__config__mac_address__out_t mac_address;
     } openenoc_endpoint__config__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } openenoc_endpoint__axis_if__source__data__tdata__out_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__source__data__tdata__out_t tdata;
+    } openenoc_endpoint__axis_if__source__data__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint__axis_if__source__control__tvalid__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint__axis_if__source__control__tlast__out_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__source__control__tvalid__out_t tvalid;
+        openenoc_endpoint__axis_if__source__control__tlast__out_t tlast;
+    } openenoc_endpoint__axis_if__source__control__out_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__source__data__out_t data;
+        openenoc_endpoint__axis_if__source__control__out_t control;
+    } openenoc_endpoint__axis_if__source__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint__axis_if__sink__control__tready__out_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__sink__control__tready__out_t tready;
+    } openenoc_endpoint__axis_if__sink__control__out_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__sink__control__out_t control;
+    } openenoc_endpoint__axis_if__sink__out_t;
+
+    typedef struct {
+        openenoc_endpoint__axis_if__source__out_t source;
+        openenoc_endpoint__axis_if__sink__out_t sink;
+    } openenoc_endpoint__axis_if__out_t;
 
     typedef struct {
         logic [31:0] value;
@@ -129,19 +235,24 @@ package openenoc_endpoint_pkg;
 
     typedef struct {
         logic [31:0] value;
-    } openenoc_endpoint__peers__entry__size__value__out_t;
+    } openenoc_endpoint__peers__entry__size__bytes__out_t;
 
     typedef struct {
-        openenoc_endpoint__peers__entry__size__value__out_t value;
+        openenoc_endpoint__peers__entry__size__bytes__out_t bytes;
     } openenoc_endpoint__peers__entry__size__out_t;
 
     typedef struct {
         logic [1:0] value;
-    } openenoc_endpoint__peers__entry__dma_config__mode__out_t;
+    } openenoc_endpoint__peers__entry__dma__mode__out_t;
 
     typedef struct {
-        openenoc_endpoint__peers__entry__dma_config__mode__out_t mode;
-    } openenoc_endpoint__peers__entry__dma_config__out_t;
+        logic value;
+    } openenoc_endpoint__peers__entry__dma__request__out_t;
+
+    typedef struct {
+        openenoc_endpoint__peers__entry__dma__mode__out_t mode;
+        openenoc_endpoint__peers__entry__dma__request__out_t request;
+    } openenoc_endpoint__peers__entry__dma__out_t;
 
     typedef struct {
         openenoc_endpoint__peers__entry__mac_address__out_t mac_address;
@@ -149,11 +260,11 @@ package openenoc_endpoint_pkg;
         openenoc_endpoint__peers__entry__local_address__out_t local_address;
         openenoc_endpoint__peers__entry__remote_address__out_t remote_address;
         openenoc_endpoint__peers__entry__size__out_t size;
-        openenoc_endpoint__peers__entry__dma_config__out_t dma_config;
+        openenoc_endpoint__peers__entry__dma__out_t dma;
     } openenoc_endpoint__peers__entry__out_t;
 
     typedef struct {
-        openenoc_endpoint__peers__entry__out_t entry[4];
+        openenoc_endpoint__peers__entry__out_t entry[1];
     } openenoc_endpoint__peers__out_t;
 
     typedef struct {
@@ -167,6 +278,7 @@ package openenoc_endpoint_pkg;
     typedef struct {
         openenoc_endpoint__info__out_t info;
         openenoc_endpoint__config__out_t config_;
+        openenoc_endpoint__axis_if__out_t axis_if;
         openenoc_endpoint__peers__out_t peers;
         openenoc_endpoint__rmem__external__out_t rmem;
     } openenoc_endpoint__out_t;

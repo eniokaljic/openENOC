@@ -4,10 +4,10 @@
 package openenoc_switch_pkg;
 
     localparam OPENENOC_SWITCH_DATA_WIDTH = 32;
-    localparam OPENENOC_SWITCH_MIN_ADDR_WIDTH = 10;
-    localparam OPENENOC_SWITCH_SIZE = 'h400;
-    localparam NUM_OF_INTERFACES = 'h8;
-    localparam TABLE_DEPTH = 'h20;
+    localparam OPENENOC_SWITCH_MIN_ADDR_WIDTH = 5;
+    localparam OPENENOC_SWITCH_SIZE = 'h20;
+    localparam NUM_OF_INTERFACES = 'h1;
+    localparam TABLE_DEPTH = 'h1;
     localparam INST_NAME = openenoc_switch;
 
     typedef struct {
@@ -56,7 +56,7 @@ package openenoc_switch_pkg;
     } openenoc_switch__forwarding_control__out_t;
 
     typedef struct {
-        logic [7:0] value;
+        logic value;
     } openenoc_switch__default_forwarding__bitmap__out_t;
 
     typedef struct {
@@ -65,7 +65,7 @@ package openenoc_switch_pkg;
 
     typedef struct {
         logic req;
-        logic [8:0] addr;
+        logic [3:0] addr;
         logic req_is_wr;
         logic [31:0] wr_data;
         logic [31:0] wr_biten;

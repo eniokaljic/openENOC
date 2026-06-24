@@ -34,12 +34,36 @@ class openenoc_csr_simulator_cls(Simulator):
                                          fields=[FieldDefinition(high=7, low=0, msb=7, lsb=0, inst_name='f0', field_type=FieldType.READWRITE),FieldDefinition(high=15, low=8, msb=15, lsb=8, inst_name='f1', field_type=FieldType.READWRITE),FieldDefinition(high=23, low=16, msb=23, lsb=16, inst_name='f2', field_type=FieldType.READWRITE),FieldDefinition(high=31, low=24, msb=31, lsb=24, inst_name='f3', field_type=FieldType.READWRITE),
                                                 ]),
             2048 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint1.info', readable=True, writable=False,
-                                         fields=[FieldDefinition(high=15, low=0, msb=15, lsb=0, inst_name='rmem_total_depth', field_type=FieldType.READONLY),FieldDefinition(high=31, low=16, msb=31, lsb=16, inst_name='num_of_peers', field_type=FieldType.READONLY),
+    Register(width=64, full_inst_name='openenoc_csr.endpoint1.info', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='rmem_total_depth', field_type=FieldType.READONLY),FieldDefinition(high=63, low=32, msb=63, lsb=32, inst_name='num_of_peers', field_type=FieldType.READONLY),
                                                 ]),
             2056 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint1.config.mac_address', readable=True, writable=True,
                                          fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='lo_word', field_type=FieldType.READWRITE),FieldDefinition(high=47, low=32, msb=47, lsb=32, inst_name='hi_word', field_type=FieldType.READWRITE),
+                                                ]),
+            2080 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.axis_if.source.data', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='tdata', field_type=FieldType.READWRITE),
+                                                ]),
+            2084 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.axis_if.source.control', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READWRITE),
+                                                ]),
+            2088 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.axis_if.source.status', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tready', field_type=FieldType.READONLY),
+                                                ]),
+            2096 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.axis_if.sink.data', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='tdata', field_type=FieldType.READONLY),
+                                                ]),
+            2100 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.axis_if.sink.control', readable=False, writable=True,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tready', field_type=FieldType.WRITEONLY),
+                                                ]),
+            2104 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.axis_if.sink.status', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READONLY),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READONLY),
                                                 ]),
             2176 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint1.peers.entry[0].mac_address', readable=True, writable=True,
@@ -59,11 +83,11 @@ class openenoc_csr_simulator_cls(Simulator):
                                                 ]),
             2196 : 
     Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[0].size', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='value', field_type=FieldType.READWRITE),
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='bytes', field_type=FieldType.READWRITE),
                                                 ]),
             2200 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[0].dma_config', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[0].dma', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),
                                                 ]),
             2204 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint1.peers.entry[1].mac_address', readable=True, writable=True,
@@ -83,11 +107,11 @@ class openenoc_csr_simulator_cls(Simulator):
                                                 ]),
             2224 : 
     Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[1].size', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='value', field_type=FieldType.READWRITE),
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='bytes', field_type=FieldType.READWRITE),
                                                 ]),
             2228 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[1].dma_config', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[1].dma', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),
                                                 ]),
             2232 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint1.peers.entry[2].mac_address', readable=True, writable=True,
@@ -107,11 +131,11 @@ class openenoc_csr_simulator_cls(Simulator):
                                                 ]),
             2252 : 
     Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[2].size', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='value', field_type=FieldType.READWRITE),
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='bytes', field_type=FieldType.READWRITE),
                                                 ]),
             2256 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[2].dma_config', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[2].dma', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),
                                                 ]),
             2260 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint1.peers.entry[3].mac_address', readable=True, writable=True,
@@ -131,19 +155,43 @@ class openenoc_csr_simulator_cls(Simulator):
                                                 ]),
             2280 : 
     Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[3].size', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='value', field_type=FieldType.READWRITE),
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='bytes', field_type=FieldType.READWRITE),
                                                 ]),
             2284 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[3].dma_config', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),
+    Register(width=32, full_inst_name='openenoc_csr.endpoint1.peers.entry[3].dma', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),
                                                 ]),
             4096 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint2.info', readable=True, writable=False,
-                                         fields=[FieldDefinition(high=15, low=0, msb=15, lsb=0, inst_name='rmem_total_depth', field_type=FieldType.READONLY),FieldDefinition(high=31, low=16, msb=31, lsb=16, inst_name='num_of_peers', field_type=FieldType.READONLY),
+    Register(width=64, full_inst_name='openenoc_csr.endpoint2.info', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='rmem_total_depth', field_type=FieldType.READONLY),FieldDefinition(high=63, low=32, msb=63, lsb=32, inst_name='num_of_peers', field_type=FieldType.READONLY),
                                                 ]),
             4104 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint2.config.mac_address', readable=True, writable=True,
                                          fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='lo_word', field_type=FieldType.READWRITE),FieldDefinition(high=47, low=32, msb=47, lsb=32, inst_name='hi_word', field_type=FieldType.READWRITE),
+                                                ]),
+            4128 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.axis_if.source.data', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='tdata', field_type=FieldType.READWRITE),
+                                                ]),
+            4132 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.axis_if.source.control', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READWRITE),
+                                                ]),
+            4136 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.axis_if.source.status', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tready', field_type=FieldType.READONLY),
+                                                ]),
+            4144 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.axis_if.sink.data', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='tdata', field_type=FieldType.READONLY),
+                                                ]),
+            4148 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.axis_if.sink.control', readable=False, writable=True,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tready', field_type=FieldType.WRITEONLY),
+                                                ]),
+            4152 : 
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.axis_if.sink.status', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READONLY),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READONLY),
                                                 ]),
             4160 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint2.peers.entry[0].mac_address', readable=True, writable=True,
@@ -163,11 +211,11 @@ class openenoc_csr_simulator_cls(Simulator):
                                                 ]),
             4180 : 
     Register(width=32, full_inst_name='openenoc_csr.endpoint2.peers.entry[0].size', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='value', field_type=FieldType.READWRITE),
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='bytes', field_type=FieldType.READWRITE),
                                                 ]),
             4184 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint2.peers.entry[0].dma_config', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.peers.entry[0].dma', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),
                                                 ]),
             4188 : 
     Register(width=64, full_inst_name='openenoc_csr.endpoint2.peers.entry[1].mac_address', readable=True, writable=True,
@@ -187,11 +235,11 @@ class openenoc_csr_simulator_cls(Simulator):
                                                 ]),
             4208 : 
     Register(width=32, full_inst_name='openenoc_csr.endpoint2.peers.entry[1].size', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='value', field_type=FieldType.READWRITE),
+                                         fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='bytes', field_type=FieldType.READWRITE),
                                                 ]),
             4212 : 
-    Register(width=32, full_inst_name='openenoc_csr.endpoint2.peers.entry[1].dma_config', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),
+    Register(width=32, full_inst_name='openenoc_csr.endpoint2.peers.entry[1].dma', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),
                                                 ]),
             5120 : 
     Register(width=32, full_inst_name='openenoc_csr.switch1.info', readable=True, writable=False,

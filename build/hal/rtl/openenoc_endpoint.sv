@@ -68,10 +68,22 @@ module openenoc_endpoint (
     // Address Decode
     //--------------------------------------------------------------------------
     typedef struct {
-        logic info;
+        logic [1:0] info;
         struct {
             logic [1:0] mac_address;
         } config_;
+        struct {
+            struct {
+                logic data;
+                logic control;
+                logic status;
+            } source;
+            struct {
+                logic data;
+                logic control;
+                logic status;
+            } sink;
+        } axis_if;
         struct {
             struct {
                 logic [1:0] mac_address;
@@ -79,8 +91,8 @@ module openenoc_endpoint (
                 logic local_address;
                 logic remote_address;
                 logic size;
-                logic dma_config;
-            } entry[4];
+                logic dma;
+            } entry[1];
         } peers;
         logic rmem;
     } decoded_reg_strb_t;
@@ -101,17 +113,24 @@ module openenoc_endpoint (
         is_external = '0;
         is_valid_addr = '1; // No valid address check
         is_valid_rw = '1; // No valid RW check
-        decoded_reg_strb.info = cpuif_req_masked & (cpuif_addr == 11'h0) & !cpuif_req_is_wr;
+        decoded_reg_strb.info[0] = cpuif_req_masked & (cpuif_addr == 11'h0) & !cpuif_req_is_wr;
+        decoded_reg_strb.info[1] = cpuif_req_masked & (cpuif_addr == 11'h4) & !cpuif_req_is_wr;
         decoded_reg_strb.config_.mac_address[0] = cpuif_req_masked & (cpuif_addr == 11'h8);
         decoded_reg_strb.config_.mac_address[1] = cpuif_req_masked & (cpuif_addr == 11'hc);
-        for(int i0=0; i0<4; i0++) begin
-            decoded_reg_strb.peers.entry[i0].mac_address[0] = cpuif_req_masked & (cpuif_addr == 11'h80 + (11)'(i0) * 11'h1c);
-            decoded_reg_strb.peers.entry[i0].mac_address[1] = cpuif_req_masked & (cpuif_addr == 11'h84 + (11)'(i0) * 11'h1c);
-            decoded_reg_strb.peers.entry[i0].rmem_address = cpuif_req_masked & (cpuif_addr == 11'h88 + (11)'(i0) * 11'h1c);
-            decoded_reg_strb.peers.entry[i0].local_address = cpuif_req_masked & (cpuif_addr == 11'h8c + (11)'(i0) * 11'h1c);
-            decoded_reg_strb.peers.entry[i0].remote_address = cpuif_req_masked & (cpuif_addr == 11'h90 + (11)'(i0) * 11'h1c);
-            decoded_reg_strb.peers.entry[i0].size = cpuif_req_masked & (cpuif_addr == 11'h94 + (11)'(i0) * 11'h1c);
-            decoded_reg_strb.peers.entry[i0].dma_config = cpuif_req_masked & (cpuif_addr == 11'h98 + (11)'(i0) * 11'h1c);
+        decoded_reg_strb.axis_if.source.data = cpuif_req_masked & (cpuif_addr == 11'h20);
+        decoded_reg_strb.axis_if.source.control = cpuif_req_masked & (cpuif_addr == 11'h24);
+        decoded_reg_strb.axis_if.source.status = cpuif_req_masked & (cpuif_addr == 11'h28) & !cpuif_req_is_wr;
+        decoded_reg_strb.axis_if.sink.data = cpuif_req_masked & (cpuif_addr == 11'h30) & !cpuif_req_is_wr;
+        decoded_reg_strb.axis_if.sink.control = cpuif_req_masked & (cpuif_addr == 11'h34) & cpuif_req_is_wr;
+        decoded_reg_strb.axis_if.sink.status = cpuif_req_masked & (cpuif_addr == 11'h38) & !cpuif_req_is_wr;
+        for(int i0=0; i0<1; i0++) begin
+            decoded_reg_strb.peers.entry[i0].mac_address[0] = cpuif_req_masked & (cpuif_addr == 11'h40 + (11)'(i0) * 11'h1c);
+            decoded_reg_strb.peers.entry[i0].mac_address[1] = cpuif_req_masked & (cpuif_addr == 11'h44 + (11)'(i0) * 11'h1c);
+            decoded_reg_strb.peers.entry[i0].rmem_address = cpuif_req_masked & (cpuif_addr == 11'h48 + (11)'(i0) * 11'h1c);
+            decoded_reg_strb.peers.entry[i0].local_address = cpuif_req_masked & (cpuif_addr == 11'h4c + (11)'(i0) * 11'h1c);
+            decoded_reg_strb.peers.entry[i0].remote_address = cpuif_req_masked & (cpuif_addr == 11'h50 + (11)'(i0) * 11'h1c);
+            decoded_reg_strb.peers.entry[i0].size = cpuif_req_masked & (cpuif_addr == 11'h54 + (11)'(i0) * 11'h1c);
+            decoded_reg_strb.peers.entry[i0].dma = cpuif_req_masked & (cpuif_addr == 11'h58 + (11)'(i0) * 11'h1c);
         end
         decoded_reg_strb.rmem = cpuif_req_masked & (cpuif_addr >= 11'h400) & (cpuif_addr <= 11'h400 + 11'h3ff);
         is_external |= cpuif_req_masked & (cpuif_addr >= 11'h400) & (cpuif_addr <= 11'h400 + 11'h3ff);
@@ -164,6 +183,34 @@ module openenoc_endpoint (
                     struct {
                         logic [31:0] next;
                         logic load_next;
+                    } tdata;
+                } data;
+                struct {
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } tvalid;
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } tlast;
+                } control;
+            } source;
+            struct {
+                struct {
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } tready;
+                } control;
+            } sink;
+        } axis_if;
+        struct {
+            struct {
+                struct {
+                    struct {
+                        logic [31:0] next;
+                        logic load_next;
                     } lo_word;
                     struct {
                         logic [15:0] next;
@@ -192,15 +239,19 @@ module openenoc_endpoint (
                     struct {
                         logic [31:0] next;
                         logic load_next;
-                    } value;
+                    } bytes;
                 } size;
                 struct {
                     struct {
                         logic [1:0] next;
                         logic load_next;
                     } mode;
-                } dma_config;
-            } entry[4];
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } request;
+                } dma;
+            } entry[1];
         } peers;
     } field_combo_t;
     field_combo_t field_combo;
@@ -216,6 +267,30 @@ module openenoc_endpoint (
                 } hi_word;
             } mac_address;
         } config_;
+        struct {
+            struct {
+                struct {
+                    struct {
+                        logic [31:0] value;
+                    } tdata;
+                } data;
+                struct {
+                    struct {
+                        logic value;
+                    } tvalid;
+                    struct {
+                        logic value;
+                    } tlast;
+                } control;
+            } source;
+            struct {
+                struct {
+                    struct {
+                        logic value;
+                    } tready;
+                } control;
+            } sink;
+        } axis_if;
         struct {
             struct {
                 struct {
@@ -244,20 +319,23 @@ module openenoc_endpoint (
                 struct {
                     struct {
                         logic [31:0] value;
-                    } value;
+                    } bytes;
                 } size;
                 struct {
                     struct {
                         logic [1:0] value;
                     } mode;
-                } dma_config;
-            } entry[4];
+                    struct {
+                        logic value;
+                    } request;
+                } dma;
+            } entry[1];
         } peers;
     } field_storage_t;
     field_storage_t field_storage;
 
-    assign hwif_out.info.rmem_total_depth.value = 16'h100;
-    assign hwif_out.info.num_of_peers.value = 16'h4;
+    assign hwif_out.info.rmem_total_depth.value = 32'h100;
+    assign hwif_out.info.num_of_peers.value = 32'h1;
     // Field: openenoc_endpoint.config.mac_address.lo_word
     always_comb begin
         automatic logic [31:0] next_c;
@@ -310,7 +388,105 @@ module openenoc_endpoint (
         end
     end
     assign hwif_out.config_.mac_address.hi_word.value = field_storage.config_.mac_address.hi_word.value;
-    for(genvar i0=0; i0<4; i0++) begin
+    // Field: openenoc_endpoint.axis_if.source.data.tdata
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.axis_if.source.data.tdata.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.axis_if.source.data && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.axis_if.source.data.tdata.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.axis_if.source.data.tdata.next = next_c;
+        field_combo.axis_if.source.data.tdata.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.axis_if.source.data.tdata.value <= 32'h0;
+        end else begin
+            if(field_combo.axis_if.source.data.tdata.load_next) begin
+                field_storage.axis_if.source.data.tdata.value <= field_combo.axis_if.source.data.tdata.next;
+            end
+        end
+    end
+    assign hwif_out.axis_if.source.data.tdata.value = field_storage.axis_if.source.data.tdata.value;
+    // Field: openenoc_endpoint.axis_if.source.control.tvalid
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.axis_if.source.control.tvalid.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.axis_if.source.control && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.axis_if.source.control.tvalid.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
+            load_next_c = '1;
+        end else begin // singlepulse clears back to 0
+            next_c = '0;
+            load_next_c = '1;
+        end
+        field_combo.axis_if.source.control.tvalid.next = next_c;
+        field_combo.axis_if.source.control.tvalid.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.axis_if.source.control.tvalid.value <= 1'h0;
+        end else begin
+            if(field_combo.axis_if.source.control.tvalid.load_next) begin
+                field_storage.axis_if.source.control.tvalid.value <= field_combo.axis_if.source.control.tvalid.next;
+            end
+        end
+    end
+    assign hwif_out.axis_if.source.control.tvalid.value = field_storage.axis_if.source.control.tvalid.value;
+    // Field: openenoc_endpoint.axis_if.source.control.tlast
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.axis_if.source.control.tlast.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.axis_if.source.control && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.axis_if.source.control.tlast.value & ~decoded_wr_biten[8:8]) | (decoded_wr_data[8:8] & decoded_wr_biten[8:8]);
+            load_next_c = '1;
+        end
+        field_combo.axis_if.source.control.tlast.next = next_c;
+        field_combo.axis_if.source.control.tlast.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.axis_if.source.control.tlast.value <= 1'h0;
+        end else begin
+            if(field_combo.axis_if.source.control.tlast.load_next) begin
+                field_storage.axis_if.source.control.tlast.value <= field_combo.axis_if.source.control.tlast.next;
+            end
+        end
+    end
+    assign hwif_out.axis_if.source.control.tlast.value = field_storage.axis_if.source.control.tlast.value;
+    // Field: openenoc_endpoint.axis_if.sink.control.tready
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.axis_if.sink.control.tready.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.axis_if.sink.control && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.axis_if.sink.control.tready.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
+            load_next_c = '1;
+        end else begin // singlepulse clears back to 0
+            next_c = '0;
+            load_next_c = '1;
+        end
+        field_combo.axis_if.sink.control.tready.next = next_c;
+        field_combo.axis_if.sink.control.tready.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.axis_if.sink.control.tready.value <= 1'h0;
+        end else begin
+            if(field_combo.axis_if.sink.control.tready.load_next) begin
+                field_storage.axis_if.sink.control.tready.value <= field_combo.axis_if.sink.control.tready.next;
+            end
+        end
+    end
+    assign hwif_out.axis_if.sink.control.tready.value = field_storage.axis_if.sink.control.tready.value;
+    for(genvar i0=0; i0<1; i0++) begin
         // Field: openenoc_endpoint.peers.entry[].mac_address.lo_word
         always_comb begin
             automatic logic [31:0] next_c;
@@ -412,44 +588,70 @@ module openenoc_endpoint (
             end
         end
         assign hwif_out.peers.entry[i0].remote_address.base.value = field_storage.peers.entry[i0].remote_address.base.value;
-        // Field: openenoc_endpoint.peers.entry[].size.value
+        // Field: openenoc_endpoint.peers.entry[].size.bytes
         always_comb begin
             automatic logic [31:0] next_c;
             automatic logic load_next_c;
-            next_c = field_storage.peers.entry[i0].size.value.value;
+            next_c = field_storage.peers.entry[i0].size.bytes.value;
             load_next_c = '0;
             if(decoded_reg_strb.peers.entry[i0].size && decoded_req_is_wr) begin // SW write
-                next_c = (field_storage.peers.entry[i0].size.value.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+                next_c = (field_storage.peers.entry[i0].size.bytes.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
                 load_next_c = '1;
             end
-            field_combo.peers.entry[i0].size.value.next = next_c;
-            field_combo.peers.entry[i0].size.value.load_next = load_next_c;
+            field_combo.peers.entry[i0].size.bytes.next = next_c;
+            field_combo.peers.entry[i0].size.bytes.load_next = load_next_c;
         end
         always_ff @(posedge clk) begin
-            if(field_combo.peers.entry[i0].size.value.load_next) begin
-                field_storage.peers.entry[i0].size.value.value <= field_combo.peers.entry[i0].size.value.next;
+            if(field_combo.peers.entry[i0].size.bytes.load_next) begin
+                field_storage.peers.entry[i0].size.bytes.value <= field_combo.peers.entry[i0].size.bytes.next;
             end
         end
-        assign hwif_out.peers.entry[i0].size.value.value = field_storage.peers.entry[i0].size.value.value;
-        // Field: openenoc_endpoint.peers.entry[].dma_config.mode
+        assign hwif_out.peers.entry[i0].size.bytes.value = field_storage.peers.entry[i0].size.bytes.value;
+        // Field: openenoc_endpoint.peers.entry[].dma.mode
         always_comb begin
             automatic logic [1:0] next_c;
             automatic logic load_next_c;
-            next_c = field_storage.peers.entry[i0].dma_config.mode.value;
+            next_c = field_storage.peers.entry[i0].dma.mode.value;
             load_next_c = '0;
-            if(decoded_reg_strb.peers.entry[i0].dma_config && decoded_req_is_wr) begin // SW write
-                next_c = (field_storage.peers.entry[i0].dma_config.mode.value & ~decoded_wr_biten[1:0]) | (decoded_wr_data[1:0] & decoded_wr_biten[1:0]);
+            if(decoded_reg_strb.peers.entry[i0].dma && decoded_req_is_wr) begin // SW write
+                next_c = (field_storage.peers.entry[i0].dma.mode.value & ~decoded_wr_biten[1:0]) | (decoded_wr_data[1:0] & decoded_wr_biten[1:0]);
                 load_next_c = '1;
             end
-            field_combo.peers.entry[i0].dma_config.mode.next = next_c;
-            field_combo.peers.entry[i0].dma_config.mode.load_next = load_next_c;
+            field_combo.peers.entry[i0].dma.mode.next = next_c;
+            field_combo.peers.entry[i0].dma.mode.load_next = load_next_c;
         end
         always_ff @(posedge clk) begin
-            if(field_combo.peers.entry[i0].dma_config.mode.load_next) begin
-                field_storage.peers.entry[i0].dma_config.mode.value <= field_combo.peers.entry[i0].dma_config.mode.next;
+            if(field_combo.peers.entry[i0].dma.mode.load_next) begin
+                field_storage.peers.entry[i0].dma.mode.value <= field_combo.peers.entry[i0].dma.mode.next;
             end
         end
-        assign hwif_out.peers.entry[i0].dma_config.mode.value = field_storage.peers.entry[i0].dma_config.mode.value;
+        assign hwif_out.peers.entry[i0].dma.mode.value = field_storage.peers.entry[i0].dma.mode.value;
+        // Field: openenoc_endpoint.peers.entry[].dma.request
+        always_comb begin
+            automatic logic [0:0] next_c;
+            automatic logic load_next_c;
+            next_c = field_storage.peers.entry[i0].dma.request.value;
+            load_next_c = '0;
+            if(decoded_reg_strb.peers.entry[i0].dma && decoded_req_is_wr) begin // SW write
+                next_c = (field_storage.peers.entry[i0].dma.request.value & ~decoded_wr_biten[8:8]) | (decoded_wr_data[8:8] & decoded_wr_biten[8:8]);
+                load_next_c = '1;
+            end else begin // singlepulse clears back to 0
+                next_c = '0;
+                load_next_c = '1;
+            end
+            field_combo.peers.entry[i0].dma.request.next = next_c;
+            field_combo.peers.entry[i0].dma.request.load_next = load_next_c;
+        end
+        always_ff @(posedge clk) begin
+            if(rst) begin
+                field_storage.peers.entry[i0].dma.request.value <= 1'h0;
+            end else begin
+                if(field_combo.peers.entry[i0].dma.request.load_next) begin
+                    field_storage.peers.entry[i0].dma.request.value <= field_combo.peers.entry[i0].dma.request.next;
+                end
+            end
+        end
+        assign hwif_out.peers.entry[i0].dma.request.value = field_storage.peers.entry[i0].dma.request.value;
     end
     // External region: openenoc_endpoint.rmem
     assign hwif_out.rmem.req = decoded_reg_strb.rmem;
@@ -505,8 +707,10 @@ module openenoc_endpoint (
         automatic logic [31:0] readback_data_var;
         readback_data_var = '0;
         if(rd_mux_addr == 11'h0) begin
-            readback_data_var[15:0] = 16'h100;
-            readback_data_var[31:16] = 16'h4;
+            readback_data_var[31:0] = 32'h100;
+        end
+        if(rd_mux_addr == 11'h4) begin
+            readback_data_var[31:0] = 32'h1;
         end
         if(rd_mux_addr == 11'h8) begin
             readback_data_var[31:0] = field_storage.config_.mac_address.lo_word.value;
@@ -514,27 +718,48 @@ module openenoc_endpoint (
         if(rd_mux_addr == 11'hc) begin
             readback_data_var[15:0] = field_storage.config_.mac_address.hi_word.value;
         end
-        for(int i0=0; i0<4; i0++) begin
-            if(rd_mux_addr == 11'h80 + (11)'(i0) * 11'h1c) begin
+        if(rd_mux_addr == 11'h20) begin
+            readback_data_var[31:0] = field_storage.axis_if.source.data.tdata.value;
+        end
+        if(rd_mux_addr == 11'h24) begin
+            readback_data_var[0] = field_storage.axis_if.source.control.tvalid.value;
+            readback_data_var[8] = field_storage.axis_if.source.control.tlast.value;
+        end
+        if(rd_mux_addr == 11'h28) begin
+            readback_data_var[0] = hwif_in.axis_if.source.status.tready.next;
+        end
+        if(rd_mux_addr == 11'h30) begin
+            readback_data_var[31:0] = hwif_in.axis_if.sink.data.tdata.next;
+        end
+        if(rd_mux_addr == 11'h38) begin
+            readback_data_var[0] = hwif_in.axis_if.sink.status.tvalid.next;
+            readback_data_var[8] = hwif_in.axis_if.sink.status.tlast.next;
+        end
+        for(int i0=0; i0<1; i0++) begin
+            if(rd_mux_addr == 11'h40 + (11)'(i0) * 11'h1c) begin
                 readback_data_var[31:0] = field_storage.peers.entry[i0].mac_address.lo_word.value;
             end
-            if(rd_mux_addr == 11'h84 + (11)'(i0) * 11'h1c) begin
+            if(rd_mux_addr == 11'h44 + (11)'(i0) * 11'h1c) begin
                 readback_data_var[15:0] = field_storage.peers.entry[i0].mac_address.hi_word.value;
             end
-            if(rd_mux_addr == 11'h88 + (11)'(i0) * 11'h1c) begin
+            if(rd_mux_addr == 11'h48 + (11)'(i0) * 11'h1c) begin
                 readback_data_var[31:0] = field_storage.peers.entry[i0].rmem_address.offset.value;
             end
-            if(rd_mux_addr == 11'h8c + (11)'(i0) * 11'h1c) begin
+            if(rd_mux_addr == 11'h4c + (11)'(i0) * 11'h1c) begin
                 readback_data_var[31:0] = field_storage.peers.entry[i0].local_address.base.value;
             end
-            if(rd_mux_addr == 11'h90 + (11)'(i0) * 11'h1c) begin
+            if(rd_mux_addr == 11'h50 + (11)'(i0) * 11'h1c) begin
                 readback_data_var[31:0] = field_storage.peers.entry[i0].remote_address.base.value;
             end
-            if(rd_mux_addr == 11'h94 + (11)'(i0) * 11'h1c) begin
-                readback_data_var[31:0] = field_storage.peers.entry[i0].size.value.value;
+            if(rd_mux_addr == 11'h54 + (11)'(i0) * 11'h1c) begin
+                readback_data_var[31:0] = field_storage.peers.entry[i0].size.bytes.value;
             end
-            if(rd_mux_addr == 11'h98 + (11)'(i0) * 11'h1c) begin
-                readback_data_var[1:0] = field_storage.peers.entry[i0].dma_config.mode.value;
+            if(rd_mux_addr == 11'h58 + (11)'(i0) * 11'h1c) begin
+                readback_data_var[1:0] = field_storage.peers.entry[i0].dma.mode.value;
+                readback_data_var[8] = field_storage.peers.entry[i0].dma.request.value;
+                readback_data_var[16] = hwif_in.peers.entry[i0].dma.idle.next;
+                readback_data_var[24] = hwif_in.peers.entry[i0].dma.done.next;
+                readback_data_var[25] = hwif_in.peers.entry[i0].dma.error.next;
             end
         end
         if((rd_mux_addr >= 11'h400) && (rd_mux_addr <= 11'h400 + 11'h3ff)) begin

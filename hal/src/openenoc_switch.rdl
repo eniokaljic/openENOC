@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: CERN-OHL-S-2.0
 
 addrmap openenoc_switch #(
-    longint unsigned NUM_OF_INTERFACES = 8,
-    longint unsigned TABLE_DEPTH = 32,
+    longint unsigned NUM_OF_INTERFACES = 1,
+    longint unsigned TABLE_DEPTH = 1,
     string INST_NAME = "openenoc_switch"
 ) {
     name = INST_NAME;
     desc = "Control and status register map for an openENOC Switch instance. It includes configuration registers and a forwarding table used to map destination MAC address keys to output interface selections for frame forwarding.";
 
+    littleendian;
     default accesswidth = 32;
     default regwidth = 32;
     default alignment = 4;

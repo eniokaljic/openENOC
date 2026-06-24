@@ -7,7 +7,7 @@ module openenoc_switch (
 
         input wire s_cpuif_req,
         input wire s_cpuif_req_is_wr,
-        input wire [9:0] s_cpuif_addr,
+        input wire [4:0] s_cpuif_addr,
         input wire [31:0] s_cpuif_wr_data,
         input wire [31:0] s_cpuif_wr_biten,
         output wire s_cpuif_req_stall_wr,
@@ -27,7 +27,7 @@ module openenoc_switch (
     //--------------------------------------------------------------------------
     logic cpuif_req;
     logic cpuif_req_is_wr;
-    logic [9:0] cpuif_addr;
+    logic [4:0] cpuif_addr;
     logic [31:0] cpuif_wr_data;
     logic [31:0] cpuif_wr_biten;
     logic cpuif_req_stall_wr;
@@ -77,7 +77,7 @@ module openenoc_switch (
     logic decoded_err;
     logic decoded_req_is_external;
 
-    logic [9:0] decoded_addr;
+    logic [4:0] decoded_addr;
     logic decoded_req;
     logic decoded_req_is_wr;
     logic [31:0] decoded_wr_data;
@@ -90,12 +90,12 @@ module openenoc_switch (
         is_external = '0;
         is_valid_addr = '1; // No valid address check
         is_valid_rw = '1; // No valid RW check
-        decoded_reg_strb.info = cpuif_req_masked & (cpuif_addr == 10'h0) & !cpuif_req_is_wr;
-        decoded_reg_strb.forwarding_control = cpuif_req_masked & (cpuif_addr == 10'h4);
-        decoded_reg_strb.default_forwarding = cpuif_req_masked & (cpuif_addr == 10'h8);
-        decoded_reg_strb.forwarding_table = cpuif_req_masked & (cpuif_addr >= 10'h200) & (cpuif_addr <= 10'h200 + 10'h1ff);
-        is_external |= cpuif_req_masked & (cpuif_addr >= 10'h200) & (cpuif_addr <= 10'h200 + 10'h1ff);
-        is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 10'h200) & (cpuif_addr <= 10'h200 + 10'h1ff);
+        decoded_reg_strb.info = cpuif_req_masked & (cpuif_addr == 5'h0) & !cpuif_req_is_wr;
+        decoded_reg_strb.forwarding_control = cpuif_req_masked & (cpuif_addr == 5'h4);
+        decoded_reg_strb.default_forwarding = cpuif_req_masked & (cpuif_addr == 5'h8);
+        decoded_reg_strb.forwarding_table = cpuif_req_masked & (cpuif_addr >= 5'h10) & (cpuif_addr <= 5'h10 + 5'hf);
+        is_external |= cpuif_req_masked & (cpuif_addr >= 5'h10) & (cpuif_addr <= 5'h10 + 5'hf);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 5'h10) & (cpuif_addr <= 5'h10 + 5'hf);
         decoded_err = '0;
         decoded_req_is_external = is_external;
     end
@@ -139,7 +139,7 @@ module openenoc_switch (
         } forwarding_control;
         struct {
             struct {
-                logic [7:0] next;
+                logic next;
                 logic load_next;
             } bitmap;
         } default_forwarding;
@@ -157,14 +157,14 @@ module openenoc_switch (
         } forwarding_control;
         struct {
             struct {
-                logic [7:0] value;
+                logic value;
             } bitmap;
         } default_forwarding;
     } field_storage_t;
     field_storage_t field_storage;
 
-    assign hwif_out.info.table_depth.value = 16'h20;
-    assign hwif_out.info.num_of_interfaces.value = 6'h8;
+    assign hwif_out.info.table_depth.value = 16'h1;
+    assign hwif_out.info.num_of_interfaces.value = 6'h1;
     // Field: openenoc_switch.forwarding_control.operation_mode
     always_comb begin
         automatic logic [0:0] next_c;
@@ -213,12 +213,12 @@ module openenoc_switch (
     assign hwif_out.forwarding_control.pause_request.value = field_storage.forwarding_control.pause_request.value;
     // Field: openenoc_switch.default_forwarding.bitmap
     always_comb begin
-        automatic logic [7:0] next_c;
+        automatic logic [0:0] next_c;
         automatic logic load_next_c;
         next_c = field_storage.default_forwarding.bitmap.value;
         load_next_c = '0;
         if(decoded_reg_strb.default_forwarding && decoded_req_is_wr) begin // SW write
-            next_c = (field_storage.default_forwarding.bitmap.value & ~decoded_wr_biten[7:0]) | (decoded_wr_data[7:0] & decoded_wr_biten[7:0]);
+            next_c = (field_storage.default_forwarding.bitmap.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
             load_next_c = '1;
         end
         field_combo.default_forwarding.bitmap.next = next_c;
@@ -226,7 +226,7 @@ module openenoc_switch (
     end
     always_ff @(posedge clk) begin
         if(rst) begin
-            field_storage.default_forwarding.bitmap.value <= 8'h0;
+            field_storage.default_forwarding.bitmap.value <= 1'h0;
         end else begin
             if(field_combo.default_forwarding.bitmap.load_next) begin
                 field_storage.default_forwarding.bitmap.value <= field_combo.default_forwarding.bitmap.next;
@@ -236,7 +236,7 @@ module openenoc_switch (
     assign hwif_out.default_forwarding.bitmap.value = field_storage.default_forwarding.bitmap.value;
     // External region: openenoc_switch.forwarding_table
     assign hwif_out.forwarding_table.req = decoded_reg_strb.forwarding_table;
-    assign hwif_out.forwarding_table.addr = decoded_addr[8:0];
+    assign hwif_out.forwarding_table.addr = decoded_addr[3:0];
     assign hwif_out.forwarding_table.req_is_wr = decoded_req_is_wr;
     assign hwif_out.forwarding_table.wr_data = decoded_wr_data;
     assign hwif_out.forwarding_table.wr_biten = decoded_wr_biten;
@@ -269,8 +269,8 @@ module openenoc_switch (
 
     assign readback_external_rd_ack = readback_external_rd_ack_c;
 
-    logic [9:0] rd_mux_addr;
-    logic [9:0] pending_rd_addr;
+    logic [4:0] rd_mux_addr;
+    logic [4:0] pending_rd_addr;
     // Hold read mux address to guarantee it is stable throughout any external accesses
     always_ff @(posedge clk) begin
         if(rst) begin
@@ -287,19 +287,19 @@ module openenoc_switch (
     always_comb begin
         automatic logic [31:0] readback_data_var;
         readback_data_var = '0;
-        if(rd_mux_addr == 10'h0) begin
-            readback_data_var[15:0] = 16'h20;
-            readback_data_var[21:16] = 6'h8;
+        if(rd_mux_addr == 5'h0) begin
+            readback_data_var[15:0] = 16'h1;
+            readback_data_var[21:16] = 6'h1;
         end
-        if(rd_mux_addr == 10'h4) begin
+        if(rd_mux_addr == 5'h4) begin
             readback_data_var[0] = field_storage.forwarding_control.operation_mode.value;
             readback_data_var[7] = field_storage.forwarding_control.pause_request.value;
             readback_data_var[15] = hwif_in.forwarding_control.pause_done.next;
         end
-        if(rd_mux_addr == 10'h8) begin
-            readback_data_var[7:0] = field_storage.default_forwarding.bitmap.value;
+        if(rd_mux_addr == 5'h8) begin
+            readback_data_var[0] = field_storage.default_forwarding.bitmap.value;
         end
-        if((rd_mux_addr >= 10'h200) && (rd_mux_addr <= 10'h200 + 10'h1ff)) begin
+        if((rd_mux_addr >= 5'h10) && (rd_mux_addr <= 5'h10 + 5'hf)) begin
             readback_data_var = hwif_in.forwarding_table.rd_data;
         end
         readback_data = readback_data_var;

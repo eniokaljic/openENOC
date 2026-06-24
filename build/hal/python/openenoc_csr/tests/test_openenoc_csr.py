@@ -221,7 +221,7 @@ class openenoc_csr_single_access(openenoc_csr_TestCase): # type: ignore[valid-ty
             self._test_addrmap_iterators(dut=self.dut.endpoint1,
                                          writeable_registers=NodeIterators(),
                                          readable_registers=NodeIterators('info',),
-                                         sections=NodeIterators('config','peers',),
+                                         sections=NodeIterators('config','axis_if','peers',),
                                          memories=NodeIterators('rmem',))
         with self.subTest(msg='addrmap: openenoc_csr.endpoint2'):
             self._single_addrmap_property_test(dut=self.dut.endpoint2,
@@ -233,7 +233,7 @@ class openenoc_csr_single_access(openenoc_csr_TestCase): # type: ignore[valid-ty
             self._test_addrmap_iterators(dut=self.dut.endpoint2,
                                          writeable_registers=NodeIterators(),
                                          readable_registers=NodeIterators('info',),
-                                         sections=NodeIterators('config','peers',),
+                                         sections=NodeIterators('config','axis_if','peers',),
                                          memories=NodeIterators('rmem',))
         with self.subTest(msg='addrmap: openenoc_csr.switch1'):
             self._single_addrmap_property_test(dut=self.dut.switch1,

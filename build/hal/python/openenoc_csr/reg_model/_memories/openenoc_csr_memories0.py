@@ -44,7 +44,7 @@ from ...lib import Reg, RegArray
 # memory definitions
     
     
-class openenoc_endpoint_rmem_0x2226a565f586b7dd_cls(MemoryReadWrite):
+class openenoc_endpoint_rmem_0x497dea42f489d12d_cls(MemoryReadWrite):
     """
     Class to represent a memory in the register model
 
@@ -123,7 +123,7 @@ class openenoc_endpoint_rmem_0x2226a565f586b7dd_cls(MemoryReadWrite):
 
     
     
-class openenoc_endpoint_rmem_0x67b8bcd87c7d73cc_cls(MemoryReadWrite):
+class openenoc_endpoint_rmem_0x877eeba2c94b35f_cls(MemoryReadWrite):
     """
     Class to represent a memory in the register model
 

@@ -11,13 +11,13 @@ package openenoc_csr_pkg;
         logic rd_ack;
         logic [31:0] rd_data;
         logic wr_ack;
-    } openenoc_endpoint_INST_NAME_33dcbb39__external__in_t;
+    } openenoc_endpoint_NUM_OF_PEERS_4_INST_NAME_33dcbb39__external__in_t;
 
     typedef struct {
         logic rd_ack;
         logic [31:0] rd_data;
         logic wr_ack;
-    } openenoc_endpoint_NUM_OF_PEERS_2_RMEM_TOTAL_DEPTH_80_INST_NAME_ff6339d1__external__in_t;
+    } openenoc_endpoint_RMEM_TOTAL_DEPTH_80_NUM_OF_PEERS_2_INST_NAME_ff6339d1__external__in_t;
 
     typedef struct {
         logic rd_ack;
@@ -29,13 +29,13 @@ package openenoc_csr_pkg;
         logic rd_ack;
         logic [31:0] rd_data;
         logic wr_ack;
-    } openenoc_switch_INST_NAME_e9cd9861__external__in_t;
+    } openenoc_switch_NUM_OF_INTERFACES_8_TABLE_DEPTH_20_INST_NAME_e9cd9861__external__in_t;
 
     typedef struct {
-        openenoc_endpoint_INST_NAME_33dcbb39__external__in_t endpoint1;
-        openenoc_endpoint_NUM_OF_PEERS_2_RMEM_TOTAL_DEPTH_80_INST_NAME_ff6339d1__external__in_t endpoint2;
+        openenoc_endpoint_NUM_OF_PEERS_4_INST_NAME_33dcbb39__external__in_t endpoint1;
+        openenoc_endpoint_RMEM_TOTAL_DEPTH_80_NUM_OF_PEERS_2_INST_NAME_ff6339d1__external__in_t endpoint2;
         openenoc_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__external__in_t switch1;
-        openenoc_switch_INST_NAME_e9cd9861__external__in_t switch2;
+        openenoc_switch_NUM_OF_INTERFACES_8_TABLE_DEPTH_20_INST_NAME_e9cd9861__external__in_t switch2;
     } openenoc_csr__in_t;
 
     typedef struct {
@@ -75,7 +75,7 @@ package openenoc_csr_pkg;
         logic req_is_wr;
         logic [31:0] wr_data;
         logic [31:0] wr_biten;
-    } openenoc_endpoint_INST_NAME_33dcbb39__external__out_t;
+    } openenoc_endpoint_NUM_OF_PEERS_4_INST_NAME_33dcbb39__external__out_t;
 
     typedef struct {
         logic req;
@@ -83,7 +83,7 @@ package openenoc_csr_pkg;
         logic req_is_wr;
         logic [31:0] wr_data;
         logic [31:0] wr_biten;
-    } openenoc_endpoint_NUM_OF_PEERS_2_RMEM_TOTAL_DEPTH_80_INST_NAME_ff6339d1__external__out_t;
+    } openenoc_endpoint_RMEM_TOTAL_DEPTH_80_NUM_OF_PEERS_2_INST_NAME_ff6339d1__external__out_t;
 
     typedef struct {
         logic req;
@@ -99,14 +99,14 @@ package openenoc_csr_pkg;
         logic req_is_wr;
         logic [31:0] wr_data;
         logic [31:0] wr_biten;
-    } openenoc_switch_INST_NAME_e9cd9861__external__out_t;
+    } openenoc_switch_NUM_OF_INTERFACES_8_TABLE_DEPTH_20_INST_NAME_e9cd9861__external__out_t;
 
     typedef struct {
         openenoc_csr__test_reg__out_t test_reg;
         openenoc_csr__regB__out_t regB;
-        openenoc_endpoint_INST_NAME_33dcbb39__external__out_t endpoint1;
-        openenoc_endpoint_NUM_OF_PEERS_2_RMEM_TOTAL_DEPTH_80_INST_NAME_ff6339d1__external__out_t endpoint2;
+        openenoc_endpoint_NUM_OF_PEERS_4_INST_NAME_33dcbb39__external__out_t endpoint1;
+        openenoc_endpoint_RMEM_TOTAL_DEPTH_80_NUM_OF_PEERS_2_INST_NAME_ff6339d1__external__out_t endpoint2;
         openenoc_switch_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_f086dd55__external__out_t switch1;
-        openenoc_switch_INST_NAME_e9cd9861__external__out_t switch2;
+        openenoc_switch_NUM_OF_INTERFACES_8_TABLE_DEPTH_20_INST_NAME_e9cd9861__external__out_t switch2;
     } openenoc_csr__out_t;
 endpackage
