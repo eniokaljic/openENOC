@@ -3,6 +3,7 @@
 
 import logging
 import os
+import struct
 
 import cocotb_test.simulator
 import pytest
@@ -32,6 +33,96 @@ class TB(object):
         await RisingEdge(self.dut.clk)
         self.dut.rst.value = 0
 
+def read_pcap_packets(filename):
+    assert os.path.isfile(filename), f"PCAP file does not exist: {filename}"
+
+    with open(filename, "rb") as f:
+        data = f.read()
+
+    assert len(data) >= 24, f"Invalid PCAP file, too short: {filename}"
+
+    magic = data[0:4]
+
+    if magic in (b"\xd4\xc3\xb2\xa1", b"\x4d\x3c\xb2\xa1"):
+        endian = "<"
+    elif magic in (b"\xa1\xb2\xc3\xd4", b"\xa1\xb2\x3c\x4d"):
+        endian = ">"
+    else:
+        raise AssertionError(f"Unsupported PCAP magic in {filename}: {magic.hex()}")
+
+    global_header = data[0:24]
+    packet_header_fmt = endian + "IIII"
+
+    packets = []
+    offset = 24
+    packet_index = 0
+
+    while offset < len(data):
+        assert offset + 16 <= len(data), (
+            f"Truncated packet header in {filename}, packet {packet_index}"
+        )
+
+        ts_sec, ts_frac, incl_len, orig_len = struct.unpack_from(
+            packet_header_fmt,
+            data,
+            offset,
+        )
+
+        offset += 16
+
+        assert offset + incl_len <= len(data), (
+            f"Truncated packet payload in {filename}, packet {packet_index}"
+        )
+
+        payload = data[offset:offset + incl_len]
+        offset += incl_len
+
+        packets.append({
+            "incl_len": incl_len,
+            "orig_len": orig_len,
+            "payload": payload,
+        })
+
+        packet_index += 1
+
+    return global_header, packets
+
+
+def compare_pcap_payloads(ref_path, out_path):
+    ref_global_header, ref_packets = read_pcap_packets(ref_path)
+    out_global_header, out_packets = read_pcap_packets(out_path)
+
+    assert ref_global_header == out_global_header, (
+        f"PCAP global header mismatch:\n"
+        f"  input:  {ref_path}\n"
+        f"  output: {out_path}"
+    )
+
+    assert len(ref_packets) == len(out_packets), (
+        f"PCAP packet count mismatch:\n"
+        f"  input:  {ref_path} ({len(ref_packets)} packets)\n"
+        f"  output: {out_path} ({len(out_packets)} packets)"
+    )
+
+    for i, (ref_packet, out_packet) in enumerate(zip(ref_packets, out_packets)):
+        assert ref_packet["incl_len"] == out_packet["incl_len"], (
+            f"PCAP packet {i} captured length mismatch:\n"
+            f"  input:  {ref_packet['incl_len']} bytes\n"
+            f"  output: {out_packet['incl_len']} bytes"
+        )
+
+        assert ref_packet["orig_len"] == out_packet["orig_len"], (
+            f"PCAP packet {i} original length mismatch:\n"
+            f"  input:  {ref_packet['orig_len']} bytes\n"
+            f"  output: {out_packet['orig_len']} bytes"
+        )
+
+        assert ref_packet["payload"] == out_packet["payload"], (
+            f"PCAP packet {i} payload mismatch:\n"
+            f"  input:  {ref_path}\n"
+            f"  output: {out_path}"
+        )
+
 @cocotb.test()
 async def test(dut):
     tb = TB(dut)
@@ -42,6 +133,11 @@ async def test(dut):
 
     await RisingEdge(dut.clk)
     await RisingEdge(dut.clk)
+
+    pcap_in_filename = os.environ["PARAM_PCAP_IN_FILENAME"].replace('\\"', '')
+    pcap_out_filename = os.environ["PARAM_PCAP_OUT_FILENAME"].replace('\\"', '')
+
+    compare_pcap_payloads(pcap_in_filename, pcap_out_filename)
 
 # ----------------------------------------------------------------------
 # PyTest framework: test parameterization and test runner

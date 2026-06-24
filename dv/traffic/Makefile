@@ -29,9 +29,9 @@ VERILOG_SOURCES := $(call uniq_base,$(call process_f_files,$(VERILOG_SOURCES)))
 
 # module parameters
 export PARAM_DATA_WIDTH := 8
-export CLOCK_PERIOD := 10000
-export PCAP_IN_FILENAME := test1.pcap
-export PCAP_OUT_FILENAME := output.pcap
+export PARAM_CLOCK_PERIOD := 10000
+export PARAM_PCAP_IN_FILENAME := \"test1.pcap\"
+export PARAM_PCAP_OUT_FILENAME := \"output.pcap\"
 
 ifeq ($(SIM), icarus)
 	PLUSARGS += -fst

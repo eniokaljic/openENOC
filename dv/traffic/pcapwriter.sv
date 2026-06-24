@@ -15,7 +15,6 @@ module pcapwriter#
     parameter SIGNAL_TYPE   = "avalon",
     parameter DATA_WIDTH    = 512,
     parameter CLOCK_PERIOD  = 2560, //in picoseconds
-    parameter EMPTY_WIDTH   = DATA_WIDTH > 8 ? $clog2(DATA_WIDTH / 8) : 1,
     parameter KEEP_WIDTH    = DATA_WIDTH / 8
 ) (
     input  logic        clk,
