@@ -65,7 +65,7 @@ This work package delivers the complete openENOC RTL implementation forming the 
 
 This work package provides the software interface layer required to configure and control the NoC. It begins with the definition of the hardware abstraction layer and register-level interface (SW1), followed by integration with representative RISC-V platforms (SW2). Runtime configuration capabilities are then implemented through a compact baremetal C/C++ API (SW3), while the final stage delivers reference applications demonstrating practical NoC usage scenarios (SW4).
 
-- [ ] [SW1 - HAL Architecture Specification](https://github.com/eniokaljic/openENOC/issues/5)
+- [x] [SW1 - HAL Architecture Specification](https://github.com/eniokaljic/openENOC/issues/5)
 - [ ] [SW2 - RISC-V Platform Integration](https://github.com/eniokaljic/openENOC/issues/6)
 - [ ] [SW3 - Runtime Control API](https://github.com/eniokaljic/openENOC/issues/7)
 - [ ] [SW4 - Reference Applications](https://github.com/eniokaljic/openENOC/issues/8)
