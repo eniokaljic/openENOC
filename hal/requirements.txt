@@ -4,5 +4,4 @@
 peakrdl
 peakrdl-markdown
 peakrdl-python
-cocotbext-axi
 
