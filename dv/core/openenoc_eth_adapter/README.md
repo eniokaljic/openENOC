@@ -22,6 +22,7 @@ The verification environment consists of:
 
 * `test_openenoc_eth_adapter.sv` - SystemVerilog wrapper around the DUT
 * `test_openenoc_eth_adapter.py` - cocotb testbench and pytest runner
+* `run_tests.sh` - common test runner used to launch the pytest regression or waveform simulation
 * `Makefile` - direct cocotb simulation entry point
 * `openenoc_eth_adapter.sv` - device under test
 * `openenoc_eth_if.sv` - bidirectional openENOC Ethernet-like interface
@@ -63,40 +64,6 @@ export PARAM_FRAME_PAUSE := 0
 
 This allows frames larger than the FIFO depth to pass through the adapter as streaming data, provided that the downstream side eventually accepts the traffic.
 
-## Running Tests
-
-### Option 1: Pytest
-
-Uses `pytest` and `cocotb_test` to sweep multiple A/B data-width combinations.
-
-```bash
-pytest -s -vv test_openenoc_eth_adapter.py
-```
-
-The pytest configuration verifies asymmetric data-width combinations using:
-
-```python
-@pytest.mark.parametrize(
-    ("a_data_w", "b_data_w"),
-    itertools.combinations([8, 16, 32, 64, 128, 256, 512], 2)
-)
-```
-
-Since the adapter is symmetric and both directions are tested internally, equal-width and reversed-width combinations do not need to be tested separately in the full regression.
-
-### Option 2: Makefile
-
-Runs a single configuration selected through Makefile parameters.
-
-```bash
-make
-```
-
-To enable waveform dumping:
-
-```bash
-make WAVES=1
-```
 
 ## Running Tests
 
