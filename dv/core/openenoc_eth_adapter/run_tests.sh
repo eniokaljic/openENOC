@@ -12,6 +12,7 @@ elif [ "$1" = "waves" ]; then
     WAVES=1 make
     gtkwave dump.fst &
 elif [ "$1" = "clean" ]; then
+    rm results.xml
     rm dump.fst
     rm -rf sim_build
     rm -rf .pytest_cache
