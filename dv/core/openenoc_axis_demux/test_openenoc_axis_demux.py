@@ -5,16 +5,15 @@ import itertools
 import logging
 import os
 
+import cocotb
 import cocotb_test.simulator
 import pytest
-
-import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 from cocotb.regression import TestFactory
+TestFactory.__test__ = False
 
 from cocotbext.axi import AxiStreamBus, AxiStreamFrame, AxiStreamSource, AxiStreamSink
-
 
 class TB(object):
     def __init__(self, dut):
@@ -174,7 +173,7 @@ async def run_test_multicast_drop(dut):
 
     for port in range(len(tb.sink)):
         assert tb.sink[port].empty()
-    
+
     await RisingEdge(dut.clk)
     await RisingEdge(dut.clk)
 
@@ -252,7 +251,7 @@ def all_or_nothing_cases(ports):
     if ports < 2:
         return cases
 
-    # first and last port, slower port 0 
+    # first and last port, slower port 0
     cases.append(((1 << 0) | (1 << (ports - 1)), {0: 7, ports - 1: 5}))
 
     # same pair, reversed order of which is slower (to cover both variants)

@@ -9,8 +9,9 @@ import cocotb
 import cocotb_test.simulator
 import pytest
 from cocotb.clock import Clock
-from cocotb.regression import TestFactory
 from cocotb.triggers import RisingEdge
+from cocotb.regression import TestFactory
+TestFactory.__test__ = False
 
 from cocotbext.axi import AxiStreamBus, AxiStreamFrame, AxiStreamSource, AxiStreamSink
 
