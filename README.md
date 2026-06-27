@@ -58,7 +58,7 @@ Task status is indicated using the following icons: ⬜ Todo, 🟩 In Progress, 
 
 This work package delivers the complete openENOC RTL implementation forming the hardware datapath of the Ethernet-based Network-on-Chip. The development progresses from basic switching primitives and datapath elements (RTL1), through packet processing pipeline components (RTL2), to forwarding engines and DMA-capable endpoint connectivity (RTL3). The final stage integrates all components into a configurable Ethernet Layer-2 switching fabric suitable for MPSoC integration (RTL4).
 
-- &#x1F7E9; [RTL1 - Core Switching Primitives](https://github.com/eniokaljic/openENOC/issues/1)
+- &#x2705; [RTL1 - Core Switching Primitives](https://github.com/eniokaljic/openENOC/issues/1)
 - &#x2b1c; [RTL2 - Packet Processing Pipeline](https://github.com/eniokaljic/openENOC/issues/2)
 - &#x2b1c; [RTL3 - Forwarding & DMA Engines](https://github.com/eniokaljic/openENOC/issues/3)
 - &#x2b1c; [RTL4 - Integrated NoC Fabric](https://github.com/eniokaljic/openENOC/issues/4)
