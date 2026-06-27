@@ -5,7 +5,8 @@ interface avalon_if #
 (
     parameter DATA_WIDTH = 512,
     parameter EMPTY_WIDTH = DATA_WIDTH > 8 ? $clog2(DATA_WIDTH / 8) : 1
-) (
+)
+(
     input logic   clk,
     input logic   rst
 );

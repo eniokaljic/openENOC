@@ -1,9 +1,14 @@
 // SPDX-FileCopyrightText: 2026 Enio Kaljic
 // SPDX-License-Identifier: CERN-OHL-S-2.0
 
-interface openenoc_eth_if #(
+`resetall
+`timescale 1ns / 1ps
+`default_nettype none
+
+interface openenoc_eth_if #
+(
     // Width of AXI stream interfaces in bits
-    parameter DATA_W = 8,
+    parameter DATA_W = 32,
     // tkeep signal width (bytes per cycle)
     parameter KEEP_W = ((DATA_W+7)/8),
     // Use tkeep signal
@@ -25,8 +30,10 @@ interface openenoc_eth_if #(
     // tuser signal width
     parameter USER_W = 1
 )
-();
-
+(
+    input wire logic clk,
+    input wire logic rst
+);
     /*
      * Symmetric bidirectional Ethernet-like openENOC link.
      *
@@ -68,3 +75,5 @@ interface openenoc_eth_if #(
     ) b2a();
 
 endinterface
+
+`resetall

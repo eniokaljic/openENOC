@@ -8,7 +8,7 @@
 // Description: Replay packets from a PCAP file over Avalon-ST or AXI4-Stream interfaces with configurable data width
 
 /* verilator lint_off PROCASSINIT */
-module pcapreader#
+module pcapreader #
 (
     parameter PCAP_FILENAME = "",
     parameter SIGNAL_TYPE   = "avalon",      // Avalon-ST or AXI4-Stream interface
@@ -16,7 +16,8 @@ module pcapreader#
     parameter CLOCK_PERIOD  = 2560,          // in picoseconds
     parameter EMPTY_WIDTH   = DATA_WIDTH > 8 ? $clog2(DATA_WIDTH / 8) : 1,
     parameter KEEP_WIDTH    = DATA_WIDTH / 8
-) (
+)
+(
     input  logic        clk,
     input  logic        rst,
 

@@ -16,7 +16,8 @@ module test_traffic #
     parameter PCAP_IN_FILENAME = "test1.pcap",
     parameter PCAP_OUT_FILENAME = "output.pcap"
     /* verilator lint_on WIDTHTRUNC */
-) ();
+) 
+();
     logic clk;
     logic rst;
     logic pcapfinished;

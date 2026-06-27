@@ -8,7 +8,7 @@
 // Description: Write packets from an Avalon-ST or AXI4-Stream interfaces to the PCAP file
 
 /* verilator lint_off PROCASSINIT */
-module pcapwriter#
+module pcapwriter #
 (
     parameter PCAP_FILENAME = "none",
     parameter PCAP_BUFFSZ   = 9000,
@@ -16,7 +16,8 @@ module pcapwriter#
     parameter DATA_WIDTH    = 512,
     parameter CLOCK_PERIOD  = 2560, //in picoseconds
     parameter KEEP_WIDTH    = DATA_WIDTH / 8
-) (
+)
+(
     input  logic        clk,
     input  logic        rst,
 
