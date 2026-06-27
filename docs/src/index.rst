@@ -17,7 +17,6 @@ Scalable Ethernet-based Network-on-Chip
    architecture
    hal
    verification
-   build_docs
 
 
 Future Sections
