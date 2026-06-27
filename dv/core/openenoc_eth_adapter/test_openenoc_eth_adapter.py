@@ -17,7 +17,6 @@ TestFactory.__test__ = False
 
 from cocotbext.axi import AxiStreamBus, AxiStreamFrame, AxiStreamSource, AxiStreamSink
 
-
 class TB(object):
     def __init__(self, dut):
         self.dut = dut
@@ -128,7 +127,6 @@ class TB(object):
         for _ in range(10):
             await RisingEdge(self.dut.clk_b)
 
-
 # Common single-direction transfer test helper.
 # Sends a sequence of AXI4-Stream frames through one selected source/sink path
 # and checks that payload, TID, TDEST, and TUSER are preserved.
@@ -181,7 +179,6 @@ async def run_direction_test(
 
     assert sink.empty()
 
-
 # A-to-B unidirectional data path test.
 # Verifies that frames transmitted on eth_a.a2b are received correctly on
 # eth_b.a2b, with optional source idle insertion and sink backpressure.
@@ -209,7 +206,6 @@ async def run_test_a2b(
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_a)
 
-
 # B-to-A unidirectional data path test.
 # Verifies that frames transmitted on eth_b.b2a are received correctly on
 # eth_a.b2a, with optional source idle insertion and sink backpressure.
@@ -236,7 +232,6 @@ async def run_test_b2a(
 
     await RisingEdge(dut.clk_b)
     await RisingEdge(dut.clk_b)
-
 
 # Bidirectional transfer test.
 # Sends frames in both directions through the adapter and verifies that the two
@@ -327,7 +322,6 @@ async def run_test_bidirectional(
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_b)
 
-
 # Initial sink backpressure test for the A-to-B path.
 # Holds the B-side sink paused before sending a frame, then releases it and
 # checks that the buffered frame is delivered without corruption.
@@ -359,7 +353,6 @@ async def run_test_init_sink_pause_a2b(dut):
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_a)
 
-
 # Initial sink backpressure test for the B-to-A path.
 # Holds the A-side sink paused before sending a frame, then releases it and
 # checks that the buffered frame is delivered without corruption.
@@ -390,7 +383,6 @@ async def run_test_init_sink_pause_b2a(dut):
 
     await RisingEdge(dut.clk_b)
     await RisingEdge(dut.clk_b)
-
 
 # Bidirectional stress test with mixed frame sizes.
 # Sends multiple random-size frames and one jumbo frame in both
@@ -481,7 +473,6 @@ async def run_stress_test_bidirectional(
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_b)
 
-
 def max_byte_lanes():
     data_width = max(
         len(cocotb.top.eth_a.a2b.tdata),
@@ -491,7 +482,6 @@ def max_byte_lanes():
     )
 
     return data_width // 8
-
 
 # Pause generator used to insert deterministic idle cycles or backpressure
 # into cocotbext-axi source and sink drivers.
@@ -507,7 +497,6 @@ def cycle_pause():
 
     return itertools.cycle([1, 1, 1, 0])
 
-
 # Generates a fixed set of 16 frame lengths used by directed transfer tests.
 # The list is independent of the AXI4-Stream data width and covers the minimum
 # Ethernet payload size used in this testbench, boundary lengths around common
@@ -515,12 +504,10 @@ def cycle_pause():
 def size_list():
     return [20, 21, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 511, 512]
 
-
 # Generates an incrementing byte pattern of the requested length.
 # This makes payload mismatches easy to detect and debug.
 def incrementing_payload(length):
     return bytearray(itertools.islice(itertools.cycle(range(256)), length))
-
 
 if getattr(cocotb, 'top', None) is not None:
 
@@ -557,7 +544,6 @@ if getattr(cocotb, 'top', None) is not None:
     factory.add_option("backpressure_inserter", [cycle_pause])
     factory.generate_tests()
 
-
 # ----------------------------------------------------------------------
 # PyTest framework: test parameterization and test runner
 # ----------------------------------------------------------------------
@@ -567,7 +553,6 @@ hw_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..', 'hw'))
 core_dir = os.path.join(hw_dir, 'src', 'core')
 taxi_axis_dir = os.path.join(hw_dir, 'libs', 'taxi', 'src', 'axis', 'rtl')
 taxi_sync_dir = os.path.join(hw_dir, 'libs', 'taxi', 'src', 'sync', 'rtl')
-
 
 def process_f_files(files):
     lst = {}
@@ -583,7 +568,6 @@ def process_f_files(files):
             lst[os.path.basename(f)] = f
 
     return list(lst.values())
-
 
 @pytest.mark.parametrize(
     ("a_data_w", "b_data_w"),

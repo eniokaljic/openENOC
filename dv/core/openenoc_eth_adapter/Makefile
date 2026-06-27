@@ -79,7 +79,7 @@ export PARAM_B_USER_W := 1
 # FIFO parameters
 # ----------------------------------------------------------------------
 
-export PARAM_DEPTH := 8
+export PARAM_DEPTH := $(shell python -c "print(2 * max($(PARAM_A_KEEP_W), $(PARAM_B_KEEP_W)))")
 export PARAM_RAM_PIPELINE := 1
 export PARAM_OUTPUT_FIFO_EN := 0
 export PARAM_FRAME_FIFO := 0
