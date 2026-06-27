@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Kerim Bavcic
 // SPDX-License-Identifier: CERN-OHL-S-2.0
+// Copyright (c) 2018-2026 FPGA Ninja, LLC
 
 `resetall
 `timescale 1ns / 1ps
