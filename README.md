@@ -52,14 +52,14 @@ The project is organized around [four global milestones (M1-M4)](https://github.
 
 This structure ensures that hardware development, software integration, verification, tooling and documentation progress in parallel throughout the project. Early milestones focus on establishing the architecture and initial prototypes, while later milestones concentrate on system integration, validation and public release of a complete open platform. Each subtask (e.g. RTL1, SW1, DV1, etc.) contributes to one or more milestones and produces tangible intermediate results that collectively lead to the final openENOC platform.
 
-Task status is indicated using the following icons: ⬜ Todo, 🟩 In Progress, and ✅ Done.
+Task status is indicated using the following icons: &#x2b1c; To Do, &#x1F7E9; In Progress, and &#x2705; Done.
 
 ### WP1 - RTL Gateware Development
 
 This work package delivers the complete openENOC RTL implementation forming the hardware datapath of the Ethernet-based Network-on-Chip. The development progresses from basic switching primitives and datapath elements (RTL1), through packet processing pipeline components (RTL2), to forwarding engines and DMA-capable endpoint connectivity (RTL3). The final stage integrates all components into a configurable Ethernet Layer-2 switching fabric suitable for MPSoC integration (RTL4).
 
 - &#x2705; [RTL1 - Core Switching Primitives](https://github.com/eniokaljic/openENOC/issues/1)
-- &#x2b1c; [RTL2 - Packet Processing Pipeline](https://github.com/eniokaljic/openENOC/issues/2)
+- &#x1F7E9; [RTL2 - Packet Processing Pipeline](https://github.com/eniokaljic/openENOC/issues/2)
 - &#x2b1c; [RTL3 - Forwarding & DMA Engines](https://github.com/eniokaljic/openENOC/issues/3)
 - &#x2b1c; [RTL4 - Integrated NoC Fabric](https://github.com/eniokaljic/openENOC/issues/4)
 
@@ -68,7 +68,7 @@ This work package delivers the complete openENOC RTL implementation forming the 
 This work package provides the software interface layer required to configure and control the NoC. It begins with the definition of the hardware abstraction layer and register-level interface (SW1), followed by integration with representative RISC-V platforms (SW2). Runtime configuration capabilities are then implemented through a compact baremetal C/C++ API (SW3), while the final stage delivers reference applications demonstrating practical NoC usage scenarios (SW4).
 
 - &#x2705; [SW1 - HAL Architecture Specification](https://github.com/eniokaljic/openENOC/issues/5)
-- &#x2b1c; [SW2 - RISC-V Platform Integration](https://github.com/eniokaljic/openENOC/issues/6)
+- &#x1F7E9; [SW2 - RISC-V Platform Integration](https://github.com/eniokaljic/openENOC/issues/6)
 - &#x2b1c; [SW3 - Runtime Control API](https://github.com/eniokaljic/openENOC/issues/7)
 - &#x2b1c; [SW4 - Reference Applications](https://github.com/eniokaljic/openENOC/issues/8)
 
@@ -100,7 +100,7 @@ This work package ensures that openENOC can be built using a fully open-source F
 This work package produces the technical documentation and developer resources necessary to make the project accessible and reusable by the wider open hardware community. Initial architecture documentation describing the design concepts and packet model is produced first (DOC1). Detailed design documentation of RTL modules and interfaces follows (DOC2). Tutorials and developer guides are then prepared to demonstrate simulation and FPGA deployment workflows (DOC3), and the final stage documents reproducible build and verification processes (DOC4).
 
 - &#x2705; [DOC1 - Initial Architecture Documentation](https://github.com/eniokaljic/openENOC/issues/15)
-- &#x2b1c; [DOC2 - Design Documentation](https://github.com/eniokaljic/openENOC/issues/16)
+- &#x1F7E9; [DOC2 - Design Documentation](https://github.com/eniokaljic/openENOC/issues/16)
 - &#x2b1c; [DOC3 - Tutorials & Developer Guides](https://github.com/eniokaljic/openENOC/issues/17)
 - &#x2b1c; [DOC4 - Reproducible Build & Verification Documentation](https://github.com/eniokaljic/openENOC/issues/18)
 
