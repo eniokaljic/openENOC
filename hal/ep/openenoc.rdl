@@ -4,7 +4,7 @@
 `include "openenoc_switch_interface.rdl"
 `include "openenoc_endpoint_interface.rdl"
 
-addrmap openenoc_csr {
+addrmap csr {
     name = "csr";
     desc = "openENOC CSR";
 
@@ -79,5 +79,5 @@ addrmap openenoc {
         memwidth = 32;
     } dmem @ 0x1000_0000;
 
-    openenoc_csr csr @ 0x2000_0000;
+    csr csr @ 0x2000_0000;
 };

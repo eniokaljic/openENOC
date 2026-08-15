@@ -4,9 +4,9 @@
 `verilator_config
 
 lint_off -rule PINCONNECTEMPTY
-lint_off -rule UNUSEDPARAM -file "*/openenoc_csr_pkg.sv" -match "*"
-lint_off -rule MULTIDRIVEN -file "*/openenoc_csr.sv" -match "*"
-lint_off -rule GENUNNAMED -file "*/openenoc_csr.sv" -match "*"
+lint_off -rule UNUSEDPARAM -file "*/*_csr_pkg.sv" -match "*"
+lint_off -rule MULTIDRIVEN -file "*/*_csr.sv" -match "*"
+lint_off -rule GENUNNAMED -file "*/*_csr.sv" -match "*"
 
 lint_off -rule UNUSEDPARAM  -file "*/taxi_axis_*.sv" -match "*"
 lint_off -rule GENUNNAMED   -file "*/taxi_axis_*.sv" -match "*"

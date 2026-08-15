@@ -5,10 +5,13 @@
 
 This directory contains a Makefile for generating openENOC HAL artifacts from the endpoint SystemRDL specifications located under `ep/`. Reusable SystemRDL component definitions are located under `include/`.
 
-The build automatically discovers every endpoint specification in `ep/`. Each specification uses the same base name for its endpoint top-level address map and appends `_csr` for its CSR address map. The current endpoint therefore provides:
+The build automatically discovers every endpoint specification in `ep/`. Each
+specification defines an endpoint top-level address map named after the endpoint
+and a nested address map named `csr`. The current specification therefore
+provides:
 
 * `openenoc`
-* `openenoc_csr`
+* `csr`
 
 Shared interface definitions are provided by:
 
@@ -35,13 +38,28 @@ Run the Makefile from the directory that contains it:
 make
 ```
 
-This generates a separate artifact tree for each endpoint under `build/hal/<endpoint>/`, including:
+This generates a separate artifact tree for each endpoint under
+`build/hal/<endpoint>/`, including:
 
-* C header file for each endpoint top-level address map
-* SystemVerilog RTL for each endpoint CSR address map
-* PeakRDL Python model for each endpoint CSR address map
+* C header named `include/csr.h` with the root type `csr_t`
+* SystemVerilog RTL named `<endpoint>_csr.sv` and `<endpoint>_csr_pkg.sv`
+* PeakRDL Python model in the `csr` package
 * HTML register documentation for each endpoint CSR address map
 * Markdown documentation for each endpoint top-level address map and the shared interfaces
+
+The endpoint directory keeps each `include/csr.h` separate, allowing software to
+select an endpoint through its include path while always using:
+
+```c
+#include "csr.h"
+```
+
+Generated declarations use the common CSR namespace, including `csr_t` and its
+`csr__*` subtypes.
+
+Only the generated RTL keeps the endpoint prefix. This prevents module and
+package name collisions when CSR blocks from multiple endpoints are instantiated
+in the same RTL project.
 
 ## Running Unit Tests
 

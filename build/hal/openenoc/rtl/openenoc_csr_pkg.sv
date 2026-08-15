@@ -146,34 +146,34 @@ package openenoc_csr_pkg;
 
     typedef struct {
         logic [31:0] value;
-    } openenoc_csr__test_reg__test_field__out_t;
+    } csr__test_reg__test_field__out_t;
 
     typedef struct {
-        openenoc_csr__test_reg__test_field__out_t test_field;
-    } openenoc_csr__test_reg__out_t;
-
-    typedef struct {
-        logic [7:0] value;
-    } openenoc_csr__regB__f0__out_t;
+        csr__test_reg__test_field__out_t test_field;
+    } csr__test_reg__out_t;
 
     typedef struct {
         logic [7:0] value;
-    } openenoc_csr__regB__f1__out_t;
+    } csr__regB__f0__out_t;
 
     typedef struct {
         logic [7:0] value;
-    } openenoc_csr__regB__f2__out_t;
+    } csr__regB__f1__out_t;
 
     typedef struct {
         logic [7:0] value;
-    } openenoc_csr__regB__f3__out_t;
+    } csr__regB__f2__out_t;
 
     typedef struct {
-        openenoc_csr__regB__f0__out_t f0;
-        openenoc_csr__regB__f1__out_t f1;
-        openenoc_csr__regB__f2__out_t f2;
-        openenoc_csr__regB__f3__out_t f3;
-    } openenoc_csr__regB__out_t;
+        logic [7:0] value;
+    } csr__regB__f3__out_t;
+
+    typedef struct {
+        csr__regB__f0__out_t f0;
+        csr__regB__f1__out_t f1;
+        csr__regB__f2__out_t f2;
+        csr__regB__f3__out_t f3;
+    } csr__regB__out_t;
 
     typedef struct {
         logic [31:0] value;
@@ -385,8 +385,8 @@ package openenoc_csr_pkg;
     } openenoc_switch_interface_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_2799cf71__out_t;
 
     typedef struct {
-        openenoc_csr__test_reg__out_t test_reg;
-        openenoc_csr__regB__out_t regB;
+        csr__test_reg__out_t test_reg;
+        csr__regB__out_t regB;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__out_t endpoint_interface;
         openenoc_switch_interface_NUM_OF_INTERFACES_4_TABLE_DEPTH_8_INST_NAME_2799cf71__out_t switch_interface;
     } openenoc_csr__out_t;

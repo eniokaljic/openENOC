@@ -2,7 +2,7 @@
 Markdown description for SystemRDL register map.
 
 Don't override. Generated from: openenoc_switch_interface_top
-  - /home/enio/Projects/openENOC/hal/src/openenoc.rdl
+  - /home/enio/Projects/openENOC/hal/include/openenoc_switch_interface.rdl
 -->
 
 ## openenoc_switch_interface_top address map
