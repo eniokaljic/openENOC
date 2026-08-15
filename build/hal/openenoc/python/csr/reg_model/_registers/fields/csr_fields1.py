@@ -22,7 +22,7 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class openenoc_switch_interface_info_table_depth_0x933d37afe019ea1_cls(FieldReadOnly):
+class openenoc_switch_interface_info_table_depth_0x1f523232bb6ad048_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -59,7 +59,7 @@ class openenoc_switch_interface_info_table_depth_0x933d37afe019ea1_cls(FieldRead
 
     
     
-class openenoc_switch_interface_info_num_of_interfaces_0x2395dbb4b4ccf19d_cls(FieldReadOnly):
+class openenoc_switch_interface_info_num_of_interfaces_0x3783b49f00ac1afa_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -96,7 +96,7 @@ class openenoc_switch_interface_info_num_of_interfaces_0x2395dbb4b4ccf19d_cls(Fi
 
     
     
-class openenoc_switch_interface_forwarding_control_operation_mode_neg_0x40528f5821e6d828_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_control_operation_mode_0x53980b4f97dca578_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -137,7 +137,7 @@ class openenoc_switch_interface_forwarding_control_operation_mode_neg_0x40528f58
 
     
     
-class openenoc_switch_interface_forwarding_control_pause_request_neg_0x6a917f9e152858da_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_control_pause_request_0x28e139b166e4a560_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -176,7 +176,7 @@ class openenoc_switch_interface_forwarding_control_pause_request_neg_0x6a917f9e1
 
     
     
-class openenoc_switch_interface_forwarding_control_pause_done_neg_0x31ca4b6501a8cc22_cls(FieldReadOnly):
+class openenoc_switch_interface_forwarding_control_pause_done_neg_0xea8be225bc9fdfc_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -214,7 +214,7 @@ class openenoc_switch_interface_forwarding_control_pause_done_neg_0x31ca4b6501a8
 
     
     
-class openenoc_switch_interface_default_forwarding_bitmap_0x5cfa2bd497ae85c_cls(FieldReadWrite):
+class openenoc_switch_interface_default_forwarding_bitmap_neg_0x21e17482d46c1437_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -254,7 +254,7 @@ class openenoc_switch_interface_default_forwarding_bitmap_0x5cfa2bd497ae85c_cls(
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_mac_address_lo_word_neg_0x177f1236a65ee2be_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_mac_address_lo_word_0x45996a5cc08c9c21_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -292,7 +292,7 @@ class openenoc_switch_interface_forwarding_table_entry_mac_address_lo_word_neg_0
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_mac_address_hi_word_0x26961598f5e7ea11_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_mac_address_hi_word_neg_0xb77852204992c1_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -330,7 +330,7 @@ class openenoc_switch_interface_forwarding_table_entry_mac_address_hi_word_0x269
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_iface_bitmap_0x22354c4d7090e82a_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_iface_bitmap_neg_0x1dede35bdac060eb_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -370,7 +370,7 @@ class openenoc_switch_interface_forwarding_table_entry_iface_bitmap_0x22354c4d70
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_config_enabled_neg_0x74aa0e0275ce8172_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_config_enabled_neg_0x26cb525c3da9ed7a_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 

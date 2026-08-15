@@ -1,10 +1,11 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
 # SPDX-License-Identifier: CERN-OHL-S-2.0
 
-ENDPOINTDIR = $(CURDIR)/ep
-INCLUDEDIR  = $(CURDIR)/include
-BUILDDIR    = $(abspath $(CURDIR)/../build/hal)
-DOCSDIR     = $(abspath $(CURDIR)/../docs/src/generated)
+HAL_DIR     := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+ENDPOINTDIR := $(HAL_DIR)/ep
+INCLUDEDIR  := $(HAL_DIR)/include
+BUILDDIR    := $(abspath $(HAL_DIR)/../build/hal)
+DOCSDIR     := $(abspath $(HAL_DIR)/../docs/src/generated)
 
 ENDPOINT_SPECS = $(sort $(wildcard $(ENDPOINTDIR)/*.rdl))
 ENDPOINTS      = $(basename $(notdir $(ENDPOINT_SPECS)))

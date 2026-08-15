@@ -78,7 +78,3 @@ To remove generated artifacts, run:
 ```bash
 make clean
 ```
-
-## Notes
-
-The Makefile uses paths relative to the current working directory, so it should be executed directly from this directory.
