@@ -1,55 +1,62 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
 # SPDX-License-Identifier: CERN-OHL-S-2.0
 
-SOURCEDIR = $(PWD)/src
-BUILDDIR  = $(PWD)/../build/hal
-DOCSDIR   = $(PWD)/../docs/src/generated
+ENDPOINTDIR = $(CURDIR)/ep
+INCLUDEDIR  = $(CURDIR)/include
+BUILDDIR    = $(CURDIR)/../build/hal
+DOCSDIR     = $(CURDIR)/../docs/src/generated
 
-RDLTOP    = openenoc
-RDLCSR    = openenoc_csr
-RDLSW     = openenoc_switch
-RDLEP     = openenoc_endpoint
-RDLSRC    = $(SOURCEDIR)/$(RDLTOP).rdl
+ENDPOINT_SPECS = $(sort $(wildcard $(ENDPOINTDIR)/*.rdl))
+ENDPOINTS      = $(basename $(notdir $(ENDPOINT_SPECS)))
+RDL_INCLUDES   = $(sort $(wildcard $(INCLUDEDIR)/*.rdl))
 
-PEAKRDLHEADER = $(BUILDDIR)/$(RDLCSR).h
-PEAKRDLRTL    = $(BUILDDIR)/rtl/
-PEAKRDLPYTHON = $(BUILDDIR)/python/
-PEAKRDLHTML   = $(BUILDDIR)/html/
-PEAKRDLMD_TOP = $(DOCSDIR)/$(RDLTOP).md
-PEAKRDLMD_SW  = $(DOCSDIR)/$(RDLSW).md
-PEAKRDLMD_EP  = $(DOCSDIR)/$(RDLEP).md
+INTERFACES = openenoc_endpoint_interface openenoc_switch_interface
 
-all: $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW) $(PEAKRDLMD_EP)
+ENDPOINT_HEADERS  = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/$(endpoint).h)
+ENDPOINT_RTL      = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_csr.sv)
+ENDPOINT_PYTHON   = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/python/$(endpoint)_csr/__init__.py)
+ENDPOINT_HTML     = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/html/index.html)
+ENDPOINT_MARKDOWN = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/markdown/$(endpoint).md)
+INTERFACE_MARKDOWN = $(foreach interface,$(INTERFACES),$(DOCSDIR)/$(interface).md)
 
-$(PEAKRDLHEADER): $(RDLSRC)
-	mkdir -p $(BUILDDIR)
-	peakrdl c-header $^ -b ltoh -o $@ --type-style hier
+.PHONY: all unittest clean
 
-$(PEAKRDLRTL): $(RDLSRC)
-	peakrdl regblock $^ -o $@ --cpuif axi4-lite-flat --top $(RDLCSR)
-	peakrdl regblock $^ -o $@ --cpuif passthrough --top $(RDLSW)
-	peakrdl regblock $^ -o $@ --cpuif passthrough --top $(RDLEP)
+all: $(ENDPOINT_HEADERS) $(ENDPOINT_RTL) $(ENDPOINT_PYTHON) $(ENDPOINT_HTML) $(ENDPOINT_MARKDOWN) $(INTERFACE_MARKDOWN)
 
-$(PEAKRDLPYTHON): $(RDLSRC)
-	peakrdl python $^ -t $(RDLCSR) -o $@
+define ENDPOINT_RULES
+$(BUILDDIR)/$(1)/$(1).h: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+	mkdir -p $$(dir $$@)
+	peakrdl c-header -I $(INCLUDEDIR) $$< -b ltoh -o $$@ --type-style hier --top $(1)
 
-$(PEAKRDLHTML): $(RDLSRC)
-	peakrdl html $^ -o $@ --top $(RDLCSR)
+$(BUILDDIR)/$(1)/rtl/$(1)_csr.sv: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+	mkdir -p $(BUILDDIR)/$(1)/rtl
+	peakrdl regblock -I $(INCLUDEDIR) $$< -o $(BUILDDIR)/$(1)/rtl --cpuif axi4-lite-flat --top $(1)_csr
 
-$(PEAKRDLMD_TOP): $(RDLSRC)
+$(BUILDDIR)/$(1)/python/$(1)_csr/__init__.py: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+	mkdir -p $(BUILDDIR)/$(1)/python
+	peakrdl python -I $(INCLUDEDIR) $$< -t $(1)_csr -o $(BUILDDIR)/$(1)/python
+
+$(BUILDDIR)/$(1)/html/index.html: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+	mkdir -p $(BUILDDIR)/$(1)
+	peakrdl html -I $(INCLUDEDIR) $$< -o $(BUILDDIR)/$(1)/html --top $(1)_csr
+
+$(BUILDDIR)/$(1)/markdown/$(1).md: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+	mkdir -p $$(dir $$@)
+	peakrdl markdown -I $(INCLUDEDIR) $$< -o $$@ --top $(1)
+
+.PHONY: unittest-$(1)
+unittest-$(1): $(BUILDDIR)/$(1)/python/$(1)_csr/__init__.py
+	python -W ignore::DeprecationWarning -m unittest discover -s $(BUILDDIR)/$(1)/python/$(1)_csr/tests -t $(BUILDDIR)/$(1)/python -v
+endef
+
+$(foreach endpoint,$(ENDPOINTS),$(eval $(call ENDPOINT_RULES,$(endpoint))))
+
+$(DOCSDIR)/%.md: $(INCLUDEDIR)/%.rdl
 	mkdir -p $(DOCSDIR)
-	peakrdl markdown $^ -o $@ --top $(RDLTOP)
+	peakrdl markdown $< -o $@ --top $*_top
 
-$(PEAKRDLMD_SW): $(RDLSRC)
-	mkdir -p $(DOCSDIR)
-	peakrdl markdown $^ -o $@ --top $(RDLSW)
-
-$(PEAKRDLMD_EP): $(RDLSRC)
-	mkdir -p $(DOCSDIR)
-	peakrdl markdown $^ -o $@ --top $(RDLEP)
-
-unittest: $(PEAKRDLPYTHON)
-	python -W ignore::DeprecationWarning -m unittest discover -s $(PEAKRDLPYTHON)$(RDLCSR)/tests -t $(PEAKRDLPYTHON) -v
+unittest: $(addprefix unittest-,$(ENDPOINTS))
 
 clean:
-	rm -rf $(PEAKRDLHEADER) $(PEAKRDLRTL) $(PEAKRDLPYTHON) $(PEAKRDLHTML) $(PEAKRDLMD_TOP) $(PEAKRDLMD_SW) $(PEAKRDLMD_EP)
+	rm -rf $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint))
+	rm -f $(INTERFACE_MARKDOWN)

@@ -3,13 +3,17 @@
 
 # openENOC HAL CSR Generation
 
-This directory contains a Makefile for generating openENOC HAL CSR artifacts from the SystemRDL specifications located under `src/`.
+This directory contains a Makefile for generating openENOC HAL artifacts from the endpoint SystemRDL specifications located under `ep/`. Reusable SystemRDL component definitions are located under `include/`.
 
-The build covers three CSR descriptions:
+The build automatically discovers every endpoint specification in `ep/`. Each specification uses the same base name for its endpoint top-level address map and appends `_csr` for its CSR address map. The current endpoint therefore provides:
 
+* `openenoc`
 * `openenoc_csr`
-* `openenoc_switch`
-* `openenoc_endpoint`
+
+Shared interface definitions are provided by:
+
+* `openenoc_endpoint_interface`
+* `openenoc_switch_interface`
 
 ## Requirements
 
@@ -31,13 +35,13 @@ Run the Makefile from the directory that contains it:
 make
 ```
 
-This generates the HAL CSR artifacts in the build and documentation directories, including:
+This generates a separate artifact tree for each endpoint under `build/hal/<endpoint>/`, including:
 
-* C header file for the top-level CSR map
-* SystemVerilog CSR RTL
-* PeakRDL Python model
-* HTML register documentation
-* Markdown register documentation for the generated documentation tree
+* C header file for each endpoint top-level address map
+* SystemVerilog RTL for each endpoint CSR address map
+* PeakRDL Python model for each endpoint CSR address map
+* HTML register documentation for each endpoint CSR address map
+* Markdown documentation for each endpoint top-level address map and the shared interfaces
 
 ## Running Unit Tests
 

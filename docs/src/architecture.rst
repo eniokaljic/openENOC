@@ -25,7 +25,7 @@ Finally, the proposed architecture is consistent with broader trends in open het
 
    Overall openENOC System Architecture
 
-The architecture illustrated above is built around four main building blocks: the **openENOC Switch**, the **openENOC Control Interface**, the **openENOC Endpoint Interface**, and the **openENOC Transport Protocol (oETP)**. Together, these building blocks separate forwarding, management, endpoint adaptation, and transport semantics into independent architectural layers.
+The architecture illustrated above is built around four main building blocks: the **openENOC Switch**, the **openENOC Switch Interface**, the **openENOC Endpoint Interface**, and the **openENOC Transport Protocol (oETP)**. Together, these building blocks separate forwarding, management, endpoint adaptation, and transport semantics into independent architectural layers.
 
 This chapter presents a system-level architectural overview of openENOC and introduces the major architectural components and their relationships. Detailed implementation and protocol specifications are provided in subsequent chapters.
 
@@ -39,22 +39,22 @@ The openENOC Switch is the central frame-switching element of the openENOC archi
 The switch can operate in two modes:
 
 * **Unmanaged mode**: the switch operates autonomously and passively learns forwarding table entries from the traffic passing through it. This functionality is implemented by an integrated RTL controller that updates the forwarding state dynamically based on observed frames.
-* **Managed mode**: the switch is configured by an external processor connected through the openENOC Control Interface. In this mode, MAC learning and forwarding behavior can be controlled using software-visible configuration mechanisms.
+* **Managed mode**: the switch is configured by an external processor connected through the openENOC Switch Interface. In this mode, MAC learning and forwarding behavior can be controlled using software-visible configuration mechanisms.
 
 In addition to on-chip connectivity, switch ports may also be connected to Ethernet MAC & PHY controllers to extend communication beyond the chip boundary. This allows openENOC-based systems to scale from purely on-chip communication fabrics toward distributed multi-FPGA systems while preserving the same Ethernet-based forwarding model. As a result, the switch is not only the core of local communication, but also the bridge toward larger multi-device deployments.
 
-.. index:: Control Interface
+.. index:: Switch Interface
 
-openENOC Control Interface
+openENOC Switch Interface
 --------------------------
 
-The openENOC Control Interface is a memory-mapped interface used to configure and monitor the openENOC Switch. It exposes configuration and status registers (CSRs), the forwarding table, and related control structures required for managed operation. Through this interface, software can observe and influence the behavior of the switching fabric without changing the data-plane abstraction presented to the rest of the system.
+The openENOC Switch Interface is a memory-mapped interface used to configure and monitor the openENOC Switch. It exposes configuration and status registers (CSRs), the forwarding table, and related control structures required for managed operation. Through this interface, software can observe and influence the behavior of the switching fabric without changing the data-plane abstraction presented to the rest of the system.
 
 When the switch operates in managed mode, a processor accesses this interface to define forwarding behavior, populate or update entries in the forwarding table, inspect switch state, and react to network events or topology-specific requirements. This enables software-defined traffic management while keeping the forwarding substrate modular and reusable.
 
-In architectural terms, the control interface complements the switch by separating control-plane responsibilities from frame forwarding. This distinction becomes especially important in systems where only selected endpoints require authority over the communication domain, while the remaining components interact with the network strictly through data exchange.
+In architectural terms, the switch interface complements the switch by separating control-plane responsibilities from frame forwarding. This distinction becomes especially important in systems where only selected endpoints require authority over the communication domain, while the remaining components interact with the network strictly through data exchange.
 
-Systems that rely exclusively on autonomous switching behavior may omit the control interface entirely and operate the switch in unmanaged mode.
+Systems that rely exclusively on autonomous switching behavior may omit the switch interface entirely and operate the switch in unmanaged mode.
 
 .. index:: Endpoint Interface
 
@@ -83,7 +83,7 @@ This makes the endpoint suitable both for memory-centric communication and for l
 openENOC Transport Protocol
 ---------------------------
 
-The openENOC Transport Protocol (oETP) defines the transport-layer semantics of the architecture. It supports communication patterns such as remote memory access, processor-to-processor communication, accelerator integration, and transparent interconnection across multi-FPGA systems. While the openENOC Switch, openENOC Control Interface, and openENOC Endpoint Interface define how components are connected and managed, oETP defines how memory-oriented transactions and related transport semantics are expressed over that Ethernet-based communication substrate.
+The openENOC Transport Protocol (oETP) defines the transport-layer semantics of the architecture. It supports communication patterns such as remote memory access, processor-to-processor communication, accelerator integration, and transparent interconnection across multi-FPGA systems. While the openENOC Switch, openENOC Switch Interface, and openENOC Endpoint Interface define how components are connected and managed, oETP defines how memory-oriented transactions and related transport semantics are expressed over that Ethernet-based communication substrate.
 
 Existing RDMA-over-Ethernet technologies, most notably RoCEv1, provide a natural starting point for Ethernet-based memory-centric communication. However, these protocols were originally designed for datacenter environments and inherit a significant portion of the InfiniBand transport model, including Queue Pair (QP) abstractions, work request management, connection state tracking, completion queues, and memory registration mechanisms [6]_. Furthermore, RoCEv1 assumes a lossless Ethernet fabric and relies on Priority Flow Control (PFC) to prevent packet loss [7]_. Multiple studies have shown that PFC can introduce head-of-line blocking, congestion propagation, and deadlock scenarios, increasing the complexity of both network infrastructure and endpoint implementations [8]_. Such mechanisms are difficult to justify in Network-on-Chip environments, where buffering resources are limited and implementation simplicity is a primary design objective.
 
@@ -108,11 +108,11 @@ By combining Ethernet framing, credit-based flow control, and RDMA-style one-sid
 Architectural Relationships
 ---------------------------
 
-At the system level, the openENOC Switch forms the communication backbone, while each functional block is attached through an openENOC Endpoint Interface. The openENOC Control Interface is used where software-visible management of the switch is required, and the openENOC Transport Protocol (oETP) provides transport-level semantics for memory-oriented communication between endpoints across the same Ethernet-based fabric.
+At the system level, the openENOC Switch forms the communication backbone, while each functional block is attached through an openENOC Endpoint Interface. The openENOC Switch Interface is used where software-visible management of the switch is required, and the openENOC Transport Protocol (oETP) provides transport-level semantics for memory-oriented communication between endpoints across the same Ethernet-based fabric.
 
 * the **switch** forwards Ethernet frames between ports,
-* the **endpoint** adapts Ethernet frame-based communication to local computation, memory, or peripheral logic,
-* the **control interface** provides optional software control over switch behavior,
+* the **endpoint interface** adapts Ethernet frame-based communication to local computation, memory, or peripheral logic,
+* the **switch interface** provides optional software control over switch behavior,
 * the **oETP** defines lightweight transport semantics for higher-level communication patterns such as remote reads and writes.
 
 This separation enables the architecture to scale in several directions: multiple endpoints can share a common switch, specialized switches can be introduced for subsystems with different bandwidth or latency requirements, software control can be centralized where necessary, and transport-level behavior can remain consistent across both local and distributed Ethernet-connected domains.
@@ -125,7 +125,7 @@ The following examples refer to the architectural diagram shown earlier and illu
 EP A1: Managed switch operation with processor-coordinated DMA
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**EP A1** illustrates a configuration in which **openENOC Switch A** operates in managed mode. A processor is connected to the switch configuration port through the openENOC Control Interface, and the corresponding endpoint uses DMA-capable communication through the openENOC Endpoint Interface.
+**EP A1** illustrates a configuration in which **openENOC Switch A** operates in managed mode. A processor is connected to the switch configuration port through the openENOC Switch Interface, and the corresponding endpoint uses DMA-capable communication through the openENOC Endpoint Interface.
 
 This use case is suitable for systems that require explicit software control over network behavior, for example when traffic policies must be tuned at runtime or when integration with higher-level resource management software is required.
 
@@ -134,7 +134,7 @@ Because the switch provides only a single configuration port, this managed setup
 EP A2: Data endpoint without switch control access
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**EP A2** shows a standard endpoint connected to **openENOC Switch A** without direct access to the switch control interface. It still uses the openENOC Endpoint Interface for communication with integrated memory, processing, or peripheral logic, but relies on the switch behavior established elsewhere in the system.
+**EP A2** shows a standard endpoint connected to **openENOC Switch A** without direct access to the switch interface. It still uses the openENOC Endpoint Interface for communication with integrated memory, processing, or peripheral logic, but relies on the switch behavior established elsewhere in the system.
 
 This arrangement is useful when one software-visible control point manages a larger communication domain, while other endpoints remain focused on data exchange only. From the perspective of higher-level communication, such endpoints may still participate in oETP-based transactions even though they do not manage the switch directly.
 
@@ -172,7 +172,7 @@ This enables multiple openENOC domains to be combined into a larger communicatio
 
 When FPGA systems are geographically distributed or connected through the Internet, the external network must provide Ethernet connectivity at Layer-2, which may require appropriate L2 VPN infrastructure depending on the deployment environment. Communication security in such deployments is outside the scope of openENOC itself and must be provided by the external network environment.
 
-On **FPGA 2**, **openENOC Switch D** mirrors the same architectural principles used on **FPGA 1**. **EP D1** shows a processor/accelerator plus memory subsystem with managed-switch capability through the control interface, while **EP D2** and **EP D3** illustrate additional connected resources within the remote communication domain.
+On **FPGA 2**, **openENOC Switch D** mirrors the same architectural principles used on **FPGA 1**. **EP D1** shows a processor/accelerator plus memory subsystem with managed-switch capability through the switch interface, while **EP D2** and **EP D3** illustrate additional connected resources within the remote communication domain.
 
 In other words, openENOC is not limited to a single-chip NoC; it can be extended into distributed Ethernet-connected multi-FPGA deployments. Because the same switch, endpoint, control, and transport concepts are preserved, the architecture remains conceptually uniform even as it scales from local integration to geographically distributed systems.
 

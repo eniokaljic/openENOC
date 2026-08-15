@@ -6,6 +6,7 @@
 lint_off -rule PINCONNECTEMPTY
 lint_off -rule UNUSEDPARAM -file "*/openenoc_csr_pkg.sv" -match "*"
 lint_off -rule MULTIDRIVEN -file "*/openenoc_csr.sv" -match "*"
+lint_off -rule GENUNNAMED -file "*/openenoc_csr.sv" -match "*"
 
 lint_off -rule UNUSEDPARAM  -file "*/taxi_axis_*.sv" -match "*"
 lint_off -rule GENUNNAMED   -file "*/taxi_axis_*.sv" -match "*"
@@ -14,4 +15,3 @@ lint_off -rule SYNCASYNCNET -file "*/taxi_axis_*.sv" -match "*"
 lint_off -rule BLKSEQ -file "*/taxi_axis_*.sv" -match "*"
 
 lint_off -rule PROCASSINIT  -file "*/taxi_sync_*.sv" -match "*"
-

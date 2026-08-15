@@ -4,3 +4,6 @@
 [submodule "libs/taxi"]
 	path = hw/libs/taxi
 	url = git@github.com:alexforencich/taxi.git
+[submodule "hw/libs/picorv32"]
+	path = hw/libs/picorv32
+	url = git@github.com:YosysHQ/picorv32.git

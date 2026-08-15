@@ -1,0 +1,83 @@
+// SPDX-FileCopyrightText: 2026 Enio Kaljic
+// SPDX-License-Identifier: CERN-OHL-S-2.0
+
+`include "openenoc_switch_interface.rdl"
+`include "openenoc_endpoint_interface.rdl"
+
+addrmap openenoc_csr {
+    name = "csr";
+    desc = "openENOC CSR";
+
+    littleendian;
+    default accesswidth = 32;
+    default regwidth = 32;
+    default alignment = 4;
+    addressing = regalign;
+
+    reg test_reg {
+        name = "csr.test_reg";
+        desc = "Test register";
+
+        field {
+            name = "csr.test_reg.test_field[31:0]";
+            desc = "4-byte test field";
+            sw = rw;
+            hw = r;
+        } test_field[32] = 0;
+    } test_reg;
+
+    reg regB {
+        field {
+            sw = rw;
+            hw = r;
+        } f0[8] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } f1[8] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } f2[8] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } f3[8] = 0;
+    } regB;
+
+    openenoc_endpoint_interface #(
+        .NUM_OF_PEERS(4),
+        .RMEM_TOTAL_DEPTH(256),
+        .INST_NAME("csr.endpoint_interface")
+    ) endpoint_interface;
+
+    openenoc_switch_interface #(
+        .NUM_OF_INTERFACES(4),
+        .TABLE_DEPTH(8),
+        .INST_NAME("csr.switch_interface")
+    ) switch_interface;
+};
+
+addrmap openenoc {
+    littleendian;
+    default accesswidth = 32;
+    default regwidth = 32;
+    default alignment = 4;
+    addressing = regalign;
+
+    external mem imem {
+        name = "imem";
+        desc = "CPU Program Memory";
+        mementries = 8192;
+        memwidth = 32;
+    } imem @ 0x0000_0000;
+
+    external mem dmem {
+        name = "dmem";
+        desc = "CPU Data Memory";
+        mementries = 8192;
+        memwidth = 32;
+    } dmem @ 0x1000_0000;
+
+    openenoc_csr csr @ 0x2000_0000;
+};

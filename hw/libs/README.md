@@ -27,10 +27,32 @@ After cloning the repository, initialize the submodule from the repository root 
 git submodule update --init hw/libs/taxi
 ```
 
+## picorv32 Submodule
+
+The `picorv32` library is included as a Git submodule under:
+
+```text
+hw/libs/picorv32
+```
+
+It is fetched from:
+
+```text
+git@github.com:YosysHQ/picorv32.git
+```
+
+After cloning the repository, initialize the submodule from the repository root with:
+
+```sh
+git submodule update --init hw/libs/picorv32
+```
+
+## Batch Initialization
+
 Alternatively, when cloning the repository for the first time, use:
 
 ```sh
-git clone --recurse-submodules <repository-url>
+git clone --recurse-submodules git@github.com:eniokaljic/openENOC.git
 ```
 
 To update the submodule to the commit recorded by the main repository, run:

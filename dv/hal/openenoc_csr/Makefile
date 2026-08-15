@@ -5,12 +5,14 @@ TOPLEVEL_LANG = verilog
 SIM = verilator
 
 # PeakRDL outputs
-BUILDDIR      = $(PWD)/../../../build/hal
-PEAKRDLRTL    = $(BUILDDIR)/rtl/
-PEAKRDLPYTHON = $(BUILDDIR)/python/
+ENDPOINT          = openenoc
+BUILDDIR          = $(PWD)/../../../build/hal
+ENDPOINT_BUILDDIR = $(BUILDDIR)/$(ENDPOINT)
+PEAKRDLRTL        = $(ENDPOINT_BUILDDIR)/rtl/
+PEAKRDLPYTHON     = $(ENDPOINT_BUILDDIR)/python/
 
 # Top-level module
-TOPLEVEL = openenoc_csr
+TOPLEVEL = $(ENDPOINT)_csr
 
 # RTL sources
 VERILOG_SOURCES += $(PEAKRDLRTL)/$(TOPLEVEL)_pkg.sv
