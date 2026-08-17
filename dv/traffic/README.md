@@ -11,13 +11,6 @@ The test connects a `pcapreader` instance directly to a `pcapwriter` instance th
 
 Although both Avalon-ST and AXI4-Stream interfaces are available in the PCAP reader and writer modules, this test configuration uses the AXI4-Stream path.
 
-## Tooling
-
-This project uses the following tooling:
-
-* **[oss-cad-suite-build](https://github.com/yosyshq/oss-cad-suite-build)** - Open source CAD tools suite
-* **OS:** Ubuntu 24.04
-
 ## Test Structure
 
 The verification environment consists of:

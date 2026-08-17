@@ -61,13 +61,6 @@ The CPU interface has the highest priority, followed by lookup and learning.
 Because every request is captured, a request issued while the table is busy is
 served later instead of being lost.
 
-## Tooling
-
-This project uses the following tooling:
-
-- **[oss-cad-suite-build](https://github.com/yosyshq/oss-cad-suite-build)** - Open source CAD tools suite
-- **OS:** Ubuntu 24.04
-
 ## Configuration
 
 Edit `Makefile` to configure parameters.

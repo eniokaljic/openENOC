@@ -3,6 +3,17 @@
 
 .DEFAULT_GOAL := all
 
+VERBOSE ?= 0
+AWK ?= awk
+
+ifeq ($(VERBOSE),1)
+Q :=
+else
+Q := @
+endif
+
+LOG := @printf '  %-37s %s\n'
+
 SW_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 ROOT_DIR := $(abspath $(SW_DIR)/..)
 
@@ -18,6 +29,7 @@ APP ?=
 EP ?=
 PLATFORM ?= picorv32
 BUILD_ROOT ?= $(ROOT_DIR)/build/sw
+BUILD_ROOT_ABS := $(abspath $(BUILD_ROOT))
 
 CROSS_COMPILE ?= riscv64-unknown-elf-
 MARCH ?= rv32i
@@ -117,7 +129,7 @@ S_SOURCES := $(sort $(APP_S_SOURCES) $(PLATFORM_S_SOURCES) $(LIB_S_SOURCES))
 CAP_S_SOURCES := $(sort $(APP_CAP_S_SOURCES) $(PLATFORM_CAP_S_SOURCES) $(LIB_CAP_S_SOURCES))
 SOURCES := $(C_SOURCES) $(S_SOURCES) $(CAP_S_SOURCES)
 
-OUTPUT_DIR := $(BUILD_ROOT)/$(EP)
+OUTPUT_DIR := $(BUILD_ROOT_ABS)/$(EP)
 OUTPUT_BASE := $(OUTPUT_DIR)/$(APP)
 LINKER_SCRIPT := $(OUTPUT_DIR)/sections.lds
 
@@ -131,14 +143,14 @@ IMEM_MEM := $(OUTPUT_DIR)/imem.mem
 .PHONY: all clean force-rebuild help imem-init imem-tool-check list-apps list-eps toolchain-check
 
 all: $(ELF) $(BIN) $(HEX) $(LISTING) $(IMEM_MEM)
-	$(SIZE) $(ELF)
-
-imem-init: $(IMEM_MEM)
+	$(LOG) 'Reporting firmware size for:' '$(ELF)'
+	$(Q)$(SIZE) $(ELF)
 
 force-rebuild:
 
 toolchain-check:
-	@for tool in $(CC) $(OBJCOPY) $(OBJDUMP) $(SIZE); do \
+	$(LOG) 'Checking RISC-V build tools:' '$(CC), $(OBJCOPY), $(OBJDUMP), $(SIZE)'
+	$(Q)for tool in $(CC) $(OBJCOPY) $(OBJDUMP) $(SIZE); do \
 		command -v $$tool >/dev/null 2>&1 || { \
 			echo "Missing tool: $$tool" >&2; \
 			exit 1; \
@@ -146,39 +158,50 @@ toolchain-check:
 	done
 
 imem-tool-check:
-	@command -v $(XXD) >/dev/null 2>&1 || { \
-		echo "Missing tool: $(XXD)" >&2; \
-		exit 1; \
-	}
+	$(Q)for tool in $(XXD) $(AWK); do \
+		command -v $$tool >/dev/null 2>&1 || { \
+			echo "Missing tool: $$tool" >&2; \
+			exit 1; \
+		}; \
+	done
+	$(LOG) 'Using IMEM conversion tool:' "$$(command -v $(XXD))"
+	$(LOG) 'Using AWK processing tool:' "$$(command -v $(AWK))"
 
 $(HAL_SW_HEADERS): $(EP_SPEC) $(RDL_INCLUDES)
-	$(MAKE) -C $(HAL_DIR) $@
-	@test -f $@ || { echo "HAL generation did not create $@" >&2; exit 1; }
+	$(LOG) 'Generating HAL software header:' '$@'
+	$(Q)$(MAKE) --no-print-directory -C $(HAL_DIR) VERBOSE=$(VERBOSE) AWK=$(AWK) $@
+	$(Q)test -f $@ || { echo "HAL generation did not create $@" >&2; exit 1; }
 
 $(LINKER_SCRIPT): $(LINKER_SCRIPT_TEMPLATE) $(MEMORY_MAP_HEADER) | toolchain-check
-	@mkdir -p $(dir $@)
-	$(RM) $@.tmp
-	$(CC) -E -P -x c $(COMMON_CPPFLAGS) $(CPPFLAGS) $< -o $@.tmp
-	mv $@.tmp $@
+	$(LOG) 'Generating linker script:' '$@'
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(RM) $@.tmp
+	$(Q)$(CC) -E -P -x c $(COMMON_CPPFLAGS) $(CPPFLAGS) $< -o $@.tmp
+	$(Q)mv $@.tmp $@
 
 $(ELF): force-rebuild $(SOURCES) $(HAL_SW_HEADERS) $(LINKER_SCRIPT) | toolchain-check
-	@mkdir -p $(dir $@)
-	$(CC) $(COMMON_CPPFLAGS) $(CPPFLAGS) $(COMMON_CFLAGS) $(CFLAGS) \
+	$(LOG) 'Linking firmware ELF:' '$@'
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(CC) $(COMMON_CPPFLAGS) $(CPPFLAGS) $(COMMON_CFLAGS) $(CFLAGS) \
 		$(COMMON_LDFLAGS) $(LDFLAGS) \
 		-Wl,-T,$(LINKER_SCRIPT),-Map,$(MAP) \
 		-o $@ $(SOURCES) $(LDLIBS) -lgcc
 
 $(BIN): $(ELF)
-	$(OBJCOPY) -O binary $< $@
+	$(LOG) 'Generating raw binary image:' '$@'
+	$(Q)$(OBJCOPY) -O binary $< $@
 
 $(HEX): $(ELF)
-	$(OBJCOPY) -O verilog $< $@
+	$(LOG) 'Generating Verilog HEX image:' '$@'
+	$(Q)$(OBJCOPY) -O verilog $< $@
 
 $(LISTING): $(ELF)
-	$(OBJDUMP) -drwC -S $< > $@
+	$(LOG) 'Generating disassembly listing:' '$@'
+	$(Q)$(OBJDUMP) -drwC -S $< > $@
 
 $(IMEM_MEM): $(BIN) $(MEMORY_MAP_HEADER) | imem-tool-check
-	@imem_depth=$$(awk \
+	$(LOG) 'Generating IMEM initialization file:' '$@'
+	$(Q)imem_depth=$$($(AWK) \
 		'$$1 == "#define" && $$2 == "IMEM_DEPTH" { print $$3 }' \
 		$(MEMORY_MAP_HEADER)); \
 	if test -z "$$imem_depth"; then \
@@ -197,10 +220,10 @@ $(IMEM_MEM): $(BIN) $(MEMORY_MAP_HEADER) | imem-tool-check
 		exit 1; \
 	fi; \
 	$(XXD) -e -g 4 -c 4 $< | \
-		awk '{ print toupper($$2); }' > $@
+		$(AWK) '{ print toupper($$2); }' > $@
 
 list-apps:
-	@if test -d $(APPS_DIR); then \
+	$(Q)if test -d $(APPS_DIR); then \
 		apps=$$(find $(APPS_DIR) -mindepth 2 -maxdepth 2 -type f \
 			-name main.c -printf '%h\n' | sed 's|.*/||' | sort); \
 		if test -n "$$apps"; then \
@@ -213,22 +236,36 @@ list-apps:
 	fi
 
 list-eps:
-	@if test -n "$(AVAILABLE_EPS)"; then \
+	$(Q)if test -n "$(AVAILABLE_EPS)"; then \
 		printf '%s\n' $(AVAILABLE_EPS); \
 	else \
 		echo "No endpoint specifications found under $(HAL_EPS_DIR)"; \
 	fi
 
 help:
-	@echo "Usage: make APP=<application> EP=<endpoint> [PLATFORM=picorv32] [MARCH=rv32i]"
-	@echo
-	@echo "Targets:"
-	@echo "  all        Build all software and IMEM initialization artifacts"
-	@echo "  imem-init  Build only the 32-bit \$$readmemh IMEM data file"
-	@echo "  list-apps  Print available application directory names"
-	@echo "  list-eps   Print available endpoint names"
-	@echo "  clean      Remove all software build outputs"
-	@echo "  help       Show this message"
+	$(Q)echo "Usage:"
+	$(Q)echo "  Build: make [all] APP=<application> EP=<endpoint> [variables...]"
+	$(Q)echo "  Other: make <target> [variables...]"
+	$(Q)echo
+	$(Q)echo "Targets:"
+	$(Q)echo "  list-apps  Print available application directory names"
+	$(Q)echo "  list-eps   Print available endpoint names"
+	$(Q)echo "  all        Build all software and IMEM initialization artifacts"
+	$(Q)echo "  clean      Remove all software build outputs"
+	$(Q)echo "  help       Show this message"
+	$(Q)echo
+	$(Q)echo "Variables:"
+	$(Q)echo "  APP             Application directory name under $(APPS_DIR) (required for builds)"
+	$(Q)echo "  EP              Endpoint name derived from $(HAL_EPS_DIR)/<endpoint>.rdl (required for builds)"
+	$(Q)echo "  PLATFORM        Platform directory name under $(PLATFORMS_DIR) (default: picorv32)"
+	$(Q)echo "  MARCH           RISC-V ISA passed to the toolchain (default: rv32i)"
+	$(Q)echo "  MABI            RISC-V ABI passed to the toolchain (default: ilp32)"
+	$(Q)echo "  CROSS_COMPILE   GNU toolchain command prefix (default: riscv64-unknown-elf-)"
+	$(Q)echo "  BUILD_ROOT      Software output directory (default: $(ROOT_DIR)/build/sw)"
+	$(Q)echo "  AWK             AWK-compatible executable (default: awk)"
+	$(Q)echo "  XXD             Binary-to-hex conversion executable (default: xxd)"
+	$(Q)echo "  VERBOSE         Command output mode: 0 hides commands, 1 prints them (default: 0)"
 
 clean:
-	$(RM) -r $(BUILD_ROOT)
+	$(LOG) 'Removing software build output from:' '$(BUILD_ROOT_ABS)'
+	$(Q)$(RM) -r $(BUILD_ROOT_ABS)

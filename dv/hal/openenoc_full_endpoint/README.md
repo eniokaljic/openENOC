@@ -11,13 +11,6 @@ The test exercises a PeakRDL-generated CSR RTL block through an AXI4-Lite interf
 
 The same register test functions are also reused by a hardware-oriented test entry point. This keeps the test logic independent of whether register accesses are performed against simulated RTL or through a hardware access layer.
 
-## Tooling
-
-This project uses the following tooling:
-
-* **[oss-cad-suite-build](https://github.com/yosyshq/oss-cad-suite-build)** - Open source CAD tools suite, including Verilator
-* **OS:** Ubuntu 24.04
-
 ## Test Structure
 
 The verification environment consists of:

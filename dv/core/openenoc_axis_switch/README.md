@@ -7,13 +7,6 @@
 
 This test suite validates the `openenoc_axis_switch` module, which routes AXI Stream traffic from multiple inputs to multiple outputs.
 
-## Tooling
-
-This project uses the following tooling:
-
-- **[oss-cad-suite-build](https://github.com/yosyshq/oss-cad-suite-build)** - Open source CAD tools suite
-- **OS:** Ubuntu 24.04
-
 ## Routing Modes
 
 The switch verification currently targets two routing modes:

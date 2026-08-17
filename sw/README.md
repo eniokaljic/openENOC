@@ -34,17 +34,53 @@ The application and platform directories may also contain additional `.c`, `.s`,
 or preprocessed `.S` source files. Internal library sources are discovered under
 `lib/*/src`, while their public headers are exposed from `lib/*/include`.
 
-## Requirements
+## Environment Setup
 
-The default build expects the following tools to be available in `PATH`:
+The software build requires GNU Make, an AWK-compatible text processor, `xxd`,
+and a bare-metal RISC-V GNU toolchain. The default toolchain prefix is
+`riscv64-unknown-elf-`. The build can also invoke the HAL generation flow, so
+its Python dependencies must be installed in the active virtual environment.
 
-* RISC-V GNU toolchain using the `riscv64-unknown-elf-` prefix
-* `xxd` for creating the IMEM initialization file
-* The HAL generation dependencies documented in the [HAL README](../hal/README.md)
+On Ubuntu, the system dependencies can be installed with:
 
-The compiler prefix can be overridden with `CROSS_COMPILE`.
+```bash
+sudo apt install binutils-riscv64-unknown-elf gcc-riscv64-unknown-elf \
+    make mawk python3 python3-pip python3-venv xxd
+```
 
-Run the commands below from this `sw/` directory.
+The Ubuntu packages provide the
+[RISC-V GCC cross compiler](https://packages.ubuntu.com/noble/gcc-riscv64-unknown-elf)
+and the corresponding `objcopy`, `objdump`, and `size` utilities. A different
+installed toolchain can be selected by overriding `CROSS_COMPILE`.
+
+### Python Virtual Environment
+
+Create the virtual environment from the repository root and install the HAL
+generation dependencies:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r hal/requirements.txt
+```
+
+The same virtual environment can be reused by the HAL and DV flows. Keep it
+activated while building software so that missing or outdated generated headers
+can be regenerated automatically.
+
+The installed tools can be checked with:
+
+```bash
+python -m pip check
+peakrdl --version
+riscv64-unknown-elf-gcc --version
+riscv64-unknown-elf-objcopy --version
+xxd -v
+awk 'BEGIN { print "awk OK" }'
+```
+
+Run the remaining commands below from the `sw/` directory.
 
 ## Selecting an Application and Endpoint
 
@@ -71,7 +107,7 @@ build/hal/<endpoint>/sw/csr.h
 build/hal/<endpoint>/sw/memory_map.h
 ```
 
-If this header is missing or older than its SystemRDL inputs, the software build
+If either header is missing or older than its SystemRDL inputs, the software build
 invokes the HAL build flow to regenerate it. The build exposes only the selected
 endpoint directory, so applications use the endpoint-independent include:
 
@@ -102,6 +138,7 @@ The main configuration variables are:
 | `MARCH` | `rv32i` | RISC-V ISA passed to the compiler and linker |
 | `MABI` | `ilp32` | RISC-V ABI passed to the compiler and linker |
 | `CROSS_COMPILE` | `riscv64-unknown-elf-` | GNU toolchain command prefix |
+| `VERBOSE` | `0` | Set to `1` to print commands in addition to concise build-step messages |
 
 All sources are compiled and linked in one compiler invocation. No persistent
 object or dependency directories are generated. The complete firmware is rebuilt
