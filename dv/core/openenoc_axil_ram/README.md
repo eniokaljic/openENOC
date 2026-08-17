@@ -10,7 +10,7 @@ The DUT derives its data and strobe widths from `taxi_axil_if`, implements a
 byte-addressed power-of-two aperture, and optionally initializes its contents
 from a `$readmemh`-compatible file.
 
-The bundled `imem.mem` is copied from `build/sw/openenoc/imem.mem` and contains
+The bundled `imem.mem` is copied from `build/sw/openenoc_full_endpoint/imem.mem` and contains
 the current PicoRV32 CSR smoke-test firmware. It is intentionally shorter than
 the test RAM so that the tests also verify zero-filled locations following the
 loaded image.

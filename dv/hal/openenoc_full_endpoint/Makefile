@@ -5,7 +5,7 @@ TOPLEVEL_LANG = verilog
 SIM = verilator
 
 # PeakRDL outputs
-ENDPOINT          = openenoc
+ENDPOINT          = openenoc_full_endpoint
 BUILDDIR          = $(abspath $(CURDIR)/../../../build/hal)
 ENDPOINT_BUILDDIR = $(BUILDDIR)/$(ENDPOINT)
 PEAKRDLRTL        = $(ENDPOINT_BUILDDIR)/rtl

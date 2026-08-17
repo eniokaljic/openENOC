@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 
-#include "memory_map.h"
 #include "csr.h"
+#include "memory_map.h"
 
 #define CSR_SMOKE_PATTERN UINT32_C(0xa5a55a5a)
 #define CSR_SMOKE_RUNNING UINT32_C(0x00000000)
@@ -15,10 +15,9 @@
 /* A simulator or debugger can inspect this symbol after main returns. */
 volatile uint32_t csr_smoke_status = CSR_SMOKE_RUNNING;
 
-int main(void)
-{
+int main(void) {
     volatile csr_t *const csr =
-        (volatile csr_t *)(uintptr_t)OPENENOC_CSR_BASE;
+        (volatile csr_t *)(uintptr_t)CSR_BASE_ADDR;
 
     csr->test_reg.w = CSR_SMOKE_PATTERN;
 

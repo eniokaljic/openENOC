@@ -2,6 +2,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+#include "memory_map.h"
+
 OUTPUT_FORMAT("elf32-littleriscv")
 OUTPUT_ARCH(riscv)
 ENTRY(_start)
@@ -11,8 +13,8 @@ __stack_size = 2K;
 
 MEMORY
 {
-    IMEM (rx) : ORIGIN = 0x00000000, LENGTH = 32K
-    DMEM (rw) : ORIGIN = 0x10000000, LENGTH = 32K
+    IMEM (rx) : ORIGIN = IMEM_BASE_ADDR, LENGTH = IMEM_SIZE_BYTES
+    DMEM (rw) : ORIGIN = DMEM_BASE_ADDR, LENGTH = DMEM_SIZE_BYTES
 }
 
 SECTIONS

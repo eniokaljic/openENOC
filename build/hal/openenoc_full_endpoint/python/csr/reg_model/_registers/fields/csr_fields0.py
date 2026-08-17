@@ -22,7 +22,7 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class csr_test_reg_test_field_0x5dc3db6d8c8ecc65_cls(FieldReadWrite):
+class csr_test_reg_test_field_0x6d10c1823b64fbce_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -58,7 +58,7 @@ class csr_test_reg_test_field_0x5dc3db6d8c8ecc65_cls(FieldReadWrite):
 
     
     
-class openenoc_endpoint_interface_info_rmem_total_depth_neg_0x9bf3ee5201e4695_cls(FieldReadOnly):
+class openenoc_endpoint_interface_info_rmem_total_depth_0x384700cfc6ca2d_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -95,7 +95,7 @@ class openenoc_endpoint_interface_info_rmem_total_depth_neg_0x9bf3ee5201e4695_cl
 
     
     
-class openenoc_endpoint_interface_info_num_of_peers_neg_0xa5983aeabb94f86_cls(FieldReadOnly):
+class openenoc_endpoint_interface_info_num_of_peers_neg_0x6d366410945a7f28_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -133,7 +133,7 @@ class openenoc_endpoint_interface_info_num_of_peers_neg_0xa5983aeabb94f86_cls(Fi
 
     
     
-class openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x21bee74807d35e6c_cls(FieldReadWrite):
+class openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x23b790e9c388b9ea_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -169,7 +169,7 @@ class openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x21bee74807d35
 
     
     
-class openenoc_endpoint_interface_config_mac_address_hi_word_0xaca9bae0de2efb2_cls(FieldReadWrite):
+class openenoc_endpoint_interface_config_mac_address_hi_word_0x793e85c8aa585dfa_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -205,7 +205,7 @@ class openenoc_endpoint_interface_config_mac_address_hi_word_0xaca9bae0de2efb2_c
 
     
     
-class openenoc_endpoint_interface_axis_if_source_data_tdata_0x1574ce91e7c0945b_cls(FieldReadWrite):
+class openenoc_endpoint_interface_axis_if_source_data_tdata_0x596ce7dbf122adf_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -241,7 +241,7 @@ class openenoc_endpoint_interface_axis_if_source_data_tdata_0x1574ce91e7c0945b_c
 
     
     
-class openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x4c22815087ad7634_cls(FieldReadWrite):
+class openenoc_endpoint_interface_axis_if_source_control_tvalid_0x70c92063335891f7_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -279,7 +279,7 @@ class openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x4c22815087
 
     
     
-class openenoc_endpoint_interface_axis_if_source_control_tlast_0x6804a3ff0b8fc25d_cls(FieldReadWrite):
+class openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x68d23f4efb42a547_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -316,7 +316,7 @@ class openenoc_endpoint_interface_axis_if_source_control_tlast_0x6804a3ff0b8fc25
 
     
     
-class openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x53b1afb815306bea_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x13c80b3a6a72262d_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -353,7 +353,7 @@ class openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x53b1afb8153
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_data_tdata_0x5143ea65b22c030e_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_data_tdata_0x38cb08df3ba24a5_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -389,7 +389,7 @@ class openenoc_endpoint_interface_axis_if_sink_data_tdata_0x5143ea65b22c030e_cls
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x78b5a253dbbb4706_cls(FieldWriteOnly):
+class openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x4fc1514229ae23cb_cls(FieldWriteOnly):
     """
     Class to represent a register field in the register model
 
@@ -426,7 +426,7 @@ class openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x78b5a253dbbb
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_status_tvalid_0x41ebec11af60d67e_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_status_tvalid_0x3b118808aa909153_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -463,7 +463,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_tvalid_0x41ebec11af60d67e_
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x1e2162b6fbcff48d_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x71d8f89d294e132c_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -500,7 +500,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x1e2162b6fbcff4
 
     
     
-class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_0x6c86d727af4f1fe1_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_0x4be93f051fd1d56f_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -537,7 +537,7 @@ class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_0x6c86d727af4f
 
     
     
-class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_0x5c7d882968d40aa6_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_neg_0x7a9ad3c18e33414e_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -574,7 +574,7 @@ class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_0x5c7d882968d4
 
     
     
-class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x6bb37fc905dba144_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x4cf6d5a292341e17_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -612,7 +612,7 @@ class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x6bb37fc9
 
     
     
-class openenoc_endpoint_interface_peers_entry_local_address_base_neg_0xe2f1c86a0108a59_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_local_address_base_0x40e3324869294a76_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -650,7 +650,7 @@ class openenoc_endpoint_interface_peers_entry_local_address_base_neg_0xe2f1c86a0
 
     
     
-class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0xf0c4e8c0d7b6bcc_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0x47d91aeca7122f8c_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -688,7 +688,7 @@ class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0xf0c4e8c0
 
     
     
-class openenoc_endpoint_interface_peers_entry_size_bytes_0x4a5c6c81a57fbcc0_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_size_bytes_0x37b4eec840077ec0_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -725,7 +725,7 @@ class openenoc_endpoint_interface_peers_entry_size_bytes_0x4a5c6c81a57fbcc0_cls(
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_mode_0x30bfebe2c368b93b_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_dma_mode_0x68159b4a4e198866_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -777,7 +777,7 @@ class openenoc_endpoint_interface_peers_entry_dma_mode_0x30bfebe2c368b93b_cls(Fi
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_request_neg_0x27ed0bcd4b285683_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_dma_request_neg_0x6b65162fb5ca91c6_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -816,7 +816,7 @@ class openenoc_endpoint_interface_peers_entry_dma_request_neg_0x27ed0bcd4b285683
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_idle_neg_0x415a7237ff71c1af_cls(FieldReadOnly):
+class openenoc_endpoint_interface_peers_entry_dma_idle_0x65f3157624b05f06_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -855,7 +855,7 @@ class openenoc_endpoint_interface_peers_entry_dma_idle_neg_0x415a7237ff71c1af_cl
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_done_neg_0x5a7fae052016d383_cls(FieldReadOnly):
+class openenoc_endpoint_interface_peers_entry_dma_done_neg_0x3ceb8e3047ff8503_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -895,7 +895,7 @@ class openenoc_endpoint_interface_peers_entry_dma_done_neg_0x5a7fae052016d383_cl
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_error_neg_0x33cfa497db1b06fd_cls(FieldReadOnly):
+class openenoc_endpoint_interface_peers_entry_dma_error_neg_0x407999ec0ec95b50_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -934,7 +934,7 @@ class openenoc_endpoint_interface_peers_entry_dma_error_neg_0x33cfa497db1b06fd_c
 
     
     
-class openenoc_endpoint_interface_rmem_word_data_neg_0x47a575e66aa386c1_cls(FieldReadWrite):
+class openenoc_endpoint_interface_rmem_word_data_0xbcd98c143be5e71_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 

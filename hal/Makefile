@@ -14,8 +14,10 @@ RDL_INCLUDES   = $(sort $(wildcard $(INCLUDEDIR)/*.rdl))
 INTERFACES = openenoc_endpoint_interface openenoc_switch_interface
 CSR_NAME   = csr
 
-ENDPOINT_HEADERS  = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/include/$(CSR_NAME).h)
+ENDPOINT_HEADERS  = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/sw/$(CSR_NAME).h)
+ENDPOINT_MEMORY_MAPS = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/sw/memory_map.h)
 ENDPOINT_RTL      = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_$(CSR_NAME).sv)
+ENDPOINT_CONFIG_PKGS = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_pkg.sv)
 ENDPOINT_PYTHON   = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/python/$(CSR_NAME)/__init__.py)
 ENDPOINT_HTML     = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/html/index.html)
 ENDPOINT_MARKDOWN = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/markdown/$(endpoint).md)
@@ -23,16 +25,59 @@ INTERFACE_MARKDOWN = $(foreach interface,$(INTERFACES),$(DOCSDIR)/$(interface).m
 
 .PHONY: all unittest clean
 
-all: $(ENDPOINT_HEADERS) $(ENDPOINT_RTL) $(ENDPOINT_PYTHON) $(ENDPOINT_HTML) $(ENDPOINT_MARKDOWN) $(INTERFACE_MARKDOWN)
+all: $(ENDPOINT_HEADERS) $(ENDPOINT_MEMORY_MAPS) $(ENDPOINT_RTL) $(ENDPOINT_CONFIG_PKGS) $(ENDPOINT_PYTHON) $(ENDPOINT_HTML) $(ENDPOINT_MARKDOWN) $(INTERFACE_MARKDOWN)
 
 define ENDPOINT_RULES
-$(BUILDDIR)/$(1)/include/$(CSR_NAME).h: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+$(BUILDDIR)/$(1)/sw/$(CSR_NAME).h: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
 	mkdir -p $$(dir $$@)
 	peakrdl c-header -I $(INCLUDEDIR) $$< -b ltoh -o $$@ --type-style hier --top $(CSR_NAME)
 
 $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME).sv: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
 	mkdir -p $(BUILDDIR)/$(1)/rtl
 	peakrdl regblock -I $(INCLUDEDIR) $$< -o $(BUILDDIR)/$(1)/rtl --cpuif axi4-lite-flat --top $(CSR_NAME) --rename $(1)_$(CSR_NAME)
+
+$(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+	mkdir -p $$(dir $$@)
+	$$(RM) $$@.tmp
+	$$(RM) -r $$@.tmp.dir
+	peakrdl regblock -I $(INCLUDEDIR) $$< -o $$@.tmp.dir --cpuif passthrough --top $(1) --module-name $(1) --package-name $(1)_pkg --type-style hier
+	mv $$@.tmp.dir/$(1)_pkg.sv $$@.tmp
+	$$(RM) -r $$@.tmp.dir
+	mv $$@.tmp $$@
+
+$(BUILDDIR)/$(1)/sw/memory_map.h: $(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv
+	mkdir -p $$(dir $$@)
+	$$(RM) $$@.tmp
+	awk 'BEGIN { \
+		wanted["IMEM_DEPTH"] = 1; \
+		wanted["IMEM_BASE_ADDR"] = 1; \
+		wanted["DMEM_DEPTH"] = 1; \
+		wanted["DMEM_BASE_ADDR"] = 1; \
+		wanted["CSR_BASE_ADDR"] = 1; \
+		print "/* Generated from the endpoint SystemRDL address map. */"; \
+		print "#ifndef MEMORY_MAP_H"; \
+		print "#define MEMORY_MAP_H"; \
+		print ""; \
+	} \
+	$$$$1 == "localparam" && ($$$$2 in wanted) { \
+		value = $$$$4; \
+		sub(/;$$$$/, "", value); \
+		sub(/^\047h/, "0x", value); \
+		printf "#define %-19s %s\n", $$$$2, value; \
+		found[$$$$2] = 1; \
+		count++; \
+	} \
+	END { \
+		if (count != 5) { \
+			print "Expected endpoint memory-map parameters were not found" > "/dev/stderr"; \
+			exit 1; \
+		} \
+		print "#define IMEM_SIZE_BYTES     (IMEM_DEPTH * 4)"; \
+		print "#define DMEM_SIZE_BYTES     (DMEM_DEPTH * 4)"; \
+		print ""; \
+		print "#endif /* MEMORY_MAP_H */"; \
+	}' $$< > $$@.tmp
+	mv $$@.tmp $$@
 
 $(BUILDDIR)/$(1)/python/$(CSR_NAME)/__init__.py: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
 	mkdir -p $(BUILDDIR)/$(1)/python

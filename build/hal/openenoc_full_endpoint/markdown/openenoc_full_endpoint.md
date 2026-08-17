@@ -1,11 +1,11 @@
 <!---
 Markdown description for SystemRDL register map.
 
-Don't override. Generated from: openenoc
-  - /home/enio/Projects/openENOC/hal/ep/openenoc.rdl
+Don't override. Generated from: openenoc_full_endpoint
+  - /home/enio/Projects/openENOC/hal/ep/openenoc_full_endpoint.rdl
 -->
 
-## openenoc address map
+## openenoc_full_endpoint address map
 
 - Absolute Address: 0x0
 - Base Offset: 0x0

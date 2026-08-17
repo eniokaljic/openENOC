@@ -29,13 +29,11 @@ OBJDUMP = $(CROSS_COMPILE)objdump
 SIZE = $(CROSS_COMPILE)size
 XXD ?= xxd
 
-IMEM_DEPTH ?= 8192
-
 AVAILABLE_EPS := $(basename $(notdir $(sort $(wildcard $(HAL_EPS_DIR)/*.rdl))))
 
 COMMON_CPPFLAGS := \
 	-I$(PLATFORMS_DIR)/$(PLATFORM)/include \
-	-I$(HAL_BUILD_DIR)/$(EP)/include \
+	-I$(HAL_BUILD_DIR)/$(EP)/sw \
 	$(addprefix -I,$(wildcard $(LIB_DIR)/*/include))
 
 COMMON_CFLAGS := \
@@ -85,8 +83,8 @@ endif
 ifeq ($(wildcard $(APPS_DIR)/$(APP)/main.c),)
 $(error Application '$(APP)' must provide $(APPS_DIR)/$(APP)/main.c)
 endif
-ifeq ($(wildcard $(PLATFORMS_DIR)/$(PLATFORM)/sections.lds),)
-$(error Platform '$(PLATFORM)' does not provide sections.lds)
+ifeq ($(wildcard $(PLATFORMS_DIR)/$(PLATFORM)/sections.lds.in),)
+$(error Platform '$(PLATFORM)' does not provide sections.lds.in)
 endif
 ifeq ($(wildcard $(HAL_EPS_DIR)/$(EP).rdl),)
 $(error Endpoint '$(EP)' does not provide $(HAL_EPS_DIR)/$(EP).rdl)
@@ -95,10 +93,12 @@ endif
 
 APP_DIR := $(APPS_DIR)/$(APP)
 PLATFORM_DIR := $(PLATFORMS_DIR)/$(PLATFORM)
-LINKER_SCRIPT := $(PLATFORM_DIR)/sections.lds
+LINKER_SCRIPT_TEMPLATE := $(PLATFORM_DIR)/sections.lds.in
 EP_SPEC := $(HAL_EPS_DIR)/$(EP).rdl
 RDL_INCLUDES := $(sort $(wildcard $(HAL_INCLUDE_DIR)/*.rdl))
-CSR_HEADER := $(HAL_BUILD_DIR)/$(EP)/include/csr.h
+CSR_HEADER := $(HAL_BUILD_DIR)/$(EP)/sw/csr.h
+MEMORY_MAP_HEADER := $(HAL_BUILD_DIR)/$(EP)/sw/memory_map.h
+HAL_SW_HEADERS := $(CSR_HEADER) $(MEMORY_MAP_HEADER)
 
 APP_C_SOURCES := $(wildcard $(APP_DIR)/*.c)
 APP_S_SOURCES := $(wildcard $(APP_DIR)/*.s)
@@ -119,6 +119,7 @@ SOURCES := $(C_SOURCES) $(S_SOURCES) $(CAP_S_SOURCES)
 
 OUTPUT_DIR := $(BUILD_ROOT)/$(EP)
 OUTPUT_BASE := $(OUTPUT_DIR)/$(APP)
+LINKER_SCRIPT := $(OUTPUT_DIR)/sections.lds
 
 ELF := $(OUTPUT_BASE).elf
 BIN := $(OUTPUT_BASE).bin
@@ -150,11 +151,17 @@ imem-tool-check:
 		exit 1; \
 	}
 
-$(CSR_HEADER): $(EP_SPEC) $(RDL_INCLUDES)
+$(HAL_SW_HEADERS): $(EP_SPEC) $(RDL_INCLUDES)
 	$(MAKE) -C $(HAL_DIR) $@
-	@test -f $@ || { echo "CSR generation did not create $@" >&2; exit 1; }
+	@test -f $@ || { echo "HAL generation did not create $@" >&2; exit 1; }
 
-$(ELF): force-rebuild $(SOURCES) $(CSR_HEADER) $(LINKER_SCRIPT) | toolchain-check
+$(LINKER_SCRIPT): $(LINKER_SCRIPT_TEMPLATE) $(MEMORY_MAP_HEADER) | toolchain-check
+	@mkdir -p $(dir $@)
+	$(RM) $@.tmp
+	$(CC) -E -P -x c $(COMMON_CPPFLAGS) $(CPPFLAGS) $< -o $@.tmp
+	mv $@.tmp $@
+
+$(ELF): force-rebuild $(SOURCES) $(HAL_SW_HEADERS) $(LINKER_SCRIPT) | toolchain-check
 	@mkdir -p $(dir $@)
 	$(CC) $(COMMON_CPPFLAGS) $(CPPFLAGS) $(COMMON_CFLAGS) $(CFLAGS) \
 		$(COMMON_LDFLAGS) $(LDFLAGS) \
@@ -170,15 +177,23 @@ $(HEX): $(ELF)
 $(LISTING): $(ELF)
 	$(OBJDUMP) -drwC -S $< > $@
 
-$(IMEM_MEM): $(BIN) | imem-tool-check
-	@byte_count=$$(wc -c < $<); \
+$(IMEM_MEM): $(BIN) $(MEMORY_MAP_HEADER) | imem-tool-check
+	@imem_depth=$$(awk \
+		'$$1 == "#define" && $$2 == "IMEM_DEPTH" { print $$3 }' \
+		$(MEMORY_MAP_HEADER)); \
+	if test -z "$$imem_depth"; then \
+		echo "IMEM_DEPTH is missing from $(MEMORY_MAP_HEADER)" >&2; \
+		exit 1; \
+	fi; \
+	imem_depth_value=$$((imem_depth)); \
+	byte_count=$$(wc -c < $<); \
 	if test $$((byte_count % 4)) -ne 0; then \
 		echo "IMEM image size must be aligned to four bytes" >&2; \
 		exit 1; \
 	fi; \
 	word_count=$$((byte_count / 4)); \
-	if test $$word_count -gt $(IMEM_DEPTH); then \
-		echo "IMEM image has $$word_count words; limit is $(IMEM_DEPTH)" >&2; \
+	if test $$word_count -gt $$imem_depth_value; then \
+		echo "IMEM image has $$word_count words; limit is $$imem_depth_value" >&2; \
 		exit 1; \
 	fi; \
 	$(XXD) -e -g 4 -c 4 $< | \

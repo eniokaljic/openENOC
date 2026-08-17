@@ -58,7 +58,13 @@ addrmap csr {
     ) switch_interface;
 };
 
-addrmap openenoc {
+addrmap openenoc_full_endpoint #(
+    longint unsigned IMEM_DEPTH = 8192,
+    longint unsigned IMEM_BASE_ADDR = 0x0000_0000,
+    longint unsigned DMEM_DEPTH = 8192,
+    longint unsigned DMEM_BASE_ADDR = 0x1000_0000,
+    longint unsigned CSR_BASE_ADDR = 0x2000_0000
+) {
     littleendian;
     default accesswidth = 32;
     default regwidth = 32;
@@ -68,16 +74,16 @@ addrmap openenoc {
     external mem imem {
         name = "imem";
         desc = "CPU Program Memory";
-        mementries = 8192;
+        mementries = IMEM_DEPTH;
         memwidth = 32;
-    } imem @ 0x0000_0000;
+    } imem @ IMEM_BASE_ADDR;
 
     external mem dmem {
         name = "dmem";
         desc = "CPU Data Memory";
-        mementries = 8192;
+        mementries = DMEM_DEPTH;
         memwidth = 32;
-    } dmem @ 0x1000_0000;
+    } dmem @ DMEM_BASE_ADDR;
 
-    csr csr @ 0x2000_0000;
+    csr csr @ CSR_BASE_ADDR;
 };
