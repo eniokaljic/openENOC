@@ -181,12 +181,6 @@ the `IMEM_DEPTH` value generated from the endpoint SystemRDL specification.
 Because this file has an endpoint-scoped name, building another application for
 the same endpoint replaces `imem.mem` with the newly selected firmware image.
 
-To request the IMEM file explicitly, run:
-
-```bash
-make APP=csr_smoke EP=openenoc_full_endpoint imem-init
-```
-
 ## Cleaning Generated Files
 
 Remove all software build outputs with:
