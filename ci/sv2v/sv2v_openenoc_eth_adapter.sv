@@ -8,9 +8,10 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 DV_DIR="${REPO_ROOT}/dv/core/openenoc_eth_adapter"
 HW_DIR="${REPO_ROOT}/hw"
-CORE_DIR="${HW_DIR}/src/core"
-TAXI_AXIS_DIR="${HW_DIR}/libs/taxi/src/axis/rtl"
-TAXI_SYNC_DIR="${HW_DIR}/libs/taxi/src/sync/rtl"
+LIBS_DIR="${REPO_ROOT}/libs"
+CORE_DIR="${HW_DIR}/rtl/core"
+TAXI_AXIS_DIR="${LIBS_DIR}/taxi/src/axis/rtl"
+TAXI_SYNC_DIR="${LIBS_DIR}/taxi/src/sync/rtl"
 
 OUT_DIR="${REPO_ROOT}/build/sv2v"
 OUT_FILE="${OUT_DIR}/test_openenoc_eth_adapter.v"

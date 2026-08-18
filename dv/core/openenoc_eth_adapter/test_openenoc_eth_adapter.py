@@ -549,10 +549,12 @@ if getattr(cocotb, 'top', None) is not None:
 # ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
-hw_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..', 'hw'))
-core_dir = os.path.join(hw_dir, 'src', 'core')
-taxi_axis_dir = os.path.join(hw_dir, 'libs', 'taxi', 'src', 'axis', 'rtl')
-taxi_sync_dir = os.path.join(hw_dir, 'libs', 'taxi', 'src', 'sync', 'rtl')
+repo_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..'))
+hw_dir = os.path.join(repo_dir, 'hw')
+libs_dir = os.path.join(repo_dir, 'libs')
+core_dir = os.path.join(hw_dir, 'rtl', 'core')
+taxi_axis_dir = os.path.join(libs_dir, 'taxi', 'src', 'axis', 'rtl')
+taxi_sync_dir = os.path.join(libs_dir, 'taxi', 'src', 'sync', 'rtl')
 
 def process_f_files(files):
     lst = {}

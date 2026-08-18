@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
 
 [submodule "libs/taxi"]
-	path = hw/libs/taxi
+	path = libs/taxi
 	url = git@github.com:alexforencich/taxi.git
-[submodule "hw/libs/picorv32"]
-	path = hw/libs/picorv32
+[submodule "libs/picorv32"]
+	path = libs/picorv32
 	url = git@github.com:YosysHQ/picorv32.git

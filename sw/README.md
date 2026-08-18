@@ -20,8 +20,8 @@ sw/
 │       └── main.c
 ├── lib/
 │   └── <library>/
-│       ├── include/
-│       └── src/
+│       ├── <header>.h
+│       └── <source>.c
 ├── platform/
 │   └── <platform>/
 │       ├── boot.s
@@ -31,8 +31,9 @@ sw/
 ```
 
 The application and platform directories may also contain additional `.c`, `.s`,
-or preprocessed `.S` source files. Internal library sources are discovered under
-`lib/*/src`, while their public headers are exposed from `lib/*/include`.
+or preprocessed `.S` source files. Each library keeps its source and header files
+together under `lib/<library>/`; every library directory is exposed as an include
+path and its source files are discovered automatically.
 
 ## Environment Setup
 
@@ -92,7 +93,7 @@ make list-eps
 ```
 
 Applications are discovered from `apps/*/main.c`. Endpoints are discovered from
-the SystemRDL specifications under `../hal/ep/*.rdl`.
+the SystemRDL specifications under `../hal/endpoint/*.rdl`.
 
 Both `APP` and `EP` are mandatory for every build:
 
@@ -133,7 +134,7 @@ The main configuration variables are:
 | Variable | Default | Purpose |
 |---|---|---|
 | `APP` | none | Application directory name under `apps/` |
-| `EP` | none | Endpoint name derived from `hal/ep/<endpoint>.rdl` |
+| `EP` | none | Endpoint name derived from `hal/endpoint/<endpoint>.rdl` |
 | `PLATFORM` | `picorv32` | CPU startup code, linker script, and platform headers |
 | `MARCH` | `rv32i` | RISC-V ISA passed to the compiler and linker |
 | `MABI` | `ilp32` | RISC-V ABI passed to the compiler and linker |

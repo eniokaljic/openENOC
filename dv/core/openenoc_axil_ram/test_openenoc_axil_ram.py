@@ -12,7 +12,8 @@ import pytest
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
-
+from cocotb.regression import TestFactory
+TestFactory.__test__ = False
 
 def parameter_int(name):
     return int(os.environ[f"PARAM_{name}"])
@@ -263,9 +264,11 @@ async def test_006_randomized_access_with_backpressure(dut):
 # Pytest simulation runner
 
 tests_dir = os.path.abspath(os.path.dirname(__file__))
-hw_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "..", "hw"))
-core_dir = os.path.join(hw_dir, "src", "core")
-taxi_axi_dir = os.path.join(hw_dir, "libs", "taxi", "src", "axi", "rtl")
+repo_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", ".."))
+hw_dir = os.path.join(repo_dir, "hw")
+libs_dir = os.path.join(repo_dir, "libs")
+core_dir = os.path.join(hw_dir, "rtl", "core")
+taxi_axi_dir = os.path.join(libs_dir, "taxi", "src", "axi", "rtl")
 common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
 
 

@@ -9,10 +9,12 @@ WAVES ?= 0
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
-HW_DIR = ../../../hw
-CORE_DIR = $(HW_DIR)/src/core
-TAXI_AXIS_DIR = $(HW_DIR)/libs/taxi/src/axis/rtl
-TAXI_SYNC_DIR = $(HW_DIR)/libs/taxi/src/sync/rtl
+REPO_DIR = ../../..
+HW_DIR = $(REPO_DIR)/hw
+LIBS_DIR = $(REPO_DIR)/libs
+CORE_DIR = $(HW_DIR)/rtl/core
+TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
+TAXI_SYNC_DIR = $(LIBS_DIR)/taxi/src/sync/rtl
 
 DUT = openenoc_eth_adapter
 

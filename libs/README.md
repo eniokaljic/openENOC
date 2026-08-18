@@ -12,7 +12,7 @@ This directory contains external hardware libraries used by openENOC.
 The `taxi` library is included as a Git submodule under:
 
 ```text
-hw/libs/taxi
+libs/taxi
 ```
 
 It is fetched from:
@@ -24,7 +24,7 @@ git@github.com:alexforencich/taxi.git
 After cloning the repository, initialize the submodule from the repository root with:
 
 ```sh
-git submodule update --init hw/libs/taxi
+git submodule update --init libs/taxi
 ```
 
 ## picorv32 Submodule
@@ -32,7 +32,7 @@ git submodule update --init hw/libs/taxi
 The `picorv32` library is included as a Git submodule under:
 
 ```text
-hw/libs/picorv32
+libs/picorv32
 ```
 
 It is fetched from:
@@ -44,7 +44,7 @@ git@github.com:YosysHQ/picorv32.git
 After cloning the repository, initialize the submodule from the repository root with:
 
 ```sh
-git submodule update --init hw/libs/picorv32
+git submodule update --init libs/picorv32
 ```
 
 ## Batch Initialization
@@ -55,10 +55,11 @@ Alternatively, when cloning the repository for the first time, use:
 git clone --recurse-submodules git@github.com:eniokaljic/openENOC.git
 ```
 
-To update the submodule to the commit recorded by the main repository, run:
+To update the submodules to the commits recorded by the main repository, run:
 
 ```sh
 git submodule update --init --recursive
 ```
 
-The submodule should remain checked out at the revision tracked by openENOC unless an intentional library update is being performed.
+The submodules should remain checked out at the revisions tracked by openENOC
+unless an intentional library update is being performed.

@@ -10,7 +10,7 @@ COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
 HW_DIR = ../../../hw
-CORE_DIR = $(HW_DIR)/src/core
+CORE_DIR = $(HW_DIR)/rtl/core
 
 DUT = openenoc_forwarding_table
 COCOTB_TEST_MODULES = test_$(DUT)

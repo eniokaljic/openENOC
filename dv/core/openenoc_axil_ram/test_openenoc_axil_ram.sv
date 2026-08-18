@@ -21,28 +21,28 @@ module test_openenoc_axil_ram #
 )
 ();
 
-logic clk;
-logic rst;
+    logic clk;
+    logic rst;
 
-taxi_axil_if #(
-    .DATA_W(DATA_W),
-    .ADDR_W(AXIL_ADDR_W),
-    .STRB_W(STRB_W)
-) s_axil();
+    taxi_axil_if #(
+        .DATA_W(DATA_W),
+        .ADDR_W(AXIL_ADDR_W),
+        .STRB_W(STRB_W)
+    ) s_axil();
 
-openenoc_axil_ram #(
-    .ADDR_W(ADDR_W),
-    .PIPELINE_OUTPUT(PIPELINE_OUTPUT),
-    .INIT_FILE(INIT_FILE)
-)
-uut (
-    .clk(clk),
-    .rst(rst),
+    openenoc_axil_ram #(
+        .ADDR_W(ADDR_W),
+        .PIPELINE_OUTPUT(PIPELINE_OUTPUT),
+        .INIT_FILE(INIT_FILE)
+    )
+    uut (
+        .clk(clk),
+        .rst(rst),
 
-    .s_axil_wr(s_axil),
-    .s_axil_rd(s_axil)
-);
+        .s_axil_wr(s_axil),
+        .s_axil_rd(s_axil)
+    );
 
-endmodule
+    endmodule
 
 `resetall

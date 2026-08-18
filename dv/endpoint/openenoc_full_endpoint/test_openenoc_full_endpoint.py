@@ -7,7 +7,8 @@ import cocotb
 import cocotb_test.simulator
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
-
+from cocotb.regression import TestFactory
+TestFactory.__test__ = False
 
 CSR_SMOKE_PATTERN = 0xA5A55A5A
 CSR_SMOKE_PASSED = 0x600D600D
@@ -74,11 +75,12 @@ async def test_csr_smoke_firmware(dut):
 tests_dir = os.path.abspath(os.path.dirname(__file__))
 repo_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", ".."))
 hw_dir = os.path.join(repo_dir, "hw")
-core_dir = os.path.join(hw_dir, "src", "core")
-endpoint_dir = os.path.join(hw_dir, "src", "endpoint")
-taxi_axi_dir = os.path.join(hw_dir, "libs", "taxi", "src", "axi", "rtl")
-taxi_axis_dir = os.path.join(hw_dir, "libs", "taxi", "src", "axis", "rtl")
-picorv32_dir = os.path.join(hw_dir, "libs", "picorv32")
+libs_dir = os.path.join(repo_dir, "libs")
+core_dir = os.path.join(hw_dir, "rtl", "core")
+endpoint_dir = os.path.join(hw_dir, "rtl", "endpoint")
+taxi_axi_dir = os.path.join(libs_dir, "taxi", "src", "axi", "rtl")
+taxi_axis_dir = os.path.join(libs_dir, "taxi", "src", "axis", "rtl")
+picorv32_dir = os.path.join(libs_dir, "picorv32")
 hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "openenoc_full_endpoint", "rtl")
 common_dir = os.path.join(repo_dir, "dv", "common")
 

@@ -24,7 +24,7 @@ dv/
 │   ├── openenoc_axis_switch/
 │   ├── openenoc_eth_adapter/
 │   └── openenoc_forwarding_table/
-├── example/
+├── examples/
 ├── hal/
 │   └── openenoc_full_endpoint/
 ├── traffic/
@@ -36,7 +36,7 @@ The `core/` directory contains unit-level RTL verification environments. The
 `hal/` directory verifies generated endpoint CSR RTL and its Python register
 model. The `traffic/` directory validates the reusable PCAP replay and capture
 infrastructure, while `common/` contains simulator configuration shared across
-test suites. The `example/` directory is reserved for example verification
+test suites. The `examples/` directory is reserved for example verification
 environments.
 
 ## Environment Setup

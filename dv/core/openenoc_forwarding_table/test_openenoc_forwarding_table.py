@@ -684,7 +684,7 @@ if getattr(cocotb, 'top', None) is not None:
 
 tests_dir = os.path.dirname(__file__)
 hw_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..', 'hw'))
-core_dir = os.path.join(hw_dir, 'src', 'core')
+core_dir = os.path.join(hw_dir, 'rtl', 'core')
 common_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', 'common'))
 
 

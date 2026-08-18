@@ -11,12 +11,13 @@ COCOTB_HDL_TIMEPRECISION = 1ps
 
 REPO_DIR = ../../..
 HW_DIR = $(REPO_DIR)/hw
-CORE_DIR = $(HW_DIR)/src/core
-ENDPOINT_DIR = $(HW_DIR)/src/endpoint
-TAXI_AXI_DIR = $(HW_DIR)/libs/taxi/src/axi/rtl
-TAXI_AXIS_DIR = $(HW_DIR)/libs/taxi/src/axis/rtl
+LIBS_DIR = $(REPO_DIR)/libs
+CORE_DIR = $(HW_DIR)/rtl/core
+ENDPOINT_DIR = $(HW_DIR)/rtl/endpoint
+TAXI_AXI_DIR = $(LIBS_DIR)/taxi/src/axi/rtl
+TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
 TAXI_PRIM_DIR = $(TAXI_AXI_DIR)/../lib/taxi/src/prim/rtl
-PICORV32_DIR = $(HW_DIR)/libs/picorv32
+PICORV32_DIR = $(LIBS_DIR)/picorv32
 HAL_RTL_DIR = $(REPO_DIR)/build/hal/openenoc_full_endpoint/rtl
 SW_BUILD_DIR = $(REPO_DIR)/build/sw/openenoc_full_endpoint
 

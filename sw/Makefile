@@ -19,9 +19,10 @@ ROOT_DIR := $(abspath $(SW_DIR)/..)
 
 APPS_DIR := $(SW_DIR)/apps
 LIB_DIR := $(SW_DIR)/lib
+LIB_DIRS := $(wildcard $(LIB_DIR)/*)
 PLATFORMS_DIR := $(SW_DIR)/platform
 HAL_DIR := $(ROOT_DIR)/hal
-HAL_EPS_DIR := $(HAL_DIR)/ep
+HAL_EPS_DIR := $(HAL_DIR)/endpoint
 HAL_INCLUDE_DIR := $(HAL_DIR)/include
 HAL_BUILD_DIR := $(ROOT_DIR)/build/hal
 
@@ -46,7 +47,7 @@ AVAILABLE_EPS := $(basename $(notdir $(sort $(wildcard $(HAL_EPS_DIR)/*.rdl))))
 COMMON_CPPFLAGS := \
 	-I$(PLATFORMS_DIR)/$(PLATFORM)/include \
 	-I$(HAL_BUILD_DIR)/$(EP)/sw \
-	$(addprefix -I,$(wildcard $(LIB_DIR)/*/include))
+	$(addprefix -I,$(LIB_DIRS))
 
 COMMON_CFLAGS := \
 	-march=$(MARCH) \
@@ -120,9 +121,9 @@ PLATFORM_C_SOURCES := $(wildcard $(PLATFORM_DIR)/*.c)
 PLATFORM_S_SOURCES := $(wildcard $(PLATFORM_DIR)/*.s)
 PLATFORM_CAP_S_SOURCES := $(wildcard $(PLATFORM_DIR)/*.S)
 
-LIB_C_SOURCES := $(wildcard $(LIB_DIR)/*/src/*.c)
-LIB_S_SOURCES := $(wildcard $(LIB_DIR)/*/src/*.s)
-LIB_CAP_S_SOURCES := $(wildcard $(LIB_DIR)/*/src/*.S)
+LIB_C_SOURCES := $(wildcard $(LIB_DIR)/*/*.c)
+LIB_S_SOURCES := $(wildcard $(LIB_DIR)/*/*.s)
+LIB_CAP_S_SOURCES := $(wildcard $(LIB_DIR)/*/*.S)
 
 C_SOURCES := $(sort $(APP_C_SOURCES) $(PLATFORM_C_SOURCES) $(LIB_C_SOURCES))
 S_SOURCES := $(sort $(APP_S_SOURCES) $(PLATFORM_S_SOURCES) $(LIB_S_SOURCES))

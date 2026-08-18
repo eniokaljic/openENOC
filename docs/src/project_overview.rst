@@ -31,7 +31,7 @@ All results will be released openly to encourage reuse, strengthen the open hard
 Repository Structure
 --------------------
 
-The openENOC repository is organized into a set of clearly separated functional areas covering hardware design, software development, hardware abstraction, verification, documentation, platform integration, and project automation. The following overview summarizes the purpose of each top-level directory within the repository.
+The openENOC repository is organized into a set of clearly separated functional areas covering hardware design, external libraries, software development, hardware abstraction, verification, documentation, platform integration, and project automation. The following overview summarizes the purpose of each top-level directory within the repository.
 
 ``docs/``
    Project documentation sources and assets.
@@ -40,19 +40,19 @@ The openENOC repository is organized into a set of clearly separated functional 
    Hardware Abstraction Layer sources, register definitions, code generators, and related tooling.
    
 ``hw/``
-   Reusable synthesizable hardware IP blocks, RTL sources, and third-party hardware libraries.
+   Hardware sources, with reusable RTL under ``hw/rtl/``, reference designs and
+   integration examples under ``hw/examples/``, and complete platform
+   demonstrations under ``hw/demos/``.
+
+``libs/``
+   External hardware libraries tracked as Git submodules, including ``taxi``
+   under ``libs/taxi/`` and ``picorv32`` under ``libs/picorv32/``.
 
 ``sw/``
    Software libraries, drivers, utilities, and application support code.
 
 ``dv/``
    Design verification environment, including shared verification infrastructure, component-level verification, example verification, and hardware demos verification.
-
-``examples/``
-   Reference designs, application examples, and integration examples demonstrating openENOC capabilities.
-
-``demos/``
-   Complete demonstration projects for supported hardware platforms, including platform integration, top-level designs, constraints, build scripts, and example applications.
 
 ``build/``
    Generated build artifacts, simulation outputs, generated code, and intermediate files.
@@ -195,4 +195,3 @@ We are grateful to **NLnet Foundation** for their `sponsorship <https://nlnet.nl
    <br>
    
 This project was funded through the `NGI0 Commons Fund <https://nlnet.nl/commonsfund>`_, a fund established by `NLnet <https://nlnet.nl/>`_ with financial support from the European Commission's `Next Generation Internet <https://ngi.eu>`_ programme, under the aegis of `DG Communications Networks, Content and Technology <https://commission.europa.eu/about-european-commission/departments-and-executive-agencies/communications-networks-content-and-technology_en>`_ under grant agreement N\ :sup:`o` `101135429 <https://cordis.europa.eu/project/id/101135429>`_. Additional funding is made available by the `Swiss State Secretariat for Education, Research and Innovation <https://www.sbfi.admin.ch/sbfi/en/home.html>`_ (SERI).
-

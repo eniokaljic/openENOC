@@ -9,8 +9,10 @@ WAVES ?= 0
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
-HW_DIR = ../../hw
-TAXI_AXIS_DIR = $(HW_DIR)/libs/taxi/src/axis/rtl
+REPO_DIR = ../..
+HW_DIR = $(REPO_DIR)/hw
+LIBS_DIR = $(REPO_DIR)/libs
+TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
 
 COCOTB_TEST_MODULES = test_traffic
 TOPLEVEL = test_traffic
@@ -46,5 +48,4 @@ else ifeq ($(SIM), verilator)
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
-
 
