@@ -13,7 +13,7 @@ endif
 LOG := @printf '  %-37s %s\n'
 
 HAL_DIR     := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-ENDPOINTDIR := $(HAL_DIR)/ep
+ENDPOINTDIR := $(HAL_DIR)/endpoint
 INCLUDEDIR  := $(HAL_DIR)/include
 BUILDDIR    := $(abspath $(HAL_DIR)/../build/hal)
 DOCSDIR     := $(abspath $(HAL_DIR)/../docs/src/generated)

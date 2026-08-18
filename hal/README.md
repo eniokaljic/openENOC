@@ -15,7 +15,7 @@ endpoints are maintained separately from the endpoint definitions.
 
 ```text
 hal/
-├── ep/
+├── endpoint/
 │   └── <endpoint>.rdl
 ├── include/
 │   ├── openenoc_endpoint_interface.rdl
@@ -25,12 +25,12 @@ hal/
 └── requirements.txt
 ```
 
-Endpoint specifications are discovered from `ep/*.rdl`. Shared component
+Endpoint specifications are discovered from `endpoint/*.rdl`. Shared component
 definitions under `include/` are included by endpoint specifications as needed.
 
 ## SystemRDL Organization
 
-The build automatically discovers every endpoint specification in `ep/`. Each
+The build automatically discovers every endpoint specification in `endpoint/`. Each
 specification defines an endpoint top-level address map named after the endpoint
 and a nested address map named `csr`. The current specification therefore
 provides:
