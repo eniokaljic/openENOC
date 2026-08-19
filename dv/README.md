@@ -24,20 +24,35 @@ dv/
 │   ├── openenoc_axis_switch/
 │   ├── openenoc_eth_adapter/
 │   └── openenoc_forwarding_table/
-├── examples/
+├── endpoints/
+│   └── openenoc_endpoint_full/
+│       ├── Makefile
+│       ├── README.md
+│       ├── run_tests.sh
+│       ├── test_openenoc_endpoint_full.py
+│       └── test_openenoc_endpoint_full.sv
 ├── hal/
-│   └── openenoc_full_endpoint/
+│   └── openenoc_endpoint_full/
+│       ├── Makefile
+│       ├── README.md
+│       ├── __init__.py
+│       ├── hardware_interface.py
+│       ├── hardware_test.py
+│       ├── rtl_simulator.py
+│       ├── testbench.py
+│       └── tests.py
 ├── traffic/
 ├── README.md
 └── requirements.txt
 ```
 
 The `core/` directory contains unit-level RTL verification environments. The
-`hal/` directory verifies generated endpoint CSR RTL and its Python register
-model. The `traffic/` directory validates the reusable PCAP replay and capture
+`endpoints/` directory verifies complete endpoint RTL integrations, including
+the CPU, memories, generated CSR block, and project interfaces. The `hal/`
+directory verifies generated endpoint CSR RTL and its Python register model.
+The `traffic/` directory validates the reusable PCAP replay and capture
 infrastructure, while `common/` contains simulator configuration shared across
-test suites. The `examples/` directory is reserved for example verification
-environments.
+test suites.
 
 ## Environment Setup
 
@@ -92,18 +107,33 @@ cocotb-config --version
 
 ## Test-Specific Tools
 
-The tests under `core/` and `traffic/` use Verilator through cocotb-test and
-pytest. Their `run_tests.sh waves` commands additionally invoke GTKWave. The
-HAL test under `hal/openenoc_full_endpoint/` uses cocotb, cocotbext-axi, GNU
-Make, and Verilator directly; its optional `make wave` target invokes GTKWave.
+The tests under `core/` and `endpoints/openenoc_endpoint_full/` use Verilator
+through cocotb-test and pytest. Their `run_tests.sh waves` commands enable FST
+waveform generation. The traffic test under `traffic/` uses the cocotb Makefile
+flow. The HAL test under `hal/openenoc_endpoint_full/` uses cocotb,
+cocotbext-axi, GNU Make, and Verilator directly; its optional `make wave` target
+invokes GTKWave.
 
-Before running the HAL test, generate the endpoint RTL and Python register model
-from the repository root:
+Before running the HAL or full-endpoint tests, generate the endpoint RTL, Python
+register model, and firmware from the repository root:
 
 ```bash
 python -m pip install -r hal/requirements.txt
-make -C hal all
+make -C hal
+make -C sw APP=csr_smoke EP=openenoc_endpoint_full
 ```
 
 Run each suite from its own directory using the commands documented in its
-README.
+README. For example:
+
+```bash
+cd dv/endpoints/openenoc_endpoint_full
+./run_tests.sh pytest
+```
+
+The generated-CSR-only test is available separately:
+
+```bash
+cd dv/hal/openenoc_endpoint_full
+make
+```

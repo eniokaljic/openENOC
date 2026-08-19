@@ -15,9 +15,9 @@ endpoints are maintained separately from the endpoint definitions.
 
 ```text
 hal/
-├── endpoint/
-│   └── <endpoint>.rdl
-├── include/
+├── endpoints/
+│   └── openenoc_endpoint_full.rdl
+├── interfaces/
 │   ├── openenoc_endpoint_interface.rdl
 │   └── openenoc_switch_interface.rdl
 ├── templates/
@@ -33,17 +33,18 @@ hal/
 └── requirements.txt
 ```
 
-Endpoint specifications are discovered from `endpoint/*.rdl`. Shared component
-definitions under `include/` are included by endpoint specifications as needed.
+Endpoint specifications are discovered from `endpoints/*.rdl`. Shared component
+definitions under `interfaces/` are included by endpoint specifications as
+needed.
 
 ## SystemRDL Organization
 
-The build automatically discovers every endpoint specification in `endpoint/`. Each
-specification defines an endpoint top-level address map named after the endpoint
-and a nested address map named `csr`. The current specification therefore
-provides:
+The build automatically discovers every endpoint specification in `endpoints/`.
+Each specification defines an endpoint top-level address map named after the
+endpoint and a nested address map named `csr`. The current specification
+therefore provides:
 
-* `openenoc_full_endpoint`
+* `openenoc_endpoint_full`
 * `csr`
 
 Shared interface definitions are provided by:
@@ -87,56 +88,72 @@ awk 'BEGIN { print "awk OK" }'
 
 ## Running the Build
 
-Run the Makefile from the directory that contains it:
+Run the Makefile from `hal/`:
 
 ```bash
 make
 ```
 
+Equivalently, run `make -C hal` from the repository root.
+
 The default output shows one concise status line per build step. Use
 `make VERBOSE=1` to also print the commands being executed.
 
-This generates a separate artifact tree for each endpoint under
-`build/hal/<endpoint>/`, including:
+The current endpoint generates the following artifact layout:
 
-* C headers named `sw/csr.h` and `sw/memory_map.h`
-* SystemVerilog RTL named `<endpoint>_csr.sv`, `<endpoint>_csr_pkg.sv`,
-  `<endpoint>_csr_bridge.sv`, and `<endpoint>_pkg.sv`
-* PeakRDL Python model in the `csr` package
-* HTML register documentation for each endpoint CSR address map
-* Markdown documentation for each endpoint top-level address map and the shared interfaces
+```text
+build/hal/
+├── openenoc_endpoint_full/
+│   ├── html/
+│   ├── markdown/
+│   │   └── openenoc_endpoint_full.md
+│   ├── python/
+│   │   └── csr/
+│   ├── rtl/
+│   │   ├── openenoc_endpoint_full_csr.sv
+│   │   ├── openenoc_endpoint_full_csr_bridge.sv
+│   │   ├── openenoc_endpoint_full_csr_pkg.sv
+│   │   └── openenoc_endpoint_full_pkg.sv
+│   └── sw/
+│       ├── csr.h
+│       └── memory_map.h
+└── rtl/
+    ├── openenoc_endpoint_if.sv
+    └── openenoc_switch_if.sv
+```
 
-It also generates the project-level, parameterized hardware interfaces directly
-from the shared SystemRDL definitions:
+The project-level interfaces under `build/hal/rtl/` are generated directly from
+the shared SystemRDL definitions. The exporter walks the RDL model rather than
+maintaining a fixed signal list: hardware-readable and hardware-writable fields,
+field widths, instance arrays, component parameters, and external register-file
+handshake signals are reflected automatically. The signals retain the PeakRDL
+hierarchy in the directional `core_to_csr` and `csr_to_core` bundles.
 
-* `build/hal/rtl/openenoc_endpoint_if.sv`
-* `build/hal/rtl/openenoc_switch_if.sv`
+The endpoint-specific
+`build/hal/openenoc_endpoint_full/rtl/openenoc_endpoint_full_csr_bridge.sv`
+adapts PeakRDL's concrete `hwif_in`/`hwif_out` types to the parameterized project
+interfaces. It is regenerated from the endpoint RDL specification whenever the
+shared interface hierarchy or array sizes change.
 
-Run `make interfaces` to generate only these two interfaces. The exporter walks
-the RDL model rather than maintaining a fixed signal list: hardware-readable and
-hardware-writable fields, field widths, instance arrays, component parameters,
-and external register-file handshake signals are reflected automatically. The
-signals retain the PeakRDL hierarchy in the directional `core_to_csr` and
-`csr_to_core` bundles.
-
-Run `make bridges` to generate the endpoint-specific adapters between PeakRDL's
-concrete `hwif_in`/`hwif_out` types and the parameterized project interfaces.
-Each bridge is generated from its endpoint RDL specification, so changes to the
-shared interface hierarchy or array sizes also update the bridge connections.
 Instantiate the interfaces with the constants from the endpoint CSR package,
 for example:
 
 ```systemverilog
 openenoc_endpoint_if #(
-    .NUM_OF_PEERS(openenoc_full_endpoint_csr_pkg::NUM_OF_PEERS),
-    .RMEM_TOTAL_DEPTH(openenoc_full_endpoint_csr_pkg::RMEM_TOTAL_DEPTH)
+    .NUM_OF_PEERS(openenoc_endpoint_full_csr_pkg::NUM_OF_PEERS),
+    .RMEM_TOTAL_DEPTH(openenoc_endpoint_full_csr_pkg::RMEM_TOTAL_DEPTH)
 ) endpoint_if (.*);
 
 openenoc_switch_if #(
-    .NUM_OF_INTERFACES(openenoc_full_endpoint_csr_pkg::NUM_OF_INTERFACES),
-    .TABLE_DEPTH(openenoc_full_endpoint_csr_pkg::TABLE_DEPTH)
+    .NUM_OF_INTERFACES(openenoc_endpoint_full_csr_pkg::NUM_OF_INTERFACES),
+    .TABLE_DEPTH(openenoc_endpoint_full_csr_pkg::TABLE_DEPTH)
 ) switch_if (.*);
 ```
+
+In `openenoc_endpoint_full`, the `openenoc_endpoint_if` instance remains
+internal, while the module exposes the `openenoc_switch_if.csr` modport. The
+generated endpoint bridge connects both interfaces to the CSR instance's
+internal `hwif_in` and `hwif_out` signals.
 
 Parameters declared on the endpoint's `csr` addrmap are emitted by PeakRDL in
 `<endpoint>_csr_pkg.sv`. The same values are added to `sw/csr.h` with a `CSR__`
