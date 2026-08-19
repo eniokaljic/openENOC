@@ -8,7 +8,7 @@ export PATH=/usr/bin:$PATH
 
 case "${1:-}" in
     pytest)
-        pytest test_openenoc_full_endpoint.py -v
+        pytest test_openenoc_endpoint_full.py -v
         ;;
     waves)
         WAVES=1 make

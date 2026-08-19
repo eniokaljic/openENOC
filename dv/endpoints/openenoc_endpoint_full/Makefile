@@ -19,6 +19,7 @@ TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
 TAXI_PRIM_DIR = $(TAXI_AXI_DIR)/../lib/taxi/src/prim/rtl
 PICORV32_DIR = $(LIBS_DIR)/picorv32
 HAL_RTL_DIR = $(REPO_DIR)/build/hal/openenoc_endpoint_full/rtl
+HAL_IF_DIR = $(REPO_DIR)/build/hal/rtl
 SW_BUILD_DIR = $(REPO_DIR)/build/sw/openenoc_endpoint_full
 
 DUT = openenoc_endpoint_full
@@ -29,6 +30,8 @@ TOPLEVEL = $(COCOTB_TOPLEVEL)
 
 VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_pkg.sv
 VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr_pkg.sv
+VERILOG_SOURCES += $(HAL_IF_DIR)/openenoc_endpoint_if.sv
+VERILOG_SOURCES += $(HAL_IF_DIR)/openenoc_switch_if.sv
 VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_if.sv
 VERILOG_SOURCES += $(TAXI_AXI_DIR)/taxi_axil_if.sv
 VERILOG_SOURCES += $(TAXI_PRIM_DIR)/taxi_arbiter.sv
@@ -43,6 +46,7 @@ VERILOG_SOURCES += $(PICORV32_DIR)/picorv32.v
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_eth_if.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_ram.sv
 VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr.sv
+VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr_bridge.sv
 VERILOG_SOURCES += $(ENDPOINT_DIR)/$(DUT).sv
 VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 

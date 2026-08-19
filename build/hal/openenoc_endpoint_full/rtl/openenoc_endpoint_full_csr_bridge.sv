@@ -21,9 +21,9 @@ module openenoc_endpoint_full_csr_bridge (
     //   NUM_OF_INTERFACES = openenoc_endpoint_full_csr_pkg::NUM_OF_INTERFACES
     //   TABLE_DEPTH = openenoc_endpoint_full_csr_pkg::TABLE_DEPTH
     always_comb begin
-        csr_hwif_in = '0;
-        endpoint_if.csr_to_core = '0;
-        switch_if.csr_to_core = '0;
+        csr_hwif_in = '{default: '0};
+        endpoint_if.csr_to_core = '{default: '0};
+        switch_if.csr_to_core = '{default: '0};
         csr_hwif_in.endpoint_interface.config_.mac_address.lo_word.next = endpoint_if.core_to_csr.config_.mac_address.lo_word.next;
         csr_hwif_in.endpoint_interface.config_.mac_address.hi_word.next = endpoint_if.core_to_csr.config_.mac_address.hi_word.next;
         csr_hwif_in.endpoint_interface.axis_if.source.status.tready.next = endpoint_if.core_to_csr.axis_if.source.status.tready.next;

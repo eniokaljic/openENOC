@@ -18,9 +18,7 @@ module openenoc_endpoint_full #
     input  wire logic clk,
     input  wire logic rst,
 
-    input  openenoc_endpoint_full_csr_pkg::openenoc_endpoint_full_csr__in_t  hwif_in,
-    output openenoc_endpoint_full_csr_pkg::openenoc_endpoint_full_csr__out_t hwif_out,
-
+    openenoc_switch_if.csr switch_if,
     openenoc_eth_if eth
 );
 
@@ -38,6 +36,27 @@ module openenoc_endpoint_full #
     );
     localparam CSR_ADDR_W =
         openenoc_endpoint_full_csr_pkg::OPENENOC_ENDPOINT_FULL_CSR_MIN_ADDR_WIDTH;
+
+    openenoc_endpoint_full_csr_pkg::openenoc_endpoint_full_csr__in_t  csr_hwif_in;
+    openenoc_endpoint_full_csr_pkg::openenoc_endpoint_full_csr__out_t csr_hwif_out;
+
+    openenoc_endpoint_if #(
+        .RMEM_TOTAL_DEPTH (openenoc_endpoint_full_csr_pkg::RMEM_TOTAL_DEPTH),
+        .NUM_OF_PEERS     (openenoc_endpoint_full_csr_pkg::NUM_OF_PEERS)
+    ) endpoint_if (
+        .clk (clk),
+        .rst (rst)
+    );
+
+    // The endpoint datapath is not implemented yet, so its CSR status inputs are idle
+    assign endpoint_if.core_to_csr = '{default: '0};
+
+    openenoc_endpoint_full_csr_bridge csr_bridge_inst (
+        .csr_hwif_out (csr_hwif_out),
+        .csr_hwif_in  (csr_hwif_in),
+        .endpoint_if  (endpoint_if),
+        .switch_if    (switch_if)
+    );
 
     /*
     * Taxi numbers interfaces from the least-significant concatenation field in the order: DMEM, IMEM, CSR
@@ -468,8 +487,8 @@ module openenoc_endpoint_full #
         .s_axil_rdata   (csr_axil.rdata),
         .s_axil_rresp   (csr_axil.rresp),
 
-        .hwif_in        (hwif_in),
-        .hwif_out       (hwif_out)
+        .hwif_in        (csr_hwif_in),
+        .hwif_out       (csr_hwif_out)
     );
 
     /*

@@ -22,9 +22,9 @@ module {{ bridge_name }} (
 {% endfor %}
 {% endfor %}
     always_comb begin
-        csr_hwif_in = '0;
+        csr_hwif_in = '{default: '0};
 {% for port in ports %}
-        {{ port.name }}.csr_to_core = '0;
+        {{ port.name }}.csr_to_core = '{default: '0};
 {% endfor %}
 {% for assignment in assignments %}
 {{ assignment }}

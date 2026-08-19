@@ -13,6 +13,7 @@ TestFactory.__test__ = False
 CSR_SMOKE_PATTERN = 0xA5A55A5A
 CSR_SMOKE_PASSED = 0x600D600D
 CSR_SMOKE_FAILED = 0xBAD0BAD0
+SWITCH_DEFAULT_FORWARDING = 0xA
 EXECUTION_TIMEOUT_CYCLES = 5000
 
 
@@ -23,6 +24,19 @@ def signal_integer(signal):
 def assert_reserved_interfaces_inactive(dut):
     assert signal_integer(dut.reserved_masters_inactive) == 1
     assert signal_integer(dut.endpoint_eth_inactive) == 1
+    assert signal_integer(dut.endpoint_mac_lo_hwif) == 0
+
+
+def assert_csr_bridge_connected(dut):
+    assert signal_integer(dut.switch_table_depth) == 8
+    assert signal_integer(dut.switch_num_interfaces) == 4
+    assert signal_integer(dut.switch_pause_done_hwif) == 1
+
+
+def assert_switch_configuration(dut):
+    assert signal_integer(dut.switch_operation_mode) == 1
+    assert signal_integer(dut.switch_pause_request) == 1
+    assert signal_integer(dut.switch_default_forwarding) == SWITCH_DEFAULT_FORWARDING
 
 
 @cocotb.test()
@@ -35,6 +49,7 @@ async def test_csr_smoke_firmware(dut):
         await RisingEdge(dut.clk)
         assert signal_integer(dut.cpu_trap) == 0
         assert_reserved_interfaces_inactive(dut)
+        assert_csr_bridge_connected(dut)
 
     with open(os.environ["PARAM_IMEM_INIT_FILE"], encoding="ascii") as source:
         expected_first_word = int(next(line for line in source if line.strip()), 16)
@@ -50,6 +65,7 @@ async def test_csr_smoke_firmware(dut):
 
         assert signal_integer(dut.cpu_trap) == 0, "PicoRV32 entered trap state"
         assert_reserved_interfaces_inactive(dut)
+        assert_csr_bridge_connected(dut)
 
         status = signal_integer(dut.dmem_status)
         assert status != CSR_SMOKE_FAILED, "csr_smoke firmware reported failure"
@@ -62,6 +78,7 @@ async def test_csr_smoke_firmware(dut):
         )
 
     assert signal_integer(dut.csr_test_value) == CSR_SMOKE_PATTERN
+    assert_switch_configuration(dut)
 
     # The firmware returns into its terminal loop; the result must remain stable.
     for _ in range(10):
@@ -70,6 +87,8 @@ async def test_csr_smoke_firmware(dut):
         assert signal_integer(dut.csr_test_value) == CSR_SMOKE_PATTERN
         assert signal_integer(dut.cpu_trap) == 0
         assert_reserved_interfaces_inactive(dut)
+        assert_csr_bridge_connected(dut)
+        assert_switch_configuration(dut)
 
 
 tests_dir = os.path.abspath(os.path.dirname(__file__))
@@ -82,6 +101,7 @@ taxi_axi_dir = os.path.join(libs_dir, "taxi", "src", "axi", "rtl")
 taxi_axis_dir = os.path.join(libs_dir, "taxi", "src", "axis", "rtl")
 picorv32_dir = os.path.join(libs_dir, "picorv32")
 hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "openenoc_endpoint_full", "rtl")
+hal_if_dir = os.path.join(repo_dir, "build", "hal", "rtl")
 common_dir = os.path.join(repo_dir, "dv", "common")
 
 
@@ -106,22 +126,25 @@ def process_f_files(files):
     return list(sources.values())
 
 
-def test_openenoc_full_endpoint(request):
+def test_openenoc_endpoint_full(request):
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
     imem_init_file = os.path.join(
-        repo_dir, "build", "sw", "openenoc_full_endpoint", "imem.mem"
+        repo_dir, "build", "sw", "openenoc_endpoint_full", "imem.mem"
     )
 
     verilog_sources = [
         os.path.join(hal_rtl_dir, "openenoc_endpoint_full_pkg.sv"),
         os.path.join(hal_rtl_dir, "openenoc_endpoint_full_csr_pkg.sv"),
+        os.path.join(hal_if_dir, "openenoc_endpoint_if.sv"),
+        os.path.join(hal_if_dir, "openenoc_switch_if.sv"),
         os.path.join(taxi_axis_dir, "taxi_axis_if.sv"),
         os.path.join(taxi_axi_dir, "taxi_axil_crossbar.f"),
         os.path.join(picorv32_dir, "picorv32.v"),
         os.path.join(core_dir, "openenoc_eth_if.sv"),
         os.path.join(core_dir, "openenoc_axil_ram.sv"),
         os.path.join(hal_rtl_dir, "openenoc_endpoint_full_csr.sv"),
+        os.path.join(hal_rtl_dir, "openenoc_endpoint_full_csr_bridge.sv"),
         os.path.join(endpoint_dir, "openenoc_endpoint_full.sv"),
         os.path.join(tests_dir, f"{toplevel}.sv"),
     ]
