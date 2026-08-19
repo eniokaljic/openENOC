@@ -3,6 +3,7 @@
 
 VERBOSE ?= 0
 AWK ?= awk
+PYTHON ?= python
 
 ifeq ($(VERBOSE),1)
 Q :=
@@ -13,48 +14,80 @@ endif
 LOG := @printf '  %-37s %s\n'
 
 HAL_DIR     := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-ENDPOINTDIR := $(HAL_DIR)/endpoint
-INCLUDEDIR  := $(HAL_DIR)/include
+ENDPOINTS_DIR := $(HAL_DIR)/endpoints
+INTERFACES_DIR := $(HAL_DIR)/interfaces
 BUILDDIR    := $(abspath $(HAL_DIR)/../build/hal)
 DOCSDIR     := $(abspath $(HAL_DIR)/../docs/src/generated)
 
-ENDPOINT_SPECS = $(sort $(wildcard $(ENDPOINTDIR)/*.rdl))
-ENDPOINTS      = $(basename $(notdir $(ENDPOINT_SPECS)))
-RDL_INCLUDES   = $(sort $(wildcard $(INCLUDEDIR)/*.rdl))
+ENDPOINT_SPECS  := $(sort $(wildcard $(ENDPOINTS_DIR)/*.rdl))
+ENDPOINTS       := $(basename $(notdir $(ENDPOINT_SPECS)))
+INTERFACE_SPECS := $(sort $(wildcard $(INTERFACES_DIR)/openenoc_*_interface.rdl))
+CSR_NAME        := csr
 
-INTERFACES = openenoc_endpoint_interface openenoc_switch_interface
-CSR_NAME   = csr
+INTERFACE_EXPORTER := $(HAL_DIR)/tools/export_openenoc_if.py
+INTERFACE_TEMPLATE := $(HAL_DIR)/templates/openenoc_if.sv.j2
+HWIF_HELPER := $(HAL_DIR)/tools/openenoc_hwif.py
+BRIDGE_EXPORTER := $(HAL_DIR)/tools/export_openenoc_csr_bridge.py
+BRIDGE_TEMPLATE := $(HAL_DIR)/templates/openenoc_csr_bridge.sv.j2
+PARAMETER_INJECTOR := $(HAL_DIR)/tools/inject_rdl_parameters.py
 
-ENDPOINT_HEADERS  = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/sw/$(CSR_NAME).h)
-ENDPOINT_MEMORY_MAPS = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/sw/memory_map.h)
-ENDPOINT_RTL      = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_$(CSR_NAME).sv)
-ENDPOINT_CONFIG_PKGS = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_pkg.sv)
-ENDPOINT_PYTHON   = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/python/$(CSR_NAME)/__init__.py)
-ENDPOINT_HTML     = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/html/index.html)
-ENDPOINT_MARKDOWN = $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/markdown/$(endpoint).md)
-INTERFACE_MARKDOWN = $(foreach interface,$(INTERFACES),$(DOCSDIR)/$(interface).md)
+ENDPOINT_HEADERS     := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/sw/$(CSR_NAME).h)
+ENDPOINT_MEMORY_MAPS := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/sw/memory_map.h)
+ENDPOINT_RTL         := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_$(CSR_NAME).sv)
+ENDPOINT_CSR_PKGS    := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_$(CSR_NAME)_pkg.sv)
+ENDPOINT_CSR_BRIDGES := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_$(CSR_NAME)_bridge.sv)
+ENDPOINT_CONFIG_PKGS := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/rtl/$(endpoint)_pkg.sv)
+ENDPOINT_PYTHON      := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/python/$(CSR_NAME)/__init__.py)
+ENDPOINT_HTML        := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/html/index.html)
+ENDPOINT_MARKDOWN    := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/markdown/$(endpoint).md)
+INTERFACE_MARKDOWN   := $(patsubst $(INTERFACES_DIR)/%.rdl,$(DOCSDIR)/%.md,$(INTERFACE_SPECS))
+PROJECT_INTERFACES   := $(patsubst $(INTERFACES_DIR)/openenoc_%_interface.rdl,$(BUILDDIR)/rtl/openenoc_%_if.sv,$(INTERFACE_SPECS))
 
-.PHONY: all unittest clean help awk-tool-check
+.PHONY: all interfaces bridges unittest clean help awk-tool-check
 
-all: $(ENDPOINT_HEADERS) $(ENDPOINT_MEMORY_MAPS) $(ENDPOINT_RTL) $(ENDPOINT_CONFIG_PKGS) $(ENDPOINT_PYTHON) $(ENDPOINT_HTML) $(ENDPOINT_MARKDOWN) $(INTERFACE_MARKDOWN)
+all: $(PROJECT_INTERFACES) $(ENDPOINT_HEADERS) $(ENDPOINT_MEMORY_MAPS) $(ENDPOINT_RTL) $(ENDPOINT_CSR_PKGS) $(ENDPOINT_CSR_BRIDGES) $(ENDPOINT_CONFIG_PKGS) $(ENDPOINT_PYTHON) $(ENDPOINT_HTML) $(ENDPOINT_MARKDOWN) $(INTERFACE_MARKDOWN)
+
+$(BUILDDIR)/rtl/openenoc_%_if.sv: $(INTERFACES_DIR)/openenoc_%_interface.rdl $(INTERFACE_EXPORTER) $(INTERFACE_TEMPLATE) $(HWIF_HELPER)
+	$(LOG) 'Generating project RTL interface:' '$@'
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(PYTHON) -B $(INTERFACE_EXPORTER) -I $(INTERFACES_DIR) $< \
+		--top openenoc_$*_interface_top \
+		--component openenoc_$*_interface \
+		--interface-name openenoc_$*_if \
+		-o $@
 
 define ENDPOINT_RULES
-$(BUILDDIR)/$(1)/sw/$(CSR_NAME).h: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+$(BUILDDIR)/$(1)/sw/$(CSR_NAME).h: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS) $(PARAMETER_INJECTOR) $(HWIF_HELPER)
 	$(LOG) 'Generating C CSR header:' '$$@'
 	$(Q)mkdir -p $$(dir $$@)
-	$(Q)peakrdl c-header -I $(INCLUDEDIR) $$< -b ltoh -o $$@ --type-style hier --top $(CSR_NAME)
+	$(Q)$$(RM) -r $$@.tmp.dir
+	$(Q)mkdir -p $$@.tmp.dir
+	$(Q)peakrdl c-header -I $(INTERFACES_DIR) $$< -b ltoh -o $$@.tmp.dir/$(CSR_NAME).h --type-style hier --top $(CSR_NAME)
+	$(Q)$(PYTHON) -B $(PARAMETER_INJECTOR) -I $(INTERFACES_DIR) $$< \
+		--top $(CSR_NAME) \
+		--header $$@.tmp.dir/$(CSR_NAME).h \
+		-o $$@
+	$(Q)$$(RM) -r $$@.tmp.dir
 
-$(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME).sv: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+$(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME).sv $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_pkg.sv &: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
 	$(LOG) 'Generating CSR RTL files in:' '$(BUILDDIR)/$(1)/rtl'
 	$(Q)mkdir -p $(BUILDDIR)/$(1)/rtl
-	$(Q)peakrdl regblock -I $(INCLUDEDIR) $$< -o $(BUILDDIR)/$(1)/rtl --cpuif axi4-lite-flat --top $(CSR_NAME) --rename $(1)_$(CSR_NAME)
+	$(Q)peakrdl regblock -I $(INTERFACES_DIR) $$< -o $(BUILDDIR)/$(1)/rtl --cpuif axi4-lite-flat --top $(CSR_NAME) --rename $(1)_$(CSR_NAME)
 
-$(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+$(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_bridge.sv: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS) $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_pkg.sv $(PROJECT_INTERFACES) $(BRIDGE_EXPORTER) $(BRIDGE_TEMPLATE) $(HWIF_HELPER)
+	$(LOG) 'Generating endpoint CSR bridge:' '$$@'
+	$(Q)mkdir -p $$(dir $$@)
+	$(Q)$(PYTHON) -B $(BRIDGE_EXPORTER) -I $(INTERFACES_DIR) $$< \
+		--top $(CSR_NAME) \
+		--module-name $(1)_$(CSR_NAME) \
+		-o $$@
+
+$(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
 	$(LOG) 'Generating endpoint RTL package:' '$$@'
 	$(Q)mkdir -p $$(dir $$@)
 	$(Q)$$(RM) $$@.tmp
 	$(Q)$$(RM) -r $$@.tmp.dir
-	$(Q)peakrdl regblock -I $(INCLUDEDIR) $$< -o $$@.tmp.dir --cpuif axi4-lite-flat --top $(1) --module-name $(1) --package-name $(1)_pkg --type-style hier
+	$(Q)peakrdl regblock -I $(INTERFACES_DIR) $$< -o $$@.tmp.dir --cpuif axi4-lite-flat --top $(1) --module-name $(1) --package-name $(1)_pkg --type-style hier
 	$(Q)mv $$@.tmp.dir/$(1)_pkg.sv $$@.tmp
 	$(Q)$$(RM) -r $$@.tmp.dir
 	$(Q)mv $$@.tmp $$@
@@ -94,20 +127,20 @@ $(BUILDDIR)/$(1)/sw/memory_map.h: $(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv | awk-tool-ch
 	}' $$< > $$@.tmp
 	$(Q)mv $$@.tmp $$@
 
-$(BUILDDIR)/$(1)/python/$(CSR_NAME)/__init__.py: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+$(BUILDDIR)/$(1)/python/$(CSR_NAME)/__init__.py: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
 	$(LOG) 'Generating Python CSR model in:' '$(BUILDDIR)/$(1)/python/csr'
 	$(Q)mkdir -p $(BUILDDIR)/$(1)/python
-	$(Q)peakrdl python -I $(INCLUDEDIR) $$< -t $(CSR_NAME) -o $(BUILDDIR)/$(1)/python
+	$(Q)peakrdl python -I $(INTERFACES_DIR) $$< -t $(CSR_NAME) -o $(BUILDDIR)/$(1)/python
 
-$(BUILDDIR)/$(1)/html/index.html: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+$(BUILDDIR)/$(1)/html/index.html: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
 	$(LOG) 'Generating HTML CSR docs in:' '$(BUILDDIR)/$(1)/html'
 	$(Q)mkdir -p $(BUILDDIR)/$(1)
-	$(Q)peakrdl html -I $(INCLUDEDIR) $$< -o $(BUILDDIR)/$(1)/html --top $(CSR_NAME)
+	$(Q)peakrdl html -I $(INTERFACES_DIR) $$< -o $(BUILDDIR)/$(1)/html --top $(CSR_NAME)
 
-$(BUILDDIR)/$(1)/markdown/$(1).md: $(ENDPOINTDIR)/$(1).rdl $(RDL_INCLUDES)
+$(BUILDDIR)/$(1)/markdown/$(1).md: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
 	$(LOG) 'Generating endpoint Markdown docs:' '$$@'
 	$(Q)mkdir -p $$(dir $$@)
-	$(Q)peakrdl markdown -I $(INCLUDEDIR) $$< -o $$@ --top $(1)
+	$(Q)peakrdl markdown -I $(INTERFACES_DIR) $$< -o $$@ --top $(1)
 
 .PHONY: unittest-$(1)
 unittest-$(1): $(BUILDDIR)/$(1)/python/$(CSR_NAME)/__init__.py
@@ -124,7 +157,7 @@ awk-tool-check:
 	}
 	$(LOG) 'Using AWK processing tool:' "$$(command -v $(AWK))"
 
-$(DOCSDIR)/%.md: $(INCLUDEDIR)/%.rdl
+$(DOCSDIR)/%.md: $(INTERFACES_DIR)/%.rdl
 	$(LOG) 'Generating interface Markdown docs:' '$@'
 	$(Q)mkdir -p $(DOCSDIR)
 	$(Q)peakrdl markdown $< -o $@ --top $*_top
@@ -135,16 +168,19 @@ help:
 	$(Q)echo "Usage: make [target] [variables...]"
 	$(Q)echo
 	$(Q)echo "Targets:"
-	$(Q)echo "  all       Generate HAL software, RTL, models, and documentation"
+	$(Q)echo "  all       Generate HAL RTL, C API, Python models, interfaces, bridges and documentation"
 	$(Q)echo "  unittest  Run generated CSR model unit tests"
 	$(Q)echo "  clean     Remove generated HAL and interface documentation outputs"
 	$(Q)echo "  help      Show this message"
 	$(Q)echo
 	$(Q)echo "Variables:"
 	$(Q)echo "  AWK       AWK-compatible executable (default: awk)"
+	$(Q)echo "  PYTHON    Python executable used by the interface exporter (default: python)"
 	$(Q)echo "  VERBOSE   Command output mode: 0 hides commands, 1 prints them (default: 0)"
 
 clean:
+	$(LOG) 'Removing project RTL interfaces from:' '$(BUILDDIR)/rtl'
+	$(Q)$(RM) $(PROJECT_INTERFACES)
 	$(LOG) 'Removing endpoint HAL output from:' '$(BUILDDIR)'
 	$(Q)rm -rf $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint))
 	$(LOG) 'Removing generated docs from:' '$(DOCSDIR)'

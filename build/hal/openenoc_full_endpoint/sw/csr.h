@@ -10,6 +10,12 @@ extern "C" {
 #include <stdint.h>
 #include <assert.h>
 
+// Parameters from the csr SystemRDL addrmap
+#define CSR__NUM_OF_PEERS      UINT64_C(4)
+#define CSR__RMEM_TOTAL_DEPTH  UINT64_C(256)
+#define CSR__NUM_OF_INTERFACES UINT64_C(4)
+#define CSR__TABLE_DEPTH       UINT64_C(8)
+
 // reg - csr.test_reg
 #define CSR__TEST_REG__TEST_FIELD_bm 0xffffffff
 #define CSR__TEST_REG__TEST_FIELD_bp 0

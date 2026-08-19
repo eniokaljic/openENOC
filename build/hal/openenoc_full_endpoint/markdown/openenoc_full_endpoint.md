@@ -2,7 +2,7 @@
 Markdown description for SystemRDL register map.
 
 Don't override. Generated from: openenoc_full_endpoint
-  - /home/enio/Projects/openENOC/hal/endpoint/openenoc_full_endpoint.rdl
+  - /home/enio/Projects/openENOC/hal/endpoints/openenoc_full_endpoint.rdl
 -->
 
 ## openenoc_full_endpoint address map

@@ -20,6 +20,14 @@ hal/
 ├── include/
 │   ├── openenoc_endpoint_interface.rdl
 │   └── openenoc_switch_interface.rdl
+├── templates/
+│   ├── openenoc_csr_bridge.sv.j2
+│   └── openenoc_if.sv.j2
+├── tools/
+│   ├── export_openenoc_csr_bridge.py
+│   ├── export_openenoc_if.py
+│   ├── inject_rdl_parameters.py
+│   └── openenoc_hwif.py
 ├── Makefile
 ├── README.md
 └── requirements.txt
@@ -92,10 +100,47 @@ This generates a separate artifact tree for each endpoint under
 `build/hal/<endpoint>/`, including:
 
 * C headers named `sw/csr.h` and `sw/memory_map.h`
-* SystemVerilog RTL named `<endpoint>_csr.sv`, `<endpoint>_csr_pkg.sv`, and `<endpoint>_pkg.sv`
+* SystemVerilog RTL named `<endpoint>_csr.sv`, `<endpoint>_csr_pkg.sv`,
+  `<endpoint>_csr_bridge.sv`, and `<endpoint>_pkg.sv`
 * PeakRDL Python model in the `csr` package
 * HTML register documentation for each endpoint CSR address map
 * Markdown documentation for each endpoint top-level address map and the shared interfaces
+
+It also generates the project-level, parameterized hardware interfaces directly
+from the shared SystemRDL definitions:
+
+* `build/hal/rtl/openenoc_endpoint_if.sv`
+* `build/hal/rtl/openenoc_switch_if.sv`
+
+Run `make interfaces` to generate only these two interfaces. The exporter walks
+the RDL model rather than maintaining a fixed signal list: hardware-readable and
+hardware-writable fields, field widths, instance arrays, component parameters,
+and external register-file handshake signals are reflected automatically. The
+signals retain the PeakRDL hierarchy in the directional `core_to_csr` and
+`csr_to_core` bundles.
+
+Run `make bridges` to generate the endpoint-specific adapters between PeakRDL's
+concrete `hwif_in`/`hwif_out` types and the parameterized project interfaces.
+Each bridge is generated from its endpoint RDL specification, so changes to the
+shared interface hierarchy or array sizes also update the bridge connections.
+Instantiate the interfaces with the constants from the endpoint CSR package,
+for example:
+
+```systemverilog
+openenoc_endpoint_if #(
+    .NUM_OF_PEERS(openenoc_full_endpoint_csr_pkg::NUM_OF_PEERS),
+    .RMEM_TOTAL_DEPTH(openenoc_full_endpoint_csr_pkg::RMEM_TOTAL_DEPTH)
+) endpoint_if (.*);
+
+openenoc_switch_if #(
+    .NUM_OF_INTERFACES(openenoc_full_endpoint_csr_pkg::NUM_OF_INTERFACES),
+    .TABLE_DEPTH(openenoc_full_endpoint_csr_pkg::TABLE_DEPTH)
+) switch_if (.*);
+```
+
+Parameters declared on the endpoint's `csr` addrmap are emitted by PeakRDL in
+`<endpoint>_csr_pkg.sv`. The same values are added to `sw/csr.h` with a `CSR__`
+prefix, for example `CSR__NUM_OF_INTERFACES` and `CSR__TABLE_DEPTH`.
 
 The endpoint directory keeps each set of SW headers separate, allowing software
 to select an endpoint through its include path while always using:

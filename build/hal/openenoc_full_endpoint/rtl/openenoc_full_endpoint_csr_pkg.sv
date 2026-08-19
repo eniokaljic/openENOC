@@ -6,6 +6,10 @@ package openenoc_full_endpoint_csr_pkg;
     localparam OPENENOC_FULL_ENDPOINT_CSR_DATA_WIDTH = 32;
     localparam OPENENOC_FULL_ENDPOINT_CSR_MIN_ADDR_WIDTH = 13;
     localparam OPENENOC_FULL_ENDPOINT_CSR_SIZE = 'h1100;
+    localparam NUM_OF_PEERS = 'h4;
+    localparam RMEM_TOTAL_DEPTH = 'h100;
+    localparam NUM_OF_INTERFACES = 'h4;
+    localparam TABLE_DEPTH = 'h8;
 
     typedef struct {
         logic [31:0] next;

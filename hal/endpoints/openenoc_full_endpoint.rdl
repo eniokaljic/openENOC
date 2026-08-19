@@ -4,7 +4,12 @@
 `include "openenoc_switch_interface.rdl"
 `include "openenoc_endpoint_interface.rdl"
 
-addrmap csr {
+addrmap csr #(
+    longint unsigned NUM_OF_PEERS = 4,
+    longint unsigned RMEM_TOTAL_DEPTH = 256,
+    longint unsigned NUM_OF_INTERFACES = 4,
+    longint unsigned TABLE_DEPTH = 8
+) {
     name = "csr";
     desc = "openENOC CSR";
 
@@ -46,14 +51,14 @@ addrmap csr {
     } regB;
 
     openenoc_endpoint_interface #(
-        .NUM_OF_PEERS(4),
-        .RMEM_TOTAL_DEPTH(256),
+        .NUM_OF_PEERS(NUM_OF_PEERS),
+        .RMEM_TOTAL_DEPTH(RMEM_TOTAL_DEPTH),
         .INST_NAME("csr.endpoint_interface")
     ) endpoint_interface;
 
     openenoc_switch_interface #(
-        .NUM_OF_INTERFACES(4),
-        .TABLE_DEPTH(8),
+        .NUM_OF_INTERFACES(NUM_OF_INTERFACES),
+        .TABLE_DEPTH(TABLE_DEPTH),
         .INST_NAME("csr.switch_interface")
     ) switch_interface;
 };
