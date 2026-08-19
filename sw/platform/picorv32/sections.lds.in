@@ -1,0 +1,95 @@
+/* SPDX-FileCopyrightText: 2026 Enio Kaljic
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+#include "memory_map.h"
+
+OUTPUT_FORMAT("elf32-littleriscv")
+OUTPUT_ARCH(riscv)
+ENTRY(_start)
+
+/* Keep a fixed stack reservation at the upper edge of data memory. */
+__stack_size = 2K;
+
+MEMORY
+{
+    IMEM (rx) : ORIGIN = IMEM_BASE_ADDR, LENGTH = IMEM_SIZE_BYTES
+    DMEM (rw) : ORIGIN = DMEM_BASE_ADDR, LENGTH = DMEM_SIZE_BYTES
+}
+
+SECTIONS
+{
+    /* Boot code is retained first so the reset address resolves to _start. */
+    .text :
+    {
+        . = ALIGN(4);
+        __text_start = .;
+
+        KEEP(*(.text.boot))
+        KEEP(*(.init))
+        *(.text .text.*)
+        *(.rodata .rodata.*)
+        *(.srodata .srodata.*)
+
+        . = ALIGN(4);
+        __text_end = .;
+    } > IMEM
+
+    /*
+     * Writable objects reside in DMEM at run time. Their initial byte image is packed
+     * immediately after the read-only content in IMEM and copied by boot.s.
+     */
+    .data :
+    {
+        . = ALIGN(4);
+        __data_start = .;
+
+        *(.data .data.*)
+        *(.got .got.*)
+
+        . = ALIGN(8);
+        __sdata_start = .;
+        PROVIDE(__global_pointer$ = __sdata_start + 0x800);
+        *(.sdata .sdata.*)
+
+        . = ALIGN(4);
+        __data_end = .;
+    } > DMEM AT> IMEM
+
+    __data_load_start = LOADADDR(.data);
+    __data_load_end = LOADADDR(.data) + SIZEOF(.data);
+
+    /* This range occupies DMEM at run time but contributes no bytes to IMEM. */
+    .bss (NOLOAD) :
+    {
+        . = ALIGN(4);
+        __bss_start = .;
+
+        *(.bss .bss.*)
+        *(.sbss .sbss.*)
+        *(COMMON)
+
+        . = ALIGN(4);
+        __bss_end = .;
+    } > DMEM
+
+    /*
+     * The unallocated interval below the stack is available to a heap
+     * implementation. The stack grows downward from __stack_top.
+     */
+    . = ALIGN(16);
+    __heap_start = .;
+    __stack_top = ORIGIN(DMEM) + LENGTH(DMEM);
+    __stack_limit = __stack_top - __stack_size;
+    __heap_end = __stack_limit;
+
+    PROVIDE(end = __heap_start);
+    PROVIDE(_end = __heap_start);
+
+    ASSERT(__data_load_end <= ORIGIN(IMEM) + LENGTH(IMEM),
+           "IMEM overflow: code and initialized data do not fit")
+    ASSERT(__bss_end <= __stack_limit,
+           "DMEM overflow: static data overlaps the reserved stack")
+    ASSERT((__stack_top & 0xf) == 0,
+           "DMEM end must provide a 16-byte-aligned stack")
+}

@@ -23,41 +23,41 @@ module test_openenoc_axis_header_parser #
 )
 ();
 
-logic clk;
-logic rst;
+	logic clk;
+	logic rst;
 
-// input: raw frames, no sideband
-taxi_axis_if #(
-	.DATA_W(DATA_W),
-	.KEEP_EN(KEEP_EN),
-	.KEEP_W(KEEP_W),
-	.STRB_EN(STRB_EN),
-	.LAST_EN(LAST_EN),
-	.USER_EN(1'b0),
-	.USER_W(1)
-) s_axis();
+	// input: raw frames, no sideband
+	taxi_axis_if #(
+		.DATA_W(DATA_W),
+		.KEEP_EN(KEEP_EN),
+		.KEEP_W(KEEP_W),
+		.STRB_EN(STRB_EN),
+		.LAST_EN(LAST_EN),
+		.USER_EN(1'b0),
+		.USER_W(1)
+	) s_axis();
 
-// output: delayed frames, 128-bit header on tuser
-taxi_axis_if #(
-	.DATA_W(DATA_W),
-	.KEEP_EN(KEEP_EN),
-	.KEEP_W(KEEP_W),
-	.STRB_EN(STRB_EN),
-	.LAST_EN(LAST_EN),
-	.USER_EN(1'b1),
-	.USER_W(USER_W)
-) m_axis();
+	// output: delayed frames, 128-bit header on tuser
+	taxi_axis_if #(
+		.DATA_W(DATA_W),
+		.KEEP_EN(KEEP_EN),
+		.KEEP_W(KEEP_W),
+		.STRB_EN(STRB_EN),
+		.LAST_EN(LAST_EN),
+		.USER_EN(1'b1),
+		.USER_W(USER_W)
+	) m_axis();
 
-openenoc_axis_header_parser #(
-	.DEPTH(DEPTH),
-	.M_REG_TYPE(M_REG_TYPE)
-)
-uut (
-	.clk(clk),
-	.rst(rst),
-	.s_axis(s_axis),
-	.m_axis(m_axis)
-);
+	openenoc_axis_header_parser #(
+		.DEPTH(DEPTH),
+		.M_REG_TYPE(M_REG_TYPE)
+	)
+	uut (
+		.clk(clk),
+		.rst(rst),
+		.s_axis(s_axis),
+		.m_axis(m_axis)
+	);
 
 endmodule
 

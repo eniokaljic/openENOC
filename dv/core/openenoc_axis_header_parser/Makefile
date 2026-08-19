@@ -9,9 +9,11 @@ WAVES ?= 0
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
-HW_DIR = ../../../hw
-CORE_DIR = $(HW_DIR)/src/core
-TAXI_AXIS_DIR = $(HW_DIR)/libs/taxi/src/axis/rtl
+REPO_DIR = ../../..
+HW_DIR = $(REPO_DIR)/hw
+LIBS_DIR = $(REPO_DIR)/libs
+CORE_DIR = $(HW_DIR)/rtl/core
+TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
 
 DUT = openenoc_axis_header_parser
 COCOTB_TEST_MODULES = test_$(DUT)

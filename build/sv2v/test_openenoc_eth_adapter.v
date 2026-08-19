@@ -543,19 +543,19 @@ module test_openenoc_eth_adapter;
 				localparam STRB_EN = M_STRB_EN && S_STRB_EN;
 				if ((S_BYTE_SIZE * S_BYTE_LANES) != S_DATA_W) begin : genblk1
 					initial begin
-						$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:122:5 - taxi_axis_async_fifo_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
+						$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:122:5 - taxi_axis_async_fifo_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
 						$finish(0);
 					end
 				end
 				if ((M_BYTE_SIZE * M_BYTE_LANES) != M_DATA_W) begin : genblk2
 					initial begin
-						$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:125:5 - taxi_axis_async_fifo_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
+						$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:125:5 - taxi_axis_async_fifo_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
 						$finish(0);
 					end
 				end
 				if (S_BYTE_SIZE != M_BYTE_SIZE) begin : genblk3
 					initial begin
-						$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:128:5 - taxi_axis_async_fifo_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
+						$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:128:5 - taxi_axis_async_fifo_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
 						$finish(0);
 					end
 				end
@@ -648,19 +648,19 @@ module test_openenoc_eth_adapter;
 					localparam M_BYTE_SIZE = M_DATA_W / M_BYTE_LANES;
 					if ((S_BYTE_SIZE * S_BYTE_LANES) != S_DATA_W) begin : genblk1
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if ((M_BYTE_SIZE * M_BYTE_LANES) != M_DATA_W) begin : genblk2
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if (S_BYTE_SIZE != M_BYTE_SIZE) begin : genblk3
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
 							$finish(0);
 						end
 					end
@@ -932,25 +932,25 @@ module test_openenoc_eth_adapter;
 					localparam OUTPUT_FIFO_AW = (RAM_PIPELINE < 2 ? 3 : $clog2((RAM_PIPELINE * 2) + 7));
 					if (FRAME_FIFO && !LAST_EN) begin : genblk1
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:119:5 - taxi_axis_async_fifo.genblk1\n msg: ", "Error: FRAME_FIFO set requires LAST_EN set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:119:5 - taxi_axis_async_fifo.genblk1\n msg: ", "Error: FRAME_FIFO set requires LAST_EN set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_OVERSIZE_FRAME && !FRAME_FIFO) begin : genblk2
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:122:5 - taxi_axis_async_fifo.genblk2\n msg: ", "Error: DROP_OVERSIZE_FRAME set requires FRAME_FIFO set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:122:5 - taxi_axis_async_fifo.genblk2\n msg: ", "Error: DROP_OVERSIZE_FRAME set requires FRAME_FIFO set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_BAD_FRAME && !(FRAME_FIFO && DROP_OVERSIZE_FRAME)) begin : genblk3
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:125:5 - taxi_axis_async_fifo.genblk3\n msg: ", "Error: DROP_BAD_FRAME set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:125:5 - taxi_axis_async_fifo.genblk3\n msg: ", "Error: DROP_BAD_FRAME set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_WHEN_FULL && !(FRAME_FIFO && DROP_OVERSIZE_FRAME)) begin : genblk4
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:128:5 - taxi_axis_async_fifo.genblk4\n msg: ", "Error: DROP_WHEN_FULL set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:128:5 - taxi_axis_async_fifo.genblk4\n msg: ", "Error: DROP_WHEN_FULL set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
 							$finish(0);
 						end
 					end
@@ -960,43 +960,43 @@ module test_openenoc_eth_adapter;
 					endfunction
 					if ((DROP_BAD_FRAME || MARK_WHEN_FULL) && ((sv2v_cast_30231(USER_BAD_FRAME_MASK) & {USER_W {1'b1}}) == 0)) begin : genblk5
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:131:5 - taxi_axis_async_fifo.genblk5\n msg: ", "Error: Invalid USER_BAD_FRAME_MASK value (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:131:5 - taxi_axis_async_fifo.genblk5\n msg: ", "Error: Invalid USER_BAD_FRAME_MASK value (instance %m)");
 							$finish(0);
 						end
 					end
 					if (MARK_WHEN_FULL && FRAME_FIFO) begin : genblk6
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:134:5 - taxi_axis_async_fifo.genblk6\n msg: ", "Error: MARK_WHEN_FULL is not compatible with FRAME_FIFO (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:134:5 - taxi_axis_async_fifo.genblk6\n msg: ", "Error: MARK_WHEN_FULL is not compatible with FRAME_FIFO (instance %m)");
 							$finish(0);
 						end
 					end
 					if (MARK_WHEN_FULL && !LAST_EN) begin : genblk7
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:137:5 - taxi_axis_async_fifo.genblk7\n msg: ", "Error: MARK_WHEN_FULL set requires LAST_EN set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:137:5 - taxi_axis_async_fifo.genblk7\n msg: ", "Error: MARK_WHEN_FULL set requires LAST_EN set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (_param_66B8B_DATA_W != DATA_W) begin : genblk8
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:140:5 - taxi_axis_async_fifo.genblk8\n msg: ", "Error: Interface DATA_W parameter mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:140:5 - taxi_axis_async_fifo.genblk8\n msg: ", "Error: Interface DATA_W parameter mismatch (instance %m)");
 							$finish(0);
 						end
 					end
 					if (KEEP_EN && (_param_66B8B_KEEP_W != KEEP_W)) begin : genblk9
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:143:5 - taxi_axis_async_fifo.genblk9\n msg: ", "Error: Interface KEEP_W parameter mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:143:5 - taxi_axis_async_fifo.genblk9\n msg: ", "Error: Interface KEEP_W parameter mismatch (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_BAD_FRAME && !_param_D01DF_USER_EN) begin : genblk10
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:146:5 - taxi_axis_async_fifo.genblk10\n msg: ", "Error: DROP_BAD_FRAME set requires s_axis.USER_EN (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:146:5 - taxi_axis_async_fifo.genblk10\n msg: ", "Error: DROP_BAD_FRAME set requires s_axis.USER_EN (instance %m)");
 							$finish(0);
 						end
 					end
 					if (MARK_WHEN_FULL && !_param_66B8B_USER_EN) begin : genblk11
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:149:5 - taxi_axis_async_fifo.genblk11\n msg: ", "Error: MARK_WHEN_FULL set requires m_axis.USER_EN (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:149:5 - taxi_axis_async_fifo.genblk11\n msg: ", "Error: MARK_WHEN_FULL set requires m_axis.USER_EN (instance %m)");
 							$finish(0);
 						end
 					end
@@ -1641,19 +1641,19 @@ module test_openenoc_eth_adapter;
 					localparam M_BYTE_SIZE = M_DATA_W / M_BYTE_LANES;
 					if ((S_BYTE_SIZE * S_BYTE_LANES) != S_DATA_W) begin : genblk1
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if ((M_BYTE_SIZE * M_BYTE_LANES) != M_DATA_W) begin : genblk2
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if (S_BYTE_SIZE != M_BYTE_SIZE) begin : genblk3
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
 							$finish(0);
 						end
 					end
@@ -1932,19 +1932,19 @@ module test_openenoc_eth_adapter;
 				localparam STRB_EN = M_STRB_EN && S_STRB_EN;
 				if ((S_BYTE_SIZE * S_BYTE_LANES) != S_DATA_W) begin : genblk1
 					initial begin
-						$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:122:5 - taxi_axis_async_fifo_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
+						$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:122:5 - taxi_axis_async_fifo_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
 						$finish(0);
 					end
 				end
 				if ((M_BYTE_SIZE * M_BYTE_LANES) != M_DATA_W) begin : genblk2
 					initial begin
-						$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:125:5 - taxi_axis_async_fifo_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
+						$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:125:5 - taxi_axis_async_fifo_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
 						$finish(0);
 					end
 				end
 				if (S_BYTE_SIZE != M_BYTE_SIZE) begin : genblk3
 					initial begin
-						$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:128:5 - taxi_axis_async_fifo_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
+						$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo_adapter.sv:128:5 - taxi_axis_async_fifo_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
 						$finish(0);
 					end
 				end
@@ -2037,19 +2037,19 @@ module test_openenoc_eth_adapter;
 					localparam M_BYTE_SIZE = M_DATA_W / M_BYTE_LANES;
 					if ((S_BYTE_SIZE * S_BYTE_LANES) != S_DATA_W) begin : genblk1
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if ((M_BYTE_SIZE * M_BYTE_LANES) != M_DATA_W) begin : genblk2
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if (S_BYTE_SIZE != M_BYTE_SIZE) begin : genblk3
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
 							$finish(0);
 						end
 					end
@@ -2321,25 +2321,25 @@ module test_openenoc_eth_adapter;
 					localparam OUTPUT_FIFO_AW = (RAM_PIPELINE < 2 ? 3 : $clog2((RAM_PIPELINE * 2) + 7));
 					if (FRAME_FIFO && !LAST_EN) begin : genblk1
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:119:5 - taxi_axis_async_fifo.genblk1\n msg: ", "Error: FRAME_FIFO set requires LAST_EN set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:119:5 - taxi_axis_async_fifo.genblk1\n msg: ", "Error: FRAME_FIFO set requires LAST_EN set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_OVERSIZE_FRAME && !FRAME_FIFO) begin : genblk2
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:122:5 - taxi_axis_async_fifo.genblk2\n msg: ", "Error: DROP_OVERSIZE_FRAME set requires FRAME_FIFO set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:122:5 - taxi_axis_async_fifo.genblk2\n msg: ", "Error: DROP_OVERSIZE_FRAME set requires FRAME_FIFO set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_BAD_FRAME && !(FRAME_FIFO && DROP_OVERSIZE_FRAME)) begin : genblk3
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:125:5 - taxi_axis_async_fifo.genblk3\n msg: ", "Error: DROP_BAD_FRAME set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:125:5 - taxi_axis_async_fifo.genblk3\n msg: ", "Error: DROP_BAD_FRAME set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_WHEN_FULL && !(FRAME_FIFO && DROP_OVERSIZE_FRAME)) begin : genblk4
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:128:5 - taxi_axis_async_fifo.genblk4\n msg: ", "Error: DROP_WHEN_FULL set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:128:5 - taxi_axis_async_fifo.genblk4\n msg: ", "Error: DROP_WHEN_FULL set requires FRAME_FIFO and DROP_OVERSIZE_FRAME set (instance %m)");
 							$finish(0);
 						end
 					end
@@ -2349,43 +2349,43 @@ module test_openenoc_eth_adapter;
 					endfunction
 					if ((DROP_BAD_FRAME || MARK_WHEN_FULL) && ((sv2v_cast_30231(USER_BAD_FRAME_MASK) & {USER_W {1'b1}}) == 0)) begin : genblk5
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:131:5 - taxi_axis_async_fifo.genblk5\n msg: ", "Error: Invalid USER_BAD_FRAME_MASK value (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:131:5 - taxi_axis_async_fifo.genblk5\n msg: ", "Error: Invalid USER_BAD_FRAME_MASK value (instance %m)");
 							$finish(0);
 						end
 					end
 					if (MARK_WHEN_FULL && FRAME_FIFO) begin : genblk6
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:134:5 - taxi_axis_async_fifo.genblk6\n msg: ", "Error: MARK_WHEN_FULL is not compatible with FRAME_FIFO (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:134:5 - taxi_axis_async_fifo.genblk6\n msg: ", "Error: MARK_WHEN_FULL is not compatible with FRAME_FIFO (instance %m)");
 							$finish(0);
 						end
 					end
 					if (MARK_WHEN_FULL && !LAST_EN) begin : genblk7
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:137:5 - taxi_axis_async_fifo.genblk7\n msg: ", "Error: MARK_WHEN_FULL set requires LAST_EN set (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:137:5 - taxi_axis_async_fifo.genblk7\n msg: ", "Error: MARK_WHEN_FULL set requires LAST_EN set (instance %m)");
 							$finish(0);
 						end
 					end
 					if (_param_A087B_DATA_W != DATA_W) begin : genblk8
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:140:5 - taxi_axis_async_fifo.genblk8\n msg: ", "Error: Interface DATA_W parameter mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:140:5 - taxi_axis_async_fifo.genblk8\n msg: ", "Error: Interface DATA_W parameter mismatch (instance %m)");
 							$finish(0);
 						end
 					end
 					if (KEEP_EN && (_param_A087B_KEEP_W != KEEP_W)) begin : genblk9
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:143:5 - taxi_axis_async_fifo.genblk9\n msg: ", "Error: Interface KEEP_W parameter mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:143:5 - taxi_axis_async_fifo.genblk9\n msg: ", "Error: Interface KEEP_W parameter mismatch (instance %m)");
 							$finish(0);
 						end
 					end
 					if (DROP_BAD_FRAME && !_param_A20E1_USER_EN) begin : genblk10
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:146:5 - taxi_axis_async_fifo.genblk10\n msg: ", "Error: DROP_BAD_FRAME set requires s_axis.USER_EN (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:146:5 - taxi_axis_async_fifo.genblk10\n msg: ", "Error: DROP_BAD_FRAME set requires s_axis.USER_EN (instance %m)");
 							$finish(0);
 						end
 					end
 					if (MARK_WHEN_FULL && !_param_A087B_USER_EN) begin : genblk11
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:149:5 - taxi_axis_async_fifo.genblk11\n msg: ", "Error: MARK_WHEN_FULL set requires m_axis.USER_EN (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_async_fifo.sv:149:5 - taxi_axis_async_fifo.genblk11\n msg: ", "Error: MARK_WHEN_FULL set requires m_axis.USER_EN (instance %m)");
 							$finish(0);
 						end
 					end
@@ -3030,19 +3030,19 @@ module test_openenoc_eth_adapter;
 					localparam M_BYTE_SIZE = M_DATA_W / M_BYTE_LANES;
 					if ((S_BYTE_SIZE * S_BYTE_LANES) != S_DATA_W) begin : genblk1
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:61:5 - taxi_axis_adapter.genblk1\n msg: ", "Error: input data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if ((M_BYTE_SIZE * M_BYTE_LANES) != M_DATA_W) begin : genblk2
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:64:5 - taxi_axis_adapter.genblk2\n msg: ", "Error: output data width not evenly divisible (instance %m)");
 							$finish(0);
 						end
 					end
 					if (S_BYTE_SIZE != M_BYTE_SIZE) begin : genblk3
 						initial begin
-							$display("Fatal [elaboration] /home/enio/Projects/openENOC/hw/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
+							$display("Fatal [elaboration] /home/enio/Projects/openENOC/libs/taxi/src/axis/rtl/taxi_axis_adapter.sv:67:5 - taxi_axis_adapter.genblk3\n msg: ", "Error: byte size mismatch (instance %m)");
 							$finish(0);
 						end
 					end

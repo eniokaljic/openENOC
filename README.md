@@ -26,17 +26,16 @@ All results will be released openly to encourage reuse, strengthen the open hard
 
 ## Repository Structure
 
-The openENOC repository is organized into a set of clearly separated functional areas covering hardware design, software development, hardware abstraction, verification, documentation, platform integration, and project automation. The following table provides a high-level overview of the repository structure and the purpose of each top-level directory.
+The openENOC repository is organized into a set of clearly separated functional areas covering hardware design, external libraries, software development, hardware abstraction, verification, documentation, platform integration, and project automation. The following table provides a high-level overview of the repository structure and the purpose of each top-level directory.
 
 | Directory | Description |
 |-----------|-------------|
 | `docs/` | Project documentation sources and assets. |
 | `hal/` | Hardware Abstraction Layer sources, register definitions, code generators, and related tooling. |
-| `hw/` | Reusable synthesizable hardware IP blocks, RTL sources, and third-party hardware libraries. |
+| `hw/` | Hardware sources: reusable RTL under `hw/rtl/`, reference designs under `hw/examples/`, and platform demonstrations under `hw/demos/`. |
+| `libs/` | External hardware libraries tracked as Git submodules. |
 | `sw/` | Software libraries, drivers, utilities, and application support code. |
 | `dv/` | Design verification environment, including shared verification infrastructure, component-level verification, example verification, and hardware demos verification. |
-| `examples/` | Reference designs, application examples, and integration examples demonstrating openENOC capabilities. |
-| `demos/` | Complete demonstration projects for supported hardware platforms, including platform integration, top-level designs, constraints, build scripts, and example applications. |
 | `build/` | Generated build artifacts, simulation outputs, generated code, and intermediate files. |
 | `ci/` | Continuous integration scripts and automation utilities used by development and release workflows. |
 | `.github/workflows/` | GitHub Actions workflow definitions for documentation generation, automated testing, and release processes. |

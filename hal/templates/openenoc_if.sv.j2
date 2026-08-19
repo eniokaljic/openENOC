@@ -1,0 +1,56 @@
+// SPDX-FileCopyrightText: 2026 Enio Kaljic
+// SPDX-License-Identifier: CERN-OHL-S-2.0
+
+// Generated from {{ source_name }}. Do not edit.
+
+`resetall
+`timescale 1ns / 1ps
+`default_nettype none
+
+interface {{ interface_name }}{% if parameter_declarations %} #
+(
+{% for declaration in parameter_declarations %}
+    {{ declaration }}{{ "," if not loop.last else "" }}
+{% endfor %}
+){% endif %}
+(
+    input wire logic clk,
+    input wire logic rst
+);
+
+{% for struct in core_to_csr_structs %}
+    typedef struct{{ " packed" if struct.packed else "" }} {
+{% for member in struct.members %}
+        {{ member }}
+{% endfor %}
+    } {{ struct.name }};
+
+{% endfor %}
+{% for struct in csr_to_core_structs %}
+    typedef struct{{ " packed" if struct.packed else "" }} {
+{% for member in struct.members %}
+        {{ member }}
+{% endfor %}
+    } {{ struct.name }};
+
+{% endfor %}
+    core_to_csr_t core_to_csr;
+    csr_to_core_t csr_to_core;
+
+    modport csr (
+        input  clk,
+        input  rst,
+        input  core_to_csr,
+        output csr_to_core
+    );
+
+    modport core (
+        input  clk,
+        input  rst,
+        output core_to_csr,
+        input  csr_to_core
+    );
+
+endinterface
+
+`resetall

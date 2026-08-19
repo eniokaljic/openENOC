@@ -1,0 +1,36 @@
+// SPDX-FileCopyrightText: 2026 Enio Kaljic
+// SPDX-License-Identifier: CERN-OHL-S-2.0
+
+// Generated from {{ source_name }}. Do not edit.
+
+`resetall
+`timescale 1ns / 1ps
+`default_nettype none
+
+module {{ bridge_name }} (
+    input  {{ csr_package }}::{{ csr_output_type }} csr_hwif_out,
+    output var {{ csr_package }}::{{ csr_input_type }} csr_hwif_in,
+{% for port in ports %}
+    {{ port.interface_type }}.csr {{ port.name }}{{ "," if not loop.last else "" }}
+{% endfor %}
+);
+
+{% for port in ports %}
+    // {{ port.name }} parameters:
+{% for parameter in port.parameters %}
+    //   {{ parameter }} = {{ csr_package }}::{{ parameter }}
+{% endfor %}
+{% endfor %}
+    always_comb begin
+        csr_hwif_in = '{default: '0};
+{% for port in ports %}
+        {{ port.name }}.csr_to_core = '{default: '0};
+{% endfor %}
+{% for assignment in assignments %}
+{{ assignment }}
+{% endfor %}
+    end
+
+endmodule
+
+`resetall

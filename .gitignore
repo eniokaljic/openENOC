@@ -24,3 +24,5 @@ sim_build/
 results.xml
 output.pcap
 
+# Bare-metal software build output
+/build/sw/

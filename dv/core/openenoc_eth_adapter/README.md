@@ -9,13 +9,6 @@ This test suite validates the `openenoc_eth_adapter` module, which connects two 
 
 The adapter provides clock-domain crossing and data-width adaptation between two Ethernet-like openENOC links. Traffic in the A-to-B direction is transferred from `eth_a.a2b` to `eth_b.a2b`, while traffic in the B-to-A direction is transferred from `eth_b.b2a` to `eth_a.b2a`.
 
-## Tooling
-
-This project uses the following tooling:
-
-* **[oss-cad-suite-build](https://github.com/yosyshq/oss-cad-suite-build)** - Open source CAD tools suite
-* **OS:** Ubuntu 24.04
-
 ## Test Structure
 
 The verification environment consists of:

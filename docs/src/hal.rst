@@ -18,19 +18,19 @@ Within this flow, Control and Status Registers are defined using `Accellera's Sy
 
 For artefact generation, the openENOC toolchain is based on `PeakRDL <https://github.com/SystemRDL/PeakRDL>`_, which processes the SystemRDL description and produces the corresponding CSR-related outputs used throughout the build and verification flow. Since the current PeakRDL implementation `does not support all features <https://peakrdl-regblock.readthedocs.io/en/latest/limitations.html>`_ of the SystemRDL 2.0 standard, CSR definitions are written with this limitation in mind to ensure that the complete register specification can be translated into all required generated artefacts without manual intervention or post-processing.
 
-openENOC Switch HAL Architecture
---------------------------------
+openENOC Switch Interface HAL Architecture
+------------------------------------------
 
-The openENOC Switch provides frame-forwarding and management functionality within the openENOC system. Software access to switch resources is provided through the openENOC Control Interface, which exposes a memory-mapped CSR space.
+The openENOC Switch provides frame-forwarding and management functionality within the openENOC system. Software access to switch resources is provided through the openENOC Switch Interface, which exposes a memory-mapped CSR space.
 
-The switch HAL defines the software-visible representation of switch functionality and provides a consistent programming model independent of implementation-specific details.
+The switch interface HAL defines the software-visible representation of switch functionality and provides a consistent programming model independent of implementation-specific details.
 
 Architecture
 ~~~~~~~~~~~~
 
-The switch HAL is organized around a CSR-based management interface that exposes configuration, status, monitoring, and diagnostic functionality. Software components interact with switch resources through register accesses performed over the openENOC Control Interface. The HAL architecture establishes a clear separation between software-visible behavior and the underlying frame-forwarding implementation, allowing internal switch architectures to evolve while maintaining software compatibility.
+The switch interface HAL is organized around a CSR-based management interface that exposes configuration, status, monitoring, and diagnostic functionality. Software components interact with switch resources through register accesses performed over the openENOC Switch Interface. The HAL architecture establishes a clear separation between software-visible behavior and the underlying frame-forwarding implementation, allowing internal switch architectures to evolve while maintaining software compatibility.
 
-A central configuration aspect of the switch HAL is the selection of the switch operating mode. In unmanaged mode, the switch operates autonomously and forwarding state is maintained by internal hardware logic. In this mode, the switch may learn forwarding table entries from observed traffic and update its forwarding state without software intervention. In managed mode, forwarding behavior is controlled through software-visible configuration mechanisms exposed by the openENOC Control Interface. This allows an external processor to populate, update, inspect, or invalidate forwarding table entries according to system-specific requirements.
+A central configuration aspect of the switch interface HAL is the selection of the switch operating mode. In unmanaged mode, the switch operates autonomously and forwarding state is maintained by internal hardware logic. In this mode, the switch may learn forwarding table entries from observed traffic and update its forwarding state without software intervention. In managed mode, forwarding behavior is controlled through software-visible configuration mechanisms exposed by the openENOC Switch Interface. This allows an external processor to populate, update, inspect, or invalidate forwarding table entries according to system-specific requirements.
 
 The operating mode is controlled through switch configuration registers. These registers define whether the switch operates autonomously or under software control, and they provide the foundation for additional management functions such as forwarding table updates, status inspection, diagnostics, and event handling. Status registers expose the current operational state of the switch and allow software to determine whether the switch is active, idle, paused, or operating under a specific management mode.
 
@@ -42,12 +42,12 @@ Once the switch is paused, software may update forwarding table entries through 
 
 The flow control mechanism described here is local to switch management and should not be confused with link-level or protocol-level flow control. Its purpose is to coordinate software-driven CSR updates with the internal forwarding pipeline of the switch.
 
-In managed mode, the HAL therefore provides both configuration access and operational control over the switch forwarding behavior. In unmanaged mode, the same hardware may operate without software intervention, and the openENOC Control Interface may be omitted if no external configuration or monitoring functionality is required.
+In managed mode, the HAL therefore provides both configuration access and operational control over the switch forwarding behavior. In unmanaged mode, the same hardware may operate without software intervention, and the openENOC Switch Interface may be omitted if no external configuration or monitoring functionality is required.
 
 Forwarding Table
 ~~~~~~~~~~~~~~~~
 
-A central software-visible structure of the openENOC Switch is the forwarding table, which defines how frames are forwarded based on their destination MAC address. The table is exposed through the CSR space and can be configured by software using the openENOC Control Interface.
+A central software-visible structure of the openENOC Switch is the forwarding table, which defines how frames are forwarded based on their destination MAC address. The table is exposed through the CSR space and can be configured by software using the openENOC Switch Interface.
 
 The forwarding table contains entries aligned to a 32-bit data bus. Each forwarding table entry is represented in the CSR space by fields containing a destination MAC address, an N-bit destination interface bitmap, a single enable bit, and padding bits required for alignment to the 32-bit bus width. The destination interface bitmap defines the set of output interfaces to which a matching frame shall be forwarded.
 
@@ -63,28 +63,28 @@ Register Definitions and CSR Memory Map
 
 The SystemRDL source shown below defines the CSR structure of the openENOC Switch. This source file is the maintained register specification used by the PeakRDL-based generation flow.
 
-.. literalinclude:: ../../hal/src/openenoc_switch.rdl
+.. literalinclude:: ../../hal/include/openenoc_switch_interface.rdl
    :language: systemverilog
    :caption: SystemRDL specification of the openENOC Switch CSR map
    :linenos:
 
 The openENOC Switch CSR memory map and detailed register documentation are derived directly from this SystemRDL specification. The generated CSR documentation provides the corresponding human-readable description of the register hierarchy, address offsets, field layouts, access permissions, reset values, and associated register semantics.
 
-The complete generated CSR documentation is available in :doc:`/generated/openenoc_switch`.
+The complete generated CSR documentation is available in :doc:`/generated/openenoc_switch_interface`.
 
 openENOC Endpoint Interface HAL Architecture
 --------------------------------------------
 
 The openENOC Endpoint Interface provides the connection between processing elements and the openENOC network. It exposes endpoint control, status monitoring, and communication management functionality through a dedicated CSR space.
 
-The endpoint HAL establishes a uniform software interface for accessing endpoint resources and controlling interactions with the network.
+The endpoint interface HAL establishes a uniform software interface for accessing endpoint resources and controlling interactions with the network.
 
 Architecture
 ~~~~~~~~~~~~
 
-The endpoint HAL is organized around a CSR-based management interface that exposes endpoint configuration, software-visible stream access, remote peer configuration, DMA control, and a virtual remote-memory region. Software components interact with endpoint resources through register accesses performed over the openENOC Control Interface. The HAL architecture establishes a clear separation between software-visible endpoint behavior and the underlying oETP frame handling, allowing internal buffering, DMA scheduling, and protocol processing logic to evolve while maintaining software compatibility.
+The endpoint interface HAL is organized around a CSR-based management interface that exposes endpoint configuration, software-visible stream access, remote peer configuration, DMA control, and a virtual remote-memory region. Software components interact with endpoint resources through register accesses performed over the openENOC Switch Interface. The HAL architecture establishes a clear separation between software-visible endpoint behavior and the underlying oETP frame handling, allowing internal buffering, DMA scheduling, and protocol processing logic to evolve while maintaining software compatibility.
 
-A central configuration aspect of the endpoint HAL is the description of the local endpoint instance and the set of remote peers that it can access. The read-only information register exposes implementation parameters such as the total depth of the virtual remote-memory region and the number of supported remote peers. These values allow software to discover the size and structure of the endpoint address space without relying on hard-coded assumptions.
+A central configuration aspect of the endpoint interface HAL is the description of the local endpoint instance and the set of remote peers that it can access. The read-only information register exposes implementation parameters such as the total depth of the virtual remote-memory region and the number of supported remote peers. These values allow software to discover the size and structure of the endpoint address space without relying on hard-coded assumptions.
 
 The endpoint configuration registers define the local MAC address used by the endpoint when exchanging frames with the openENOC network. Remote communication targets are described through a peer table, where each entry contains the MAC address of a remote peer, the offset of the corresponding virtual remote-memory region, the local memory base address, the remote memory base address, and the size of the region. This structure allows software to describe how local memory resources are related to remote memory regions visible through the endpoint.
 
@@ -96,27 +96,27 @@ The second access model is memory-oriented communication through the virtual rem
 
 DMA behavior is controlled independently for each peer. When DMA operation is disabled, the peer entry remains configured but no automatic transfer is performed. In transparent mode, accesses to the virtual remote-memory region are translated into corresponding accesses to the remote peer memory region on a word-by-word basis. This mode is suitable when software requires a direct memory-mapped view of remote resources and when simple access semantics are preferred over bulk synchronization.
 
-The endpoint HAL also supports mirrored transfer modes. In mirror-to-local mode, the local memory region is used as the software-visible representation of the remote peer memory, and the state of the remote memory region is fetched from the remote peer on demand or periodically. In mirror-to-remote mode, the remote memory region is used as the destination representation, and the state of the local memory region is sent to the remote peer on demand or periodically. These modes allow software to configure endpoint-to-endpoint memory synchronization without directly managing individual transport frames.
+The endpoint interface HAL also supports mirrored transfer modes. In mirror-to-local mode, the local memory region is used as the software-visible representation of the remote peer memory, and the state of the remote memory region is fetched from the remote peer on demand or periodically. In mirror-to-remote mode, the remote memory region is used as the destination representation, and the state of the local memory region is sent to the remote peer on demand or periodically. These modes allow software to configure endpoint-to-endpoint memory synchronization without directly managing individual transport frames.
 
 DMA transfers are initiated through a peer-specific request field. The corresponding status fields indicate whether the DMA engine is idle, whether the requested transfer has completed successfully, or whether an error has occurred. A typical software sequence therefore consists of configuring the peer address mapping, selecting the DMA mode, issuing a transfer request, and observing the idle, done, and error status indications until the operation reaches a terminal state.
 
 The DMA control mechanism described here is local to endpoint management and should not be confused with Ethernet link-level or protocol-level flow control. Its purpose is to coordinate software-visible memory mappings and transfer requests with the internal endpoint datapath, DMA engine, and oETP processing logic.
 
-The endpoint HAL therefore provides both a stream-oriented and a memory-oriented abstraction for communication with the openENOC network. The AXI4-Stream register interface offers a simple CSR-accessible path for direct frame exchange, while the peer table, virtual remote-memory region, and DMA controls provide a scalable mechanism for accessing and synchronizing memory resources across endpoints.
+The endpoint interface HAL therefore provides both a stream-oriented and a memory-oriented abstraction for communication with the openENOC network. The AXI4-Stream register interface offers a simple CSR-accessible path for direct frame exchange, while the peer table, virtual remote-memory region, and DMA controls provide a scalable mechanism for accessing and synchronizing memory resources across endpoints.
 
 Register Definitions and CSR Memory Map
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The SystemRDL source shown below defines the CSR structure of the openENOC Endpoint Interface. This source file is the maintained register specification used by the PeakRDL-based generation flow.
 
-.. literalinclude:: ../../hal/src/openenoc_endpoint.rdl
+.. literalinclude:: ../../hal/include/openenoc_endpoint_interface.rdl
    :language: systemverilog
    :caption: SystemRDL specification of the openENOC Endpoint Interface CSR map
    :linenos:
 
 The openENOC Endpoint Interface CSR memory map and detailed register documentation are derived directly from this SystemRDL specification. The generated CSR documentation provides the corresponding human-readable description of the register hierarchy, address offsets, field layouts, access permissions, reset values, and associated register semantics.
 
-The complete generated CSR documentation is available in :doc:`/generated/openenoc_endpoint`.
+The complete generated CSR documentation is available in :doc:`/generated/openenoc_endpoint_interface`.
 
 Summary
 -------
@@ -128,6 +128,5 @@ The HAL establishes a consistent software-visible programming model based on mem
 .. toctree::
    :hidden:
 
-   generated/openenoc
-   generated/openenoc_switch
-   generated/openenoc_endpoint
+   generated/openenoc_switch_interface
+   generated/openenoc_endpoint_interface

@@ -22,13 +22,6 @@ Header layout (byte 0 = first byte on the wire = MSB of `tuser`):
 | oETP Magic      | `tuser[15:8]`   |
 | oETP Cmd        | `tuser[7:0]`    |
 
-## Tooling
-
-This project uses the following tooling:
-
-- **[oss-cad-suite-build](https://github.com/yosyshq/oss-cad-suite-build)** - Open source CAD tools suite
-- **OS:** Ubuntu 24.04
-
 ## Configuration
 
 Edit `Makefile` to configure parameters.

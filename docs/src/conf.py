@@ -12,7 +12,7 @@
 project = 'openENOC'
 copyright = '2026, openENOC\'s contributors. For detailed authorship, please refer to the SPDX headers in the source code of individual files'
 author = 'openENOC\'s contributors'
-release = '0.1.0'
+release = '0.1.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

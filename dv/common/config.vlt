@@ -4,8 +4,18 @@
 `verilator_config
 
 lint_off -rule PINCONNECTEMPTY
-lint_off -rule UNUSEDPARAM -file "*/openenoc_csr_pkg.sv" -match "*"
-lint_off -rule MULTIDRIVEN -file "*/openenoc_csr.sv" -match "*"
+lint_off -rule UNUSEDPARAM -file "*/*_csr_pkg.sv" -match "*"
+lint_off -rule MULTIDRIVEN -file "*/*_csr.sv" -match "*"
+lint_off -rule GENUNNAMED -file "*/*_csr.sv" -match "*"
+lint_off -rule UNUSEDPARAM -file "*/openenoc_endpoint_full_pkg.sv" -match "*"
+
+lint_off -rule DECLFILENAME -file "*/picorv32.v" -match "*"
+lint_off -rule GENUNNAMED   -file "*/picorv32.v" -match "*"
+lint_off -rule BLKSEQ       -file "*/picorv32.v" -match "*"
+
+lint_off -rule GENUNNAMED  -file "*/taxi_axil_*.sv" -match "*"
+lint_off -rule UNUSEDPARAM -file "*/taxi_axil_*.sv" -match "*"
+lint_off -rule PROCASSINIT -file "*/taxi_axil_*.sv" -match "*"
 
 lint_off -rule UNUSEDPARAM  -file "*/taxi_axis_*.sv" -match "*"
 lint_off -rule GENUNNAMED   -file "*/taxi_axis_*.sv" -match "*"
@@ -13,5 +23,8 @@ lint_off -rule PROCASSINIT  -file "*/taxi_axis_*.sv" -match "*"
 lint_off -rule SYNCASYNCNET -file "*/taxi_axis_*.sv" -match "*"
 lint_off -rule BLKSEQ -file "*/taxi_axis_*.sv" -match "*"
 
-lint_off -rule PROCASSINIT  -file "*/taxi_sync_*.sv" -match "*"
+lint_off -rule GENUNNAMED  -file "*/taxi_arbiter.sv" -match "*"
+lint_off -rule PROCASSINIT -file "*/taxi_arbiter.sv" -match "*"
+lint_off -rule GENUNNAMED  -file "*/taxi_penc.sv" -match "*"
 
+lint_off -rule PROCASSINIT  -file "*/taxi_sync_*.sv" -match "*"

@@ -7,13 +7,6 @@
 
 This test suite validates the `openenoc_axis_demux` module, which demultiplexes AXI Stream input into multiple outputs based on routing configuration.
 
-## Tooling
-
-This project uses the following tooling:
-
-- **[oss-cad-suite-build](https://github.com/yosyshq/oss-cad-suite-build)** - Open source CAD tools suite
-- **OS:** Ubuntu 24.04
-
 ## Routing Modes
 
 The demux supports four routing modes, but only two are currently tested:
