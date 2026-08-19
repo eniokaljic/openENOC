@@ -7,7 +7,7 @@ lint_off -rule PINCONNECTEMPTY
 lint_off -rule UNUSEDPARAM -file "*/*_csr_pkg.sv" -match "*"
 lint_off -rule MULTIDRIVEN -file "*/*_csr.sv" -match "*"
 lint_off -rule GENUNNAMED -file "*/*_csr.sv" -match "*"
-lint_off -rule UNUSEDPARAM -file "*/openenoc_full_endpoint_pkg.sv" -match "*"
+lint_off -rule UNUSEDPARAM -file "*/openenoc_endpoint_full_pkg.sv" -match "*"
 
 lint_off -rule DECLFILENAME -file "*/picorv32.v" -match "*"
 lint_off -rule GENUNNAMED   -file "*/picorv32.v" -match "*"

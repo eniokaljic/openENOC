@@ -22,8 +22,8 @@ LIB_DIR := $(SW_DIR)/lib
 LIB_DIRS := $(wildcard $(LIB_DIR)/*)
 PLATFORMS_DIR := $(SW_DIR)/platform
 HAL_DIR := $(ROOT_DIR)/hal
-HAL_EPS_DIR := $(HAL_DIR)/endpoint
-HAL_INCLUDE_DIR := $(HAL_DIR)/include
+HAL_EPS_DIR := $(HAL_DIR)/endpoints
+HAL_INCLUDE_DIR := $(HAL_DIR)/interfaces
 HAL_BUILD_DIR := $(ROOT_DIR)/build/hal
 
 APP ?=
