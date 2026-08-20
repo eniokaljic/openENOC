@@ -63,7 +63,7 @@ Register Definitions and CSR Memory Map
 
 The SystemRDL source shown below defines the CSR structure of the openENOC Switch. This source file is the maintained register specification used by the PeakRDL-based generation flow.
 
-.. literalinclude:: ../../hal/include/openenoc_switch_interface.rdl
+.. literalinclude:: ../../hal/interfaces/openenoc_switch_interface.rdl
    :language: systemverilog
    :caption: SystemRDL specification of the openENOC Switch CSR map
    :linenos:
@@ -109,7 +109,7 @@ Register Definitions and CSR Memory Map
 
 The SystemRDL source shown below defines the CSR structure of the openENOC Endpoint Interface. This source file is the maintained register specification used by the PeakRDL-based generation flow.
 
-.. literalinclude:: ../../hal/include/openenoc_endpoint_interface.rdl
+.. literalinclude:: ../../hal/interfaces/openenoc_endpoint_interface.rdl
    :language: systemverilog
    :caption: SystemRDL specification of the openENOC Endpoint Interface CSR map
    :linenos:
