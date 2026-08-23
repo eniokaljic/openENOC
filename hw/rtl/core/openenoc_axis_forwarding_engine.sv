@@ -87,8 +87,14 @@ module openenoc_axis_forwarding_engine #
     if (m_axis.DATA_W != DATA_W || m_axis.KEEP_W != KEEP_W)
         $fatal(0, "Error: AXI4-Stream data interface parameter mismatch (instance %m)");
 
+    if (m_axis.KEEP_EN != KEEP_EN)
+        $fatal(0, "Error: s_axis and m_axis KEEP_EN must match (instance %m)");
+
     if (!LAST_EN || !ID_EN)
-        $fatal(0, "Error: LAST_EN and ID_EN are required (instance %m)");
+        $fatal(0, "Error: s_axis LAST_EN and ID_EN are required (instance %m)");
+
+    if (!m_axis.LAST_EN || !m_axis.ID_EN)
+        $fatal(0, "Error: m_axis LAST_EN and ID_EN are required (instance %m)");
 
     if (ID_W < CL_IFACE)
         $fatal(0, "Error: s_axis ID_W is too small for NUM_OF_INTERFACES (instance %m)");
