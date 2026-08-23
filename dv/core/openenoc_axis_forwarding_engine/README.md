@@ -1,57 +1,120 @@
-<!--
-SPDX-FileCopyrightText: 2026 Kerim Bavcic
-SPDX-License-Identifier: CC-BY-SA-4.0
--->
+<!-- SPDX-FileCopyrightText: 2026 Kerim Bavcic -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 
-# openenoc_axis_forwarding_engine testbench
+# openENOC Axis Forwarding Engine Test Suite
 
-Standalone verification of the openENOC forwarding engine. The forwarding
-table is not instantiated, its lookup and learning interfaces are driven by a
-behavioural model inside the Python testbench, so that the engine can be
-checked on its own.
+## Overview
 
-## Device under test
+This test suite validates the `openenoc_axis_forwarding_engine` module, which
+parses the destination and source MAC addresses from each AXI Stream frame and
+connects the stream data path to the lookup and learning interfaces of the
+openENOC forwarding table.
 
-The engine parses the MAC header of every incoming frame, starts a lookup as
-soon as the destination address is complete, stops the frame with backpressure
-until the table answers, and attaches the resulting egress interface bitmap to
-`m_axis.tuser`. The source address is used for learning, which never stops the
-frame. The ingress interface index is carried on `s_axis.tid` and is always
-removed from the egress bitmap.
+The forwarding table is not instantiated. Its lookup and learning interfaces
+are driven by a behavioral model in the Python testbench so that the forwarding
+engine can be verified stand-alone.
 
-## Table model
+The engine starts a lookup as soon as the six-byte destination MAC address is
+complete. Source-address learning starts only after the destination lookup has
+been acknowledged and the complete six-byte source MAC address has arrived. If
+the source MAC is already present in a wide input beat, learning starts as soon
+as the lookup completes; otherwise, the engine resumes parsing until the source
+MAC is complete and then issues the learning request. Destination lookup and
+source-address learning both apply backpressure as needed, and the buffered
+frame is released only after all forwarding-table transactions associated with
+its header have been acknowledged. This ordering prevents the next frame from
+starting a new lookup while learning for the current frame is still pending on
+the table's shared internal arbitration path.
 
-The testbench implements the openENOC request/acknowledge handshake:
+The lookup result is attached to the released frame on `m_axis.tuser`. The
+ingress interface index is carried on `s_axis.tid` and is removed from the
+egress bitmap to prevent forwarding a frame back to its source interface.
 
-* the request payload is taken on the rising edge of `*_req`
-* the answer is a single cycle `*_ack` after a configurable latency
-* the next request may only start after `*_req` has been low again
+## AXI Stream Input Contract
 
-`TB.mac_table` holds the known addresses, everything else answers with
-`TB.default_forwarding`. Every accepted lookup and learning request is recorded
-in `TB.lookups` and `TB.learns` for checking.
+The MAC parser expects canonical packet-oriented `tkeep` usage:
 
-## Tests
+- Every beat except the final beat of a frame must have all byte lanes valid.
+- On the final beat (`tlast = 1`), valid bytes must be contiguous from the
+	least-significant byte lane. Gaps in `tkeep` are not supported.
+- When `KEEP_EN` is disabled, every byte lane is treated as valid.
 
-| test | checks |
-| --- | --- |
-| `run_test` | frame integrity, `tid`/`tdest` pass through, `tuser` bitmap aligned with the first output beat, lookup and learning order, with and without idle and backpressure |
-| `run_test_short_frames` | frames ending inside the MAC header, no lookup below 6 bytes (empty bitmap), no learning below 12 bytes |
-| `run_test_no_learning` | group and all zero source addresses and managed mode do not trigger learning |
-| `run_test_pause` | `pause_request` stops the engine on a frame boundary and `pause_done` reports a drained engine |
+The byte-counting and MAC-address extraction logic relies on this contract.
+Frames with sparse `tkeep`, or with invalid lanes before valid lanes, are
+outside the supported input format.
 
-## Running
+## Forwarding Table Model
 
-```bash
-# single configuration, parameters taken from the Makefile
-make
+The testbench implements the openENOC request/acknowledge handshake. The engine
+asserts `lookup_req` or `learning_req` for one clock cycle and keeps the
+associated payload stable while it waits. The model returns a single-cycle
+acknowledge after a configurable latency. During each wait, the testbench checks
+that the input is stalled and no buffered output beat is released.
 
-# full parameter sweep, all supported TDATA widths and interface counts
-./run_tests.sh pytest
+Known destination MAC addresses are resolved using the model's entry map. A
+lookup miss returns the configured default forwarding bitmap. Every accepted
+lookup and learning request is recorded and checked for correct ordering and
+contents.
 
-# waveforms
-./run_tests.sh waves
+## Configuration
 
-# clean up
-./run_tests.sh clean
+Edit `Makefile` to configure parameters.
+
+```Makefile
+export PARAM_NUM_OF_INTERFACES := 8
+export PARAM_DATA_W := 8
+export PARAM_KEEP_EN := 0
+export PARAM_KEEP_W := 1
+export PARAM_STRB_EN := 0
+export PARAM_LAST_EN := 1
+export PARAM_ID_EN := 1
+export PARAM_ID_W := 8
+export PARAM_DEST_EN := 1
+export PARAM_DEST_W := 8
+export PARAM_USER_EN := 1
+export PARAM_USER_W := 8
 ```
+
+**Important:** `PARAM_DATA_W` must be a multiple of 8 in the range 8 to 512.
+`PARAM_ID_W` must be wide enough to represent every ingress interface, and
+`PARAM_USER_W` must be at least `PARAM_NUM_OF_INTERFACES` so the complete
+forwarding bitmap fits on `m_axis.tuser`.
+
+## Running Tests
+
+### Option 1: Make
+Runs Cocotb tests based on the module configuration specified in the Makefile.
+```bash
+./run_tests.sh waves
+# Generates waveforms and opens gtkwave
+```
+
+### Option 2: Pytest
+Uses the pytest framework (test_openenoc_axis_forwarding_engine.py) to iterate through different configurations and run the Cocotb tests for each configuration.
+```bash
+./run_tests.sh pytest
+```
+
+## Test Coverage
+
+**Functional checks:**
+
+- Destination and source MAC extraction across different AXI Stream widths
+- Lookup hit and miss handling
+- Ingress interface removal from the forwarding bitmap
+- Correct learning MAC address and one-hot ingress interface bitmap
+- Frame payload integrity and `tid`/`tdest` pass-through
+- Forwarding bitmap alignment on `m_axis.tuser`
+- Input stalling while lookup and learning acknowledgements are pending
+- Stable request payloads throughout configurable acknowledgement latency
+
+**Scenarios (TestFactory):**
+
+- Back-to-back frames with known and unknown destination MAC addresses
+- Frame lengths of 32, 60, 79, and 128 bytes
+- Idle insertion and output backpressure combinations
+- Lookup and learning acknowledgement latencies of 2, 4, and 8 cycles
+
+**Parameter sweep (pytest):**
+
+- `DATA_W` in {8, 16, 24, 64, 128, 512}

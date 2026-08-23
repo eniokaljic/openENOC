@@ -170,19 +170,22 @@ module openenoc_axis_forwarding_engine #
     );
 
     wire release_frame = state_reg == ST_RELEASE;
+    wire [KEEP_W-1:0] output_keep = m_axis.KEEP_EN ? buffer_m_axis.tkeep : '1;
+    wire output_valid = buffer_m_axis.tvalid && release_frame;
+    wire output_last = buffer_m_axis.tlast;
 
     assign m_axis.tdata  = buffer_m_axis.tdata;
-    assign m_axis.tkeep  = m_axis.KEEP_EN ? buffer_m_axis.tkeep : '1;
-    assign m_axis.tstrb  = m_axis.STRB_EN ? buffer_m_axis.tstrb : m_axis.tkeep;
-    assign m_axis.tvalid = buffer_m_axis.tvalid && release_frame;
-    assign m_axis.tlast  = buffer_m_axis.tlast;
+    assign m_axis.tkeep  = output_keep;
+    assign m_axis.tstrb  = m_axis.STRB_EN ? buffer_m_axis.tstrb : output_keep;
+    assign m_axis.tvalid = output_valid;
+    assign m_axis.tlast  = output_last;
     assign m_axis.tid    = M_ID_W'(buffer_m_axis.tid);
     assign m_axis.tdest  = M_DEST_W'(buffer_m_axis.tdest);
     assign m_axis.tuser  = M_USER_W'(forwarding_bitmap_reg);
     assign buffer_m_axis.tready = m_axis.tready && release_frame;
 
     wire s_fire = s_axis.tvalid && s_axis.tready;
-    wire m_fire = m_axis.tvalid && m_axis.tready;
+    wire m_fire = output_valid && m_axis.tready;
 
     // ---------------------------------------------------------------------------
     // Ethernet MAC parser
@@ -244,7 +247,6 @@ module openenoc_axis_forwarding_engine #
                     state_reg <= ST_RELEASE;
                 end else if (s_fire && da_complete) begin
                     lookup_mac_addr <= da_next;
-                    ingress_port_reg <= s_axis.tid;
                     lookup_req <= 1'b1;
                     state_reg <= ST_WAIT_LOOKUP;
                 end
@@ -291,7 +293,7 @@ module openenoc_axis_forwarding_engine #
             end
 
             ST_RELEASE: begin
-                if (m_fire && m_axis.tlast) begin
+                if (m_fire && output_last) begin
                     state_reg <= ST_PARSE_DA;
                     da_reg <= '0;
                     sa_reg <= '0;
