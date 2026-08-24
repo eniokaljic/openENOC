@@ -23,22 +23,21 @@ WORD_IFACE = 2
 WORD_CONFIG = 3
 ALL_BITS = 0xFFFFFFFF
 
+# ----------------------------------------------------------------------
+# Helper functions for test frame generation
+# ----------------------------------------------------------------------
 
 def ethernet_frame(da, sa, payload):
     return da.to_bytes(6, "big") + sa.to_bytes(6, "big") + bytes(payload)
 
-
 def cycle_pause(pattern=(1, 1, 0, 0, 0)):
     return itertools.cycle(pattern)
-
 
 def factory_payload_lengths():
     return [0, 1, 3, 16, 47, 128]
 
-
 def incrementing_payload(length):
     return bytes(itertools.islice(itertools.cycle(range(256)), length))
-
 
 class TB:
     def __init__(self, dut):
@@ -234,6 +233,9 @@ class TB:
 
         return order
 
+# ----------------------------------------------------------------------
+# Standalone cocotb test cases: simple routing and forwarding scenarios
+# ----------------------------------------------------------------------
 
 @cocotb.test()
 async def test_default_forwarding(dut):
@@ -662,7 +664,7 @@ async def test_pause_completes_current_frame_and_blocks_next(dut):
 
 
 # ----------------------------------------------------------------------
-# TestFactory matrix
+# TestFactory logic: idle and backpressure combinations
 # ----------------------------------------------------------------------
 
 async def run_factory_routing(
@@ -719,6 +721,9 @@ async def run_factory_routing(
     await tb.cycle(10)
     assert all(sink.empty() for sink in tb.sinks)
 
+# ----------------------------------------------------------------------
+# Dispatch: select test cases to run based on Makefile configuration
+# ----------------------------------------------------------------------
 
 if getattr(cocotb, "top", None) is not None:
     factory = TestFactory(run_factory_routing)
@@ -735,7 +740,7 @@ if getattr(cocotb, "top", None) is not None:
 
 
 # ----------------------------------------------------------------------
-# Pytest runner
+# PyTest framework: parameter sweep and simulator runner
 # ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
