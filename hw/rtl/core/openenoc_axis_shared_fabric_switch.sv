@@ -6,7 +6,7 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-module openenoc_switch_shared_fabric #
+module openenoc_axis_shared_fabric_switch #
 (
     // Number of Ethernet interfaces
     parameter int unsigned NUM_OF_INTERFACES = 4,
@@ -45,8 +45,64 @@ module openenoc_switch_shared_fabric #
     openenoc_eth_if eth_if [NUM_OF_INTERFACES-1:0]
 );
 
-    localparam logic SIDE_A = 1'b0;
     localparam logic SIDE_B = 1'b1;
+
+    localparam int unsigned FABRIC_KEEP_W = (FABRIC_DATA_W+7)/8;
+    localparam int unsigned PORT_INDEX_W  = $clog2(NUM_OF_INTERFACES);
+
+    /* verilator lint_off GENUNNAMED */
+    if (NUM_OF_INTERFACES < 2 || NUM_OF_INTERFACES > 32)
+        $fatal(0, "Error: NUM_OF_INTERFACES must be in range 2 to 32 (instance %m)");
+
+    if (TABLE_DEPTH < 1)
+        $fatal(0, "Error: TABLE_DEPTH must be at least 1 (instance %m)");
+
+    if (FABRIC_DATA_W < 8 || FABRIC_DATA_W % 8 != 0)
+        $fatal(0, "Error: FABRIC_DATA_W must be a multiple of 8 (instance %m)");
+
+    if (!eth_if[0].LAST_EN)
+        $fatal(0, "Error: eth_if LAST_EN must be enabled (instance %m)");
+
+    if (switch_if.NUM_OF_INTERFACES != NUM_OF_INTERFACES)
+        $fatal(0, "Error: switch_if NUM_OF_INTERFACES parameter mismatch (instance %m)");
+
+    if (switch_if.TABLE_DEPTH != TABLE_DEPTH)
+        $fatal(0, "Error: switch_if TABLE_DEPTH parameter mismatch (instance %m)");
+    /* verilator lint_on GENUNNAMED */
+
+    /*
+     * Homogeneous switch fabric interfaces.
+     *
+     * tid carries the ingress port index after the arbitrated mux.  tuser
+     * carries the egress port bitmap after the forwarding engine.
+     */
+    taxi_axis_if #(
+        .DATA_W  (FABRIC_DATA_W),
+        .KEEP_W  (FABRIC_KEEP_W),
+        .KEEP_EN (FABRIC_KEEP_W > 1),
+        .STRB_EN (eth_if[0].STRB_EN),
+        .LAST_EN (1'b1),
+        .ID_EN   (1'b1),
+        .ID_W    (PORT_INDEX_W),
+        .DEST_EN (eth_if[0].DEST_EN),
+        .DEST_W  (eth_if[0].DEST_W),
+        .USER_EN (1'b1),
+        .USER_W  (NUM_OF_INTERFACES)
+    ) ingress_axis[NUM_OF_INTERFACES](), egress_axis[NUM_OF_INTERFACES]();
+
+    taxi_axis_if #(
+        .DATA_W  (FABRIC_DATA_W),
+        .KEEP_W  (FABRIC_KEEP_W),
+        .KEEP_EN (FABRIC_KEEP_W > 1),
+        .STRB_EN (eth_if[0].STRB_EN),
+        .LAST_EN (1'b1),
+        .ID_EN   (1'b1),
+        .ID_W    (PORT_INDEX_W),
+        .DEST_EN (eth_if[0].DEST_EN),
+        .DEST_W  (eth_if[0].DEST_W),
+        .USER_EN (1'b1),
+        .USER_W  (NUM_OF_INTERFACES)
+    ) arb_axis(), forwarding_axis();
 
     /*
      * Per-port ingress/egress adaptation
@@ -85,42 +141,6 @@ module openenoc_switch_shared_fabric #
             .USER_EN (eth_if[n].USER_EN),
             .USER_W  (eth_if[n].USER_W)
         ) port_tx_axis();
-
-        /*
-         * Switch fabric-side AXI stream interfaces:
-         *
-         * FABRIC_DATA_W @ clk
-         *
-         * These interfaces are intentionally left unconnected toward
-         * the switch fabric in this implementation draft.
-         */
-        taxi_axis_if #(
-            .DATA_W  (FABRIC_DATA_W),
-            .KEEP_W  ((FABRIC_DATA_W+7)/8),
-            .KEEP_EN (((FABRIC_DATA_W+7)/8) > 1),
-            .STRB_EN (eth_if[n].STRB_EN),
-            .LAST_EN (eth_if[n].LAST_EN),
-            .ID_EN   (eth_if[n].ID_EN),
-            .ID_W    (eth_if[n].ID_W),
-            .DEST_EN (eth_if[n].DEST_EN),
-            .DEST_W  (eth_if[n].DEST_W),
-            .USER_EN (eth_if[n].USER_EN),
-            .USER_W  (eth_if[n].USER_W)
-        ) ingress_axis();
-
-        taxi_axis_if #(
-            .DATA_W  (FABRIC_DATA_W),
-            .KEEP_W  ((FABRIC_DATA_W+7)/8),
-            .KEEP_EN (((FABRIC_DATA_W+7)/8) > 1),
-            .STRB_EN (eth_if[n].STRB_EN),
-            .LAST_EN (eth_if[n].LAST_EN),
-            .ID_EN   (eth_if[n].ID_EN),
-            .ID_W    (eth_if[n].ID_W),
-            .DEST_EN (eth_if[n].DEST_EN),
-            .DEST_W  (eth_if[n].DEST_W),
-            .USER_EN (eth_if[n].USER_EN),
-            .USER_W  (eth_if[n].USER_W)
-        ) egress_axis();
 
         /*
          * Normalize A/B link orientation into RX/TX.
@@ -218,7 +238,7 @@ module openenoc_switch_shared_fabric #
 
             .m_clk  (clk),
             .m_rst  (rst),
-            .m_axis (ingress_axis),
+            .m_axis (ingress_axis[n]),
 
             .s_pause_req (1'b0),
             .s_pause_ack (),
@@ -253,7 +273,7 @@ module openenoc_switch_shared_fabric #
         egress_adapter_inst (
             .s_clk  (clk),
             .s_rst  (rst),
-            .s_axis (egress_axis),
+            .s_axis (egress_axis[n]),
 
             .m_clk  (eth_if[n].clk),
             .m_rst  (eth_if[n].rst),
@@ -280,15 +300,111 @@ module openenoc_switch_shared_fabric #
     end
 
     /*
-     * Future switch fabric connections:
-     *
-     *   g_port[n].ingress_axis
-     *   g_port[n].egress_axis
-     *
-     * FABRIC_DATA_W @ clk
-     *
-     * Intentionally left unconnected.
+     * Frame-aware round-robin ingress arbitration.  UPDATE_TID replaces the
+     * incoming tid with the selected ingress port index for the forwarding
+     * and learning logic downstream.
      */
+    taxi_axis_arb_mux #(
+        .S_COUNT           (NUM_OF_INTERFACES),
+        .UPDATE_TID        (1'b1),
+        .ARB_ROUND_ROBIN   (1'b1),
+        .ARB_LSB_HIGH_PRIO (1'b0)
+    )
+    ingress_arb_mux_inst (
+        .clk    (clk),
+        .rst    (rst),
+        .s_axis (ingress_axis),
+        .m_axis (arb_axis)
+    );
+
+    logic                              pause_done;
+    logic                              lookup_req;
+    logic [47:0]                       lookup_mac_addr;
+    logic                              lookup_ack;
+    logic [NUM_OF_INTERFACES-1:0]      lookup_port_bitmap;
+    logic                              learning_req;
+    logic [47:0]                       learning_mac_addr;
+    logic [NUM_OF_INTERFACES-1:0]      learning_port_bitmap;
+    logic                              learning_ack;
+
+    openenoc_axis_forwarding_engine #(
+        .NUM_OF_INTERFACES (NUM_OF_INTERFACES)
+    )
+    forwarding_engine_inst (
+        .clk                  (clk),
+        .rst                  (rst),
+        .pause_request        (switch_if.csr_to_core.forwarding_control.pause_request.value),
+        .pause_done           (pause_done),
+        .s_axis               (arb_axis),
+        .m_axis               (forwarding_axis),
+        .lookup_req           (lookup_req),
+        .lookup_mac_addr      (lookup_mac_addr),
+        .lookup_ack           (lookup_ack),
+        .lookup_port_bitmap   (lookup_port_bitmap),
+        .learning_req         (learning_req),
+        .learning_mac_addr    (learning_mac_addr),
+        .learning_port_bitmap (learning_port_bitmap),
+        .learning_ack         (learning_ack)
+    );
+
+    logic        cpuif_wr_ack;
+    logic        cpuif_rd_ack;
+    logic [31:0] cpuif_rd_data;
+
+    openenoc_forwarding_table #(
+        .NUM_OF_INTERFACES (NUM_OF_INTERFACES),
+        .TABLE_DEPTH       (TABLE_DEPTH)
+    )
+    forwarding_table_inst (
+        .clk                  (clk),
+        .rst                  (rst),
+        .default_forwarding   (switch_if.csr_to_core.default_forwarding.bitmap.value),
+        .operation_mode       (switch_if.csr_to_core.forwarding_control.operation_mode.value),
+        .cpuif_req            (switch_if.csr_to_core.forwarding_table.req),
+        .cpuif_addr           (switch_if.csr_to_core.forwarding_table.addr),
+        .cpuif_req_is_wr      (switch_if.csr_to_core.forwarding_table.req_is_wr),
+        .cpuif_wr_data        (switch_if.csr_to_core.forwarding_table.wr_data),
+        .cpuif_wr_biten       (switch_if.csr_to_core.forwarding_table.wr_biten),
+        .cpuif_wr_ack         (cpuif_wr_ack),
+        .cpuif_rd_ack         (cpuif_rd_ack),
+        .cpuif_rd_data        (cpuif_rd_data),
+        .lookup_req           (lookup_req),
+        .lookup_mac_addr      (lookup_mac_addr),
+        .lookup_ack           (lookup_ack),
+        .lookup_port_bitmap   (lookup_port_bitmap),
+        .learning_req         (learning_req),
+        .learning_mac_addr    (learning_mac_addr),
+        .learning_port_bitmap (learning_port_bitmap),
+        .learning_ack         (learning_ack)
+    );
+
+    always_comb begin
+        switch_if.core_to_csr = '{default: '0};
+        switch_if.core_to_csr.forwarding_control.pause_done.next = pause_done;
+        switch_if.core_to_csr.forwarding_table.wr_ack = cpuif_wr_ack;
+        switch_if.core_to_csr.forwarding_table.rd_ack = cpuif_rd_ack;
+        switch_if.core_to_csr.forwarding_table.rd_data = cpuif_rd_data;
+    end
+
+    /*
+     * The forwarding engine places the egress port bitmap in tuser.  The
+     * demultiplexer applies all-or-none multicast backpressure to that mask.
+     */
+    openenoc_axis_demux #(
+        .M_COUNT            (NUM_OF_INTERFACES),
+        .TID_ROUTE          (1'b0),
+        .TDEST_ROUTE        (1'b0),
+        .TUSER_BITMAP_ROUTE (1'b1)
+    )
+    egress_demux_inst (
+        .clk    (clk),
+        .rst    (rst),
+        .s_axis (forwarding_axis),
+        .m_axis (egress_axis),
+        .enable (1'b1),
+        .drop   (1'b0),
+        .select ('0)
+    );
 
 endmodule
 

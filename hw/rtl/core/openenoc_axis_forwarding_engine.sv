@@ -104,7 +104,7 @@ module openenoc_axis_forwarding_engine #
     /* verilator lint_on GENUNNAMED */
 
     function automatic logic [NUM_OF_INTERFACES-1:0] port_onehot(input logic [ID_W-1:0] index);
-        if (index < ID_W'(NUM_OF_INTERFACES))
+        if ({1'b0, index} < (ID_W+1)'(NUM_OF_INTERFACES))
             port_onehot = NUM_OF_INTERFACES'(1) << index;
         else
             port_onehot = '0;
