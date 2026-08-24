@@ -50,6 +50,7 @@ export PARAM_KEEP_W := 4
 export PARAM_KEEP_EN := 1
 export PARAM_FABRIC_DATA_W := 32
 export PARAM_PORT_FIFO_DEPTH := 64
+export PARAM_PORT_SIDE := 15
 
 ifeq ($(SIM), verilator)
 	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-G$(subst PARAM_,,$(v))=$($(v)))

@@ -31,6 +31,8 @@ module test_openenoc_axis_shared_fabric_switch #
     logic clk;
     logic rst;
 
+    localparam logic SIDE_B = 1'b1;
+
     /*
      * Flattened CSR controls and status for cocotb.
      */
@@ -87,8 +89,8 @@ module test_openenoc_axis_shared_fabric_switch #
     assign cpuif_rd_data = switch_if.core_to_csr.forwarding_table.rd_data;
 
     /*
-     * All links use side A externally and side B in the switch.  The interface
-     * array itself is exposed to cocotb; no CSR or endpoint model is required.
+     * The wrapper acts as the peer opposite each configured switch port.  The
+     * interface array itself is exposed to cocotb; no endpoint model is needed.
      */
     openenoc_eth_if #(
         .DATA_W  (DATA_W),
@@ -127,25 +129,47 @@ module test_openenoc_axis_shared_fabric_switch #
     ) port_rx_axis[NUM_OF_INTERFACES](), port_tx_axis[NUM_OF_INTERFACES]();
 
     for (genvar n = 0; n < NUM_OF_INTERFACES; n++) begin : g_eth_bridge
-        assign eth_if[n].a2b.tdata = port_rx_axis[n].tdata;
-        assign eth_if[n].a2b.tkeep = port_rx_axis[n].tkeep;
-        assign eth_if[n].a2b.tstrb = port_rx_axis[n].tstrb;
-        assign eth_if[n].a2b.tid = port_rx_axis[n].tid;
-        assign eth_if[n].a2b.tdest = port_rx_axis[n].tdest;
-        assign eth_if[n].a2b.tuser = port_rx_axis[n].tuser;
-        assign eth_if[n].a2b.tlast = port_rx_axis[n].tlast;
-        assign eth_if[n].a2b.tvalid = port_rx_axis[n].tvalid;
-        assign port_rx_axis[n].tready = eth_if[n].a2b.tready;
+        if (PORT_SIDE[n] == SIDE_B) begin : g_switch_side_b
+            assign eth_if[n].a2b.tdata = port_rx_axis[n].tdata;
+            assign eth_if[n].a2b.tkeep = port_rx_axis[n].tkeep;
+            assign eth_if[n].a2b.tstrb = port_rx_axis[n].tstrb;
+            assign eth_if[n].a2b.tid = port_rx_axis[n].tid;
+            assign eth_if[n].a2b.tdest = port_rx_axis[n].tdest;
+            assign eth_if[n].a2b.tuser = port_rx_axis[n].tuser;
+            assign eth_if[n].a2b.tlast = port_rx_axis[n].tlast;
+            assign eth_if[n].a2b.tvalid = port_rx_axis[n].tvalid;
+            assign port_rx_axis[n].tready = eth_if[n].a2b.tready;
 
-        assign port_tx_axis[n].tdata = eth_if[n].b2a.tdata;
-        assign port_tx_axis[n].tkeep = eth_if[n].b2a.tkeep;
-        assign port_tx_axis[n].tstrb = eth_if[n].b2a.tstrb;
-        assign port_tx_axis[n].tid = eth_if[n].b2a.tid;
-        assign port_tx_axis[n].tdest = eth_if[n].b2a.tdest;
-        assign port_tx_axis[n].tuser = eth_if[n].b2a.tuser;
-        assign port_tx_axis[n].tlast = eth_if[n].b2a.tlast;
-        assign port_tx_axis[n].tvalid = eth_if[n].b2a.tvalid;
-        assign eth_if[n].b2a.tready = port_tx_axis[n].tready;
+            assign port_tx_axis[n].tdata = eth_if[n].b2a.tdata;
+            assign port_tx_axis[n].tkeep = eth_if[n].b2a.tkeep;
+            assign port_tx_axis[n].tstrb = eth_if[n].b2a.tstrb;
+            assign port_tx_axis[n].tid = eth_if[n].b2a.tid;
+            assign port_tx_axis[n].tdest = eth_if[n].b2a.tdest;
+            assign port_tx_axis[n].tuser = eth_if[n].b2a.tuser;
+            assign port_tx_axis[n].tlast = eth_if[n].b2a.tlast;
+            assign port_tx_axis[n].tvalid = eth_if[n].b2a.tvalid;
+            assign eth_if[n].b2a.tready = port_tx_axis[n].tready;
+        end else begin : g_switch_side_a
+            assign eth_if[n].b2a.tdata = port_rx_axis[n].tdata;
+            assign eth_if[n].b2a.tkeep = port_rx_axis[n].tkeep;
+            assign eth_if[n].b2a.tstrb = port_rx_axis[n].tstrb;
+            assign eth_if[n].b2a.tid = port_rx_axis[n].tid;
+            assign eth_if[n].b2a.tdest = port_rx_axis[n].tdest;
+            assign eth_if[n].b2a.tuser = port_rx_axis[n].tuser;
+            assign eth_if[n].b2a.tlast = port_rx_axis[n].tlast;
+            assign eth_if[n].b2a.tvalid = port_rx_axis[n].tvalid;
+            assign port_rx_axis[n].tready = eth_if[n].b2a.tready;
+
+            assign port_tx_axis[n].tdata = eth_if[n].a2b.tdata;
+            assign port_tx_axis[n].tkeep = eth_if[n].a2b.tkeep;
+            assign port_tx_axis[n].tstrb = eth_if[n].a2b.tstrb;
+            assign port_tx_axis[n].tid = eth_if[n].a2b.tid;
+            assign port_tx_axis[n].tdest = eth_if[n].a2b.tdest;
+            assign port_tx_axis[n].tuser = eth_if[n].a2b.tuser;
+            assign port_tx_axis[n].tlast = eth_if[n].a2b.tlast;
+            assign port_tx_axis[n].tvalid = eth_if[n].a2b.tvalid;
+            assign eth_if[n].a2b.tready = port_tx_axis[n].tready;
+        end
     end
 
     openenoc_axis_shared_fabric_switch #(

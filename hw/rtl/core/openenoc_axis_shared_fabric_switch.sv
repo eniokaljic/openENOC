@@ -24,7 +24,7 @@ module openenoc_axis_shared_fabric_switch #
     // By default all switch ports operate as side B.
     parameter logic [NUM_OF_INTERFACES-1:0] PORT_SIDE = '1,
 
-    // Per-port asynchronous FIFO depth in words
+    // Per-port asynchronous FIFO capacity in bytes
     parameter int unsigned PORT_FIFO_DEPTH = 64
 )
 (
@@ -59,9 +59,6 @@ module openenoc_axis_shared_fabric_switch #
 
     if (FABRIC_DATA_W < 8 || FABRIC_DATA_W % 8 != 0)
         $fatal(0, "Error: FABRIC_DATA_W must be a multiple of 8 (instance %m)");
-
-    if (!eth_if[0].LAST_EN)
-        $fatal(0, "Error: eth_if LAST_EN must be enabled (instance %m)");
 
     if (switch_if.NUM_OF_INTERFACES != NUM_OF_INTERFACES)
         $fatal(0, "Error: switch_if NUM_OF_INTERFACES parameter mismatch (instance %m)");
@@ -108,6 +105,29 @@ module openenoc_axis_shared_fabric_switch #
      * Per-port ingress/egress adaptation
      */
     for (genvar n = 0; n < NUM_OF_INTERFACES; n++) begin : g_port
+
+        localparam int unsigned PORT_BYTE_LANES = eth_if[n].KEEP_EN ? eth_if[n].KEEP_W : 1;
+        localparam int unsigned FIFO_BYTE_LANES = PORT_BYTE_LANES > FABRIC_KEEP_W ?
+                                                  PORT_BYTE_LANES : FABRIC_KEEP_W;
+        localparam int unsigned FIFO_WORD_COUNT = PORT_FIFO_DEPTH / FIFO_BYTE_LANES;
+
+        /* verilator lint_off GENUNNAMED */
+        if (!eth_if[n].LAST_EN)
+            $fatal(0, "Error: eth_if[%0d] LAST_EN must be enabled (instance %m)", n);
+
+        if (eth_if[n].DATA_W != PORT_BYTE_LANES * 8)
+            $fatal(0, "Error: eth_if[%0d] must use 8-bit byte lanes (instance %m)", n);
+
+        if ((PORT_BYTE_LANES > FABRIC_KEEP_W && PORT_BYTE_LANES % FABRIC_KEEP_W != 0) ||
+            (FABRIC_KEEP_W > PORT_BYTE_LANES && FABRIC_KEEP_W % PORT_BYTE_LANES != 0))
+            $fatal(0, "Error: eth_if[%0d] and fabric widths must have an integer ratio (instance %m)", n);
+
+        if (PORT_FIFO_DEPTH % FIFO_BYTE_LANES != 0)
+            $fatal(0, "Error: PORT_FIFO_DEPTH must be a multiple of the widest data width for eth_if[%0d] (instance %m)", n);
+
+        if (FIFO_WORD_COUNT < 2 || (FIFO_WORD_COUNT & (FIFO_WORD_COUNT - 1)) != 0)
+            $fatal(0, "Error: PORT_FIFO_DEPTH must contain a power-of-two number of widest-side words, at least 2, for eth_if[%0d] (instance %m)", n);
+        /* verilator lint_on GENUNNAMED */
 
         /*
          * External port-side AXI stream interfaces:

@@ -44,6 +44,7 @@ class TB:
     def __init__(self, dut):
         self.dut = dut
         self.num_ports = int(os.environ.get("PARAM_NUM_OF_INTERFACES", 4))
+        self.table_depth = int(os.environ.get("PARAM_TABLE_DEPTH", 8))
 
         cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
 
@@ -81,6 +82,14 @@ class TB:
             await RisingEdge(self.dut.clk)
             await Timer(1, units="ns")
 
+    async def wait_asserted(self, signal, description, timeout_cycles=10000):
+        for _ in range(timeout_cycles):
+            if int(signal.value):
+                return
+            await self.cycle()
+
+        raise AssertionError(f"timeout waiting for {description}")
+
     async def reset(self, operation_mode=MANAGED, default_forwarding=0):
         dut = self.dut
 
@@ -104,8 +113,7 @@ class TB:
         self.dut.pause_request.value = int(paused)
 
         if paused:
-            while not int(self.dut.pause_done.value):
-                await self.cycle()
+            await self.wait_asserted(self.dut.pause_done, "pause_done")
         else:
             await self.cycle(2)
             assert not int(self.dut.pause_done.value)
@@ -122,20 +130,47 @@ class TB:
         await self.cycle()
         dut.cpuif_req.value = 0
         dut.cpuif_addr.value = 0
+        dut.cpuif_req_is_wr.value = 0
         dut.cpuif_wr_data.value = 0
         dut.cpuif_wr_biten.value = 0
 
-        while not int(dut.cpuif_wr_ack.value):
-            await self.cycle()
+        await self.wait_asserted(dut.cpuif_wr_ack, "cpuif_wr_ack")
 
         assert not int(dut.cpuif_rd_ack.value)
         await self.cycle()
+
+    async def cpu_read(self, index, word):
+        dut = self.dut
+
+        dut.cpuif_addr.value = index * 16 + word * 4
+        dut.cpuif_req_is_wr.value = 0
+        dut.cpuif_req.value = 1
+
+        await self.cycle()
+        dut.cpuif_req.value = 0
+        dut.cpuif_addr.value = 0
+
+        await self.wait_asserted(dut.cpuif_rd_ack, "cpuif_rd_ack")
+
+        assert not int(dut.cpuif_wr_ack.value)
+        data = int(dut.cpuif_rd_data.value)
+        await self.cycle()
+
+        return data
 
     async def cpu_write_entry(self, index, mac, bitmap, enabled=True):
         await self.cpu_write(index, WORD_MAC_LO, mac & 0xFFFFFFFF)
         await self.cpu_write(index, WORD_MAC_HI, (mac >> 32) & 0xFFFF)
         await self.cpu_write(index, WORD_IFACE, bitmap)
         await self.cpu_write(index, WORD_CONFIG, int(enabled))
+
+    async def cpu_read_entry(self, index):
+        mac_lo = await self.cpu_read(index, WORD_MAC_LO)
+        mac_hi = await self.cpu_read(index, WORD_MAC_HI)
+        bitmap = await self.cpu_read(index, WORD_IFACE)
+        enabled = await self.cpu_read(index, WORD_CONFIG)
+
+        return ((mac_hi << 32) | mac_lo, bitmap, enabled)
 
     async def send(self, port, data, tdest=0x5A, tid=0):
         frame = AxiStreamFrame(data)
@@ -565,6 +600,67 @@ async def test_multicast_with_output_backpressure(dut):
     assert all(sink.empty() for sink in tb.sinks)
 
 
+@cocotb.test()
+async def test_managed_table_cpu_readback(dut):
+    """The switch CSR bridge returns every word of a programmed table entry."""
+    tb = TB(dut)
+    await tb.reset(operation_mode=MANAGED)
+
+    entry_index = tb.table_depth - 1
+    mac = 0x570000000001
+    bitmap = (1 << (tb.num_ports - 1)) | 1
+
+    await tb.set_pause(True)
+    await tb.cpu_write_entry(entry_index, mac, bitmap)
+    read_mac, read_bitmap, read_enabled = await tb.cpu_read_entry(entry_index)
+    await tb.set_pause(False)
+
+    assert read_mac == mac
+    assert read_bitmap == bitmap
+    assert read_enabled == 1
+
+
+@cocotb.test()
+async def test_pause_completes_current_frame_and_blocks_next(dut):
+    """A mid-frame pause drains the active frame and holds the following one."""
+    tb = TB(dut)
+    await tb.reset(operation_mode=MANAGED)
+
+    destination = 0x580000000001
+    await tb.set_pause(True)
+    await tb.cpu_write_entry(0, destination, bitmap=0b0010)
+    await tb.set_pause(False)
+
+    first = ethernet_frame(destination, 0x580000000002, bytes(range(256)) * 2)
+    second = ethernet_frame(destination, 0x580000000003, b"held-until-resume" * 4)
+    send_task = cocotb.start_soon(tb.send_all(0, [first, second]))
+
+    for _ in range(10000):
+        await RisingEdge(dut.clk)
+        if int(dut.arb_tvalid.value) and int(dut.arb_tready.value) and not int(dut.arb_tlast.value):
+            break
+    else:
+        raise AssertionError("timeout waiting for the first frame to enter arbitration")
+
+    dut.pause_request.value = 1
+    await tb.wait_asserted(dut.pause_done, "mid-frame pause_done")
+
+    received = await tb.recv(1)
+    assert bytes(received.tdata) == first
+
+    await tb.cycle(30)
+    assert tb.sinks[1].empty(), "second frame escaped while forwarding was paused"
+    assert int(dut.pause_done.value)
+
+    await tb.set_pause(False)
+    received = await tb.recv(1)
+    assert bytes(received.tdata) == second
+
+    await send_task
+    await tb.cycle(10)
+    assert all(sink.empty() for sink in tb.sinks)
+
+
 # ----------------------------------------------------------------------
 # TestFactory matrix
 # ----------------------------------------------------------------------
@@ -654,20 +750,29 @@ hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "rtl")
 
 
 @pytest.mark.parametrize(
-    ("data_w", "fabric_data_w", "table_depth", "port_fifo_depth"),
+    (
+        "num_interfaces",
+        "data_w",
+        "fabric_data_w",
+        "table_depth",
+        "port_fifo_depth",
+        "port_side",
+    ),
     [
-        (8, 32, 5, 64),
-        (16, 64, 8, 64),
-        (32, 32, 8, 64),
-        (64, 16, 8, 128),
+        (4, 8, 32, 5, 64, 0b1111),
+        (5, 24, 48, 8, 48, 0b10101),
+        (4, 32, 32, 8, 64, 0b0000),
+        (8, 64, 16, 8, 16, 0b10101010),
     ],
 )
 def test_openenoc_axis_shared_fabric_switch(
     request,
+    num_interfaces,
     data_w,
     fabric_data_w,
     table_depth,
     port_fifo_depth,
+    port_side,
 ):
     module = os.path.splitext(os.path.basename(__file__))[0]
 
@@ -693,13 +798,14 @@ def test_openenoc_axis_shared_fabric_switch(
     ]
 
     parameters = {
-        "NUM_OF_INTERFACES": 4,
+        "NUM_OF_INTERFACES": num_interfaces,
         "TABLE_DEPTH": table_depth,
         "DATA_W": data_w,
         "KEEP_W": data_w // 8,
         "KEEP_EN": int(data_w > 8),
         "FABRIC_DATA_W": fabric_data_w,
         "PORT_FIFO_DEPTH": port_fifo_depth,
+        "PORT_SIDE": port_side,
     }
 
     extra_env = {f"PARAM_{key}": str(value) for key, value in parameters.items()}

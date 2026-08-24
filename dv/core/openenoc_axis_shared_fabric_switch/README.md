@@ -10,17 +10,18 @@ module. The switch combines per-port clock-domain and data-width adapters, a
 frame-aware round-robin AXI Stream arbiter/multiplexer, the openENOC forwarding
 engine and forwarding table, and a bitmap-routed AXI Stream demultiplexer.
 
-The test wrapper instantiates the switch, four `openenoc_eth_if` links, and one
-`openenoc_switch_if`. The generated CSR register block is intentionally not
-instantiated. Flattened testbench signals drive the control fields of
-`openenoc_switch_if` directly from cocotb and expose the corresponding status
-and acknowledge signals.
+The test wrapper instantiates the switch, a parameterized array of
+`openenoc_eth_if` links, and one `openenoc_switch_if`. The default Makefile
+configuration uses four links. The generated CSR register block is
+intentionally not instantiated. Flattened testbench signals drive the control
+fields of `openenoc_switch_if` directly from cocotb and expose the corresponding
+status and acknowledge signals.
 
-All ports use side A externally while the switch uses side B. Cocotb therefore
-transmits frames through `a2b` and receives them through `b2a`. Constant-index
-AXI Stream bridges expose these directions as `port_rx_axis` and
-`port_tx_axis`; this avoids unreliable VPI access to nested interface arrays
-with Verilator.
+The wrapper acts as the peer opposite each switch port. For a side-B switch
+port it transmits through `a2b` and receives through `b2a`; those directions are
+reversed for a side-A switch port. Constant-index AXI Stream bridges expose both
+cases uniformly as `port_rx_axis` and `port_tx_axis`. This also avoids
+unreliable VPI access to nested interface arrays with Verilator.
 
 ## Datapath Under Test
 
@@ -76,11 +77,18 @@ export PARAM_KEEP_W := 4
 export PARAM_KEEP_EN := 1
 export PARAM_FABRIC_DATA_W := 32
 export PARAM_PORT_FIFO_DEPTH := 64
+export PARAM_PORT_SIDE := 15
 ```
 
 `NUM_OF_INTERFACES` must be in the range 2 to 32, `TABLE_DEPTH` must be at
-least one, and `FABRIC_DATA_W` must be a multiple of eight. The current basic
-configuration gives all external ports the same clock and 32-bit data width.
+least one, and `FABRIC_DATA_W` must be a multiple of eight. Each external port
+must use 8-bit byte lanes, and its byte-lane count and the fabric byte-lane
+count must have an integer ratio. `PORT_FIFO_DEPTH` is expressed in bytes. It
+must be an exact multiple of the wider stream's byte-lane count, and the
+resulting number of widest-side words must be a power of two and at least two.
+Bit `n` of `PORT_SIDE` selects side A (`0`) or side B (`1`) for port `n`. The
+default configuration gives all external ports the same clock and 32-bit data
+width.
 
 ## Running Tests
 
@@ -129,6 +137,9 @@ Remove generated test artifacts with:
 - Preservation of frame data and `tdest`
 - Detection of frames delivered to unexpected egress ports
 - Pause request and pause-done sequencing before managed table updates
+- Pause requests asserted while a frame is active
+- CPU readback through the switch CSR bridge
+- Side-A, side-B, and mixed port orientations
 
 **Scenarios:**
 
@@ -160,6 +171,11 @@ Remove generated test artifacts with:
     port 2, and a subsequent lookup must use the updated location.
 - `test_multicast_with_output_backpressure`: eight multicast frames traverse
     two independently stalled outputs without loss, duplication, or reordering.
+- `test_managed_table_cpu_readback`: the highest valid table entry is written
+    and all four CSR words are read back through the switch interface.
+- `test_pause_completes_current_frame_and_blocks_next`: pause is asserted after
+    arbitration starts a long frame; that frame drains, the next frame remains
+    blocked, and forwarding resumes only after pause is released.
 
 **TestFactory matrix:**
 
@@ -178,18 +194,19 @@ ports.
 
 **Pytest parameter sweep:**
 
-The pytest runner repeats the complete explicit-test and TestFactory suite for
-the following `(DATA_W, FABRIC_DATA_W, TABLE_DEPTH, PORT_FIFO_DEPTH)` tuples:
+The pytest runner repeats all 14 directed tests and 12 TestFactory cases for
+the following `(NUM_OF_INTERFACES, DATA_W, FABRIC_DATA_W, TABLE_DEPTH,
+PORT_FIFO_DEPTH, PORT_SIDE)` tuples:
 
-- `(8, 32, 5, 64)`
-- `(16, 64, 8, 64)`
-- `(32, 32, 8, 64)`
-- `(64, 16, 8, 128)`
+- `(4, 8, 32, 5, 64, 0b1111)`
+- `(5, 24, 48, 8, 48, 0b10101)`
+- `(4, 32, 32, 8, 64, 0b0000)`
+- `(8, 64, 16, 8, 16, 0b10101010)`
 
-This covers width expansion, equal-width transfer, width contraction, a
-non-power-of-two forwarding-table depth, and two FIFO depths. The interface
-count remains four because the directed integration scenarios intentionally
-exercise all four bitmap positions.
+This covers four, five, and eight interfaces; width expansion, equal-width
+transfer, and width contraction; power-of-two and non-power-of-two stream
+widths; a non-power-of-two forwarding-table depth; a minimum-size two-word
+FIFO; and all-A, all-B, and mixed port orientations.
 
-Independent port clocks, mixed external data widths, CPU reads, and table-full
-replacement behavior are not yet covered by this suite.
+Independent port clocks, heterogeneous widths between ports, `TABLE_DEPTH=1`,
+and table-full replacement behavior are not yet covered by this suite.

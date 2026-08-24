@@ -149,7 +149,8 @@ module openenoc_axis_forwarding_engine #
     wire accept_frame_data = state_reg == ST_PARSE_DA ||
                             state_reg == ST_PARSE_SA ||
                             (state_reg == ST_RELEASE && !frame_input_done_reg);
-    wire pause_new_frame = pause_request && state_reg == ST_PARSE_DA;
+    wire at_frame_boundary = state_reg == ST_PARSE_DA && byte_count_reg == '0;
+    wire pause_new_frame = pause_request && at_frame_boundary;
     wire accept_enable = accept_frame_data && !pause_new_frame;
 
     assign buffer_s_axis.tdata  = s_axis.tdata;
@@ -331,7 +332,7 @@ module openenoc_axis_forwarding_engine #
 
     // A pause is complete only at a frame boundary after the register pipeline has
     // drained. No new frame is accepted while pause_request remains asserted.
-    assign pause_done = pause_request && state_reg == ST_PARSE_DA &&
+    assign pause_done = pause_request && at_frame_boundary &&
                         !buffer_m_axis.tvalid && !lookup_req && !learning_req;
 
 endmodule
