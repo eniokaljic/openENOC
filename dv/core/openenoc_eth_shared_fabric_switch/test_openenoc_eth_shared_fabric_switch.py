@@ -770,7 +770,7 @@ hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "rtl")
         (8, 64, 16, 8, 16, 0b10101010),
     ],
 )
-def test_openenoc_axis_shared_fabric_switch(
+def test_openenoc_eth_shared_fabric_switch(
     request,
     num_interfaces,
     data_w,
@@ -798,7 +798,7 @@ def test_openenoc_axis_shared_fabric_switch(
         os.path.join(core_dir, "openenoc_axis_demux.sv"),
         os.path.join(core_dir, "openenoc_axis_forwarding_engine.sv"),
         os.path.join(core_dir, "openenoc_forwarding_table.sv"),
-        os.path.join(core_dir, "openenoc_axis_shared_fabric_switch.sv"),
+        os.path.join(core_dir, "openenoc_eth_shared_fabric_switch.sv"),
         os.path.join(tests_dir, f"{module}.sv"),
     ]
 

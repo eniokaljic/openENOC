@@ -11,7 +11,7 @@
  * The real CSR block is intentionally not instantiated.  Cocotb drives the
  * flattened control signals below, which are bridged directly to switch_if.
  */
-module test_openenoc_axis_shared_fabric_switch #
+module test_openenoc_eth_shared_fabric_switch #
 (
     /* verilator lint_off WIDTHTRUNC */
     parameter int NUM_OF_INTERFACES = 4,
@@ -172,7 +172,7 @@ module test_openenoc_axis_shared_fabric_switch #
         end
     end
 
-    openenoc_axis_shared_fabric_switch #(
+    openenoc_eth_shared_fabric_switch #(
         .NUM_OF_INTERFACES (NUM_OF_INTERFACES),
         .TABLE_DEPTH       (TABLE_DEPTH),
         .FABRIC_DATA_W     (FABRIC_DATA_W),

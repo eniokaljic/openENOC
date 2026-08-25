@@ -6,7 +6,7 @@ export PATH=/usr/bin:$PATH
 
 if [ "$1" = "pytest" ]; then
     rm -rf sim_build
-    pytest test_openenoc_axis_shared_fabric_switch.py -v
+    pytest test_openenoc_eth_shared_fabric_switch.py -v
 elif [ "$1" = "waves" ]; then
     rm -rf sim_build
     WAVES=1 make

@@ -5,7 +5,7 @@
 
 ## Overview
 
-This integration suite validates the `openenoc_axis_shared_fabric_switch`
+This integration suite validates the `openenoc_eth_shared_fabric_switch`
 module. The switch combines per-port clock-domain and data-width adapters, a
 frame-aware round-robin AXI Stream arbiter/multiplexer, the openENOC forwarding
 engine and forwarding table, and a bitmap-routed AXI Stream demultiplexer.
