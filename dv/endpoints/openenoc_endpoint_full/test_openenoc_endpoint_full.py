@@ -60,7 +60,7 @@ async def test_csr_smoke_firmware(dut):
 
     dut.rst.value = 0
 
-    for _ in range(EXECUTION_TIMEOUT_CYCLES):
+    for execution_cycles in range(1, EXECUTION_TIMEOUT_CYCLES + 1):
         await RisingEdge(dut.clk)
 
         assert signal_integer(dut.cpu_trap) == 0, "PicoRV32 entered trap state"
@@ -71,6 +71,9 @@ async def test_csr_smoke_firmware(dut):
         assert status != CSR_SMOKE_FAILED, "csr_smoke firmware reported failure"
 
         if status == CSR_SMOKE_PASSED:
+            cocotb.log.info(
+                "csr_smoke completed in %d execution cycles", execution_cycles
+            )
             break
     else:
         raise AssertionError(
@@ -139,8 +142,11 @@ def test_openenoc_endpoint_full(request):
         os.path.join(hal_if_dir, "openenoc_endpoint_if.sv"),
         os.path.join(hal_if_dir, "openenoc_switch_if.sv"),
         os.path.join(taxi_axis_dir, "taxi_axis_if.sv"),
-        os.path.join(taxi_axi_dir, "taxi_axil_crossbar.f"),
+        os.path.join(taxi_axi_dir, "taxi_axil_if.sv"),
+        os.path.join(core_dir, "openenoc_axil_crossbar.f"),
         os.path.join(picorv32_dir, "picorv32.v"),
+        os.path.join(core_dir, "openenoc_picorv32_axil_adapter.sv"),
+        os.path.join(core_dir, "openenoc_picorv32.sv"),
         os.path.join(core_dir, "openenoc_eth_if.sv"),
         os.path.join(core_dir, "openenoc_axil_ram.sv"),
         os.path.join(hal_rtl_dir, "openenoc_endpoint_full_csr.sv"),

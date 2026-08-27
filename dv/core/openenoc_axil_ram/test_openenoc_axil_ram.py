@@ -10,7 +10,7 @@ import cocotb
 import cocotb_test.simulator
 import pytest
 from cocotb.clock import Clock
-from cocotb.triggers import RisingEdge
+from cocotb.triggers import FallingEdge, ReadOnly, RisingEdge, Timer
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 from cocotb.regression import TestFactory
 TestFactory.__test__ = False
@@ -27,12 +27,18 @@ def cycle_pause(pattern=(1, 1, 1, 0)):
     return itertools.cycle(pattern)
 
 
+def random_pause(seed, pause_probability=0.35):
+    rng = random.Random(seed)
+    while True:
+        yield rng.random() < pause_probability
+
+
 def assert_okay(response):
     assert int(response.resp) == 0, f"Expected AXI OKAY response, got {response.resp}"
 
 
 class TB:
-    def __init__(self, dut):
+    def __init__(self, dut, create_master=True):
         self.dut = dut
 
         self.log = logging.getLogger("cocotb.tb")
@@ -40,9 +46,13 @@ class TB:
 
         cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
 
-        self.axil_master = AxiLiteMaster(
-            AxiLiteBus.from_entity(dut.s_axil), dut.clk, dut.rst
-        )
+        self.axil_master = None
+        if create_master:
+            self.axil_master = AxiLiteMaster(
+                AxiLiteBus.from_entity(dut.s_axil), dut.clk, dut.rst
+            )
+        else:
+            self.drive_axil_idle()
 
     @property
     def aperture(self):
@@ -67,6 +77,39 @@ class TB:
         self.axil_master.read_if.r_channel.set_pause_generator(
             cycle_pause((1, 0, 1, 1, 0))
         )
+
+    def set_random_pause_generators(self):
+        self.axil_master.write_if.aw_channel.set_pause_generator(
+            random_pause(0xA001)
+        )
+        self.axil_master.write_if.w_channel.set_pause_generator(
+            random_pause(0xA002)
+        )
+        self.axil_master.read_if.ar_channel.set_pause_generator(
+            random_pause(0xA003)
+        )
+        self.axil_master.write_if.b_channel.set_pause_generator(
+            random_pause(0xB001)
+        )
+        self.axil_master.read_if.r_channel.set_pause_generator(
+            random_pause(0xB002)
+        )
+
+    def drive_axil_idle(self):
+        self.dut.s_axil.awaddr.value = 0
+        self.dut.s_axil.awprot.value = 0
+        self.dut.s_axil.awuser.value = 0
+        self.dut.s_axil.awvalid.value = 0
+        self.dut.s_axil.wdata.value = 0
+        self.dut.s_axil.wstrb.value = 0
+        self.dut.s_axil.wuser.value = 0
+        self.dut.s_axil.wvalid.value = 0
+        self.dut.s_axil.bready.value = 0
+        self.dut.s_axil.araddr.value = 0
+        self.dut.s_axil.arprot.value = 0
+        self.dut.s_axil.aruser.value = 0
+        self.dut.s_axil.arvalid.value = 0
+        self.dut.s_axil.rready.value = 0
 
     async def reset(self):
         self.dut.rst.setimmediatevalue(0)
@@ -231,7 +274,7 @@ async def test_005_concurrent_read_and_write_channels(dut):
 async def test_006_randomized_access_with_backpressure(dut):
     tb = TB(dut)
     await tb.reset()
-    tb.set_stress_pause_generators()
+    tb.set_random_pause_generators()
 
     rng = random.Random(0x0E10C)
     region_address = tb.aperture // 4
@@ -259,6 +302,244 @@ async def test_006_randomized_access_with_backpressure(dut):
     response = await tb.axil_master.read(region_address, region_size)
     assert_okay(response)
     assert response.data == model
+
+
+async def manual_read_words(tb, addresses):
+    dut = tb.dut
+    responses = []
+    request_index = 0
+
+    dut.s_axil.rready.value = 1
+
+    while len(responses) < len(addresses):
+        await FallingEdge(dut.clk)
+
+        if request_index < len(addresses):
+            dut.s_axil.arvalid.value = 1
+            dut.s_axil.araddr.value = addresses[request_index]
+        else:
+            dut.s_axil.arvalid.value = 0
+
+        await Timer(1, unit="ns")
+
+        ar_fire = (
+            int(dut.s_axil.arvalid.value) and
+            int(dut.s_axil.arready.value)
+        )
+        if int(dut.s_axil.rvalid.value):
+            assert int(dut.s_axil.rresp.value) == 0
+            responses.append(int(dut.s_axil.rdata.value))
+
+        if request_index < len(addresses):
+            assert int(dut.s_axil.arready.value) == 1, (
+                "ARREADY inserted a bubble with no read-response backpressure"
+            )
+
+        await RisingEdge(dut.clk)
+        await ReadOnly()
+
+        if ar_fire:
+            request_index += 1
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.arvalid.value = 0
+    dut.s_axil.rready.value = 0
+    return responses
+
+
+@cocotb.test()
+async def test_007_bubble_free_read_and_write_throughput(dut):
+    tb = TB(dut, create_master=False)
+    await tb.reset()
+
+    word_count = 24
+    byte_lanes = tb.byte_lanes
+    data_mask = (1 << parameter_int("DATA_W")) - 1
+    base_address = tb.aperture // 2
+    addresses = [base_address + index * byte_lanes for index in range(word_count)]
+    values = [
+        (0x31_4159_26 ^ (index * 0x0101_0101)) & data_mask
+        for index in range(word_count)
+    ]
+
+    dut.s_axil.bready.value = 1
+    response_count = 0
+
+    for address, value in zip(addresses, values):
+        await FallingEdge(dut.clk)
+        dut.s_axil.awaddr.value = address
+        dut.s_axil.awvalid.value = 1
+        dut.s_axil.wdata.value = value
+        dut.s_axil.wstrb.value = (1 << byte_lanes) - 1
+        dut.s_axil.wvalid.value = 1
+        await Timer(1, unit="ns")
+
+        assert int(dut.s_axil.awready.value) == 1, (
+            "AWREADY inserted a bubble with no write-response backpressure"
+        )
+        assert int(dut.s_axil.wready.value) == 1, (
+            "WREADY inserted a bubble with no write-response backpressure"
+        )
+        if int(dut.s_axil.bvalid.value):
+            assert int(dut.s_axil.bresp.value) == 0
+            response_count += 1
+
+        await RisingEdge(dut.clk)
+        await ReadOnly()
+        assert int(dut.s_axil.bvalid.value) == 1
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.awvalid.value = 0
+    dut.s_axil.wvalid.value = 0
+    await Timer(1, unit="ns")
+    if int(dut.s_axil.bvalid.value):
+        response_count += 1
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+    assert response_count == word_count
+    assert int(dut.s_axil.bvalid.value) == 0
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.bready.value = 0
+
+    responses = await manual_read_words(tb, addresses)
+    assert responses == values
+
+
+@cocotb.test()
+async def test_008_independent_write_buffers_and_response_holding(dut):
+    tb = TB(dut, create_master=False)
+    await tb.reset()
+
+    byte_lanes = tb.byte_lanes
+    data_mask = (1 << parameter_int("DATA_W")) - 1
+    strobe = (1 << byte_lanes) - 1
+    first_address = tb.aperture // 4
+    second_address = first_address + byte_lanes
+    first_data = 0xA5A5_5A5A & data_mask
+    second_data = 0xC33C_0FF0 & data_mask
+
+    # Capture AW first, then W several cycles later.
+    await FallingEdge(dut.clk)
+    dut.s_axil.awaddr.value = first_address
+    dut.s_axil.awvalid.value = 1
+    await Timer(1, unit="ns")
+    assert int(dut.s_axil.awready.value) == 1
+    assert int(dut.s_axil.wready.value) == 1
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.awvalid.value = 0
+    dut.s_axil.wdata.value = first_data
+    dut.s_axil.wstrb.value = strobe
+    dut.s_axil.wvalid.value = 1
+    await Timer(1, unit="ns")
+    assert int(dut.s_axil.wready.value) == 1
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+    assert int(dut.s_axil.bvalid.value) == 1
+
+    # BVALID must remain asserted, and one additional AW/W pair may buffer.
+    await FallingEdge(dut.clk)
+    dut.s_axil.wvalid.value = 0
+    dut.s_axil.awaddr.value = second_address
+    dut.s_axil.awvalid.value = 1
+    dut.s_axil.wdata.value = second_data
+    dut.s_axil.wstrb.value = strobe
+    dut.s_axil.wvalid.value = 1
+    await Timer(1, unit="ns")
+    assert int(dut.s_axil.awready.value) == 1
+    assert int(dut.s_axil.wready.value) == 1
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.awvalid.value = 0
+    dut.s_axil.wvalid.value = 0
+    held_response = (
+        int(dut.s_axil.bvalid.value),
+        int(dut.s_axil.bresp.value),
+    )
+    assert held_response == (1, 0)
+
+    for _ in range(4):
+        await RisingEdge(dut.clk)
+        await ReadOnly()
+        assert (
+            int(dut.s_axil.bvalid.value),
+            int(dut.s_axil.bresp.value),
+        ) == held_response
+        assert int(dut.s_axil.awready.value) == 0
+        assert int(dut.s_axil.wready.value) == 0
+
+    # Consuming response 0 simultaneously commits buffered write 1.
+    await FallingEdge(dut.clk)
+    dut.s_axil.bready.value = 1
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+    assert int(dut.s_axil.bvalid.value) == 1
+
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+    assert int(dut.s_axil.bvalid.value) == 0
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.bready.value = 0
+    responses = await manual_read_words(tb, [first_address, second_address])
+    assert responses == [first_data, second_data]
+
+
+@cocotb.test()
+async def test_009_read_response_holding_and_payload_stability(dut):
+    tb = TB(dut, create_master=False)
+    await tb.reset()
+
+    address = 0
+    dut.s_axil.rready.value = 0
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.araddr.value = address
+    dut.s_axil.arvalid.value = 1
+    await Timer(1, unit="ns")
+    assert int(dut.s_axil.arready.value) == 1
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.arvalid.value = 0
+
+    for _ in range(4):
+        await Timer(1, unit="ns")
+        if int(dut.s_axil.rvalid.value):
+            break
+        await RisingEdge(dut.clk)
+        await ReadOnly()
+        await FallingEdge(dut.clk)
+    else:
+        raise AssertionError("Read response did not reach the AXI output")
+
+    held_payload = (
+        int(dut.s_axil.rdata.value),
+        int(dut.s_axil.rresp.value),
+        int(dut.s_axil.ruser.value),
+    )
+
+    for _ in range(5):
+        await RisingEdge(dut.clk)
+        await ReadOnly()
+        assert int(dut.s_axil.rvalid.value) == 1
+        assert (
+            int(dut.s_axil.rdata.value),
+            int(dut.s_axil.rresp.value),
+            int(dut.s_axil.ruser.value),
+        ) == held_payload
+
+    await FallingEdge(dut.clk)
+    dut.s_axil.rready.value = 1
+    await RisingEdge(dut.clk)
+    await ReadOnly()
+    assert int(dut.s_axil.rvalid.value) == 0
 
 
 # Pytest simulation runner

@@ -9,11 +9,11 @@ This test suite verifies the `openenoc_endpoint_full` SoC wrapper with the
 `csr_smoke` PicoRV32 firmware from
 `build/sw/openenoc_endpoint_full/imem.mem`.
 
-The endpoint contains a 3-by-3 Taxi AXI4-Lite crossbar. System initiators are
-ordered as PicoRV32, the reserved endpoint-interface master, and the reserved
-debug/program master. Targets are ordered as DMEM, IMEM, and CSR. The two
-reserved initiators are tied inactive, while the crossbar keeps all target
-connections enabled for the later integration steps.
+The endpoint contains a 3-by-3 pipelined `openenoc_axil_crossbar`. System
+initiators are ordered as PicoRV32, the reserved endpoint-interface master,
+and the reserved debug/program master. Targets are ordered as DMEM, IMEM, and
+CSR. The two reserved initiators are tied inactive, while the crossbar keeps
+all target connections enabled for the later integration steps.
 
 The generated CSR `hwif` is internal to the endpoint. An
 `openenoc_endpoint_if` instance connects the endpoint side of the generated
@@ -22,6 +22,11 @@ CSR bridge, while the module exposes the bridge's `openenoc_switch_if` side.
 The crossbar arrays are connected through individually named internal Taxi
 interfaces: `cpu_axil`, `endpoint_axil`, `debug_axil`, `dmem_axil`,
 `imem_axil`, and `csr_axil`.
+
+The CPU initiator uses the `openenoc_picorv32` drop-in wrapper around the
+original PicoRV32 core and the project AXI4-Lite adapter. Consequently this
+suite is also the integration acceptance test for the wrapper and adapter;
+they do not have a separate wrapper-only testbench.
 
 ## Address Map
 

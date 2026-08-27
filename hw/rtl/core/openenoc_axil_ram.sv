@@ -62,17 +62,49 @@ module openenoc_axil_ram #
         $fatal(0, "Error: AXI address width is insufficient (instance %m)");
     end
 
-    logic mem_wr_en;
-    logic mem_rd_en;
+    /*
+     * AXI4-Lite write frontend. AW and W are buffered independently and the
+     * buffers are fall-through when empty.
+     */
+    logic aw_buf_valid_reg;
+    logic [VALID_ADDR_W-1:0] aw_buf_addr_reg;
+    logic w_buf_valid_reg;
+    logic [DATA_W-1:0] w_buf_data_reg;
+    logic [STRB_W-1:0] w_buf_strb_reg;
+    logic bvalid_reg;
 
-    logic s_axil_awready_reg, s_axil_awready_next;
-    logic s_axil_wready_reg, s_axil_wready_next;
-    logic s_axil_bvalid_reg, s_axil_bvalid_next;
-    logic s_axil_arready_reg, s_axil_arready_next;
-    logic [DATA_W-1:0] s_axil_rdata_reg;
-    logic s_axil_rvalid_reg, s_axil_rvalid_next;
-    logic [DATA_W-1:0] s_axil_rdata_pipe_reg;
-    logic s_axil_rvalid_pipe_reg;
+    wire logic write_response_ready = !bvalid_reg || s_axil_wr.bready;
+    wire logic write_commit = !rst && write_response_ready &&
+        (aw_buf_valid_reg || s_axil_wr.awvalid) &&
+        (w_buf_valid_reg || s_axil_wr.wvalid);
+
+    wire logic aw_fire = s_axil_wr.awvalid && s_axil_wr.awready;
+    wire logic w_fire = s_axil_wr.wvalid && s_axil_wr.wready;
+
+    wire logic [VALID_ADDR_W-1:0] s_axil_awaddr_valid =
+        VALID_ADDR_W'(s_axil_wr.awaddr >> ADDR_LSB);
+    wire logic [VALID_ADDR_W-1:0] mem_wr_addr =
+        aw_buf_valid_reg ? aw_buf_addr_reg : s_axil_awaddr_valid;
+    wire logic [DATA_W-1:0] mem_wr_data =
+        w_buf_valid_reg ? w_buf_data_reg : s_axil_wr.wdata;
+    wire logic [STRB_W-1:0] mem_wr_strb =
+        w_buf_valid_reg ? w_buf_strb_reg : s_axil_wr.wstrb;
+
+    /*
+     * AXI4-Lite read frontend. The RAM output is an elastic response stage;
+     * PIPELINE_OUTPUT adds a second elastic output register.
+     */
+    logic read_valid_reg;
+    logic [DATA_W-1:0] mem_rd_data_reg;
+    logic read_pipe_valid_reg;
+    logic [DATA_W-1:0] read_pipe_data_reg;
+
+    wire logic read_output_ready = PIPELINE_OUTPUT ?
+        (!read_pipe_valid_reg || s_axil_rd.rready) : s_axil_rd.rready;
+    wire logic read_stage_ready = !read_valid_reg || read_output_ready;
+    wire logic mem_rd_en = s_axil_rd.arvalid && s_axil_rd.arready;
+    wire logic [VALID_ADDR_W-1:0] mem_rd_addr =
+        VALID_ADDR_W'(s_axil_rd.araddr >> ADDR_LSB);
 
     logic [DATA_W-1:0] mem[0:DEPTH-1];
 
@@ -86,92 +118,83 @@ module openenoc_axil_ram #
         end
     end
 
-    wire [VALID_ADDR_W-1:0] s_axil_awaddr_valid = VALID_ADDR_W'(s_axil_wr.awaddr >> ADDR_LSB);
-    wire [VALID_ADDR_W-1:0] s_axil_araddr_valid = VALID_ADDR_W'(s_axil_rd.araddr >> ADDR_LSB);
-
-    assign s_axil_wr.awready = s_axil_awready_reg;
-    assign s_axil_wr.wready = s_axil_wready_reg;
+    assign s_axil_wr.awready = !rst &&
+        (!aw_buf_valid_reg || (write_commit && aw_buf_valid_reg));
+    assign s_axil_wr.wready = !rst &&
+        (!w_buf_valid_reg || (write_commit && w_buf_valid_reg));
     assign s_axil_wr.bresp = 2'b00;
     assign s_axil_wr.buser = '0;
-    assign s_axil_wr.bvalid = s_axil_bvalid_reg;
+    assign s_axil_wr.bvalid = bvalid_reg;
 
-    assign s_axil_rd.arready = s_axil_arready_reg;
-    assign s_axil_rd.rdata = PIPELINE_OUTPUT ? s_axil_rdata_pipe_reg : s_axil_rdata_reg;
+    assign s_axil_rd.arready = !rst && read_stage_ready;
+    assign s_axil_rd.rdata = PIPELINE_OUTPUT ? read_pipe_data_reg : mem_rd_data_reg;
     assign s_axil_rd.rresp = 2'b00;
     assign s_axil_rd.ruser = '0;
-    assign s_axil_rd.rvalid = PIPELINE_OUTPUT ? s_axil_rvalid_pipe_reg : s_axil_rvalid_reg;
+    assign s_axil_rd.rvalid = PIPELINE_OUTPUT ? read_pipe_valid_reg : read_valid_reg;
 
-    always_comb begin
-        mem_wr_en = 1'b0;
+    /* AXI4-Lite write channel and response buffering. */
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            aw_buf_valid_reg <= 1'b0;
+            w_buf_valid_reg <= 1'b0;
+            bvalid_reg <= 1'b0;
+        end else begin
+            bvalid_reg <= write_commit || (bvalid_reg && !s_axil_wr.bready);
 
-        s_axil_awready_next = 1'b0;
-        s_axil_wready_next = 1'b0;
-        s_axil_bvalid_next = s_axil_bvalid_reg && !s_axil_wr.bready;
+            aw_buf_valid_reg <=
+                (aw_buf_valid_reg && !write_commit) ||
+                (aw_fire && (aw_buf_valid_reg || !write_commit));
+            if (aw_fire && (aw_buf_valid_reg || !write_commit)) begin
+                aw_buf_addr_reg <= s_axil_awaddr_valid;
+            end
 
-        if (s_axil_wr.awvalid && s_axil_wr.wvalid &&
-                (!s_axil_wr.bvalid || s_axil_wr.bready) &&
-                (!s_axil_wr.awready && !s_axil_wr.wready)) begin
-            s_axil_awready_next = 1'b1;
-            s_axil_wready_next = 1'b1;
-            s_axil_bvalid_next = 1'b1;
-
-            mem_wr_en = 1'b1;
+            w_buf_valid_reg <=
+                (w_buf_valid_reg && !write_commit) ||
+                (w_fire && (w_buf_valid_reg || !write_commit));
+            if (w_fire && (w_buf_valid_reg || !write_commit)) begin
+                w_buf_data_reg <= s_axil_wr.wdata;
+                w_buf_strb_reg <= s_axil_wr.wstrb;
+            end
         end
     end
 
+    /* AXI4-Lite read channel and response buffering. */
     always_ff @(posedge clk) begin
         if (rst) begin
-            s_axil_awready_reg <= 1'b0;
-            s_axil_wready_reg <= 1'b0;
-            s_axil_bvalid_reg <= 1'b0;
+            read_valid_reg <= 1'b0;
+            read_pipe_valid_reg <= 1'b0;
         end else begin
-            s_axil_awready_reg <= s_axil_awready_next;
-            s_axil_wready_reg <= s_axil_wready_next;
-            s_axil_bvalid_reg <= s_axil_bvalid_next;
+            if (read_stage_ready) begin
+                read_valid_reg <= mem_rd_en;
+            end
 
-            for (integer i = 0; i < BYTE_LANES; i = i + 1) begin
-                if (mem_wr_en && s_axil_wr.wstrb[i]) begin
-                    mem[s_axil_awaddr_valid][BYTE_W*i +: BYTE_W] <= s_axil_wr.wdata[BYTE_W*i +: BYTE_W];
+            if (PIPELINE_OUTPUT && read_output_ready) begin
+                read_pipe_valid_reg <= read_valid_reg;
+                if (read_valid_reg) begin
+                    read_pipe_data_reg <= mem_rd_data_reg;
                 end
             end
         end
     end
 
-    always_comb begin
-        mem_rd_en = 1'b0;
-
-        s_axil_arready_next = 1'b0;
-        s_axil_rvalid_next = s_axil_rvalid_reg &&
-            !(s_axil_rd.rready || (PIPELINE_OUTPUT && !s_axil_rvalid_pipe_reg));
-
-        if (s_axil_rd.arvalid &&
-                (!s_axil_rd.rvalid || s_axil_rd.rready ||
-                    (PIPELINE_OUTPUT && !s_axil_rvalid_pipe_reg)) &&
-                !s_axil_rd.arready) begin
-            s_axil_arready_next = 1'b1;
-            s_axil_rvalid_next = 1'b1;
-
-            mem_rd_en = 1'b1;
+    /*
+     * Canonical byte-enabled synchronous RAM write port.
+     */
+    always_ff @(posedge clk) begin
+        for (integer i = 0; i < BYTE_LANES; i = i + 1) begin
+            if (write_commit && mem_wr_strb[i]) begin
+                mem[mem_wr_addr][BYTE_W*i +: BYTE_W] <=
+                    mem_wr_data[BYTE_W*i +: BYTE_W];
+            end
         end
     end
 
+    /*
+     * Canonical synchronous RAM read port.
+     */
     always_ff @(posedge clk) begin
-        if (rst) begin
-            s_axil_arready_reg <= 1'b0;
-            s_axil_rvalid_reg <= 1'b0;
-            s_axil_rvalid_pipe_reg <= 1'b0;
-        end else begin
-            s_axil_arready_reg <= s_axil_arready_next;
-            s_axil_rvalid_reg <= s_axil_rvalid_next;
-
-            if (mem_rd_en) begin
-                s_axil_rdata_reg <= mem[s_axil_araddr_valid];
-            end
-
-            if (!s_axil_rvalid_pipe_reg || s_axil_rd.rready) begin
-                s_axil_rdata_pipe_reg <= s_axil_rdata_reg;
-                s_axil_rvalid_pipe_reg <= s_axil_rvalid_reg;
-            end
+        if (mem_rd_en) begin
+            mem_rd_data_reg <= mem[mem_rd_addr];
         end
     end
 

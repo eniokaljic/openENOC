@@ -31,7 +31,9 @@ The cocotb suite covers:
 - memory-content preservation across reset;
 - independent and concurrent AXI read and write channels;
 - independent AW and W arrival timing;
-- request idle insertion and response backpressure;
+- bubble-free back-to-back AW/W and AR transfers when responses are accepted;
+- stable `B` and `R` responses while backpressured;
+- request idle insertion and randomized channel/response backpressure;
 - deterministic randomized read/write stress;
 - `OKAY` read and write responses.
 

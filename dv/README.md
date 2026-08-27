@@ -16,31 +16,12 @@ individual test suites use a consistent tool setup.
 ```text
 dv/
 ├── common/
-│   └── config.vlt
 ├── core/
-│   ├── openenoc_axil_ram/
-│   ├── openenoc_axis_demux/
-│   ├── openenoc_axis_header_parser/
-│   ├── openenoc_axis_switch/
-│   ├── openenoc_eth_adapter/
-│   └── openenoc_forwarding_table/
+│   └── .../
 ├── endpoints/
-│   └── openenoc_endpoint_full/
-│       ├── Makefile
-│       ├── README.md
-│       ├── run_tests.sh
-│       ├── test_openenoc_endpoint_full.py
-│       └── test_openenoc_endpoint_full.sv
+│   └── .../
 ├── hal/
-│   └── openenoc_endpoint_full/
-│       ├── Makefile
-│       ├── README.md
-│       ├── __init__.py
-│       ├── hardware_interface.py
-│       ├── hardware_test.py
-│       ├── rtl_simulator.py
-│       ├── testbench.py
-│       └── tests.py
+│   └── .../
 ├── traffic/
 ├── README.md
 └── requirements.txt
