@@ -337,7 +337,6 @@ module openenoc_eth_shared_fabric_switch #
         .m_axis (arb_axis)
     );
 
-    logic                              pause_done;
     logic                              lookup_req;
     logic [47:0]                       lookup_mac_addr;
     logic                              lookup_ack;
@@ -354,7 +353,7 @@ module openenoc_eth_shared_fabric_switch #
         .clk                  (clk),
         .rst                  (rst),
         .pause_request        (switch_if.csr_to_core.forwarding_control.pause_request.value),
-        .pause_done           (pause_done),
+        .pause_done           (switch_if.core_to_csr.forwarding_control.pause_done.next),
         .s_axis               (arb_axis),
         .m_axis               (forwarding_axis),
         .lookup_req           (lookup_req),
@@ -366,10 +365,6 @@ module openenoc_eth_shared_fabric_switch #
         .learning_port_bitmap (learning_port_bitmap),
         .learning_ack         (learning_ack)
     );
-
-    logic        cpuif_wr_ack;
-    logic        cpuif_rd_ack;
-    logic [31:0] cpuif_rd_data;
 
     openenoc_forwarding_table #(
         .NUM_OF_INTERFACES (NUM_OF_INTERFACES),
@@ -385,9 +380,9 @@ module openenoc_eth_shared_fabric_switch #
         .cpuif_req_is_wr      (switch_if.csr_to_core.forwarding_table.req_is_wr),
         .cpuif_wr_data        (switch_if.csr_to_core.forwarding_table.wr_data),
         .cpuif_wr_biten       (switch_if.csr_to_core.forwarding_table.wr_biten),
-        .cpuif_wr_ack         (cpuif_wr_ack),
-        .cpuif_rd_ack         (cpuif_rd_ack),
-        .cpuif_rd_data        (cpuif_rd_data),
+        .cpuif_wr_ack         (switch_if.core_to_csr.forwarding_table.wr_ack),
+        .cpuif_rd_ack         (switch_if.core_to_csr.forwarding_table.rd_ack),
+        .cpuif_rd_data        (switch_if.core_to_csr.forwarding_table.rd_data),
         .lookup_req           (lookup_req),
         .lookup_mac_addr      (lookup_mac_addr),
         .lookup_ack           (lookup_ack),
@@ -397,14 +392,6 @@ module openenoc_eth_shared_fabric_switch #
         .learning_port_bitmap (learning_port_bitmap),
         .learning_ack         (learning_ack)
     );
-
-    always_comb begin
-        switch_if.core_to_csr = '{default: '0};
-        switch_if.core_to_csr.forwarding_control.pause_done.next = pause_done;
-        switch_if.core_to_csr.forwarding_table.wr_ack = cpuif_wr_ack;
-        switch_if.core_to_csr.forwarding_table.rd_ack = cpuif_rd_ack;
-        switch_if.core_to_csr.forwarding_table.rd_data = cpuif_rd_data;
-    end
 
     /*
      * The forwarding engine places the egress port bitmap in tuser.  The
