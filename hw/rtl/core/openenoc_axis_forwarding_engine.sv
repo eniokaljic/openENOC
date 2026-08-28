@@ -261,8 +261,12 @@ module openenoc_axis_forwarding_engine #
 
             ST_WAIT_LOOKUP: begin
                 if (lookup_ack) begin
-                    forwarding_bitmap_reg <= lookup_port_bitmap &
-                                            ~port_onehot(ingress_port_reg);
+                    if (frame_input_done_reg &&
+                            byte_count_reg < BYTE_CNT_W'(HEADER_BYTES))
+                        forwarding_bitmap_reg <= '0;
+                    else
+                        forwarding_bitmap_reg <= lookup_port_bitmap &
+                                                ~port_onehot(ingress_port_reg);
 
                     // A wide beat may already contain the whole source address.
                     if (byte_count_reg >= BYTE_CNT_W'(HEADER_BYTES)) begin
@@ -289,7 +293,8 @@ module openenoc_axis_forwarding_engine #
                     learning_req <= 1'b1;
                     state_reg <= ST_WAIT_LEARNING;
                 end else if (s_fire && s_axis.tlast) begin
-                    // Incomplete SA: release after lookup, without learning.
+                    // Incomplete SA: release with no route and without learning.
+                    forwarding_bitmap_reg <= '0;
                     state_reg <= ST_RELEASE;
                 end
             end
