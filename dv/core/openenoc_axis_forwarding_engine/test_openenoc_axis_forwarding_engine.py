@@ -157,6 +157,80 @@ class TB:
         await self.cycle(2)
 
 # ----------------------------------------------------------------------
+# Standalone cocotb test cases
+# ----------------------------------------------------------------------
+
+@cocotb.test()
+async def test_incomplete_destination_address_sets_zero_bitmap(dut):
+    """Frames ending before the complete DA are not looked up or learned."""
+    tb = TB(dut)
+    await tb.reset()
+
+    ingress = min(2, tb.num_interfaces - 1)
+    model = ForwardingTableModel(tb, default_bitmap=tb.interface_mask)
+    model.start()
+
+    frames = []
+    for length in range(1, 6):
+        frame = AxiStreamFrame(make_frame(STATION_MAC + 0x30, 0, length))
+        frame.tid = ingress
+        frame.tdest = length
+        frames.append(frame)
+        await tb.source.send(frame)
+
+    for expected in frames:
+        received = await tb.sink.recv()
+        assert received.tdata == expected.tdata
+        assert received.tid == ingress
+        assert received.tdest == expected.tdest
+        assert received.tuser == 0
+
+    await tb.cycle(16)
+
+    assert model.lookups == []
+    assert model.learnings == []
+    assert tb.sink.empty()
+
+
+@cocotb.test()
+async def test_incomplete_source_address_sets_zero_bitmap(dut):
+    """Frames with a complete DA but incomplete SA are not routed or learned."""
+    tb = TB(dut)
+    await tb.reset()
+
+    destination = STATION_MAC + 0x30
+    ingress = min(2, tb.num_interfaces - 1)
+    egress = (ingress + 1) % tb.num_interfaces
+    model = ForwardingTableModel(
+        tb,
+        entries={destination: 1 << egress},
+        lookup_latency=2,
+        learning_latency=2,
+    )
+    model.start()
+
+    frames = []
+    for length in range(6, 12):
+        frame = AxiStreamFrame(make_frame(destination, STATION_MAC + length, length))
+        frame.tid = ingress
+        frame.tdest = length
+        frames.append(frame)
+        await tb.source.send(frame)
+
+    for expected in frames:
+        received = await tb.sink.recv()
+        assert received.tdata == expected.tdata
+        assert received.tid == ingress
+        assert received.tdest == expected.tdest
+        assert received.tuser == 0
+
+    await tb.cycle(16)
+
+    assert model.lookups == [destination] * len(frames)
+    assert model.learnings == []
+    assert tb.sink.empty()
+
+# ----------------------------------------------------------------------
 # TestFactory logic: idle and backpressure combinations
 # ----------------------------------------------------------------------
 
@@ -226,7 +300,7 @@ if getattr(cocotb, "top", None) is not None:
     factory = TestFactory(run_test_factory_lookup_learning_and_forwarding)
     factory.add_option("idle_inserter", [None, cycle_pause])
     factory.add_option("backpressure_inserter", [None, cycle_pause])
-    factory.add_option("handshake_latency", [2, 4, 8])
+    factory.add_option("handshake_latency", [2, 4, 256])
     factory.generate_tests()
 
 

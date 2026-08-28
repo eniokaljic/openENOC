@@ -82,7 +82,7 @@ forwarding bitmap fits on `m_axis.tuser`.
 
 ## Running Tests
 
-### Option 1: Make
+### Option 1: Cocotb (with waveform generation)
 Runs Cocotb tests based on the module configuration specified in the Makefile.
 ```bash
 ./run_tests.sh waves
@@ -105,15 +105,27 @@ Uses the pytest framework (test_openenoc_axis_forwarding_engine.py) to iterate t
 - Correct learning MAC address and one-hot ingress interface bitmap
 - Frame payload integrity and `tid`/`tdest` pass-through
 - Forwarding bitmap alignment on `m_axis.tuser`
+- Zero forwarding bitmap with no lookup or learning for incomplete 1-5 byte
+	destination addresses
+- Zero forwarding bitmap and no learning for incomplete 6-11 byte headers
 - Input stalling while lookup and learning acknowledgements are pending
 - Stable request payloads throughout configurable acknowledgement latency
+
+**Directed scenarios:**
+
+- `test_incomplete_destination_address_sets_zero_bitmap`: frames ending before
+	the complete six-byte destination address are released with `tuser = 0` and
+	do not generate lookup or learning requests.
+- `test_incomplete_source_address_sets_zero_bitmap`: frames containing a
+	complete six-byte destination address but an incomplete source address are
+	released with `tuser = 0` and do not generate learning requests.
 
 **Scenarios (TestFactory):**
 
 - Back-to-back frames with known and unknown destination MAC addresses
 - Frame lengths of 32, 60, 79, and 128 bytes
 - Idle insertion and output backpressure combinations
-- Lookup and learning acknowledgement latencies of 2, 4, and 8 cycles
+- Lookup and learning acknowledgement latencies of 2, 4, and 256 cycles
 
 **Parameter sweep (pytest):**
 

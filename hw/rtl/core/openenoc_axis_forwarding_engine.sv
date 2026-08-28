@@ -104,7 +104,7 @@ module openenoc_axis_forwarding_engine #
     /* verilator lint_on GENUNNAMED */
 
     function automatic logic [NUM_OF_INTERFACES-1:0] port_onehot(input logic [ID_W-1:0] index);
-        if (index < ID_W'(NUM_OF_INTERFACES))
+        if ({1'b0, index} < (ID_W+1)'(NUM_OF_INTERFACES))
             port_onehot = NUM_OF_INTERFACES'(1) << index;
         else
             port_onehot = '0;
@@ -149,7 +149,8 @@ module openenoc_axis_forwarding_engine #
     wire accept_frame_data = state_reg == ST_PARSE_DA ||
                             state_reg == ST_PARSE_SA ||
                             (state_reg == ST_RELEASE && !frame_input_done_reg);
-    wire pause_new_frame = pause_request && state_reg == ST_PARSE_DA;
+    wire at_frame_boundary = state_reg == ST_PARSE_DA && byte_count_reg == '0;
+    wire pause_new_frame = pause_request && at_frame_boundary;
     wire accept_enable = accept_frame_data && !pause_new_frame;
 
     assign buffer_s_axis.tdata  = s_axis.tdata;
@@ -260,8 +261,12 @@ module openenoc_axis_forwarding_engine #
 
             ST_WAIT_LOOKUP: begin
                 if (lookup_ack) begin
-                    forwarding_bitmap_reg <= lookup_port_bitmap &
-                                            ~port_onehot(ingress_port_reg);
+                    if (frame_input_done_reg &&
+                            byte_count_reg < BYTE_CNT_W'(HEADER_BYTES))
+                        forwarding_bitmap_reg <= '0;
+                    else
+                        forwarding_bitmap_reg <= lookup_port_bitmap &
+                                                ~port_onehot(ingress_port_reg);
 
                     // A wide beat may already contain the whole source address.
                     if (byte_count_reg >= BYTE_CNT_W'(HEADER_BYTES)) begin
@@ -288,7 +293,8 @@ module openenoc_axis_forwarding_engine #
                     learning_req <= 1'b1;
                     state_reg <= ST_WAIT_LEARNING;
                 end else if (s_fire && s_axis.tlast) begin
-                    // Incomplete SA: release after lookup, without learning.
+                    // Incomplete SA: release with no route and without learning.
+                    forwarding_bitmap_reg <= '0;
                     state_reg <= ST_RELEASE;
                 end
             end
@@ -331,7 +337,7 @@ module openenoc_axis_forwarding_engine #
 
     // A pause is complete only at a frame boundary after the register pipeline has
     // drained. No new frame is accepted while pause_request remains asserted.
-    assign pause_done = pause_request && state_reg == ST_PARSE_DA &&
+    assign pause_done = pause_request && at_frame_boundary &&
                         !buffer_m_axis.tvalid && !lookup_req && !learning_req;
 
 endmodule
