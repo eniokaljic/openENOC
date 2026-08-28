@@ -27,8 +27,11 @@ ALL_BITS = 0xFFFFFFFF
 # Helper functions for test frame generation
 # ----------------------------------------------------------------------
 
-def ethernet_frame(da, sa, payload):
-    return da.to_bytes(6, "big") + sa.to_bytes(6, "big") + bytes(payload)
+def ethernet_frame(da, sa, payload, ether_type=None):
+    header = da.to_bytes(6, "big") + sa.to_bytes(6, "big")
+    if ether_type is not None:
+        header += ether_type.to_bytes(2, "big")
+    return header + bytes(payload)
 
 def cycle_pause(pattern=(1, 1, 0, 0, 0)):
     return itertools.cycle(pattern)
@@ -423,6 +426,40 @@ async def test_zero_bitmap_drops_frame(dut):
 
 
 @cocotb.test()
+async def test_incomplete_destination_address_drops_frame(dut):
+    """Frames ending before the complete DA never reach an egress."""
+    tb = TB(dut)
+    await tb.reset(operation_mode=MANAGED, default_forwarding=0b0010)
+
+    destination = 0x504000000001
+    destination_bytes = destination.to_bytes(6, "big")
+    frames = [destination_bytes[:length] for length in range(1, 6)]
+
+    await tb.send_all(0, frames)
+    await tb.cycle(300)
+    assert all(sink.empty() for sink in tb.sinks)
+
+
+@cocotb.test()
+async def test_incomplete_ethernet_header_drops_frame(dut):
+    """Frames with a complete DA but incomplete SA never reach an egress."""
+    tb = TB(dut)
+    await tb.reset(operation_mode=MANAGED)
+
+    destination = 0x505000000001
+    await tb.set_pause(True)
+    await tb.cpu_write_entry(0, destination, bitmap=0b0010)
+    await tb.set_pause(False)
+
+    complete_header = ethernet_frame(destination, 0x505000000002, b"")
+    frames = [complete_header[:length] for length in range(6, 12)]
+
+    await tb.send_all(0, frames)
+    await tb.cycle(300)
+    assert all(sink.empty() for sink in tb.sinks)
+
+
+@cocotb.test()
 async def test_header_only_and_unaligned_frames(dut):
     """Header-only and non-word-aligned frames retain every valid byte."""
     tb = TB(dut)
@@ -476,6 +513,42 @@ async def test_back_to_back_frame_burst(dut):
         assert bytes(received.tdata) == expected
         assert int(received.tdest) == 0x44
         assert int(received.tid) == 1
+
+    await send_task
+    await tb.cycle(10)
+    assert all(sink.empty() for sink in tb.sinks)
+
+
+@cocotb.test()
+async def test_standard_and_jumbo_payloads(dut):
+    """Standard and jumbo Ethernet payloads cross the shared fabric intact."""
+    tb = TB(dut)
+    await tb.reset(operation_mode=MANAGED)
+
+    destination = 0x525400000001
+    await tb.set_pause(True)
+    await tb.cpu_write_entry(0, destination, bitmap=0b0100)
+    await tb.set_pause(False)
+
+    payload_lengths = (1500, 9000)
+    frames = [
+        ethernet_frame(
+            destination,
+            0x525400000100 + index,
+            incrementing_payload(payload_length),
+            ether_type=0x88B5,
+        )
+        for index, payload_length in enumerate(payload_lengths)
+    ]
+    assert [len(frame) for frame in frames] == [1514, 9014]
+
+    send_task = cocotb.start_soon(tb.send_all(0, frames, tdest=0x45, tid=3))
+
+    for expected in frames:
+        received = await tb.recv(2, timeout_us=200)
+        assert bytes(received.tdata) == expected
+        assert int(received.tdest) == 0x45
+        assert int(received.tid) == 0
 
     await send_task
     await tb.cycle(10)

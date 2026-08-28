@@ -92,34 +92,18 @@ width.
 
 ## Running Tests
 
-### Option 1: Make
-
-Runs the cocotb tests using the configuration in `Makefile` and prints the
-simulator log and timestamps directly:
-
-```bash
-make clean
-make
-```
-
-Generate and open waveforms with:
-
+### Option 1: Cocotb (with waveform generation)
+Runs Cocotb tests based on the module configuration specified in the Makefile.
 ```bash
 ./run_tests.sh waves
+# Generates waveforms and opens gtkwave
 ```
 
 ### Option 2: Pytest
-
-Runs the simulator through the pytest/cocotb-test runner:
-
+Uses the pytest framework to iterate through different configurations and run the Cocotb tests for each configuration.
 ```bash
 ./run_tests.sh pytest
-```
-
-Remove generated test artifacts with:
-
-```bash
-./run_tests.sh clean
+# Uses pytest parameterization to run all configurations
 ```
 
 ## Test Coverage
@@ -135,6 +119,9 @@ Remove generated test artifacts with:
 - Autonomous source-MAC learning in unmanaged mode
 - Removal of the ingress interface from the egress bitmap
 - Preservation of frame data and `tdest`
+- Standard 1500-byte and jumbo 9000-byte Ethernet payloads
+- Dropping frames with incomplete 1-5 byte destination addresses
+- Dropping frames with incomplete 6-11 byte Ethernet headers
 - Detection of frames delivered to unexpected egress ports
 - Pause request and pause-done sequencing before managed table updates
 - Pause requests asserted while a frame is active
@@ -160,10 +147,19 @@ Remove generated test artifacts with:
     arbiter-generated ingress identity.
 - `test_zero_bitmap_drops_frame`: an unknown destination with a zero default
     bitmap is consumed without appearing on any egress interface.
+- `test_incomplete_destination_address_drops_frame`: frames ending before the
+    complete six-byte destination address are dropped even when the default
+    forwarding bitmap selects a valid egress.
+- `test_incomplete_ethernet_header_drops_frame`: frames with a complete
+    destination address but an incomplete source address are dropped even when
+    the destination has a valid programmed unicast route.
 - `test_header_only_and_unaligned_frames`: Ethernet header-only frames and
     several non-word-aligned lengths verify final-beat `tkeep` handling.
 - `test_back_to_back_frame_burst`: twelve consecutive frames of different
     lengths verify boundaries, ordering, sidebands, and sustained operation.
+- `test_standard_and_jumbo_payloads`: frames carrying 1500-byte and 9000-byte
+    payloads with EtherType `0x88B5` traverse the switch intact. Their internal
+    AXI Stream lengths are 1514 and 9014 bytes because FCS is not present.
 - `test_all_ingress_ports_simultaneously`: all four ingress FIFOs are preloaded
     with three frames; each arbitration round must serve every port once, and all
     twelve frames must reach their independently configured outputs.
@@ -194,7 +190,7 @@ ports.
 
 **Pytest parameter sweep:**
 
-The pytest runner repeats all 14 directed tests and 12 TestFactory cases for
+The pytest runner repeats all 17 directed tests and 12 TestFactory cases for
 the following `(NUM_OF_INTERFACES, DATA_W, FABRIC_DATA_W, TABLE_DEPTH,
 PORT_FIFO_DEPTH, PORT_SIDE)` tuples:
 
