@@ -236,6 +236,29 @@ class TB:
 
         return order
 
+    async def assert_no_ingress_idle_between_frames(self, port, frame_count):
+        axis = self.dut.port_rx_axis[port]
+        completed_frames = 0
+        expect_next_frame = False
+
+        while completed_frames < frame_count:
+            await self.cycle()
+
+            if expect_next_frame:
+                assert int(axis.tvalid.value), (
+                    f"ingress port {port} inserted an idle cycle after frame "
+                    f"{completed_frames}"
+                )
+                expect_next_frame = False
+
+            if (
+                int(axis.tvalid.value)
+                and int(axis.tready.value)
+                and int(axis.tlast.value)
+            ):
+                completed_frames += 1
+                expect_next_frame = completed_frames < frame_count
+
 # ----------------------------------------------------------------------
 # Standalone cocotb test cases: simple routing and forwarding scenarios
 # ----------------------------------------------------------------------
@@ -515,6 +538,38 @@ async def test_back_to_back_frame_burst(dut):
         assert int(received.tid) == 1
 
     await send_task
+    await tb.cycle(10)
+    assert all(sink.empty() for sink in tb.sinks)
+
+
+@cocotb.test()
+async def test_no_idle_cycle_between_back_to_back_frames(dut):
+    """The next frame is presented immediately after each accepted tlast."""
+    tb = TB(dut)
+    await tb.reset(operation_mode=MANAGED, default_forwarding=0b0010)
+
+    destination = 0x521000000001
+    frames = [
+        ethernet_frame(
+            destination,
+            0x521000000100 + index,
+            bytes([0xA0 + index]) * (65 + index * 7),
+        )
+        for index in range(4)
+    ]
+
+    boundary_task = cocotb.start_soon(
+        tb.assert_no_ingress_idle_between_frames(0, len(frames))
+    )
+    await tb.send_all(0, frames, tdest=0x46, tid=3)
+    await with_timeout(boundary_task, 200, "us")
+
+    for expected in frames:
+        received = await tb.recv(1)
+        assert bytes(received.tdata) == expected
+        assert int(received.tdest) == 0x46
+        assert int(received.tid) == 0
+
     await tb.cycle(10)
     assert all(sink.empty() for sink in tb.sinks)
 
@@ -843,7 +898,7 @@ hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "rtl")
         (8, 64, 16, 8, 16, 0b10101010),
     ],
 )
-def test_openenoc_eth_shared_fabric_switch(
+def test_openenoc_eth_switch_shared_bus(
     request,
     num_interfaces,
     data_w,
@@ -871,7 +926,7 @@ def test_openenoc_eth_shared_fabric_switch(
         os.path.join(core_dir, "openenoc_axis_demux.sv"),
         os.path.join(core_dir, "openenoc_axis_forwarding_engine.sv"),
         os.path.join(core_dir, "openenoc_forwarding_table.sv"),
-        os.path.join(core_dir, "openenoc_eth_shared_fabric_switch.sv"),
+        os.path.join(core_dir, "openenoc_eth_switch_shared_bus.sv"),
         os.path.join(tests_dir, f"{module}.sv"),
     ]
 

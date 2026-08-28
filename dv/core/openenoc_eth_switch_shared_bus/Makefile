@@ -18,7 +18,7 @@ TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
 TAXI_PRIM_DIR = $(LIBS_DIR)/taxi/src/prim/rtl
 TAXI_SYNC_DIR = $(LIBS_DIR)/taxi/src/sync/rtl
 
-DUT = openenoc_eth_shared_fabric_switch
+DUT = openenoc_eth_switch_shared_bus
 COCOTB_TEST_MODULES = test_$(DUT)
 COCOTB_TOPLEVEL = test_$(DUT)
 MODULE = $(COCOTB_TEST_MODULES)

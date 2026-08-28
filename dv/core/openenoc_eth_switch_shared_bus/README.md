@@ -1,11 +1,11 @@
 <!-- SPDX-FileCopyrightText: 2026 Kerim Bavcic -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 
-# openENOC Shared-Fabric Switch Test Suite
+# openENOC Shared-Bus Switch Test Suite
 
 ## Overview
 
-This integration suite validates the `openenoc_eth_shared_fabric_switch`
+This integration suite validates the `openenoc_eth_switch_shared_bus`
 module. The switch combines per-port clock-domain and data-width adapters, a
 frame-aware round-robin AXI Stream arbiter/multiplexer, the openENOC forwarding
 engine and forwarding table, and a bitmap-routed AXI Stream demultiplexer.
@@ -119,6 +119,7 @@ Uses the pytest framework to iterate through different configurations and run th
 - Autonomous source-MAC learning in unmanaged mode
 - Removal of the ingress interface from the egress bitmap
 - Preservation of frame data and `tdest`
+- Continuous `tvalid` across back-to-back frame boundaries
 - Standard 1500-byte and jumbo 9000-byte Ethernet payloads
 - Dropping frames with incomplete 1-5 byte destination addresses
 - Dropping frames with incomplete 6-11 byte Ethernet headers
@@ -157,6 +158,9 @@ Uses the pytest framework to iterate through different configurations and run th
     several non-word-aligned lengths verify final-beat `tkeep` handling.
 - `test_back_to_back_frame_burst`: twelve consecutive frames of different
     lengths verify boundaries, ordering, sidebands, and sustained operation.
+- `test_no_idle_cycle_between_back_to_back_frames`: four queued frames verify
+    that the source presents the next frame in the cycle immediately following
+    each accepted `tlast`, without a source-created idle cycle.
 - `test_standard_and_jumbo_payloads`: frames carrying 1500-byte and 9000-byte
     payloads with EtherType `0x88B5` traverse the switch intact. Their internal
     AXI Stream lengths are 1514 and 9014 bytes because FCS is not present.
@@ -190,7 +194,7 @@ ports.
 
 **Pytest parameter sweep:**
 
-The pytest runner repeats all 17 directed tests and 12 TestFactory cases for
+The pytest runner repeats all 18 directed tests and 12 TestFactory cases for
 the following `(NUM_OF_INTERFACES, DATA_W, FABRIC_DATA_W, TABLE_DEPTH,
 PORT_FIFO_DEPTH, PORT_SIDE)` tuples:
 

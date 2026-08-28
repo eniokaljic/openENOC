@@ -6,7 +6,7 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-module openenoc_eth_shared_fabric_switch #
+module openenoc_eth_switch_shared_bus #
 (
     // Number of Ethernet interfaces
     parameter int unsigned NUM_OF_INTERFACES = 4,
