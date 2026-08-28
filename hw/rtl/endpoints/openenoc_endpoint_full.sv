@@ -148,7 +148,7 @@ module openenoc_endpoint_full #
     /*
     * AXI4-Lite crossbar interconnect
     */
-    taxi_axil_crossbar #(
+    openenoc_axil_crossbar #(
         .S_COUNT      (INITIATOR_COUNT),
         .M_COUNT      (TARGET_COUNT),
         .ADDR_W       (AXIL_ADDR_W),
@@ -204,7 +204,7 @@ module openenoc_endpoint_full #
     assign cpu_axil.wuser  = '0;
     assign cpu_axil.aruser = '0;
 
-    picorv32_axi #(
+    openenoc_picorv32 #(
         .PROGADDR_RESET (AXIL_ADDR_W'(openenoc_endpoint_full_pkg::IMEM_BASE_ADDR)),
         .STACKADDR      (AXIL_ADDR_W'(
             openenoc_endpoint_full_pkg::DMEM_BASE_ADDR +
