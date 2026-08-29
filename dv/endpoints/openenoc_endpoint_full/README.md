@@ -16,8 +16,14 @@ CSR. The two reserved initiators are tied inactive, while the crossbar keeps
 all target connections enabled for the later integration steps.
 
 The generated CSR `hwif` is internal to the endpoint. An
-`openenoc_endpoint_if` instance connects the endpoint side of the generated
-CSR bridge, while the module exposes the bridge's `openenoc_switch_if` side.
+`openenoc_endpoint_if` instance connects the generated CSR bridge to
+`openenoc_endpoint_interface`, while the module exposes the bridge's
+`openenoc_switch_if` side.
+
+The endpoint interface converts the CSR AXI4-Stream source and sink registers
+to the Ethernet-like link through two `taxi_axis_async_fifo_adapter`
+instances. The testbench loops the transmit direction back into the receive
+direction.
 
 The crossbar arrays are connected through individually named internal Taxi
 interfaces: `cpu_axil`, `endpoint_axil`, `debug_axil`, `dmem_axil`,
@@ -51,16 +57,20 @@ The cocotb test verifies that:
 - the bridge presents generated switch parameters and software-written switch
   configuration on `openenoc_switch_if`, and propagates `pause_done` back into
   the CSR `hwif` and firmware readback;
-- the internal endpoint interface status input remains idle;
+- firmware sends and receives 66 bytes in 17 AXI4-Stream transfers through the
+  CSR HAL;
+- the Ethernet loopback and CSR sink each transfer the expected words in
+  order, with `TKEEP=0xf` on the first 16 words, `TKEEP=0x3` on the final
+  partially used word, and `TLAST` asserted only on that final word;
 - firmware reports success by storing `0x600d600d` in DMEM;
-- both reserved AXI4-Lite initiators remain inactive; and
-- the future endpoint Ethernet bridge signals remain inactive.
+- both reserved AXI4-Lite initiators remain inactive.
 
 ## Running Tests
 
 Activate the project virtual environment, change to this directory, and run:
 
 ```bash
+make -C ../../../sw APP=csr_smoke EP=openenoc_endpoint_full
 ./run_tests.sh pytest
 ```
 

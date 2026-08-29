@@ -91,11 +91,11 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.source.control.tvalid"};
-                    desc = "Indicates that the AXI4-Stream source interface has valid data to send. This field is a single-pulse register that is automatically cleared back to zero after being written.";
+                    desc = "Indicates that the AXI4-Stream source interface has valid data to send. Once asserted by software, the field remains asserted until the transfer is accepted by the destination.";
 
-                    singlepulse = true;
                     sw = rw;
                     hw = r;
+                    hwclr = true;
                 } tvalid[0:0] = 0;
 
                 field {
@@ -105,6 +105,14 @@ regfile openenoc_endpoint_interface #(
                     sw = rw;
                     hw = r;
                 } tlast[8:8] = 0;
+
+                field {
+                    name = {INST_NAME, ".axis_if.source.control.tkeep[3:0]"};
+                    desc = "Indicates which byte lanes contain valid data on the AXI4-Stream source interface.";
+
+                    sw = rw;
+                    hw = r;
+                } tkeep[19:16] = 0;
             } control;
 
             reg status {
@@ -144,11 +152,11 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.sink.control.tready"};
-                    desc = "Indicates that the AXI4-Stream sink interface is ready to receive next data transfer.";
+                    desc = "Indicates that the AXI4-Stream sink interface is ready to accept a data transfer. Once asserted by software, the field remains asserted until a transfer occurs.";
 
-                    singlepulse = true;
-                    sw = w;
+                    sw = rw;
                     hw = r;
+                    hwclr = true;
                 } tready[0:0] = 0;
             } control;
 
@@ -171,6 +179,14 @@ regfile openenoc_endpoint_interface #(
                     sw = r;
                     hw = w;
                 } tlast[8:8];
+
+                field {
+                    name = {INST_NAME, ".axis_if.sink.status.tkeep[3:0]"};
+                    desc = "Indicates which byte lanes contain valid data on the AXI4-Stream sink interface.";
+
+                    sw = r;
+                    hw = w;
+                } tkeep[19:16];
             } status;
         } sink;
     } axis_if;

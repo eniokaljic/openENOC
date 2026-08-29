@@ -47,7 +47,7 @@ class csr_simulator_cls(Simulator):
                                                 ]),
             2084 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.axis_if.source.control', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READWRITE),
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READWRITE),FieldDefinition(high=19, low=16, msb=19, lsb=16, inst_name='tkeep', field_type=FieldType.READWRITE),
                                                 ]),
             2088 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.axis_if.source.status', readable=True, writable=False,
@@ -58,12 +58,12 @@ class csr_simulator_cls(Simulator):
                                          fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='tdata', field_type=FieldType.READONLY),
                                                 ]),
             2100 : 
-    Register(width=32, full_inst_name='csr.endpoint_interface.axis_if.sink.control', readable=False, writable=True,
-                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tready', field_type=FieldType.WRITEONLY),
+    Register(width=32, full_inst_name='csr.endpoint_interface.axis_if.sink.control', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tready', field_type=FieldType.READWRITE),
                                                 ]),
             2104 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.axis_if.sink.status', readable=True, writable=False,
-                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READONLY),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READONLY),
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='tvalid', field_type=FieldType.READONLY),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='tlast', field_type=FieldType.READONLY),FieldDefinition(high=19, low=16, msb=19, lsb=16, inst_name='tkeep', field_type=FieldType.READONLY),
                                                 ]),
             2176 : 
     Register(width=64, full_inst_name='csr.endpoint_interface.peers.entry[0].mac_address', readable=True, writable=True,

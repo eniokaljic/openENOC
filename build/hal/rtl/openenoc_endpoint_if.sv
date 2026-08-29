@@ -35,6 +35,14 @@ interface openenoc_endpoint_if #
     } core_to_csr__config__t;
 
     typedef struct {
+        logic hwclr;
+    } core_to_csr__axis_if__source__control__tvalid_t;
+
+    typedef struct {
+        core_to_csr__axis_if__source__control__tvalid_t tvalid;
+    } core_to_csr__axis_if__source__control_t;
+
+    typedef struct {
         logic next;
     } core_to_csr__axis_if__source__status__tready_t;
 
@@ -43,6 +51,7 @@ interface openenoc_endpoint_if #
     } core_to_csr__axis_if__source__status_t;
 
     typedef struct {
+        core_to_csr__axis_if__source__control_t control;
         core_to_csr__axis_if__source__status_t status;
     } core_to_csr__axis_if__source_t;
 
@@ -55,6 +64,14 @@ interface openenoc_endpoint_if #
     } core_to_csr__axis_if__sink__data_t;
 
     typedef struct {
+        logic hwclr;
+    } core_to_csr__axis_if__sink__control__tready_t;
+
+    typedef struct {
+        core_to_csr__axis_if__sink__control__tready_t tready;
+    } core_to_csr__axis_if__sink__control_t;
+
+    typedef struct {
         logic next;
     } core_to_csr__axis_if__sink__status__tvalid_t;
 
@@ -63,12 +80,18 @@ interface openenoc_endpoint_if #
     } core_to_csr__axis_if__sink__status__tlast_t;
 
     typedef struct {
+        logic [3:0] next;
+    } core_to_csr__axis_if__sink__status__tkeep_t;
+
+    typedef struct {
         core_to_csr__axis_if__sink__status__tvalid_t tvalid;
         core_to_csr__axis_if__sink__status__tlast_t tlast;
+        core_to_csr__axis_if__sink__status__tkeep_t tkeep;
     } core_to_csr__axis_if__sink__status_t;
 
     typedef struct {
         core_to_csr__axis_if__sink__data_t data;
+        core_to_csr__axis_if__sink__control_t control;
         core_to_csr__axis_if__sink__status_t status;
     } core_to_csr__axis_if__sink_t;
 
@@ -177,8 +200,13 @@ interface openenoc_endpoint_if #
     } csr_to_core__axis_if__source__control__tlast_t;
 
     typedef struct {
+        logic [3:0] value;
+    } csr_to_core__axis_if__source__control__tkeep_t;
+
+    typedef struct {
         csr_to_core__axis_if__source__control__tvalid_t tvalid;
         csr_to_core__axis_if__source__control__tlast_t tlast;
+        csr_to_core__axis_if__source__control__tkeep_t tkeep;
     } csr_to_core__axis_if__source__control_t;
 
     typedef struct {

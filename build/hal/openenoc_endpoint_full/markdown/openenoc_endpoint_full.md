@@ -204,18 +204,23 @@ No supported members.
 
 <p>Control register for the AXI4-Stream source interface.</p>
 
-|Bits|Identifier|Access|Reset|                        Name                        |
-|----|----------|------|-----|----------------------------------------------------|
-|  0 |  tvalid  |  rw  | 0x0 |csr.endpoint_interface.axis_if.source.control.tvalid|
-|  8 |   tlast  |  rw  | 0x0 | csr.endpoint_interface.axis_if.source.control.tlast|
+| Bits|Identifier|Access|Reset|                          Name                          |
+|-----|----------|------|-----|--------------------------------------------------------|
+|  0  |  tvalid  |  rw  | 0x0 |  csr.endpoint_interface.axis_if.source.control.tvalid  |
+|  8  |   tlast  |  rw  | 0x0 |   csr.endpoint_interface.axis_if.source.control.tlast  |
+|19:16|   tkeep  |  rw  | 0x0 |csr.endpoint_interface.axis_if.source.control.tkeep[3:0]|
 
 #### tvalid field
 
-<p>Indicates that the AXI4-Stream source interface has valid data to send. This field is a single-pulse register that is automatically cleared back to zero after being written.</p>
+<p>Indicates that the AXI4-Stream source interface has valid data to send. Once asserted by software, the field remains asserted until the transfer is accepted by the destination.</p>
 
 #### tlast field
 
 <p>Indicates the last data word of a frame on the AXI4-Stream source interface.</p>
+
+#### tkeep field
+
+<p>Indicates which byte lanes contain valid data on the AXI4-Stream source interface.</p>
 
 ### status register
 
@@ -273,11 +278,11 @@ No supported members.
 
 |Bits|Identifier|Access|Reset|                       Name                       |
 |----|----------|------|-----|--------------------------------------------------|
-|  0 |  tready  |   w  | 0x0 |csr.endpoint_interface.axis_if.sink.control.tready|
+|  0 |  tready  |  rw  | 0x0 |csr.endpoint_interface.axis_if.sink.control.tready|
 
 #### tready field
 
-<p>Indicates that the AXI4-Stream sink interface is ready to receive next data transfer.</p>
+<p>Indicates that the AXI4-Stream sink interface is ready to accept a data transfer. Once asserted by software, the field remains asserted until a transfer occurs.</p>
 
 ### status register
 
@@ -287,10 +292,11 @@ No supported members.
 
 <p>Status register for the AXI4-Stream sink interface.</p>
 
-|Bits|Identifier|Access|Reset|                       Name                      |
-|----|----------|------|-----|-------------------------------------------------|
-|  0 |  tvalid  |   r  |  —  |csr.endpoint_interface.axis_if.sink.status.tvalid|
-|  8 |   tlast  |   r  |  —  | csr.endpoint_interface.axis_if.sink.status.tlast|
+| Bits|Identifier|Access|Reset|                         Name                        |
+|-----|----------|------|-----|-----------------------------------------------------|
+|  0  |  tvalid  |   r  |  —  |  csr.endpoint_interface.axis_if.sink.status.tvalid  |
+|  8  |   tlast  |   r  |  —  |   csr.endpoint_interface.axis_if.sink.status.tlast  |
+|19:16|   tkeep  |   r  |  —  |csr.endpoint_interface.axis_if.sink.status.tkeep[3:0]|
 
 #### tvalid field
 
@@ -299,6 +305,10 @@ No supported members.
 #### tlast field
 
 <p>Indicates the last data word of a frame on the AXI4-Stream sink interface.</p>
+
+#### tkeep field
+
+<p>Indicates which byte lanes contain valid data on the AXI4-Stream sink interface.</p>
 
 ## peers register file
 

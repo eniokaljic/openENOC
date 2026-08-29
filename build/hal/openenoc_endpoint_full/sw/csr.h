@@ -116,12 +116,18 @@ typedef union {
 #define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__CONTROL__TLAST_bp 8
 #define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__CONTROL__TLAST_bw 1
 #define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__CONTROL__TLAST_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__CONTROL__TKEEP_bm 0xf0000
+#define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__CONTROL__TKEEP_bp 16
+#define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__CONTROL__TKEEP_bw 4
+#define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__CONTROL__TKEEP_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t tvalid :1;
         uint32_t :7;
         uint32_t tlast :1;
-        uint32_t :23;
+        uint32_t :7;
+        uint32_t tkeep :4;
+        uint32_t :12;
     } f;
     uint32_t w;
 } csr__endpoint_interface__axis_if__source__control_t;
@@ -177,12 +183,17 @@ typedef union {
 #define CSR__ENDPOINT_INTERFACE__AXIS_IF__SINK__STATUS__TLAST_bm 0x100
 #define CSR__ENDPOINT_INTERFACE__AXIS_IF__SINK__STATUS__TLAST_bp 8
 #define CSR__ENDPOINT_INTERFACE__AXIS_IF__SINK__STATUS__TLAST_bw 1
+#define CSR__ENDPOINT_INTERFACE__AXIS_IF__SINK__STATUS__TKEEP_bm 0xf0000
+#define CSR__ENDPOINT_INTERFACE__AXIS_IF__SINK__STATUS__TKEEP_bp 16
+#define CSR__ENDPOINT_INTERFACE__AXIS_IF__SINK__STATUS__TKEEP_bw 4
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t tvalid :1;
         uint32_t :7;
         uint32_t tlast :1;
-        uint32_t :23;
+        uint32_t :7;
+        uint32_t tkeep :4;
+        uint32_t :12;
     } f;
     uint32_t w;
 } csr__endpoint_interface__axis_if__sink__status_t;

@@ -22,7 +22,82 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class openenoc_switch_interface_info_table_depth_neg_0x9b7199afd98549a_cls(FieldReadOnly):
+class openenoc_endpoint_interface_peers_entry_dma_error_neg_0x3bc21446ddde2a6c_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].dma.error[25:25]                                                |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Indicates whether the DMA transfer to/from the remote peer has  |
+    |              |      encountered an error. A value of 1 indicates an error, while a     |
+    |              |      value of 0 indicates no error.</p>                                 |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+
+
+
+
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error."
+
+
+
+
+
+
+class openenoc_endpoint_interface_rmem_word_data_0x5406d30947de088f_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1].data[31:0] |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Data stored in this virtual memory word.</p>                    |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+
+
+
+
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1].data[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Data stored in this virtual memory word."
+
+
+
+
+
+
+class openenoc_switch_interface_info_table_depth_0x6ac92ba3afd39d3f_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -59,7 +134,7 @@ class openenoc_switch_interface_info_table_depth_neg_0x9b7199afd98549a_cls(Field
 
     
     
-class openenoc_switch_interface_info_num_of_interfaces_0x5dc909626a361f11_cls(FieldReadOnly):
+class openenoc_switch_interface_info_num_of_interfaces_0x2e18ede9bb02fce4_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -96,7 +171,7 @@ class openenoc_switch_interface_info_num_of_interfaces_0x5dc909626a361f11_cls(Fi
 
     
     
-class openenoc_switch_interface_forwarding_control_operation_mode_neg_0x2366f93d5cd42709_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_control_operation_mode_neg_0x1bed4712acd488c5_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -137,7 +212,7 @@ class openenoc_switch_interface_forwarding_control_operation_mode_neg_0x2366f93d
 
     
     
-class openenoc_switch_interface_forwarding_control_pause_request_0x6f061ef6711f7764_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_control_pause_request_neg_0x65b63504e60e16be_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -176,7 +251,7 @@ class openenoc_switch_interface_forwarding_control_pause_request_0x6f061ef6711f7
 
     
     
-class openenoc_switch_interface_forwarding_control_pause_done_neg_0x432e5cd1c0a49e7b_cls(FieldReadOnly):
+class openenoc_switch_interface_forwarding_control_pause_done_neg_0x5ee8ccac09e5f27d_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -214,7 +289,7 @@ class openenoc_switch_interface_forwarding_control_pause_done_neg_0x432e5cd1c0a4
 
     
     
-class openenoc_switch_interface_default_forwarding_bitmap_neg_0x6ecec869128eb86c_cls(FieldReadWrite):
+class openenoc_switch_interface_default_forwarding_bitmap_0x79aa258c5bb4962d_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -254,7 +329,7 @@ class openenoc_switch_interface_default_forwarding_bitmap_neg_0x6ecec869128eb86c
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_mac_address_lo_word_neg_0x3fee114f45390a01_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_mac_address_lo_word_0x4ac61d356e44e548_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -292,7 +367,7 @@ class openenoc_switch_interface_forwarding_table_entry_mac_address_lo_word_neg_0
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_mac_address_hi_word_0x7127c686bb92d658_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_mac_address_hi_word_neg_0x61d6e4d75dd2df73_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -330,7 +405,7 @@ class openenoc_switch_interface_forwarding_table_entry_mac_address_hi_word_0x712
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_iface_bitmap_neg_0x500b3d485596c19d_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_iface_bitmap_neg_0x28d5385d57cc0fa4_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -370,7 +445,7 @@ class openenoc_switch_interface_forwarding_table_entry_iface_bitmap_neg_0x500b3d
 
     
     
-class openenoc_switch_interface_forwarding_table_entry_config_enabled_0x3a394deefbff37b2_cls(FieldReadWrite):
+class openenoc_switch_interface_forwarding_table_entry_config_enabled_0x507eeb43cb8225a4_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 

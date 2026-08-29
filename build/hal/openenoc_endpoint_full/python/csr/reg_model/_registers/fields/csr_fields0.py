@@ -22,7 +22,7 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class csr_test_reg_test_field_0x1ec8eebd6d8b3bd6_cls(FieldReadWrite):
+class csr_test_reg_test_field_0x50ab780732633fcd_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -58,7 +58,7 @@ class csr_test_reg_test_field_0x1ec8eebd6d8b3bd6_cls(FieldReadWrite):
 
     
     
-class openenoc_endpoint_interface_info_rmem_total_depth_0x66f4d3441b74f970_cls(FieldReadOnly):
+class openenoc_endpoint_interface_info_rmem_total_depth_neg_0x3f302505c8dd9cb4_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -95,7 +95,7 @@ class openenoc_endpoint_interface_info_rmem_total_depth_0x66f4d3441b74f970_cls(F
 
     
     
-class openenoc_endpoint_interface_info_num_of_peers_0x545d34beaaac35fb_cls(FieldReadOnly):
+class openenoc_endpoint_interface_info_num_of_peers_0x1e5aa80d2f30ad91_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -133,7 +133,7 @@ class openenoc_endpoint_interface_info_num_of_peers_0x545d34beaaac35fb_cls(Field
 
     
     
-class openenoc_endpoint_interface_config_mac_address_lo_word_0xf020280e2cba6ad_cls(FieldReadWrite):
+class openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x1369d3aacece158f_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -169,7 +169,7 @@ class openenoc_endpoint_interface_config_mac_address_lo_word_0xf020280e2cba6ad_c
 
     
     
-class openenoc_endpoint_interface_config_mac_address_hi_word_0x51d13977110945ff_cls(FieldReadWrite):
+class openenoc_endpoint_interface_config_mac_address_hi_word_0x5b3ed7c827d926e6_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -205,7 +205,7 @@ class openenoc_endpoint_interface_config_mac_address_hi_word_0x51d13977110945ff_
 
     
     
-class openenoc_endpoint_interface_axis_if_source_data_tdata_0x4a3b25a953a17891_cls(FieldReadWrite):
+class openenoc_endpoint_interface_axis_if_source_data_tdata_neg_0x5e2b82730531aa03_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -241,7 +241,7 @@ class openenoc_endpoint_interface_axis_if_source_data_tdata_0x4a3b25a953a17891_c
 
     
     
-class openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x38b5469329974867_cls(FieldReadWrite):
+class openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x1574c724023a9a45_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -256,8 +256,8 @@ class openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x38b5469329
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
     |              |      <p>Indicates that the AXI4-Stream source interface has valid data  |
-    |              |      to send. This field is a single-pulse register that is             |
-    |              |      automatically cleared back to zero after being written.</p>        |
+    |              |      to send. Once asserted by software, the field remains asserted     |
+    |              |      until the transfer is accepted by the destination.</p>             |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -272,14 +272,14 @@ class openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x38b5469329
         return "csr.endpoint_interface.axis_if.source.control.tvalid"
     @property
     def rdl_desc(self) -> str:
-        return "Indicates that the AXI4-Stream source interface has valid data to send. This field is a single-pulse register that is automatically cleared back to zero after being written."
+        return "Indicates that the AXI4-Stream source interface has valid data to send. Once asserted by software, the field remains asserted until the transfer is accepted by the destination."
     
     
     
 
     
     
-class openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x62892d74e3fe6f97_cls(FieldReadWrite):
+class openenoc_endpoint_interface_axis_if_source_control_tlast_0x1deeee2aa2315774_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -316,7 +316,44 @@ class openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x62892d74e3f
 
     
     
-class openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x515acacc47f8dca2_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_source_control_tkeep_neg_0x735687b1c8f2765d_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.axis_if.source.control.tkeep[3:0]           |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Indicates which byte lanes contain valid data on the            |
+    |              |      AXI4-Stream source interface.</p>                                  |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+
+
+
+
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.axis_if.source.control.tkeep[3:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Indicates which byte lanes contain valid data on the AXI4-Stream source interface."
+
+
+
+
+
+
+class openenoc_endpoint_interface_axis_if_source_status_tready_0x592ebc64312c71db_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -353,7 +390,7 @@ class openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x515acacc47f
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_data_tdata_0x454c9ec9b7e69103_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_data_tdata_neg_0x647797ec2b64880_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -389,7 +426,7 @@ class openenoc_endpoint_interface_axis_if_sink_data_tdata_0x454c9ec9b7e69103_cls
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_control_tready_0x12c37757e3508629_cls(FieldWriteOnly):
+class openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x5feb796b0483418d_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -404,7 +441,8 @@ class openenoc_endpoint_interface_axis_if_sink_control_tready_0x12c37757e3508629
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
     |              |      <p>Indicates that the AXI4-Stream sink interface is ready to       |
-    |              |      receive next data transfer.</p>                                    |
+    |              |      accept a data transfer. Once asserted by software, the field       |
+    |              |      remains asserted until a transfer occurs.</p>                      |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -419,14 +457,14 @@ class openenoc_endpoint_interface_axis_if_sink_control_tready_0x12c37757e3508629
         return "csr.endpoint_interface.axis_if.sink.control.tready"
     @property
     def rdl_desc(self) -> str:
-        return "Indicates that the AXI4-Stream sink interface is ready to receive next data transfer."
+        return "Indicates that the AXI4-Stream sink interface is ready to accept a data transfer. Once asserted by software, the field remains asserted until a transfer occurs."
     
     
     
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x65103690818e2b0f_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0xe098f82baed060d_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -463,7 +501,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x65103690818e2
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_status_tlast_0x7bdd7d2c85d02d86_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x12cedb4fe3829f21_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -500,7 +538,44 @@ class openenoc_endpoint_interface_axis_if_sink_status_tlast_0x7bdd7d2c85d02d86_c
 
     
     
-class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_0x52c079648d227cdb_cls(FieldReadWrite):
+class openenoc_endpoint_interface_axis_if_sink_status_tkeep_neg_0x771bb79b580cfe90_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.axis_if.sink.status.tkeep[3:0]              |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Indicates which byte lanes contain valid data on the            |
+    |              |      AXI4-Stream sink interface.</p>                                    |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+
+
+
+
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.axis_if.sink.status.tkeep[3:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Indicates which byte lanes contain valid data on the AXI4-Stream sink interface."
+
+
+
+
+
+
+class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_0x688fe49a0c0ea652_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -537,7 +612,7 @@ class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_0x52c079648d22
 
     
     
-class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_0x598216508f572a02_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_0x604ecd6f230405e9_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -574,7 +649,7 @@ class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_0x598216508f57
 
     
     
-class openenoc_endpoint_interface_peers_entry_rmem_address_offset_0x767f02fe1e09e77a_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x2bf099e37b2d89c2_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -612,7 +687,7 @@ class openenoc_endpoint_interface_peers_entry_rmem_address_offset_0x767f02fe1e09
 
     
     
-class openenoc_endpoint_interface_peers_entry_local_address_base_neg_0x76e8a0abe559b6aa_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_local_address_base_0x7cc1fa5da47396a9_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -650,7 +725,7 @@ class openenoc_endpoint_interface_peers_entry_local_address_base_neg_0x76e8a0abe
 
     
     
-class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0x3da3a380d94816b8_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_remote_address_base_0x43291931d50104aa_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -688,7 +763,7 @@ class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0x3da3a380
 
     
     
-class openenoc_endpoint_interface_peers_entry_size_bytes_neg_0x609f64fdc6686c3b_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_size_bytes_0x55d7468b62917f1e_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -725,7 +800,7 @@ class openenoc_endpoint_interface_peers_entry_size_bytes_neg_0x609f64fdc6686c3b_
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_mode_0x66fbcf03d8f552c5_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_dma_mode_0x3925f6c5a6a45916_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -777,7 +852,7 @@ class openenoc_endpoint_interface_peers_entry_dma_mode_0x66fbcf03d8f552c5_cls(Fi
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_request_0x7cedb2ee3a3af346_cls(FieldReadWrite):
+class openenoc_endpoint_interface_peers_entry_dma_request_0x24287b2a123b6c74_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -816,7 +891,7 @@ class openenoc_endpoint_interface_peers_entry_dma_request_0x7cedb2ee3a3af346_cls
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_idle_0x751680169d4e8471_cls(FieldReadOnly):
+class openenoc_endpoint_interface_peers_entry_dma_idle_neg_0x73d27c9f389c93fd_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -855,7 +930,7 @@ class openenoc_endpoint_interface_peers_entry_dma_idle_0x751680169d4e8471_cls(Fi
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_done_0x53ba0573dcd57cf2_cls(FieldReadOnly):
+class openenoc_endpoint_interface_peers_entry_dma_done_neg_0x267313308d5c6091_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -889,81 +964,6 @@ class openenoc_endpoint_interface_peers_entry_dma_done_0x53ba0573dcd57cf2_cls(Fi
     @property
     def rdl_desc(self) -> str:
         return "Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error."
-    
-    
-    
-
-    
-    
-class openenoc_endpoint_interface_peers_entry_dma_error_0x4e779d9e35db4809_cls(FieldReadOnly):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].dma.error[25:25]                                                |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Indicates whether the DMA transfer to/from the remote peer has  |
-    |              |      encountered an error. A value of 1 indicates an error, while a     |
-    |              |      value of 0 indicates no error.</p>                                 |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error."
-    
-    
-    
-
-    
-    
-class openenoc_endpoint_interface_rmem_word_data_neg_0xcee82785c0b228c_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1].data[31:0] |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Data stored in this virtual memory word.</p>                    |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1].data[31:0]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Data stored in this virtual memory word."
     
     
     

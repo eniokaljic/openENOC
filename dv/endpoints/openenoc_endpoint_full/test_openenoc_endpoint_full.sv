@@ -25,21 +25,21 @@ module test_openenoc_endpoint_full #
         .rst (rst)
     );
 
-    openenoc_eth_if eth (
+    openenoc_eth_if eth_if (
         .clk (clk),
         .rst (rst)
     );
 
-    // External side of the Ethernet-like link is idle in this test
-    assign eth.a2b.tready = 1'b0;
-    assign eth.b2a.tdata  = '0;
-    assign eth.b2a.tkeep  = '0;
-    assign eth.b2a.tstrb  = '0;
-    assign eth.b2a.tid    = '0;
-    assign eth.b2a.tdest  = '0;
-    assign eth.b2a.tuser  = '0;
-    assign eth.b2a.tlast  = 1'b0;
-    assign eth.b2a.tvalid = 1'b0;
+    // External Ethernet loopback: endpoint transmit is returned to receive.
+    assign eth_if.a2b.tready = eth_if.b2a.tready;
+    assign eth_if.b2a.tdata  = eth_if.a2b.tdata;
+    assign eth_if.b2a.tkeep  = eth_if.a2b.tkeep;
+    assign eth_if.b2a.tstrb  = eth_if.a2b.tstrb;
+    assign eth_if.b2a.tid    = eth_if.a2b.tid;
+    assign eth_if.b2a.tdest  = eth_if.a2b.tdest;
+    assign eth_if.b2a.tuser  = eth_if.a2b.tuser;
+    assign eth_if.b2a.tlast  = eth_if.a2b.tlast;
+    assign eth_if.b2a.tvalid = eth_if.a2b.tvalid;
 
     initial begin
         switch_if.core_to_csr = '{default: '0};
@@ -50,10 +50,10 @@ module test_openenoc_endpoint_full #
         .IMEM_INIT_FILE (IMEM_INIT_FILE)
     )
     uut (
-        .clk      (clk),
-        .rst      (rst),
+        .clk       (clk),
+        .rst       (rst),
         .switch_if (switch_if),
-        .eth      (eth)
+        .eth_if    (eth_if)
     );
 
     /*
@@ -80,6 +80,23 @@ module test_openenoc_endpoint_full #
     wire logic [31:0] endpoint_mac_lo_hwif =
         uut.csr_hwif_in.endpoint_interface.config_.mac_address.lo_word.next;
 
+    wire logic [31:0] endpoint_tx_data = eth_if.a2b.tdata;
+    wire logic [3:0] endpoint_tx_keep = eth_if.a2b.tkeep;
+    wire logic endpoint_tx_last = eth_if.a2b.tlast;
+    wire logic endpoint_tx_valid = eth_if.a2b.tvalid;
+    wire logic endpoint_tx_ready = eth_if.a2b.tready;
+
+    wire logic [31:0] endpoint_csr_sink_data =
+        uut.endpoint_interface_inst.csr_sink_axis.tdata;
+    wire logic [3:0] endpoint_csr_sink_keep =
+        uut.endpoint_interface_inst.csr_sink_axis.tkeep;
+    wire logic endpoint_csr_sink_last =
+        uut.endpoint_interface_inst.csr_sink_axis.tlast;
+    wire logic endpoint_csr_sink_valid =
+        uut.endpoint_interface_inst.csr_sink_axis.tvalid;
+    wire logic endpoint_csr_sink_ready =
+        uut.endpoint_interface_inst.csr_sink_axis.tready;
+
     wire logic reserved_masters_inactive =
         !uut.endpoint_axil.awvalid && !uut.endpoint_axil.wvalid &&
         !uut.endpoint_axil.arvalid && !uut.endpoint_axil.bready &&
@@ -87,8 +104,6 @@ module test_openenoc_endpoint_full #
         !uut.debug_axil.awvalid && !uut.debug_axil.wvalid &&
         !uut.debug_axil.arvalid && !uut.debug_axil.bready &&
         !uut.debug_axil.rready;
-
-    wire logic endpoint_eth_inactive = !eth.a2b.tvalid && !eth.b2a.tready;
 
 endmodule
 

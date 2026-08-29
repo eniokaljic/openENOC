@@ -16,6 +16,7 @@ CORE_DIR = $(HW_DIR)/rtl/core
 ENDPOINT_DIR = $(HW_DIR)/rtl/endpoints
 TAXI_AXI_DIR = $(LIBS_DIR)/taxi/src/axi/rtl
 TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
+TAXI_SYNC_DIR = $(LIBS_DIR)/taxi/src/sync/rtl
 PICORV32_DIR = $(LIBS_DIR)/picorv32
 HAL_RTL_DIR = $(REPO_DIR)/build/hal/openenoc_endpoint_full/rtl
 HAL_IF_DIR = $(REPO_DIR)/build/hal/rtl
@@ -32,6 +33,11 @@ VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr_pkg.sv
 VERILOG_SOURCES += $(HAL_IF_DIR)/openenoc_endpoint_if.sv
 VERILOG_SOURCES += $(HAL_IF_DIR)/openenoc_switch_if.sv
 VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_if.sv
+VERILOG_SOURCES += $(TAXI_SYNC_DIR)/taxi_sync_reset.sv
+VERILOG_SOURCES += $(TAXI_SYNC_DIR)/taxi_sync_signal.sv
+VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_adapter.sv
+VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_async_fifo.sv
+VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_async_fifo_adapter.sv
 VERILOG_SOURCES += $(TAXI_AXI_DIR)/taxi_axil_if.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_skid_buffer.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_arbiter.sv
@@ -43,6 +49,7 @@ VERILOG_SOURCES += $(PICORV32_DIR)/picorv32.v
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_picorv32_axil_adapter.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_picorv32.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_eth_if.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_interface.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_ram.sv
 VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr.sv
 VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr_bridge.sv
@@ -53,7 +60,7 @@ export PARAM_IMEM_INIT_FILE := $(abspath $(SW_BUILD_DIR)/imem.mem)
 
 ifeq ($(SIM), verilator)
 	COMPILE_ARGS += '-GIMEM_INIT_FILE="$(PARAM_IMEM_INIT_FILE)"'
-	EXTRA_ARGS += -Wall -Wno-TIMESCALEMOD ../../common/config.vlt
+	EXTRA_ARGS += -Wall -Wno-TIMESCALEMOD -Wno-SYNCASYNCNET ../../common/config.vlt
 	ifeq ($(WAVES), 1)
 		EXTRA_ARGS += --trace
 		EXTRA_ARGS += --trace-fst
