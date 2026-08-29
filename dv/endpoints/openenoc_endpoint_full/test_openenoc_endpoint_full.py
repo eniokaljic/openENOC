@@ -14,7 +14,28 @@ CSR_SMOKE_PATTERN = 0xA5A55A5A
 CSR_SMOKE_PASSED = 0x600D600D
 CSR_SMOKE_FAILED = 0xBAD0BAD0
 SWITCH_DEFAULT_FORWARDING = 0xA
-EXECUTION_TIMEOUT_CYCLES = 5000
+EXECUTION_TIMEOUT_CYCLES = 20000
+AXIS_LOOPBACK_WORDS = [
+    0x00000000,
+    0x01234567,
+    0x89ABCDEF,
+    0xFFFFFFFF,
+    0xA5A55A5A,
+    0x5A5AA5A5,
+    0x00000001,
+    0x80000000,
+    0x11111111,
+    0x22222222,
+    0x33333333,
+    0x44444444,
+    0xDEADBEEF,
+    0xC001D00D,
+    0x13579BDF,
+    0x2468ACE0,
+    0x0000BEEF,
+]
+AXIS_LOOPBACK_FULL_KEEP = 0xF
+AXIS_LOOPBACK_LAST_KEEP = 0x3
 
 
 def signal_integer(signal):
@@ -23,7 +44,6 @@ def signal_integer(signal):
 
 def assert_reserved_interfaces_inactive(dut):
     assert signal_integer(dut.reserved_masters_inactive) == 1
-    assert signal_integer(dut.endpoint_eth_inactive) == 1
     assert signal_integer(dut.endpoint_mac_lo_hwif) == 0
 
 
@@ -60,15 +80,44 @@ async def test_csr_smoke_firmware(dut):
 
     dut.rst.value = 0
 
+    eth_transfers = []
+    csr_sink_transfers = []
+
     for execution_cycles in range(1, EXECUTION_TIMEOUT_CYCLES + 1):
         await RisingEdge(dut.clk)
+
+        if signal_integer(dut.endpoint_tx_valid) and signal_integer(
+            dut.endpoint_tx_ready
+        ):
+            eth_transfers.append(
+                (
+                    signal_integer(dut.endpoint_tx_data),
+                    signal_integer(dut.endpoint_tx_keep),
+                    signal_integer(dut.endpoint_tx_last),
+                )
+            )
+
+        if signal_integer(dut.endpoint_csr_sink_valid) and signal_integer(
+            dut.endpoint_csr_sink_ready
+        ):
+            csr_sink_transfers.append(
+                (
+                    signal_integer(dut.endpoint_csr_sink_data),
+                    signal_integer(dut.endpoint_csr_sink_keep),
+                    signal_integer(dut.endpoint_csr_sink_last),
+                )
+            )
 
         assert signal_integer(dut.cpu_trap) == 0, "PicoRV32 entered trap state"
         assert_reserved_interfaces_inactive(dut)
         assert_csr_bridge_connected(dut)
 
         status = signal_integer(dut.dmem_status)
-        assert status != CSR_SMOKE_FAILED, "csr_smoke firmware reported failure"
+        assert status != CSR_SMOKE_FAILED, (
+            "csr_smoke firmware reported failure; "
+            f"ETH transfers={eth_transfers!r}, "
+            f"CSR sink transfers={csr_sink_transfers!r}"
+        )
 
         if status == CSR_SMOKE_PASSED:
             cocotb.log.info(
@@ -82,6 +131,18 @@ async def test_csr_smoke_firmware(dut):
 
     assert signal_integer(dut.csr_test_value) == CSR_SMOKE_PATTERN
     assert_switch_configuration(dut)
+    expected_transfers = [
+        (
+            word,
+            AXIS_LOOPBACK_LAST_KEEP
+            if index == len(AXIS_LOOPBACK_WORDS) - 1
+            else AXIS_LOOPBACK_FULL_KEEP,
+            index == len(AXIS_LOOPBACK_WORDS) - 1,
+        )
+        for index, word in enumerate(AXIS_LOOPBACK_WORDS)
+    ]
+    assert eth_transfers == expected_transfers
+    assert csr_sink_transfers == expected_transfers
 
     # The firmware returns into its terminal loop; the result must remain stable.
     for _ in range(10):
@@ -102,6 +163,7 @@ core_dir = os.path.join(hw_dir, "rtl", "core")
 endpoint_dir = os.path.join(hw_dir, "rtl", "endpoints")
 taxi_axi_dir = os.path.join(libs_dir, "taxi", "src", "axi", "rtl")
 taxi_axis_dir = os.path.join(libs_dir, "taxi", "src", "axis", "rtl")
+taxi_sync_dir = os.path.join(libs_dir, "taxi", "src", "sync", "rtl")
 picorv32_dir = os.path.join(libs_dir, "picorv32")
 hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "openenoc_endpoint_full", "rtl")
 hal_if_dir = os.path.join(repo_dir, "build", "hal", "rtl")
@@ -142,12 +204,18 @@ def test_openenoc_endpoint_full(request):
         os.path.join(hal_if_dir, "openenoc_endpoint_if.sv"),
         os.path.join(hal_if_dir, "openenoc_switch_if.sv"),
         os.path.join(taxi_axis_dir, "taxi_axis_if.sv"),
+        os.path.join(taxi_sync_dir, "taxi_sync_reset.sv"),
+        os.path.join(taxi_sync_dir, "taxi_sync_signal.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_adapter.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_async_fifo.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_async_fifo_adapter.sv"),
         os.path.join(taxi_axi_dir, "taxi_axil_if.sv"),
         os.path.join(core_dir, "openenoc_axil_crossbar.f"),
         os.path.join(picorv32_dir, "picorv32.v"),
         os.path.join(core_dir, "openenoc_picorv32_axil_adapter.sv"),
         os.path.join(core_dir, "openenoc_picorv32.sv"),
         os.path.join(core_dir, "openenoc_eth_if.sv"),
+        os.path.join(core_dir, "openenoc_endpoint_interface.sv"),
         os.path.join(core_dir, "openenoc_axil_ram.sv"),
         os.path.join(hal_rtl_dir, "openenoc_endpoint_full_csr.sv"),
         os.path.join(hal_rtl_dir, "openenoc_endpoint_full_csr_bridge.sv"),
@@ -174,6 +242,7 @@ def test_openenoc_endpoint_full(request):
         parameters=parameters,
         extra_args=[
             "-Wno-TIMESCALEMOD",
+            "-Wno-SYNCASYNCNET",
             os.path.join(common_dir, "config.vlt"),
         ],
         sim_build=sim_build,

@@ -292,7 +292,7 @@ module openenoc_endpoint_full_csr (
         decoded_reg_strb.endpoint_interface.axis_if.source.control = cpuif_req_masked & (cpuif_addr == 13'h824);
         decoded_reg_strb.endpoint_interface.axis_if.source.status = cpuif_req_masked & (cpuif_addr == 13'h828) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.axis_if.sink.data = cpuif_req_masked & (cpuif_addr == 13'h830) & !cpuif_req_is_wr;
-        decoded_reg_strb.endpoint_interface.axis_if.sink.control = cpuif_req_masked & (cpuif_addr == 13'h834) & cpuif_req_is_wr;
+        decoded_reg_strb.endpoint_interface.axis_if.sink.control = cpuif_req_masked & (cpuif_addr == 13'h834);
         decoded_reg_strb.endpoint_interface.axis_if.sink.status = cpuif_req_masked & (cpuif_addr == 13'h838) & !cpuif_req_is_wr;
         for(int i0=0; i0<4; i0++) begin
             decoded_reg_strb.endpoint_interface.peers.entry[i0].mac_address[0] = cpuif_req_masked & (cpuif_addr == 13'h880 + (13)'(i0) * 13'h1c);
@@ -397,6 +397,10 @@ module openenoc_endpoint_full_csr (
                             logic next;
                             logic load_next;
                         } tlast;
+                        struct {
+                            logic [3:0] next;
+                            logic load_next;
+                        } tkeep;
                     } control;
                 } source;
                 struct {
@@ -523,6 +527,9 @@ module openenoc_endpoint_full_csr (
                         struct {
                             logic value;
                         } tlast;
+                        struct {
+                            logic [3:0] value;
+                        } tkeep;
                     } control;
                 } source;
                 struct {
@@ -793,7 +800,7 @@ module openenoc_endpoint_full_csr (
         if(decoded_reg_strb.endpoint_interface.axis_if.source.control && decoded_req_is_wr) begin // SW write
             next_c = (field_storage.endpoint_interface.axis_if.source.control.tvalid.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
             load_next_c = '1;
-        end else begin // singlepulse clears back to 0
+        end else if(hwif_in.endpoint_interface.axis_if.source.control.tvalid.hwclr) begin // HW Clear
             next_c = '0;
             load_next_c = '1;
         end
@@ -833,6 +840,29 @@ module openenoc_endpoint_full_csr (
         end
     end
     assign hwif_out.endpoint_interface.axis_if.source.control.tlast.value = field_storage.endpoint_interface.axis_if.source.control.tlast.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.axis_if.source.control.tkeep
+    always_comb begin
+        automatic logic [3:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.axis_if.source.control.tkeep.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.axis_if.source.control && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.axis_if.source.control.tkeep.value & ~decoded_wr_biten[19:16]) | (decoded_wr_data[19:16] & decoded_wr_biten[19:16]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.axis_if.source.control.tkeep.next = next_c;
+        field_combo.endpoint_interface.axis_if.source.control.tkeep.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.axis_if.source.control.tkeep.value <= 4'h0;
+        end else begin
+            if(field_combo.endpoint_interface.axis_if.source.control.tkeep.load_next) begin
+                field_storage.endpoint_interface.axis_if.source.control.tkeep.value <= field_combo.endpoint_interface.axis_if.source.control.tkeep.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.axis_if.source.control.tkeep.value = field_storage.endpoint_interface.axis_if.source.control.tkeep.value;
     // Field: openenoc_endpoint_full_csr.endpoint_interface.axis_if.sink.control.tready
     always_comb begin
         automatic logic [0:0] next_c;
@@ -842,7 +872,7 @@ module openenoc_endpoint_full_csr (
         if(decoded_reg_strb.endpoint_interface.axis_if.sink.control && decoded_req_is_wr) begin // SW write
             next_c = (field_storage.endpoint_interface.axis_if.sink.control.tready.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
             load_next_c = '1;
-        end else begin // singlepulse clears back to 0
+        end else if(hwif_in.endpoint_interface.axis_if.sink.control.tready.hwclr) begin // HW Clear
             next_c = '0;
             load_next_c = '1;
         end
@@ -1185,6 +1215,7 @@ module openenoc_endpoint_full_csr (
         if(rd_mux_addr == 13'h824) begin
             readback_data_var[0] = field_storage.endpoint_interface.axis_if.source.control.tvalid.value;
             readback_data_var[8] = field_storage.endpoint_interface.axis_if.source.control.tlast.value;
+            readback_data_var[19:16] = field_storage.endpoint_interface.axis_if.source.control.tkeep.value;
         end
         if(rd_mux_addr == 13'h828) begin
             readback_data_var[0] = hwif_in.endpoint_interface.axis_if.source.status.tready.next;
@@ -1192,9 +1223,13 @@ module openenoc_endpoint_full_csr (
         if(rd_mux_addr == 13'h830) begin
             readback_data_var[31:0] = hwif_in.endpoint_interface.axis_if.sink.data.tdata.next;
         end
+        if(rd_mux_addr == 13'h834) begin
+            readback_data_var[0] = field_storage.endpoint_interface.axis_if.sink.control.tready.value;
+        end
         if(rd_mux_addr == 13'h838) begin
             readback_data_var[0] = hwif_in.endpoint_interface.axis_if.sink.status.tvalid.next;
             readback_data_var[8] = hwif_in.endpoint_interface.axis_if.sink.status.tlast.next;
+            readback_data_var[19:16] = hwif_in.endpoint_interface.axis_if.sink.status.tkeep.next;
         end
         for(int i0=0; i0<4; i0++) begin
             if(rd_mux_addr == 13'h880 + (13)'(i0) * 13'h1c) begin

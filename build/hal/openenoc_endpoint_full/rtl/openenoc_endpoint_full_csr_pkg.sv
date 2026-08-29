@@ -29,6 +29,14 @@ package openenoc_endpoint_full_csr_pkg;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__config__in_t;
 
     typedef struct {
+        logic hwclr;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__tvalid__in_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__tvalid__in_t tvalid;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__in_t;
+
+    typedef struct {
         logic next;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__status__tready__in_t;
 
@@ -37,6 +45,7 @@ package openenoc_endpoint_full_csr_pkg;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__status__in_t;
 
     typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__in_t control;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__status__in_t status;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__in_t;
 
@@ -49,6 +58,14 @@ package openenoc_endpoint_full_csr_pkg;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__data__in_t;
 
     typedef struct {
+        logic hwclr;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__control__tready__in_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__control__tready__in_t tready;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__control__in_t;
+
+    typedef struct {
         logic next;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__tvalid__in_t;
 
@@ -57,12 +74,18 @@ package openenoc_endpoint_full_csr_pkg;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__tlast__in_t;
 
     typedef struct {
+        logic [3:0] next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__tkeep__in_t;
+
+    typedef struct {
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__tvalid__in_t tvalid;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__tlast__in_t tlast;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__tkeep__in_t tkeep;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__in_t;
 
     typedef struct {
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__data__in_t data;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__control__in_t control;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__status__in_t status;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__sink__in_t;
 
@@ -226,8 +249,13 @@ package openenoc_endpoint_full_csr_pkg;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__tlast__out_t;
 
     typedef struct {
+        logic [3:0] value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__tkeep__out_t;
+
+    typedef struct {
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__tvalid__out_t tvalid;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__tlast__out_t tlast;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__tkeep__out_t tkeep;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__source__control__out_t;
 
     typedef struct {

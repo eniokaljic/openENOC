@@ -19,7 +19,7 @@ module openenoc_endpoint_full #
     input  wire logic rst,
 
     openenoc_switch_if.csr switch_if,
-    openenoc_eth_if eth
+    openenoc_eth_if eth_if
 );
 
     localparam INITIATOR_COUNT = 3;
@@ -47,9 +47,6 @@ module openenoc_endpoint_full #
         .clk (clk),
         .rst (rst)
     );
-
-    // The endpoint datapath is not implemented yet, so its CSR status inputs are idle
-    assign endpoint_if.core_to_csr = '{default: '0};
 
     openenoc_endpoint_full_csr_bridge csr_bridge_inst (
         .csr_hwif_out (csr_hwif_out),
@@ -280,20 +277,14 @@ module openenoc_endpoint_full #
     assign endpoint_axil.rvalid  = s_axil[1].rvalid;
     assign s_axil[1].rready      = endpoint_axil.rready;
 
-    assign endpoint_axil.awaddr  = '0;
-    assign endpoint_axil.awprot  = '0;
-    assign endpoint_axil.awuser  = '0;
-    assign endpoint_axil.awvalid = 1'b0;
-    assign endpoint_axil.wdata   = '0;
-    assign endpoint_axil.wstrb   = '0;
-    assign endpoint_axil.wuser   = '0;
-    assign endpoint_axil.wvalid  = 1'b0;
-    assign endpoint_axil.bready  = 1'b0;
-    assign endpoint_axil.araddr  = '0;
-    assign endpoint_axil.arprot  = '0;
-    assign endpoint_axil.aruser  = '0;
-    assign endpoint_axil.arvalid = 1'b0;
-    assign endpoint_axil.rready  = 1'b0;
+    openenoc_endpoint_interface endpoint_interface_inst (
+        .clk         (clk),
+        .rst         (rst),
+        .endpoint_if (endpoint_if),
+        .eth_if      (eth_if),
+        .m_axil_wr   (endpoint_axil),
+        .m_axil_rd   (endpoint_axil)
+    );
 
     /*
     * Initiator 2: reserved debug/program master
@@ -490,20 +481,6 @@ module openenoc_endpoint_full #
         .hwif_in        (csr_hwif_in),
         .hwif_out       (csr_hwif_out)
     );
-
-    /*
-    * TODO: implement openENOC endpoint interface. The endpoint owns side A: a2b is its
-    * transmit direction and b2a is its receive direction.
-    */
-    assign eth.a2b.tdata  = '0;
-    assign eth.a2b.tkeep  = '0;
-    assign eth.a2b.tstrb  = '0;
-    assign eth.a2b.tid    = '0;
-    assign eth.a2b.tdest  = '0;
-    assign eth.a2b.tuser  = '0;
-    assign eth.a2b.tlast  = 1'b0;
-    assign eth.a2b.tvalid = 1'b0;
-    assign eth.b2a.tready = 1'b0;
 
 endmodule
 

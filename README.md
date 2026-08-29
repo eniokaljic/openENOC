@@ -33,9 +33,9 @@ The openENOC repository is organized into a set of clearly separated functional 
 | `docs/` | Project documentation sources and assets. |
 | `hal/` | Hardware Abstraction Layer sources, register definitions, code generators, and related tooling. |
 | `hw/` | Hardware sources: reusable RTL under `hw/rtl/`, reference designs under `hw/examples/`, and platform demonstrations under `hw/demos/`. |
-| `libs/` | External hardware libraries tracked as Git submodules. |
 | `sw/` | Software libraries, drivers, utilities, and application support code. |
 | `dv/` | Design verification environment, including shared verification infrastructure, component-level verification, example verification, and hardware demos verification. |
+| `libs/` | External hardware and software libraries tracked as Git submodules. |
 | `build/` | Generated build artifacts, simulation outputs, generated code, and intermediate files. |
 | `ci/` | Continuous integration scripts and automation utilities used by development and release workflows. |
 | `.github/workflows/` | GitHub Actions workflow definitions for documentation generation, automated testing, and release processes. |
@@ -58,8 +58,8 @@ Task status is indicated using the following icons: &#x2b1c; To Do, &#x1F7E9; In
 This work package delivers the complete openENOC RTL implementation forming the hardware datapath of the Ethernet-based Network-on-Chip. The development progresses from basic switching primitives and datapath elements (RTL1), through packet processing pipeline components (RTL2), to forwarding engines and DMA-capable endpoint connectivity (RTL3). The final stage integrates all components into a configurable Ethernet Layer-2 switching fabric suitable for MPSoC integration (RTL4).
 
 - &#x2705; [RTL1 - Core Switching Primitives](https://github.com/eniokaljic/openENOC/issues/1)
-- &#x1F7E9; [RTL2 - Packet Processing Pipeline](https://github.com/eniokaljic/openENOC/issues/2)
-- &#x2b1c; [RTL3 - Forwarding & DMA Engines](https://github.com/eniokaljic/openENOC/issues/3)
+- &#x2705; [RTL2 - Packet Processing Pipeline](https://github.com/eniokaljic/openENOC/issues/2)
+- &#x1F7E9; [RTL3 - Forwarding & DMA Engines](https://github.com/eniokaljic/openENOC/issues/3)
 - &#x2b1c; [RTL4 - Integrated NoC Fabric](https://github.com/eniokaljic/openENOC/issues/4)
 
 ### WP2 - Integration HAL and Software API Development
@@ -67,8 +67,8 @@ This work package delivers the complete openENOC RTL implementation forming the 
 This work package provides the software interface layer required to configure and control the NoC. It begins with the definition of the hardware abstraction layer and register-level interface (SW1), followed by integration with representative RISC-V platforms (SW2). Runtime configuration capabilities are then implemented through a compact baremetal C/C++ API (SW3), while the final stage delivers reference applications demonstrating practical NoC usage scenarios (SW4).
 
 - &#x2705; [SW1 - HAL Architecture Specification](https://github.com/eniokaljic/openENOC/issues/5)
-- &#x1F7E9; [SW2 - RISC-V Platform Integration](https://github.com/eniokaljic/openENOC/issues/6)
-- &#x2b1c; [SW3 - Runtime Control API](https://github.com/eniokaljic/openENOC/issues/7)
+- &#x2705; [SW2 - RISC-V Platform Integration](https://github.com/eniokaljic/openENOC/issues/6)
+- &#x1F7E9; [SW3 - Runtime Control API](https://github.com/eniokaljic/openENOC/issues/7)
 - &#x2b1c; [SW4 - Reference Applications](https://github.com/eniokaljic/openENOC/issues/8)
 
 ### WP3 - Verification Infrastructure Development
@@ -76,8 +76,8 @@ This work package provides the software interface layer required to configure an
 This work package establishes the verification infrastructure required to validate both the hardware and software components of the platform. It begins with the creation of a simulation environment using Verilator, cocotb and related tools (DV1). Layered testbenches are then developed to verify core datapath modules and packet processing logic (DV2). Hardware/software interaction is validated through co-simulation with instruction set simulation (DV3), and finally continuous regression testing is deployed through automated CI pipelines (DV4).
 
 - &#x2705; [DV1 - Simulation Framework](https://github.com/eniokaljic/openENOC/issues/9)
-- &#x1F7E9; [DV2 - Module-Level Verification](https://github.com/eniokaljic/openENOC/issues/10)
-- &#x2b1c; [DV3 - HW/SW Co-Verification](https://github.com/eniokaljic/openENOC/issues/11)
+- &#x2705; [DV2 - Module-Level Verification](https://github.com/eniokaljic/openENOC/issues/10)
+- &#x1F7E9; [DV3 - HW/SW Co-Verification](https://github.com/eniokaljic/openENOC/issues/11)
 - &#x2b1c; [DV4 - Continuous Verification Infrastructure](https://github.com/eniokaljic/openENOC/issues/12)
 
 ### WP4 - Demo SoCs and Educational Kits Development

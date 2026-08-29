@@ -1813,6 +1813,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tlast.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tkeep'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tkeep.udp,{})
+
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status.tready'):
             
             
@@ -1838,6 +1843,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tlast.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tkeep'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tkeep.udp,{})
+
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
             
             
@@ -3590,8 +3600,8 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='control',
                                                 parent_full_inst_name='csr.endpoint_interface.axis_if.source')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.axis_if.source.control, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['tvalid','tlast', ]),
-                                                                                          writeable_fields=set(['tvalid','tlast', ]) )
+                                                                                          readable_fields=set(['tvalid','tlast','tkeep', ]),
+                                                                                          writeable_fields=set(['tvalid','tlast','tkeep', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.status, address=2088, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.source.status",
@@ -3616,8 +3626,8 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 rdl_desc="Control register for the AXI4-Stream sink interface.",
                                                 inst_name='control',
                                                 parent_full_inst_name='csr.endpoint_interface.axis_if.sink')
-            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.axis_if.sink.control, has_sw_readable=False, has_sw_writable=True,
-                                                                                          readable_fields=set([ ]),
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.axis_if.sink.control, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['tready', ]),
                                                                                           writeable_fields=set(['tready', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.sink.status, address=2104, width=32, accesswidth=32, size=4,
@@ -3626,7 +3636,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='status',
                                                 parent_full_inst_name='csr.endpoint_interface.axis_if.sink')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.axis_if.sink.status, has_sw_readable=True, has_sw_writable=False,
-                                                                                          readable_fields=set(['tvalid','tlast', ]),
+                                                                                          readable_fields=set(['tvalid','tlast','tkeep', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].mac_address, address=2176, width=64, accesswidth=32, size=8,
@@ -6471,7 +6481,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.control.tvalid'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.control.tvalid, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.control.tvalid",
-                                             rdl_desc="Indicates that the AXI4-Stream source interface has valid data to send. This field is a single-pulse register that is automatically cleared back to zero after being written.",
+                                             rdl_desc="Indicates that the AXI4-Stream source interface has valid data to send. Once asserted by software, the field remains asserted until the transfer is accepted by the destination.",
                                              inst_name='tvalid',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.source.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.source.control.tvalid, is_sw_readable=True, is_sw_writable=True)
@@ -6482,6 +6492,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='tlast',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.source.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.source.control.tlast, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.control.tkeep'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.control.tkeep, lsb=16, msb=19, low=16, high=19, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.axis_if.source.control.tkeep[3:0]",
+                                             rdl_desc="Indicates which byte lanes contain valid data on the AXI4-Stream source interface.",
+                                             inst_name='tkeep',
+                                             parent_full_inst_name='csr.endpoint_interface.axis_if.source.control')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.source.control.tkeep, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.status.tready'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.status.tready, lsb=0, msb=0, low=0, high=0, is_volatile=True, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.status.tready",
@@ -6499,10 +6516,10 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.sink.control.tready'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.sink.control.tready, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.sink.control.tready",
-                                             rdl_desc="Indicates that the AXI4-Stream sink interface is ready to receive next data transfer.",
+                                             rdl_desc="Indicates that the AXI4-Stream sink interface is ready to accept a data transfer. Once asserted by software, the field remains asserted until a transfer occurs.",
                                              inst_name='tready',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.sink.control')
-            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.control.tready, is_sw_readable=False, is_sw_writable=True)
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.control.tready, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.sink.status.tvalid'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tvalid, lsb=0, msb=0, low=0, high=0, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.axis_if.sink.status.tvalid",
@@ -6517,6 +6534,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='tlast',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.sink.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tlast, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.axis_if.sink.status.tkeep'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tkeep, lsb=16, msb=19, low=16, high=19, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.axis_if.sink.status.tkeep[3:0]",
+                                             rdl_desc="Indicates which byte lanes contain valid data on the AXI4-Stream sink interface.",
+                                             inst_name='tkeep',
+                                             parent_full_inst_name='csr.endpoint_interface.axis_if.sink.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tkeep, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
@@ -8967,7 +8991,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                parent_full_inst_name='csr.endpoint_interface.axis_if')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.axis_if.sink,
                                          writeable_registers=NodeIterators('control',),
-                                         readable_registers=NodeIterators('data','status',),
+                                         readable_registers=NodeIterators('data','control','status',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: csr.endpoint_interface.peers'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.peers,
