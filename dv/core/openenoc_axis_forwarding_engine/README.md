@@ -46,7 +46,7 @@ outside the supported input format.
 ## Forwarding Table Model
 
 The testbench implements the openENOC request/acknowledge handshake. The engine
-asserts `lookup_req` or `learning_req` for one clock cycle and keeps the
+asserts `lookup_if.req` or `learning_if.req` for one clock cycle and keeps the
 associated payload stable while it waits. The model returns a single-cycle
 acknowledge after a configurable latency. During each wait, the testbench checks
 that the input is stalled and no buffered output beat is released.

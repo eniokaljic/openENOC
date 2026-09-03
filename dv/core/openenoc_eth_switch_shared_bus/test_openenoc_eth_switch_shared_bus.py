@@ -923,6 +923,8 @@ def test_openenoc_eth_switch_shared_bus(
         os.path.join(taxi_sync_dir, "taxi_sync_signal.sv"),
         os.path.join(hal_rtl_dir, "openenoc_switch_if.sv"),
         os.path.join(core_dir, "openenoc_eth_if.sv"),
+        os.path.join(core_dir, "openenoc_lookup_if.sv"),
+        os.path.join(core_dir, "openenoc_learning_if.sv"),
         os.path.join(core_dir, "openenoc_axis_demux.sv"),
         os.path.join(core_dir, "openenoc_axis_forwarding_engine.sv"),
         os.path.join(core_dir, "openenoc_forwarding_table.sv"),

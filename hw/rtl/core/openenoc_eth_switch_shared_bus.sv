@@ -337,14 +337,13 @@ module openenoc_eth_switch_shared_bus #
         .m_axis (arb_axis)
     );
 
-    logic                              lookup_req;
-    logic [47:0]                       lookup_mac_addr;
-    logic                              lookup_ack;
-    logic [NUM_OF_INTERFACES-1:0]      lookup_port_bitmap;
-    logic                              learning_req;
-    logic [47:0]                       learning_mac_addr;
-    logic [NUM_OF_INTERFACES-1:0]      learning_port_bitmap;
-    logic                              learning_ack;
+    openenoc_lookup_if #(
+        .NUM_OF_INTERFACES (NUM_OF_INTERFACES)
+    ) lookup_if();
+
+    openenoc_learning_if #(
+        .NUM_OF_INTERFACES (NUM_OF_INTERFACES)
+    ) learning_if();
 
     openenoc_axis_forwarding_engine #(
         .NUM_OF_INTERFACES (NUM_OF_INTERFACES)
@@ -356,14 +355,8 @@ module openenoc_eth_switch_shared_bus #
         .pause_done           (switch_if.core_to_csr.forwarding_control.pause_done.next),
         .s_axis               (arb_axis),
         .m_axis               (forwarding_axis),
-        .lookup_req           (lookup_req),
-        .lookup_mac_addr      (lookup_mac_addr),
-        .lookup_ack           (lookup_ack),
-        .lookup_port_bitmap   (lookup_port_bitmap),
-        .learning_req         (learning_req),
-        .learning_mac_addr    (learning_mac_addr),
-        .learning_port_bitmap (learning_port_bitmap),
-        .learning_ack         (learning_ack)
+        .lookup_if            (lookup_if),
+        .learning_if          (learning_if)
     );
 
     openenoc_forwarding_table #(
@@ -383,14 +376,8 @@ module openenoc_eth_switch_shared_bus #
         .cpuif_wr_ack         (switch_if.core_to_csr.forwarding_table.wr_ack),
         .cpuif_rd_ack         (switch_if.core_to_csr.forwarding_table.rd_ack),
         .cpuif_rd_data        (switch_if.core_to_csr.forwarding_table.rd_data),
-        .lookup_req           (lookup_req),
-        .lookup_mac_addr      (lookup_mac_addr),
-        .lookup_ack           (lookup_ack),
-        .lookup_port_bitmap   (lookup_port_bitmap),
-        .learning_req         (learning_req),
-        .learning_mac_addr    (learning_mac_addr),
-        .learning_port_bitmap (learning_port_bitmap),
-        .learning_ack         (learning_ack)
+        .lookup_if            (lookup_if),
+        .learning_if          (learning_if)
     );
 
     /*

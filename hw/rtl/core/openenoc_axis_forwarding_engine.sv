@@ -39,18 +39,12 @@ module openenoc_axis_forwarding_engine #
     /*
      * Lookup interface (openenoc_forwarding_table)
      */
-    output logic                              lookup_req,
-    output logic [47:0]                       lookup_mac_addr,
-    input  wire logic                         lookup_ack,
-    input  wire logic [NUM_OF_INTERFACES-1:0] lookup_port_bitmap,
+    openenoc_lookup_if.mst                    lookup_if,
 
     /*
      * Learning interface (openenoc_forwarding_table)
      */
-    output logic                              learning_req,
-    output logic [47:0]                       learning_mac_addr,
-    output logic [NUM_OF_INTERFACES-1:0]      learning_port_bitmap,
-    input  wire logic                         learning_ack
+    openenoc_learning_if.mst                  learning_if
 );
 
     localparam int   DATA_W   = s_axis.DATA_W;
@@ -226,8 +220,8 @@ module openenoc_axis_forwarding_engine #
     always_ff @(posedge clk) begin
         // Requests are one-cycle strobes. Payload registers remain stable while
         // the engine waits for the corresponding acknowledge.
-        lookup_req   <= 1'b0;
-        learning_req <= 1'b0;
+        lookup_if.req   <= 1'b0;
+        learning_if.req <= 1'b0;
 
         if (s_fire) begin
             da_reg <= da_next;
@@ -253,26 +247,26 @@ module openenoc_axis_forwarding_engine #
                     forwarding_bitmap_reg <= '0;
                     state_reg <= ST_RELEASE;
                 end else if (s_fire && da_complete) begin
-                    lookup_mac_addr <= da_next;
-                    lookup_req <= 1'b1;
+                    lookup_if.mac_addr <= da_next;
+                    lookup_if.req <= 1'b1;
                     state_reg <= ST_WAIT_LOOKUP;
                 end
             end
 
             ST_WAIT_LOOKUP: begin
-                if (lookup_ack) begin
+                if (lookup_if.ack) begin
                     if (frame_input_done_reg &&
                             byte_count_reg < BYTE_CNT_W'(HEADER_BYTES))
                         forwarding_bitmap_reg <= '0;
                     else
-                        forwarding_bitmap_reg <= lookup_port_bitmap &
+                        forwarding_bitmap_reg <= lookup_if.port_bitmap &
                                                 ~port_onehot(ingress_port_reg);
 
                     // A wide beat may already contain the whole source address.
                     if (byte_count_reg >= BYTE_CNT_W'(HEADER_BYTES)) begin
-                        learning_mac_addr <= sa_reg;
-                        learning_port_bitmap <= port_onehot(ingress_port_reg);
-                        learning_req <= 1'b1;
+                        learning_if.mac_addr <= sa_reg;
+                        learning_if.port_bitmap <= port_onehot(ingress_port_reg);
+                        learning_if.req <= 1'b1;
                         state_reg <= ST_WAIT_LEARNING;
                     end else if (frame_input_done_reg) begin
                         // Frame ended after DA but before SA; lookup is valid but
@@ -288,9 +282,9 @@ module openenoc_axis_forwarding_engine #
                 if (s_fire && sa_complete) begin
                     // Every complete source address is sent to the table. Managed
                     // mode policy, if enabled, belongs to the table itself.
-                    learning_mac_addr <= sa_next;
-                    learning_port_bitmap <= port_onehot(ingress_port_reg);
-                    learning_req <= 1'b1;
+                    learning_if.mac_addr <= sa_next;
+                    learning_if.port_bitmap <= port_onehot(ingress_port_reg);
+                    learning_if.req <= 1'b1;
                     state_reg <= ST_WAIT_LEARNING;
                 end else if (s_fire && s_axis.tlast) begin
                     // Incomplete SA: release with no route and without learning.
@@ -300,7 +294,7 @@ module openenoc_axis_forwarding_engine #
             end
 
             ST_WAIT_LEARNING: begin
-                if (learning_ack)
+                if (learning_if.ack)
                     state_reg <= ST_RELEASE;
             end
 
@@ -327,18 +321,18 @@ module openenoc_axis_forwarding_engine #
             ingress_port_reg <= '0;
             frame_input_done_reg <= 1'b0;
             forwarding_bitmap_reg <= '0;
-            lookup_req <= 1'b0;
-            lookup_mac_addr <= '0;
-            learning_req <= 1'b0;
-            learning_mac_addr <= '0;
-            learning_port_bitmap <= '0;
+            lookup_if.req <= 1'b0;
+            lookup_if.mac_addr <= '0;
+            learning_if.req <= 1'b0;
+            learning_if.mac_addr <= '0;
+            learning_if.port_bitmap <= '0;
         end
     end
 
     // A pause is complete only at a frame boundary after the register pipeline has
     // drained. No new frame is accepted while pause_request remains asserted.
     assign pause_done = pause_request && at_frame_boundary &&
-                        !buffer_m_axis.tvalid && !lookup_req && !learning_req;
+                        !buffer_m_axis.tvalid && !lookup_if.req && !learning_if.req;
 
 endmodule
 

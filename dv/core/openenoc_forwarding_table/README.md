@@ -49,8 +49,8 @@ once.
 - **CPU interface** (`cpuif_*`): 32-bit interface of the external `forwarding_table`
   regfile of the openENOC Switch Interface CSR
   (`hwif_out.forwarding_table.*` / `hwif_in.forwarding_table.*`).
-- **Lookup interface**: the result is presented on `lookup_port_bitmap`
-  together with `lookup_ack`. A miss returns `default_forwarding`
+- **Lookup interface**: the result is presented on `lookup_if.port_bitmap`
+  together with `lookup_if.ack`. A miss returns `default_forwarding`
   (`hwif_out.default_forwarding.bitmap.value`).
 - **Learning interface**: a known MAC address only refreshes its port bitmap,
   a new MAC address is written at the circular write pointer, replacing the
