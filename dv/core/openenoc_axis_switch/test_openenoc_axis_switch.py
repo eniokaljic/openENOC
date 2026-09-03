@@ -24,8 +24,8 @@ class TB:
 
 		cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
 
-		self.source = [AxiStreamSource(AxiStreamBus.from_entity(bus), dut.clk, dut.rst) for bus in dut.s_axis]
-		self.sink = [AxiStreamSink(AxiStreamBus.from_entity(bus), dut.clk, dut.rst) for bus in dut.m_axis]
+		self.source = [AxiStreamSource(AxiStreamBus.from_entity(bus), dut.clk, dut.rst) for bus in dut.s_axis_if]
+		self.sink = [AxiStreamSink(AxiStreamBus.from_entity(bus), dut.clk, dut.rst) for bus in dut.m_axis_if]
 
 	def set_idle_generator(self, generator=None):
 		if generator:
@@ -66,12 +66,12 @@ def cycle_pause():
 	return itertools.cycle([1, 1, 1, 0])
 
 def size_list():
-	data_width = len(cocotb.top.s_axis[0].tdata)
+	data_width = len(cocotb.top.s_axis_if[0].tdata)
 	byte_width = data_width // 8
 	return list(range(1, byte_width * 4 + 1)) + [64] + [1] * 8
 
 def multicast_mask_list():
-	ports = len(cocotb.top.m_axis)
+	ports = len(cocotb.top.m_axis_if)
 	if ports <= 0:
 		return []
 
@@ -229,8 +229,8 @@ async def run_test_factory_multicast_scheduler(dut, payload_lengths=None, payloa
 # ----------------------------------------------------------------------
 
 if getattr(cocotb, 'top', None) is not None:
-	s_count = len(cocotb.top.s_axis)
-	m_count = len(cocotb.top.m_axis)
+	s_count = len(cocotb.top.s_axis_if)
+	m_count = len(cocotb.top.m_axis_if)
 
 	if os.environ.get('PARAM_TUSER_BITMAP_ROUTE', '0') == '1':
 		factory = TestFactory(run_test_factory_multicast_no_scheduler)

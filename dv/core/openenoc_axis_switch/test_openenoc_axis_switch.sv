@@ -49,7 +49,7 @@ module test_openenoc_axis_switch #
         .DEST_W(S_DEST_W),
         .USER_EN(USER_EN),
         .USER_W(USER_W)
-    ) s_axis[S_COUNT]();
+    ) s_axis_if[S_COUNT]();
 
     taxi_axis_if #(
         .DATA_W(DATA_W),
@@ -63,7 +63,7 @@ module test_openenoc_axis_switch #
         .DEST_W(M_DEST_W),
         .USER_EN(USER_EN),
         .USER_W(USER_W)
-    ) m_axis[M_COUNT]();
+    ) m_axis_if[M_COUNT]();
 
     openenoc_axis_switch #(
         .S_COUNT(S_COUNT),
@@ -72,12 +72,12 @@ module test_openenoc_axis_switch #
         .S_REG_TYPE(S_REG_TYPE),
         .M_REG_TYPE(M_REG_TYPE)
     )
-    uut (
+    u_openenoc_axis_switch (
         .clk(clk),
         .rst(rst),
         .tuser_bitmap_route(TUSER_BITMAP_ROUTE),
-        .s_axis(s_axis),
-        .m_axis(m_axis)
+        .s_axis(s_axis_if),
+        .m_axis(m_axis_if)
     );
 
 endmodule

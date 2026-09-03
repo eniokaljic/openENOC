@@ -42,7 +42,7 @@ taxi_axis_if #(
     .DEST_W(DEST_W),
     .USER_EN(1'b0),
     .USER_W(1)
-) s_axis();
+) s_axis_if();
 
 taxi_axis_if #(
     .DATA_W(DATA_W),
@@ -56,7 +56,7 @@ taxi_axis_if #(
     .DEST_W(DEST_W),
     .USER_EN(USER_EN),
     .USER_W(USER_W)
-) m_axis();
+) m_axis_if();
 
 logic pause_request;
 logic pause_done;
@@ -72,7 +72,7 @@ openenoc_learning_if #(
 openenoc_axis_forwarding_engine #(
     .NUM_OF_INTERFACES(NUM_OF_INTERFACES)
 )
-uut (
+u_openenoc_axis_forwarding_engine (
     .clk(clk),
     .rst(rst),
 
@@ -82,12 +82,12 @@ uut (
     /*
      * AXI4-Stream input (sink)
      */
-    .s_axis(s_axis),
+    .s_axis(s_axis_if),
 
     /*
      * AXI4-Stream output (source)
      */
-    .m_axis(m_axis),
+    .m_axis(m_axis_if),
 
     /*
      * Lookup interface

@@ -125,7 +125,7 @@ module openenoc_picorv32 #(
     wire logic [31:0] mem_la_wdata;
     wire logic [3:0]  mem_la_wstrb;
 
-    openenoc_picorv32_axil_adapter axil_adapter_inst (
+    openenoc_picorv32_axil_adapter u_axil_adapter (
         .clk             (clk),
         .resetn          (resetn),
 
@@ -188,7 +188,7 @@ module openenoc_picorv32 #(
         .PROGADDR_RESET       (PROGADDR_RESET),
         .PROGADDR_IRQ         (PROGADDR_IRQ),
         .STACKADDR            (STACKADDR)
-    ) picorv32_core_inst (
+    ) u_picorv32_core (
         .clk          (clk),
         .resetn       (resetn),
         .trap         (trap),

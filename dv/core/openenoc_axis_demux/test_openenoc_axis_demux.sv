@@ -47,7 +47,7 @@ module test_openenoc_axis_demux #
         .DEST_W(S_DEST_W),
         .USER_EN(USER_EN),
         .USER_W(USER_W)
-    ) s_axis();
+    ) s_axis_if();
 
     taxi_axis_if #(
         .DATA_W(DATA_W),
@@ -61,7 +61,7 @@ module test_openenoc_axis_demux #
         .DEST_W(M_DEST_W),
         .USER_EN(USER_EN),
         .USER_W(USER_W)
-    ) m_axis[M_COUNT]();
+    ) m_axis_if[M_COUNT]();
 
     logic enable;
     logic drop;
@@ -73,19 +73,19 @@ module test_openenoc_axis_demux #
         .TDEST_ROUTE(TDEST_ROUTE),
         .TUSER_BITMAP_ROUTE(TUSER_BITMAP_ROUTE)
     )
-    uut (
+    u_openenoc_axis_demux (
         .clk(clk),
         .rst(rst),
 
         /*
         * AXI4-Stream input (sink)
         */
-        .s_axis(s_axis),
+        .s_axis(s_axis_if),
 
         /*
         * AXI4-Stream output (source)
         */
-        .m_axis(m_axis),
+        .m_axis(m_axis_if),
 
         /*
         * Control

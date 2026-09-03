@@ -37,11 +37,11 @@ interface openenoc_eth_if #
     /*
      * Symmetric bidirectional Ethernet-like openENOC link.
      *
-     * Direction a2b:
+     * Direction a2b_axis_if:
      *   side A drives taxi_axis_if.src
      *   side B drives taxi_axis_if.snk
      *
-     * Direction b2a:
+     * Direction b2a_axis_if:
      *   side B drives taxi_axis_if.src
      *   side A drives taxi_axis_if.snk
      */
@@ -58,7 +58,7 @@ interface openenoc_eth_if #
         .DEST_W  (DEST_W),
         .USER_EN (USER_EN),
         .USER_W  (USER_W)
-    ) a2b();
+    ) a2b_axis_if();
 
     taxi_axis_if #(
         .DATA_W  (DATA_W),
@@ -72,7 +72,7 @@ interface openenoc_eth_if #
         .DEST_W  (DEST_W),
         .USER_EN (USER_EN),
         .USER_W  (USER_W)
-    ) b2a();
+    ) b2a_axis_if();
 
 endinterface
 

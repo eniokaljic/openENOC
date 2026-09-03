@@ -24,8 +24,8 @@ class TB:
 
         cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
 
-        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis), dut.clk, dut.rst)
-        self.sink = AxiStreamSink(AxiStreamBus.from_entity(dut.m_axis), dut.clk, dut.rst)
+        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis_if), dut.clk, dut.rst)
+        self.sink = AxiStreamSink(AxiStreamBus.from_entity(dut.m_axis_if), dut.clk, dut.rst)
 
     def set_idle_generator(self, generator=None):
         if generator:
@@ -68,7 +68,7 @@ def cycle_pause():
     return itertools.cycle([1, 1, 1, 0])
 
 def size_list():
-    data_width = len(cocotb.top.s_axis.tdata)
+    data_width = len(cocotb.top.s_axis_if.tdata)
     byte_width = data_width // 8
     # payload lengths (the 16-byte header is always prepended on top of these)
     return list(range(0, byte_width * 4 + 1)) + [64] + [0] * 4

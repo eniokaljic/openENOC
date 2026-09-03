@@ -86,7 +86,7 @@ module openenoc_axis_header_parser #
     /* verilator lint_on GENUNNAMED */
 
     // ---------------------------------------------------------------------------
-    // data path: plain AXIS FIFO (delay line), s_axis -> buf_axis
+    // data path: plain AXIS FIFO (delay line), s_axis -> buf_axis_if
     // ---------------------------------------------------------------------------
     taxi_axis_if #(
         .DATA_W(DATA_W),
@@ -98,17 +98,17 @@ module openenoc_axis_header_parser #
         .DEST_EN(1'b0),
         .USER_EN(1'b0),
         .USER_W(1)
-    ) buf_axis();
+    ) buf_axis_if();
 
     taxi_axis_fifo #(
         .DEPTH(FIFO_CYC*KEEP_W),
         .FRAME_FIFO(1'b0)
     )
-    data_fifo_inst (
+    u_data_fifo (
         .clk(clk),
         .rst(rst),
         .s_axis(s_axis),
-        .m_axis(buf_axis),
+        .m_axis(buf_axis_if),
         .pause_req(1'b0),
         .pause_ack(),
         .status_depth(),
@@ -179,7 +179,7 @@ module openenoc_axis_header_parser #
 
     // ---------------------------------------------------------------------------
     // output gate: withhold frame start until its header is ready; drive tuser
-    // gate_axis mirrors m_axis and feeds the optional output register
+    // gate_axis_if mirrors m_axis and feeds the optional output register
     // ---------------------------------------------------------------------------
     taxi_axis_if #(
         .DATA_W(DATA_W),
@@ -193,25 +193,25 @@ module openenoc_axis_header_parser #
         .DEST_W(m_axis.DEST_W),
         .USER_EN(m_axis.USER_EN),
         .USER_W(M_USER_W)
-    ) gate_axis();
+    ) gate_axis_if();
 
     logic             out_active_reg;
     logic [HDR_W-1:0] cur_hdr_reg;
 
     wire out_go = out_active_reg || !hdr_empty;
 
-    assign gate_axis.tvalid = buf_axis.tvalid && out_go;
-    assign buf_axis.tready  = gate_axis.tready && out_go;
+    assign gate_axis_if.tvalid = buf_axis_if.tvalid && out_go;
+    assign buf_axis_if.tready  = gate_axis_if.tready && out_go;
 
-    assign gate_axis.tdata = buf_axis.tdata;
-    assign gate_axis.tkeep = m_axis.KEEP_EN ? buf_axis.tkeep : '1;
-    assign gate_axis.tstrb = m_axis.STRB_EN ? buf_axis.tstrb : gate_axis.tkeep;
-    assign gate_axis.tlast = buf_axis.tlast;
-    assign gate_axis.tid   = '0;
-    assign gate_axis.tdest = '0;
-    assign gate_axis.tuser = M_USER_W'(out_active_reg ? cur_hdr_reg : hdr_head);
+    assign gate_axis_if.tdata = buf_axis_if.tdata;
+    assign gate_axis_if.tkeep = m_axis.KEEP_EN ? buf_axis_if.tkeep : '1;
+    assign gate_axis_if.tstrb = m_axis.STRB_EN ? buf_axis_if.tstrb : gate_axis_if.tkeep;
+    assign gate_axis_if.tlast = buf_axis_if.tlast;
+    assign gate_axis_if.tid   = '0;
+    assign gate_axis_if.tdest = '0;
+    assign gate_axis_if.tuser = M_USER_W'(out_active_reg ? cur_hdr_reg : hdr_head);
 
-    wire m_fire = gate_axis.tvalid && gate_axis.tready;
+    wire m_fire = gate_axis_if.tvalid && gate_axis_if.tready;
 
     always_ff @(posedge clk) begin
         // header FIFO write
@@ -226,7 +226,7 @@ module openenoc_axis_header_parser #
                 out_active_reg <= 1'b1;
                 cur_hdr_reg    <= hdr_head;
             end
-            if (gate_axis.tlast) begin
+            if (gate_axis_if.tlast) begin
                 out_active_reg <= 1'b0;
                 hdr_rd_ptr     <= hdr_rd_ptr + 1;   // pop consumed frame's header
             end
@@ -241,15 +241,15 @@ module openenoc_axis_header_parser #
     end
 
     // ---------------------------------------------------------------------------
-    // optional output register (skid), gate_axis -> m_axis
+    // optional output register (skid), gate_axis_if -> m_axis
     // ---------------------------------------------------------------------------
     taxi_axis_register #(
         .REG_TYPE(M_REG_TYPE)
     )
-    m_reg_inst (
+    u_m_reg (
         .clk(clk),
         .rst(rst),
-        .s_axis(gate_axis),
+        .s_axis(gate_axis_if),
         .m_axis(m_axis)
     );
 

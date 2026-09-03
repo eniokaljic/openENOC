@@ -26,8 +26,8 @@ instances. The testbench loops the transmit direction back into the receive
 direction.
 
 The crossbar arrays are connected through individually named internal Taxi
-interfaces: `cpu_axil`, `endpoint_axil`, `debug_axil`, `dmem_axil`,
-`imem_axil`, and `csr_axil`.
+interfaces: `cpu_axil_if`, `endpoint_axil_if`, `debug_axil_if`, `dmem_axil_if`,
+`imem_axil_if`, and `csr_axil_if`.
 
 The CPU initiator uses the `openenoc_picorv32` drop-in wrapper around the
 original PicoRV32 core and the project AXI4-Lite adapter. Consequently this

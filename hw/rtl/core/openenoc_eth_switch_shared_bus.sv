@@ -85,7 +85,7 @@ module openenoc_eth_switch_shared_bus #
         .DEST_W  (eth_if[0].DEST_W),
         .USER_EN (1'b1),
         .USER_W  (NUM_OF_INTERFACES)
-    ) ingress_axis[NUM_OF_INTERFACES](), egress_axis[NUM_OF_INTERFACES]();
+    ) ingress_axis_if[NUM_OF_INTERFACES](), egress_axis_if[NUM_OF_INTERFACES]();
 
     taxi_axis_if #(
         .DATA_W  (FABRIC_DATA_W),
@@ -99,7 +99,7 @@ module openenoc_eth_switch_shared_bus #
         .DEST_W  (eth_if[0].DEST_W),
         .USER_EN (1'b1),
         .USER_W  (NUM_OF_INTERFACES)
-    ) arb_axis(), forwarding_axis();
+    ) arb_axis_if(), forwarding_axis_if();
 
     /*
      * Per-port ingress/egress adaptation
@@ -146,7 +146,7 @@ module openenoc_eth_switch_shared_bus #
             .DEST_W  (eth_if[n].DEST_W),
             .USER_EN (eth_if[n].USER_EN),
             .USER_W  (eth_if[n].USER_W)
-        ) port_rx_axis();
+        ) port_rx_axis_if();
 
         taxi_axis_if #(
             .DATA_W  (eth_if[n].DATA_W),
@@ -160,7 +160,7 @@ module openenoc_eth_switch_shared_bus #
             .DEST_W  (eth_if[n].DEST_W),
             .USER_EN (eth_if[n].USER_EN),
             .USER_W  (eth_if[n].USER_W)
-        ) port_tx_axis();
+        ) port_tx_axis_if();
 
         /*
          * Normalize A/B link orientation into RX/TX.
@@ -172,34 +172,34 @@ module openenoc_eth_switch_shared_bus #
              *
              * eth_if[n].DATA_W @ eth_if[n].clk
              *
-             * remote side A -> a2b -> switch side B
+             * remote side A -> a2b_axis_if -> switch side B
              */
-            assign port_rx_axis.tdata    = eth_if[n].a2b.tdata;
-            assign port_rx_axis.tkeep    = eth_if[n].a2b.tkeep;
-            assign port_rx_axis.tstrb    = eth_if[n].a2b.tstrb;
-            assign port_rx_axis.tid      = eth_if[n].a2b.tid;
-            assign port_rx_axis.tdest    = eth_if[n].a2b.tdest;
-            assign port_rx_axis.tuser    = eth_if[n].a2b.tuser;
-            assign port_rx_axis.tlast    = eth_if[n].a2b.tlast;
-            assign port_rx_axis.tvalid   = eth_if[n].a2b.tvalid;
-            assign eth_if[n].a2b.tready = port_rx_axis.tready;
+            assign port_rx_axis_if.tdata    = eth_if[n].a2b_axis_if.tdata;
+            assign port_rx_axis_if.tkeep    = eth_if[n].a2b_axis_if.tkeep;
+            assign port_rx_axis_if.tstrb    = eth_if[n].a2b_axis_if.tstrb;
+            assign port_rx_axis_if.tid      = eth_if[n].a2b_axis_if.tid;
+            assign port_rx_axis_if.tdest    = eth_if[n].a2b_axis_if.tdest;
+            assign port_rx_axis_if.tuser    = eth_if[n].a2b_axis_if.tuser;
+            assign port_rx_axis_if.tlast    = eth_if[n].a2b_axis_if.tlast;
+            assign port_rx_axis_if.tvalid   = eth_if[n].a2b_axis_if.tvalid;
+            assign eth_if[n].a2b_axis_if.tready = port_rx_axis_if.tready;
 
             /*
              * Egress:
              *
              * eth_if[n].DATA_W @ eth_if[n].clk
              *
-             * switch side B -> b2a -> remote side A
+             * switch side B -> b2a_axis_if -> remote side A
              */
-            assign eth_if[n].b2a.tdata   = port_tx_axis.tdata;
-            assign eth_if[n].b2a.tkeep   = port_tx_axis.tkeep;
-            assign eth_if[n].b2a.tstrb   = port_tx_axis.tstrb;
-            assign eth_if[n].b2a.tid     = port_tx_axis.tid;
-            assign eth_if[n].b2a.tdest   = port_tx_axis.tdest;
-            assign eth_if[n].b2a.tuser   = port_tx_axis.tuser;
-            assign eth_if[n].b2a.tlast   = port_tx_axis.tlast;
-            assign eth_if[n].b2a.tvalid  = port_tx_axis.tvalid;
-            assign port_tx_axis.tready   = eth_if[n].b2a.tready;
+            assign eth_if[n].b2a_axis_if.tdata   = port_tx_axis_if.tdata;
+            assign eth_if[n].b2a_axis_if.tkeep   = port_tx_axis_if.tkeep;
+            assign eth_if[n].b2a_axis_if.tstrb   = port_tx_axis_if.tstrb;
+            assign eth_if[n].b2a_axis_if.tid     = port_tx_axis_if.tid;
+            assign eth_if[n].b2a_axis_if.tdest   = port_tx_axis_if.tdest;
+            assign eth_if[n].b2a_axis_if.tuser   = port_tx_axis_if.tuser;
+            assign eth_if[n].b2a_axis_if.tlast   = port_tx_axis_if.tlast;
+            assign eth_if[n].b2a_axis_if.tvalid  = port_tx_axis_if.tvalid;
+            assign port_tx_axis_if.tready   = eth_if[n].b2a_axis_if.tready;
 
         end else begin : g_side_a
 
@@ -208,34 +208,34 @@ module openenoc_eth_switch_shared_bus #
              *
              * eth_if[n].DATA_W @ eth_if[n].clk
              *
-             * remote side B -> b2a -> switch side A
+             * remote side B -> b2a_axis_if -> switch side A
              */
-            assign port_rx_axis.tdata    = eth_if[n].b2a.tdata;
-            assign port_rx_axis.tkeep    = eth_if[n].b2a.tkeep;
-            assign port_rx_axis.tstrb    = eth_if[n].b2a.tstrb;
-            assign port_rx_axis.tid      = eth_if[n].b2a.tid;
-            assign port_rx_axis.tdest    = eth_if[n].b2a.tdest;
-            assign port_rx_axis.tuser    = eth_if[n].b2a.tuser;
-            assign port_rx_axis.tlast    = eth_if[n].b2a.tlast;
-            assign port_rx_axis.tvalid   = eth_if[n].b2a.tvalid;
-            assign eth_if[n].b2a.tready = port_rx_axis.tready;
+            assign port_rx_axis_if.tdata    = eth_if[n].b2a_axis_if.tdata;
+            assign port_rx_axis_if.tkeep    = eth_if[n].b2a_axis_if.tkeep;
+            assign port_rx_axis_if.tstrb    = eth_if[n].b2a_axis_if.tstrb;
+            assign port_rx_axis_if.tid      = eth_if[n].b2a_axis_if.tid;
+            assign port_rx_axis_if.tdest    = eth_if[n].b2a_axis_if.tdest;
+            assign port_rx_axis_if.tuser    = eth_if[n].b2a_axis_if.tuser;
+            assign port_rx_axis_if.tlast    = eth_if[n].b2a_axis_if.tlast;
+            assign port_rx_axis_if.tvalid   = eth_if[n].b2a_axis_if.tvalid;
+            assign eth_if[n].b2a_axis_if.tready = port_rx_axis_if.tready;
 
             /*
              * Egress:
              *
              * eth_if[n].DATA_W @ eth_if[n].clk
              *
-             * switch side A -> a2b -> remote side B
+             * switch side A -> a2b_axis_if -> remote side B
              */
-            assign eth_if[n].a2b.tdata   = port_tx_axis.tdata;
-            assign eth_if[n].a2b.tkeep   = port_tx_axis.tkeep;
-            assign eth_if[n].a2b.tstrb   = port_tx_axis.tstrb;
-            assign eth_if[n].a2b.tid     = port_tx_axis.tid;
-            assign eth_if[n].a2b.tdest   = port_tx_axis.tdest;
-            assign eth_if[n].a2b.tuser   = port_tx_axis.tuser;
-            assign eth_if[n].a2b.tlast   = port_tx_axis.tlast;
-            assign eth_if[n].a2b.tvalid  = port_tx_axis.tvalid;
-            assign port_tx_axis.tready   = eth_if[n].a2b.tready;
+            assign eth_if[n].a2b_axis_if.tdata   = port_tx_axis_if.tdata;
+            assign eth_if[n].a2b_axis_if.tkeep   = port_tx_axis_if.tkeep;
+            assign eth_if[n].a2b_axis_if.tstrb   = port_tx_axis_if.tstrb;
+            assign eth_if[n].a2b_axis_if.tid     = port_tx_axis_if.tid;
+            assign eth_if[n].a2b_axis_if.tdest   = port_tx_axis_if.tdest;
+            assign eth_if[n].a2b_axis_if.tuser   = port_tx_axis_if.tuser;
+            assign eth_if[n].a2b_axis_if.tlast   = port_tx_axis_if.tlast;
+            assign eth_if[n].a2b_axis_if.tvalid  = port_tx_axis_if.tvalid;
+            assign port_tx_axis_if.tready   = eth_if[n].a2b_axis_if.tready;
 
         end
 
@@ -251,14 +251,14 @@ module openenoc_eth_switch_shared_bus #
             .FRAME_FIFO  (1'b0),
             .PAUSE_EN    (1'b0)
         )
-        ingress_adapter_inst (
+        u_ingress_adapter (
             .s_clk  (eth_if[n].clk),
             .s_rst  (eth_if[n].rst),
-            .s_axis (port_rx_axis),
+            .s_axis (port_rx_axis_if),
 
             .m_clk  (clk),
             .m_rst  (rst),
-            .m_axis (ingress_axis[n]),
+            .m_axis (ingress_axis_if[n]),
 
             .s_pause_req (1'b0),
             .s_pause_ack (),
@@ -290,14 +290,14 @@ module openenoc_eth_switch_shared_bus #
             .FRAME_FIFO  (1'b0),
             .PAUSE_EN    (1'b0)
         )
-        egress_adapter_inst (
+        u_egress_adapter (
             .s_clk  (clk),
             .s_rst  (rst),
-            .s_axis (egress_axis[n]),
+            .s_axis (egress_axis_if[n]),
 
             .m_clk  (eth_if[n].clk),
             .m_rst  (eth_if[n].rst),
-            .m_axis (port_tx_axis),
+            .m_axis (port_tx_axis_if),
 
             .s_pause_req (1'b0),
             .s_pause_ack (),
@@ -330,11 +330,11 @@ module openenoc_eth_switch_shared_bus #
         .ARB_ROUND_ROBIN   (1'b1),
         .ARB_LSB_HIGH_PRIO (1'b0)
     )
-    ingress_arb_mux_inst (
+    u_ingress_arb_mux (
         .clk    (clk),
         .rst    (rst),
-        .s_axis (ingress_axis),
-        .m_axis (arb_axis)
+        .s_axis (ingress_axis_if),
+        .m_axis (arb_axis_if)
     );
 
     openenoc_lookup_if #(
@@ -348,13 +348,13 @@ module openenoc_eth_switch_shared_bus #
     openenoc_axis_forwarding_engine #(
         .NUM_OF_INTERFACES (NUM_OF_INTERFACES)
     )
-    forwarding_engine_inst (
+    u_forwarding_engine (
         .clk                  (clk),
         .rst                  (rst),
         .pause_request        (switch_if.csr_to_core.forwarding_control.pause_request.value),
         .pause_done           (switch_if.core_to_csr.forwarding_control.pause_done.next),
-        .s_axis               (arb_axis),
-        .m_axis               (forwarding_axis),
+        .s_axis               (arb_axis_if),
+        .m_axis               (forwarding_axis_if),
         .lookup_if            (lookup_if),
         .learning_if          (learning_if)
     );
@@ -363,7 +363,7 @@ module openenoc_eth_switch_shared_bus #
         .NUM_OF_INTERFACES (NUM_OF_INTERFACES),
         .TABLE_DEPTH       (TABLE_DEPTH)
     )
-    forwarding_table_inst (
+    u_forwarding_table (
         .clk                  (clk),
         .rst                  (rst),
         .default_forwarding   (switch_if.csr_to_core.default_forwarding.bitmap.value),
@@ -390,11 +390,11 @@ module openenoc_eth_switch_shared_bus #
         .TDEST_ROUTE        (1'b0),
         .TUSER_BITMAP_ROUTE (1'b1)
     )
-    egress_demux_inst (
+    u_egress_demux (
         .clk    (clk),
         .rst    (rst),
-        .s_axis (forwarding_axis),
-        .m_axis (egress_axis),
+        .s_axis (forwarding_axis_if),
+        .m_axis (egress_axis_if),
         .enable (1'b1),
         .drop   (1'b0),
         .select ('0)

@@ -58,7 +58,7 @@ class TB:
                 dut.clk,
                 dut.rst,
             )
-            for bus in dut.port_rx_axis
+            for bus in dut.port_rx_axis_if
         ]
         self.sinks = [
             AxiStreamSink(
@@ -66,7 +66,7 @@ class TB:
                 dut.clk,
                 dut.rst,
             )
-            for bus in dut.port_tx_axis
+            for bus in dut.port_tx_axis_if
         ]
 
     def set_idle_generator(self, generator=None):
@@ -237,7 +237,7 @@ class TB:
         return order
 
     async def assert_no_ingress_idle_between_frames(self, port, frame_count):
-        axis = self.dut.port_rx_axis[port]
+        axis = self.dut.port_rx_axis_if[port]
         completed_frames = 0
         expect_next_frame = False
 

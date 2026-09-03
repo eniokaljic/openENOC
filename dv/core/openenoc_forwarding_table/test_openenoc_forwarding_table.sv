@@ -45,7 +45,7 @@ module test_openenoc_forwarding_table #
         .NUM_OF_INTERFACES(NUM_OF_INTERFACES),
         .TABLE_DEPTH(TABLE_DEPTH)
     )
-    uut (
+    u_openenoc_forwarding_table (
         .clk(clk),
         .rst(rst),
 

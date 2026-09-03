@@ -126,49 +126,49 @@ module test_openenoc_eth_switch_shared_bus #
         .DEST_W  (8),
         .USER_EN (1'b1),
         .USER_W  (NUM_OF_INTERFACES)
-    ) port_rx_axis[NUM_OF_INTERFACES](), port_tx_axis[NUM_OF_INTERFACES]();
+    ) port_rx_axis_if[NUM_OF_INTERFACES](), port_tx_axis_if[NUM_OF_INTERFACES]();
 
     for (genvar n = 0; n < NUM_OF_INTERFACES; n++) begin : g_eth_bridge
         if (PORT_SIDE[n] == SIDE_B) begin : g_switch_side_b
-            assign eth_if[n].a2b.tdata = port_rx_axis[n].tdata;
-            assign eth_if[n].a2b.tkeep = port_rx_axis[n].tkeep;
-            assign eth_if[n].a2b.tstrb = port_rx_axis[n].tstrb;
-            assign eth_if[n].a2b.tid = port_rx_axis[n].tid;
-            assign eth_if[n].a2b.tdest = port_rx_axis[n].tdest;
-            assign eth_if[n].a2b.tuser = port_rx_axis[n].tuser;
-            assign eth_if[n].a2b.tlast = port_rx_axis[n].tlast;
-            assign eth_if[n].a2b.tvalid = port_rx_axis[n].tvalid;
-            assign port_rx_axis[n].tready = eth_if[n].a2b.tready;
+            assign eth_if[n].a2b_axis_if.tdata = port_rx_axis_if[n].tdata;
+            assign eth_if[n].a2b_axis_if.tkeep = port_rx_axis_if[n].tkeep;
+            assign eth_if[n].a2b_axis_if.tstrb = port_rx_axis_if[n].tstrb;
+            assign eth_if[n].a2b_axis_if.tid = port_rx_axis_if[n].tid;
+            assign eth_if[n].a2b_axis_if.tdest = port_rx_axis_if[n].tdest;
+            assign eth_if[n].a2b_axis_if.tuser = port_rx_axis_if[n].tuser;
+            assign eth_if[n].a2b_axis_if.tlast = port_rx_axis_if[n].tlast;
+            assign eth_if[n].a2b_axis_if.tvalid = port_rx_axis_if[n].tvalid;
+            assign port_rx_axis_if[n].tready = eth_if[n].a2b_axis_if.tready;
 
-            assign port_tx_axis[n].tdata = eth_if[n].b2a.tdata;
-            assign port_tx_axis[n].tkeep = eth_if[n].b2a.tkeep;
-            assign port_tx_axis[n].tstrb = eth_if[n].b2a.tstrb;
-            assign port_tx_axis[n].tid = eth_if[n].b2a.tid;
-            assign port_tx_axis[n].tdest = eth_if[n].b2a.tdest;
-            assign port_tx_axis[n].tuser = eth_if[n].b2a.tuser;
-            assign port_tx_axis[n].tlast = eth_if[n].b2a.tlast;
-            assign port_tx_axis[n].tvalid = eth_if[n].b2a.tvalid;
-            assign eth_if[n].b2a.tready = port_tx_axis[n].tready;
+            assign port_tx_axis_if[n].tdata = eth_if[n].b2a_axis_if.tdata;
+            assign port_tx_axis_if[n].tkeep = eth_if[n].b2a_axis_if.tkeep;
+            assign port_tx_axis_if[n].tstrb = eth_if[n].b2a_axis_if.tstrb;
+            assign port_tx_axis_if[n].tid = eth_if[n].b2a_axis_if.tid;
+            assign port_tx_axis_if[n].tdest = eth_if[n].b2a_axis_if.tdest;
+            assign port_tx_axis_if[n].tuser = eth_if[n].b2a_axis_if.tuser;
+            assign port_tx_axis_if[n].tlast = eth_if[n].b2a_axis_if.tlast;
+            assign port_tx_axis_if[n].tvalid = eth_if[n].b2a_axis_if.tvalid;
+            assign eth_if[n].b2a_axis_if.tready = port_tx_axis_if[n].tready;
         end else begin : g_switch_side_a
-            assign eth_if[n].b2a.tdata = port_rx_axis[n].tdata;
-            assign eth_if[n].b2a.tkeep = port_rx_axis[n].tkeep;
-            assign eth_if[n].b2a.tstrb = port_rx_axis[n].tstrb;
-            assign eth_if[n].b2a.tid = port_rx_axis[n].tid;
-            assign eth_if[n].b2a.tdest = port_rx_axis[n].tdest;
-            assign eth_if[n].b2a.tuser = port_rx_axis[n].tuser;
-            assign eth_if[n].b2a.tlast = port_rx_axis[n].tlast;
-            assign eth_if[n].b2a.tvalid = port_rx_axis[n].tvalid;
-            assign port_rx_axis[n].tready = eth_if[n].b2a.tready;
+            assign eth_if[n].b2a_axis_if.tdata = port_rx_axis_if[n].tdata;
+            assign eth_if[n].b2a_axis_if.tkeep = port_rx_axis_if[n].tkeep;
+            assign eth_if[n].b2a_axis_if.tstrb = port_rx_axis_if[n].tstrb;
+            assign eth_if[n].b2a_axis_if.tid = port_rx_axis_if[n].tid;
+            assign eth_if[n].b2a_axis_if.tdest = port_rx_axis_if[n].tdest;
+            assign eth_if[n].b2a_axis_if.tuser = port_rx_axis_if[n].tuser;
+            assign eth_if[n].b2a_axis_if.tlast = port_rx_axis_if[n].tlast;
+            assign eth_if[n].b2a_axis_if.tvalid = port_rx_axis_if[n].tvalid;
+            assign port_rx_axis_if[n].tready = eth_if[n].b2a_axis_if.tready;
 
-            assign port_tx_axis[n].tdata = eth_if[n].a2b.tdata;
-            assign port_tx_axis[n].tkeep = eth_if[n].a2b.tkeep;
-            assign port_tx_axis[n].tstrb = eth_if[n].a2b.tstrb;
-            assign port_tx_axis[n].tid = eth_if[n].a2b.tid;
-            assign port_tx_axis[n].tdest = eth_if[n].a2b.tdest;
-            assign port_tx_axis[n].tuser = eth_if[n].a2b.tuser;
-            assign port_tx_axis[n].tlast = eth_if[n].a2b.tlast;
-            assign port_tx_axis[n].tvalid = eth_if[n].a2b.tvalid;
-            assign eth_if[n].a2b.tready = port_tx_axis[n].tready;
+            assign port_tx_axis_if[n].tdata = eth_if[n].a2b_axis_if.tdata;
+            assign port_tx_axis_if[n].tkeep = eth_if[n].a2b_axis_if.tkeep;
+            assign port_tx_axis_if[n].tstrb = eth_if[n].a2b_axis_if.tstrb;
+            assign port_tx_axis_if[n].tid = eth_if[n].a2b_axis_if.tid;
+            assign port_tx_axis_if[n].tdest = eth_if[n].a2b_axis_if.tdest;
+            assign port_tx_axis_if[n].tuser = eth_if[n].a2b_axis_if.tuser;
+            assign port_tx_axis_if[n].tlast = eth_if[n].a2b_axis_if.tlast;
+            assign port_tx_axis_if[n].tvalid = eth_if[n].a2b_axis_if.tvalid;
+            assign eth_if[n].a2b_axis_if.tready = port_tx_axis_if[n].tready;
         end
     end
 
@@ -179,7 +179,7 @@ module test_openenoc_eth_switch_shared_bus #
         .PORT_SIDE         (PORT_SIDE),
         .PORT_FIFO_DEPTH   (PORT_FIFO_DEPTH)
     )
-    uut (
+    u_openenoc_eth_switch_shared_bus (
         .clk       (clk),
         .rst       (rst),
         .switch_if (switch_if),
@@ -187,18 +187,18 @@ module test_openenoc_eth_switch_shared_bus #
     );
 
     for (genvar n = 0; n < NUM_OF_INTERFACES; n++) begin : g_observe
-        assign ingress_tvalid[n] = uut.ingress_axis[n].tvalid;
-        assign ingress_tready[n] = uut.ingress_axis[n].tready;
-        assign egress_tvalid[n] = uut.egress_axis[n].tvalid;
-        assign egress_tready[n] = uut.egress_axis[n].tready;
+        assign ingress_tvalid[n] = u_openenoc_eth_switch_shared_bus.ingress_axis_if[n].tvalid;
+        assign ingress_tready[n] = u_openenoc_eth_switch_shared_bus.ingress_axis_if[n].tready;
+        assign egress_tvalid[n] = u_openenoc_eth_switch_shared_bus.egress_axis_if[n].tvalid;
+        assign egress_tready[n] = u_openenoc_eth_switch_shared_bus.egress_axis_if[n].tready;
     end
 
-    assign arb_tvalid = uut.arb_axis.tvalid;
-    assign arb_tready = uut.arb_axis.tready;
-    assign arb_tlast = uut.arb_axis.tlast;
-    assign arb_tid = uut.arb_axis.tid;
-    assign forwarding_tvalid = uut.forwarding_axis.tvalid;
-    assign forwarding_tready = uut.forwarding_axis.tready;
+    assign arb_tvalid = u_openenoc_eth_switch_shared_bus.arb_axis_if.tvalid;
+    assign arb_tready = u_openenoc_eth_switch_shared_bus.arb_axis_if.tready;
+    assign arb_tlast = u_openenoc_eth_switch_shared_bus.arb_axis_if.tlast;
+    assign arb_tid = u_openenoc_eth_switch_shared_bus.arb_axis_if.tid;
+    assign forwarding_tvalid = u_openenoc_eth_switch_shared_bus.forwarding_axis_if.tvalid;
+    assign forwarding_tready = u_openenoc_eth_switch_shared_bus.forwarding_axis_if.tready;
 
 endmodule
 

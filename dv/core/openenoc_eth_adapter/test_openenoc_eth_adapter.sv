@@ -81,7 +81,7 @@ module test_openenoc_eth_adapter #
         .DEST_W  (A_DEST_W),
         .USER_EN (A_USER_EN),
         .USER_W  (A_USER_W)
-    ) eth_a(.clk(clk_a), .rst(rst_a));
+    ) a_eth_if(.clk(clk_a), .rst(rst_a));
 
     /*
     * Side B openENOC Ethernet-like interface
@@ -98,7 +98,7 @@ module test_openenoc_eth_adapter #
         .DEST_W  (B_DEST_W),
         .USER_EN (B_USER_EN),
         .USER_W  (B_USER_W)
-    ) eth_b(.clk(clk_b), .rst(rst_b));
+    ) b_eth_if(.clk(clk_b), .rst(rst_b));
 
     openenoc_eth_adapter #(
         .DEPTH                  (DEPTH),
@@ -113,16 +113,16 @@ module test_openenoc_eth_adapter #
         .MARK_WHEN_FULL         (MARK_WHEN_FULL),
         .FRAME_PAUSE            (FRAME_PAUSE)
     )
-    uut (
+    u_openenoc_eth_adapter (
         /*
         * Ethernet-like openENOC link, side A clock domain
         */
-        .eth_a (eth_a),
+        .eth_a (a_eth_if),
 
         /*
         * Ethernet-like openENOC link, side B clock domain
         */
-        .eth_b (eth_b)
+        .eth_b (b_eth_if)
     );
 
 endmodule

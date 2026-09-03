@@ -49,7 +49,7 @@ class TB:
         self.axil_master = None
         if create_master:
             self.axil_master = AxiLiteMaster(
-                AxiLiteBus.from_entity(dut.s_axil), dut.clk, dut.rst
+                AxiLiteBus.from_entity(dut.s_axil_if), dut.clk, dut.rst
             )
         else:
             self.drive_axil_idle()
@@ -96,20 +96,20 @@ class TB:
         )
 
     def drive_axil_idle(self):
-        self.dut.s_axil.awaddr.value = 0
-        self.dut.s_axil.awprot.value = 0
-        self.dut.s_axil.awuser.value = 0
-        self.dut.s_axil.awvalid.value = 0
-        self.dut.s_axil.wdata.value = 0
-        self.dut.s_axil.wstrb.value = 0
-        self.dut.s_axil.wuser.value = 0
-        self.dut.s_axil.wvalid.value = 0
-        self.dut.s_axil.bready.value = 0
-        self.dut.s_axil.araddr.value = 0
-        self.dut.s_axil.arprot.value = 0
-        self.dut.s_axil.aruser.value = 0
-        self.dut.s_axil.arvalid.value = 0
-        self.dut.s_axil.rready.value = 0
+        self.dut.s_axil_if.awaddr.value = 0
+        self.dut.s_axil_if.awprot.value = 0
+        self.dut.s_axil_if.awuser.value = 0
+        self.dut.s_axil_if.awvalid.value = 0
+        self.dut.s_axil_if.wdata.value = 0
+        self.dut.s_axil_if.wstrb.value = 0
+        self.dut.s_axil_if.wuser.value = 0
+        self.dut.s_axil_if.wvalid.value = 0
+        self.dut.s_axil_if.bready.value = 0
+        self.dut.s_axil_if.araddr.value = 0
+        self.dut.s_axil_if.arprot.value = 0
+        self.dut.s_axil_if.aruser.value = 0
+        self.dut.s_axil_if.arvalid.value = 0
+        self.dut.s_axil_if.rready.value = 0
 
     async def reset(self):
         self.dut.rst.setimmediatevalue(0)
@@ -219,8 +219,8 @@ async def test_004_reset_preserves_memory(dut):
 
     await tb.reset()
 
-    assert int(tb.dut.s_axil.bvalid.value) == 0
-    assert int(tb.dut.s_axil.rvalid.value) == 0
+    assert int(tb.dut.s_axil_if.bvalid.value) == 0
+    assert int(tb.dut.s_axil_if.rvalid.value) == 0
 
     read = await tb.axil_master.read(address, len(test_data))
     assert_okay(read)
@@ -309,29 +309,29 @@ async def manual_read_words(tb, addresses):
     responses = []
     request_index = 0
 
-    dut.s_axil.rready.value = 1
+    dut.s_axil_if.rready.value = 1
 
     while len(responses) < len(addresses):
         await FallingEdge(dut.clk)
 
         if request_index < len(addresses):
-            dut.s_axil.arvalid.value = 1
-            dut.s_axil.araddr.value = addresses[request_index]
+            dut.s_axil_if.arvalid.value = 1
+            dut.s_axil_if.araddr.value = addresses[request_index]
         else:
-            dut.s_axil.arvalid.value = 0
+            dut.s_axil_if.arvalid.value = 0
 
         await Timer(1, unit="ns")
 
         ar_fire = (
-            int(dut.s_axil.arvalid.value) and
-            int(dut.s_axil.arready.value)
+            int(dut.s_axil_if.arvalid.value) and
+            int(dut.s_axil_if.arready.value)
         )
-        if int(dut.s_axil.rvalid.value):
-            assert int(dut.s_axil.rresp.value) == 0
-            responses.append(int(dut.s_axil.rdata.value))
+        if int(dut.s_axil_if.rvalid.value):
+            assert int(dut.s_axil_if.rresp.value) == 0
+            responses.append(int(dut.s_axil_if.rdata.value))
 
         if request_index < len(addresses):
-            assert int(dut.s_axil.arready.value) == 1, (
+            assert int(dut.s_axil_if.arready.value) == 1, (
                 "ARREADY inserted a bubble with no read-response backpressure"
             )
 
@@ -342,8 +342,8 @@ async def manual_read_words(tb, addresses):
             request_index += 1
 
     await FallingEdge(dut.clk)
-    dut.s_axil.arvalid.value = 0
-    dut.s_axil.rready.value = 0
+    dut.s_axil_if.arvalid.value = 0
+    dut.s_axil_if.rready.value = 0
     return responses
 
 
@@ -362,45 +362,45 @@ async def test_007_bubble_free_read_and_write_throughput(dut):
         for index in range(word_count)
     ]
 
-    dut.s_axil.bready.value = 1
+    dut.s_axil_if.bready.value = 1
     response_count = 0
 
     for address, value in zip(addresses, values):
         await FallingEdge(dut.clk)
-        dut.s_axil.awaddr.value = address
-        dut.s_axil.awvalid.value = 1
-        dut.s_axil.wdata.value = value
-        dut.s_axil.wstrb.value = (1 << byte_lanes) - 1
-        dut.s_axil.wvalid.value = 1
+        dut.s_axil_if.awaddr.value = address
+        dut.s_axil_if.awvalid.value = 1
+        dut.s_axil_if.wdata.value = value
+        dut.s_axil_if.wstrb.value = (1 << byte_lanes) - 1
+        dut.s_axil_if.wvalid.value = 1
         await Timer(1, unit="ns")
 
-        assert int(dut.s_axil.awready.value) == 1, (
+        assert int(dut.s_axil_if.awready.value) == 1, (
             "AWREADY inserted a bubble with no write-response backpressure"
         )
-        assert int(dut.s_axil.wready.value) == 1, (
+        assert int(dut.s_axil_if.wready.value) == 1, (
             "WREADY inserted a bubble with no write-response backpressure"
         )
-        if int(dut.s_axil.bvalid.value):
-            assert int(dut.s_axil.bresp.value) == 0
+        if int(dut.s_axil_if.bvalid.value):
+            assert int(dut.s_axil_if.bresp.value) == 0
             response_count += 1
 
         await RisingEdge(dut.clk)
         await ReadOnly()
-        assert int(dut.s_axil.bvalid.value) == 1
+        assert int(dut.s_axil_if.bvalid.value) == 1
 
     await FallingEdge(dut.clk)
-    dut.s_axil.awvalid.value = 0
-    dut.s_axil.wvalid.value = 0
+    dut.s_axil_if.awvalid.value = 0
+    dut.s_axil_if.wvalid.value = 0
     await Timer(1, unit="ns")
-    if int(dut.s_axil.bvalid.value):
+    if int(dut.s_axil_if.bvalid.value):
         response_count += 1
     await RisingEdge(dut.clk)
     await ReadOnly()
     assert response_count == word_count
-    assert int(dut.s_axil.bvalid.value) == 0
+    assert int(dut.s_axil_if.bvalid.value) == 0
 
     await FallingEdge(dut.clk)
-    dut.s_axil.bready.value = 0
+    dut.s_axil_if.bready.value = 0
 
     responses = await manual_read_words(tb, addresses)
     assert responses == values
@@ -421,45 +421,45 @@ async def test_008_independent_write_buffers_and_response_holding(dut):
 
     # Capture AW first, then W several cycles later.
     await FallingEdge(dut.clk)
-    dut.s_axil.awaddr.value = first_address
-    dut.s_axil.awvalid.value = 1
+    dut.s_axil_if.awaddr.value = first_address
+    dut.s_axil_if.awvalid.value = 1
     await Timer(1, unit="ns")
-    assert int(dut.s_axil.awready.value) == 1
-    assert int(dut.s_axil.wready.value) == 1
+    assert int(dut.s_axil_if.awready.value) == 1
+    assert int(dut.s_axil_if.wready.value) == 1
     await RisingEdge(dut.clk)
     await ReadOnly()
 
     await FallingEdge(dut.clk)
-    dut.s_axil.awvalid.value = 0
-    dut.s_axil.wdata.value = first_data
-    dut.s_axil.wstrb.value = strobe
-    dut.s_axil.wvalid.value = 1
+    dut.s_axil_if.awvalid.value = 0
+    dut.s_axil_if.wdata.value = first_data
+    dut.s_axil_if.wstrb.value = strobe
+    dut.s_axil_if.wvalid.value = 1
     await Timer(1, unit="ns")
-    assert int(dut.s_axil.wready.value) == 1
+    assert int(dut.s_axil_if.wready.value) == 1
     await RisingEdge(dut.clk)
     await ReadOnly()
-    assert int(dut.s_axil.bvalid.value) == 1
+    assert int(dut.s_axil_if.bvalid.value) == 1
 
     # BVALID must remain asserted, and one additional AW/W pair may buffer.
     await FallingEdge(dut.clk)
-    dut.s_axil.wvalid.value = 0
-    dut.s_axil.awaddr.value = second_address
-    dut.s_axil.awvalid.value = 1
-    dut.s_axil.wdata.value = second_data
-    dut.s_axil.wstrb.value = strobe
-    dut.s_axil.wvalid.value = 1
+    dut.s_axil_if.wvalid.value = 0
+    dut.s_axil_if.awaddr.value = second_address
+    dut.s_axil_if.awvalid.value = 1
+    dut.s_axil_if.wdata.value = second_data
+    dut.s_axil_if.wstrb.value = strobe
+    dut.s_axil_if.wvalid.value = 1
     await Timer(1, unit="ns")
-    assert int(dut.s_axil.awready.value) == 1
-    assert int(dut.s_axil.wready.value) == 1
+    assert int(dut.s_axil_if.awready.value) == 1
+    assert int(dut.s_axil_if.wready.value) == 1
     await RisingEdge(dut.clk)
     await ReadOnly()
 
     await FallingEdge(dut.clk)
-    dut.s_axil.awvalid.value = 0
-    dut.s_axil.wvalid.value = 0
+    dut.s_axil_if.awvalid.value = 0
+    dut.s_axil_if.wvalid.value = 0
     held_response = (
-        int(dut.s_axil.bvalid.value),
-        int(dut.s_axil.bresp.value),
+        int(dut.s_axil_if.bvalid.value),
+        int(dut.s_axil_if.bresp.value),
     )
     assert held_response == (1, 0)
 
@@ -467,25 +467,25 @@ async def test_008_independent_write_buffers_and_response_holding(dut):
         await RisingEdge(dut.clk)
         await ReadOnly()
         assert (
-            int(dut.s_axil.bvalid.value),
-            int(dut.s_axil.bresp.value),
+            int(dut.s_axil_if.bvalid.value),
+            int(dut.s_axil_if.bresp.value),
         ) == held_response
-        assert int(dut.s_axil.awready.value) == 0
-        assert int(dut.s_axil.wready.value) == 0
+        assert int(dut.s_axil_if.awready.value) == 0
+        assert int(dut.s_axil_if.wready.value) == 0
 
     # Consuming response 0 simultaneously commits buffered write 1.
     await FallingEdge(dut.clk)
-    dut.s_axil.bready.value = 1
+    dut.s_axil_if.bready.value = 1
     await RisingEdge(dut.clk)
     await ReadOnly()
-    assert int(dut.s_axil.bvalid.value) == 1
+    assert int(dut.s_axil_if.bvalid.value) == 1
 
     await RisingEdge(dut.clk)
     await ReadOnly()
-    assert int(dut.s_axil.bvalid.value) == 0
+    assert int(dut.s_axil_if.bvalid.value) == 0
 
     await FallingEdge(dut.clk)
-    dut.s_axil.bready.value = 0
+    dut.s_axil_if.bready.value = 0
     responses = await manual_read_words(tb, [first_address, second_address])
     assert responses == [first_data, second_data]
 
@@ -496,22 +496,22 @@ async def test_009_read_response_holding_and_payload_stability(dut):
     await tb.reset()
 
     address = 0
-    dut.s_axil.rready.value = 0
+    dut.s_axil_if.rready.value = 0
 
     await FallingEdge(dut.clk)
-    dut.s_axil.araddr.value = address
-    dut.s_axil.arvalid.value = 1
+    dut.s_axil_if.araddr.value = address
+    dut.s_axil_if.arvalid.value = 1
     await Timer(1, unit="ns")
-    assert int(dut.s_axil.arready.value) == 1
+    assert int(dut.s_axil_if.arready.value) == 1
     await RisingEdge(dut.clk)
     await ReadOnly()
 
     await FallingEdge(dut.clk)
-    dut.s_axil.arvalid.value = 0
+    dut.s_axil_if.arvalid.value = 0
 
     for _ in range(4):
         await Timer(1, unit="ns")
-        if int(dut.s_axil.rvalid.value):
+        if int(dut.s_axil_if.rvalid.value):
             break
         await RisingEdge(dut.clk)
         await ReadOnly()
@@ -520,26 +520,26 @@ async def test_009_read_response_holding_and_payload_stability(dut):
         raise AssertionError("Read response did not reach the AXI output")
 
     held_payload = (
-        int(dut.s_axil.rdata.value),
-        int(dut.s_axil.rresp.value),
-        int(dut.s_axil.ruser.value),
+        int(dut.s_axil_if.rdata.value),
+        int(dut.s_axil_if.rresp.value),
+        int(dut.s_axil_if.ruser.value),
     )
 
     for _ in range(5):
         await RisingEdge(dut.clk)
         await ReadOnly()
-        assert int(dut.s_axil.rvalid.value) == 1
+        assert int(dut.s_axil_if.rvalid.value) == 1
         assert (
-            int(dut.s_axil.rdata.value),
-            int(dut.s_axil.rresp.value),
-            int(dut.s_axil.ruser.value),
+            int(dut.s_axil_if.rdata.value),
+            int(dut.s_axil_if.rresp.value),
+            int(dut.s_axil_if.ruser.value),
         ) == held_payload
 
     await FallingEdge(dut.clk)
-    dut.s_axil.rready.value = 1
+    dut.s_axil_if.rready.value = 1
     await RisingEdge(dut.clk)
     await ReadOnly()
-    assert int(dut.s_axil.rvalid.value) == 0
+    assert int(dut.s_axil_if.rvalid.value) == 0
 
 
 # Pytest simulation runner

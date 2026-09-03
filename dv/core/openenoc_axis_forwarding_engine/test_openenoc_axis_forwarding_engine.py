@@ -83,8 +83,8 @@ class ForwardingTableModel:
             for _ in range(self.lookup_latency):
                 await self.tb.cycle()
                 assert int(self.dut.lookup_if.mac_addr.value) == mac
-                assert not self.dut.s_axis.tready.value
-                assert not self.dut.m_axis.tvalid.value
+                assert not self.dut.s_axis_if.tready.value
+                assert not self.dut.m_axis_if.tvalid.value
 
             self.dut.lookup_if.port_bitmap.value = self.entries.get(mac, self.default_bitmap)
             self.dut.lookup_if.ack.value = 1
@@ -108,8 +108,8 @@ class ForwardingTableModel:
                 await self.tb.cycle()
                 assert int(self.dut.learning_if.mac_addr.value) == mac
                 assert int(self.dut.learning_if.port_bitmap.value) == bitmap
-                assert not self.dut.s_axis.tready.value
-                assert not self.dut.m_axis.tvalid.value
+                assert not self.dut.s_axis_if.tready.value
+                assert not self.dut.m_axis_if.tvalid.value
 
             self.dut.learning_if.ack.value = 1
             await self.tb.cycle()
@@ -124,8 +124,8 @@ class TB:
 
         cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
 
-        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis), dut.clk, dut.rst)
-        self.sink = AxiStreamSink(AxiStreamBus.from_entity(dut.m_axis), dut.clk, dut.rst)
+        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis_if), dut.clk, dut.rst)
+        self.sink = AxiStreamSink(AxiStreamBus.from_entity(dut.m_axis_if), dut.clk, dut.rst)
 
         self.num_interfaces = len(dut.lookup_if.port_bitmap)
         self.interface_mask = (1 << self.num_interfaces) - 1

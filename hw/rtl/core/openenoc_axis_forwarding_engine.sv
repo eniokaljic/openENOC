@@ -138,7 +138,7 @@ module openenoc_axis_forwarding_engine #
         .DEST_W(DEST_W),
         .USER_EN(1'b0),
         .USER_W(1)
-    ) buffer_s_axis(), buffer_m_axis();
+    ) buffer_s_axis_if(), buffer_m_axis_if();
 
     wire accept_frame_data = state_reg == ST_PARSE_DA ||
                             state_reg == ST_PARSE_SA ||
@@ -147,15 +147,15 @@ module openenoc_axis_forwarding_engine #
     wire pause_new_frame = pause_request && at_frame_boundary;
     wire accept_enable = accept_frame_data && !pause_new_frame;
 
-    assign buffer_s_axis.tdata  = s_axis.tdata;
-    assign buffer_s_axis.tkeep  = s_axis.tkeep;
-    assign buffer_s_axis.tstrb  = s_axis.tstrb;
-    assign buffer_s_axis.tvalid = s_axis.tvalid && accept_enable;
-    assign buffer_s_axis.tlast  = s_axis.tlast;
-    assign buffer_s_axis.tid    = s_axis.tid;
-    assign buffer_s_axis.tdest  = s_axis.tdest;
-    assign buffer_s_axis.tuser  = '0;
-    assign s_axis.tready        = buffer_s_axis.tready && accept_enable;
+    assign buffer_s_axis_if.tdata  = s_axis.tdata;
+    assign buffer_s_axis_if.tkeep  = s_axis.tkeep;
+    assign buffer_s_axis_if.tstrb  = s_axis.tstrb;
+    assign buffer_s_axis_if.tvalid = s_axis.tvalid && accept_enable;
+    assign buffer_s_axis_if.tlast  = s_axis.tlast;
+    assign buffer_s_axis_if.tid    = s_axis.tid;
+    assign buffer_s_axis_if.tdest  = s_axis.tdest;
+    assign buffer_s_axis_if.tuser  = '0;
+    assign s_axis.tready        = buffer_s_axis_if.tready && accept_enable;
 
     // REG_TYPE=2 is the taxi skid-buffer implementation. Unlike taxi_axis_fifo,
     // all storage here is implemented as a small fixed chain of registers.
@@ -163,27 +163,27 @@ module openenoc_axis_forwarding_engine #
         .REG_TYPE(2),
         .LENGTH(HEADER_BEATS)
     )
-    header_buffer_inst (
+    u_header_buffer (
         .clk(clk),
         .rst(rst),
-        .s_axis(buffer_s_axis),
-        .m_axis(buffer_m_axis)
+        .s_axis(buffer_s_axis_if),
+        .m_axis(buffer_m_axis_if)
     );
 
     wire release_frame = state_reg == ST_RELEASE;
-    wire [KEEP_W-1:0] output_keep = m_axis.KEEP_EN ? buffer_m_axis.tkeep : '1;
-    wire output_valid = buffer_m_axis.tvalid && release_frame;
-    wire output_last = buffer_m_axis.tlast;
+    wire [KEEP_W-1:0] output_keep = m_axis.KEEP_EN ? buffer_m_axis_if.tkeep : '1;
+    wire output_valid = buffer_m_axis_if.tvalid && release_frame;
+    wire output_last = buffer_m_axis_if.tlast;
 
-    assign m_axis.tdata  = buffer_m_axis.tdata;
+    assign m_axis.tdata  = buffer_m_axis_if.tdata;
     assign m_axis.tkeep  = output_keep;
-    assign m_axis.tstrb  = m_axis.STRB_EN ? buffer_m_axis.tstrb : output_keep;
+    assign m_axis.tstrb  = m_axis.STRB_EN ? buffer_m_axis_if.tstrb : output_keep;
     assign m_axis.tvalid = output_valid;
     assign m_axis.tlast  = output_last;
-    assign m_axis.tid    = M_ID_W'(buffer_m_axis.tid);
-    assign m_axis.tdest  = M_DEST_W'(buffer_m_axis.tdest);
+    assign m_axis.tid    = M_ID_W'(buffer_m_axis_if.tid);
+    assign m_axis.tdest  = M_DEST_W'(buffer_m_axis_if.tdest);
     assign m_axis.tuser  = M_USER_W'(forwarding_bitmap_reg);
-    assign buffer_m_axis.tready = m_axis.tready && release_frame;
+    assign buffer_m_axis_if.tready = m_axis.tready && release_frame;
 
     wire s_fire = s_axis.tvalid && s_axis.tready;
     wire m_fire = output_valid && m_axis.tready;
@@ -332,7 +332,7 @@ module openenoc_axis_forwarding_engine #
     // A pause is complete only at a frame boundary after the register pipeline has
     // drained. No new frame is accepted while pause_request remains asserted.
     assign pause_done = pause_request && at_frame_boundary &&
-                        !buffer_m_axis.tvalid && !lookup_if.req && !learning_if.req;
+                        !buffer_m_axis_if.tvalid && !lookup_if.req && !learning_if.req;
 
 endmodule
 

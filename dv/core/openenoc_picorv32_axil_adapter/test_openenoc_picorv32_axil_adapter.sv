@@ -49,7 +49,7 @@ module test_openenoc_picorv32_axil_adapter;
     logic [31:0]      mem_la_wdata;
     logic [3:0]       mem_la_wstrb;
 
-    openenoc_picorv32_axil_adapter uut (
+    openenoc_picorv32_axil_adapter u_openenoc_picorv32_axil_adapter (
         .clk             (clk),
         .resetn          (resetn),
 
