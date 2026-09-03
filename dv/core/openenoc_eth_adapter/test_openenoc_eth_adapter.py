@@ -31,31 +31,31 @@ class TB(object):
         cocotb.start_soon(Clock(dut.clk_b, clk_b_period, units="ns").start())
 
         # A -> B direction:
-        #   A drives eth_a.a2b
-        #   B receives eth_b.a2b
+        #   A drives a_eth_if.a2b_axis_if
+        #   B receives b_eth_if.a2b_axis_if
         self.source_a2b = AxiStreamSource(
-            AxiStreamBus.from_entity(dut.eth_a.a2b),
+            AxiStreamBus.from_entity(dut.a_eth_if.a2b_axis_if),
             dut.clk_a,
             dut.rst_a
         )
 
         self.sink_a2b = AxiStreamSink(
-            AxiStreamBus.from_entity(dut.eth_b.a2b),
+            AxiStreamBus.from_entity(dut.b_eth_if.a2b_axis_if),
             dut.clk_b,
             dut.rst_b
         )
 
         # B -> A direction:
-        #   B drives eth_b.b2a
-        #   A receives eth_a.b2a
+        #   B drives b_eth_if.b2a_axis_if
+        #   A receives a_eth_if.b2a_axis_if
         self.source_b2a = AxiStreamSource(
-            AxiStreamBus.from_entity(dut.eth_b.b2a),
+            AxiStreamBus.from_entity(dut.b_eth_if.b2a_axis_if),
             dut.clk_b,
             dut.rst_b
         )
 
         self.sink_b2a = AxiStreamSink(
-            AxiStreamBus.from_entity(dut.eth_a.b2a),
+            AxiStreamBus.from_entity(dut.a_eth_if.b2a_axis_if),
             dut.clk_a,
             dut.rst_a
         )
@@ -180,8 +180,8 @@ async def run_direction_test(
     assert sink.empty()
 
 # A-to-B unidirectional data path test.
-# Verifies that frames transmitted on eth_a.a2b are received correctly on
-# eth_b.a2b, with optional source idle insertion and sink backpressure.
+# Verifies that frames transmitted on a_eth_if.a2b_axis_if are received correctly on
+# b_eth_if.a2b_axis_if, with optional source idle insertion and sink backpressure.
 async def run_test_a2b(
         dut,
         payload_lengths=None,
@@ -207,8 +207,8 @@ async def run_test_a2b(
     await RisingEdge(dut.clk_a)
 
 # B-to-A unidirectional data path test.
-# Verifies that frames transmitted on eth_b.b2a are received correctly on
-# eth_a.b2a, with optional source idle insertion and sink backpressure.
+# Verifies that frames transmitted on b_eth_if.b2a_axis_if are received correctly on
+# a_eth_if.b2a_axis_if, with optional source idle insertion and sink backpressure.
 async def run_test_b2a(
         dut,
         payload_lengths=None,
@@ -475,10 +475,10 @@ async def run_stress_test_bidirectional(
 
 def max_byte_lanes():
     data_width = max(
-        len(cocotb.top.eth_a.a2b.tdata),
-        len(cocotb.top.eth_b.a2b.tdata),
-        len(cocotb.top.eth_b.b2a.tdata),
-        len(cocotb.top.eth_a.b2a.tdata)
+        len(cocotb.top.a_eth_if.a2b_axis_if.tdata),
+        len(cocotb.top.b_eth_if.a2b_axis_if.tdata),
+        len(cocotb.top.b_eth_if.b2a_axis_if.tdata),
+        len(cocotb.top.a_eth_if.b2a_axis_if.tdata)
     )
 
     return data_width // 8

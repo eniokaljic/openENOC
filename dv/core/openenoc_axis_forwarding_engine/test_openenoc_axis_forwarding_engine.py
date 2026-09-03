@@ -72,48 +72,48 @@ class ForwardingTableModel:
     async def _lookup_worker(self):
         while True:
             await self.tb.cycle()
-            if self.dut.rst.value or not self.dut.lookup_req.value:
+            if self.dut.rst.value or not self.dut.lookup_if.req.value:
                 continue
 
-            mac = int(self.dut.lookup_mac_addr.value)
+            mac = int(self.dut.lookup_if.mac_addr.value)
             self.lookups.append(mac)
 
             # Hold off the acknowledge long enough to verify that the engine
             # stalls its input and does not release output while lookup waits.
             for _ in range(self.lookup_latency):
                 await self.tb.cycle()
-                assert int(self.dut.lookup_mac_addr.value) == mac
-                assert not self.dut.s_axis.tready.value
-                assert not self.dut.m_axis.tvalid.value
+                assert int(self.dut.lookup_if.mac_addr.value) == mac
+                assert not self.dut.s_axis_if.tready.value
+                assert not self.dut.m_axis_if.tvalid.value
 
-            self.dut.lookup_port_bitmap.value = self.entries.get(mac, self.default_bitmap)
-            self.dut.lookup_ack.value = 1
+            self.dut.lookup_if.port_bitmap.value = self.entries.get(mac, self.default_bitmap)
+            self.dut.lookup_if.ack.value = 1
             await self.tb.cycle()
-            self.dut.lookup_ack.value = 0
-            self.dut.lookup_port_bitmap.value = 0
+            self.dut.lookup_if.ack.value = 0
+            self.dut.lookup_if.port_bitmap.value = 0
 
     async def _learning_worker(self):
         while True:
             await self.tb.cycle()
-            if self.dut.rst.value or not self.dut.learning_req.value:
+            if self.dut.rst.value or not self.dut.learning_if.req.value:
                 continue
 
-            mac = int(self.dut.learning_mac_addr.value)
-            bitmap = int(self.dut.learning_port_bitmap.value)
+            mac = int(self.dut.learning_if.mac_addr.value)
+            bitmap = int(self.dut.learning_if.port_bitmap.value)
             self.learnings.append((mac, bitmap))
 
             # No beat may enter or leave before learning is acknowledged, and
             # the request payload must remain stable throughout the wait.
             for _ in range(self.learning_latency):
                 await self.tb.cycle()
-                assert int(self.dut.learning_mac_addr.value) == mac
-                assert int(self.dut.learning_port_bitmap.value) == bitmap
-                assert not self.dut.s_axis.tready.value
-                assert not self.dut.m_axis.tvalid.value
+                assert int(self.dut.learning_if.mac_addr.value) == mac
+                assert int(self.dut.learning_if.port_bitmap.value) == bitmap
+                assert not self.dut.s_axis_if.tready.value
+                assert not self.dut.m_axis_if.tvalid.value
 
-            self.dut.learning_ack.value = 1
+            self.dut.learning_if.ack.value = 1
             await self.tb.cycle()
-            self.dut.learning_ack.value = 0
+            self.dut.learning_if.ack.value = 0
 
 
 class TB:
@@ -124,16 +124,16 @@ class TB:
 
         cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
 
-        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis), dut.clk, dut.rst)
-        self.sink = AxiStreamSink(AxiStreamBus.from_entity(dut.m_axis), dut.clk, dut.rst)
+        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis_if), dut.clk, dut.rst)
+        self.sink = AxiStreamSink(AxiStreamBus.from_entity(dut.m_axis_if), dut.clk, dut.rst)
 
-        self.num_interfaces = len(dut.lookup_port_bitmap)
+        self.num_interfaces = len(dut.lookup_if.port_bitmap)
         self.interface_mask = (1 << self.num_interfaces) - 1
 
         dut.pause_request.setimmediatevalue(0)
-        dut.lookup_ack.setimmediatevalue(0)
-        dut.lookup_port_bitmap.setimmediatevalue(0)
-        dut.learning_ack.setimmediatevalue(0)
+        dut.lookup_if.ack.setimmediatevalue(0)
+        dut.lookup_if.port_bitmap.setimmediatevalue(0)
+        dut.learning_if.ack.setimmediatevalue(0)
 
     def set_idle_generator(self, generator=None):
         if generator:
@@ -342,6 +342,8 @@ def test_openenoc_axis_forwarding_engine(request, data_w):
 
     verilog_sources = [
         os.path.join(tests_dir, f"{toplevel}.sv"),
+        os.path.join(core_dir, "openenoc_lookup_if.sv"),
+        os.path.join(core_dir, "openenoc_learning_if.sv"),
         os.path.join(core_dir, f"{dut}.sv"),
         os.path.join(taxi_axis_dir, "taxi_axis_pipeline_register.sv"),
         os.path.join(taxi_axis_dir, "taxi_axis_register.sv"),

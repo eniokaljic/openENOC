@@ -19,6 +19,8 @@ MODULE = $(COCOTB_TEST_MODULES)
 TOPLEVEL = $(COCOTB_TOPLEVEL)
 
 VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_lookup_if.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_learning_if.sv
 VERILOG_SOURCES += $(CORE_DIR)/$(DUT).sv
 
 # module parameters

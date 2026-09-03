@@ -24,8 +24,8 @@ class TB(object):
 
         cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
 
-        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis), dut.clk, dut.rst)
-        self.sink = [AxiStreamSink(AxiStreamBus.from_entity(bus), dut.clk, dut.rst) for bus in dut.m_axis]
+        self.source = AxiStreamSource(AxiStreamBus.from_entity(dut.s_axis_if), dut.clk, dut.rst)
+        self.sink = [AxiStreamSink(AxiStreamBus.from_entity(bus), dut.clk, dut.rst) for bus in dut.m_axis_if]
 
         dut.enable.setimmediatevalue(0)
         dut.drop.setimmediatevalue(0)
@@ -226,14 +226,14 @@ async def run_test_multicast_all_or_nothing(dut, case=None):
 # ----------------------------------------------------------------------
 
 def multicast_mask_list():
-    ports = len(cocotb.top.m_axis)
+    ports = len(cocotb.top.m_axis_if)
     return list(range(1, (1 << ports), 2))
 
 def cycle_pause():
     return itertools.cycle([1, 1, 1, 0])
 
 def size_list():
-    data_width = len(cocotb.top.s_axis.tdata)
+    data_width = len(cocotb.top.s_axis_if.tdata)
     byte_width = data_width // 8
     return list(range(1, byte_width*4+1))+[512]+[1]*64
 
@@ -245,7 +245,7 @@ def hold_then_release(hold_cycles):
 
 # returns the list of (mask, hold_cycles) tuples for all_or_nothing test cases
 def all_or_nothing_cases(ports):
-    ports = len(cocotb.top.m_axis)
+    ports = len(cocotb.top.m_axis_if)
     cases = []
 
     if ports < 2:
@@ -275,7 +275,7 @@ def all_or_nothing_cases(ports):
 
 if getattr(cocotb, 'top', None) is not None:
 
-    ports = len(cocotb.top.m_axis)
+    ports = len(cocotb.top.m_axis_if)
 
     if os.environ.get('PARAM_TUSER_BITMAP_ROUTE', '0') == '1':
         factory = TestFactory(run_test_multicast)

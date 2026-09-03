@@ -18,9 +18,9 @@ fields of `openenoc_switch_if` directly from cocotb and expose the corresponding
 status and acknowledge signals.
 
 The wrapper acts as the peer opposite each switch port. For a side-B switch
-port it transmits through `a2b` and receives through `b2a`; those directions are
+port it transmits through `a2b_axis_if` and receives through `b2a_axis_if`; those directions are
 reversed for a side-A switch port. Constant-index AXI Stream bridges expose both
-cases uniformly as `port_rx_axis` and `port_tx_axis`. This also avoids
+cases uniformly as `port_rx_axis_if` and `port_tx_axis_if`. This also avoids
 unreliable VPI access to nested interface arrays with Verilator.
 
 ## Datapath Under Test

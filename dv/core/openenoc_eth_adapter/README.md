@@ -7,7 +7,7 @@
 
 This test suite validates the `openenoc_eth_adapter` module, which connects two symmetric `openenoc_eth_if` interfaces through bidirectional AXI4-Stream asynchronous FIFOs.
 
-The adapter provides clock-domain crossing and data-width adaptation between two Ethernet-like openENOC links. Traffic in the A-to-B direction is transferred from `eth_a.a2b` to `eth_b.a2b`, while traffic in the B-to-A direction is transferred from `eth_b.b2a` to `eth_a.b2a`.
+The adapter provides clock-domain crossing and data-width adaptation between two Ethernet-like openENOC links. Traffic in the A-to-B direction is transferred from `eth_a.a2b_axis_if` to `eth_b.a2b_axis_if`, while traffic in the B-to-A direction is transferred from `eth_b.b2a_axis_if` to `eth_a.b2a_axis_if`.
 
 ## Test Structure
 
@@ -96,7 +96,7 @@ The test suite covers the following scenarios:
 
 ### A-to-B Transfer
 
-Verifies that frames transmitted on `eth_a.a2b` are received correctly on `eth_b.a2b`.
+Verifies that frames transmitted on `eth_a.a2b_axis_if` are received correctly on `eth_b.a2b_axis_if`.
 
 Coverage includes:
 
@@ -109,7 +109,7 @@ Coverage includes:
 
 ### B-to-A Transfer
 
-Verifies that frames transmitted on `eth_b.b2a` are received correctly on `eth_a.b2a`.
+Verifies that frames transmitted on `eth_b.b2a_axis_if` are received correctly on `eth_a.b2a_axis_if`.
 
 Coverage includes:
 

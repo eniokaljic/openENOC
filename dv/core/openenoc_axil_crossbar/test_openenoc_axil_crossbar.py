@@ -49,7 +49,7 @@ class TB:
 
         self.masters = [
             AxiLiteMaster(AxiLiteBus.from_entity(channel), dut.clk, dut.rst)
-            for channel in dut.s_axil
+            for channel in dut.s_axil_if
         ]
         self.rams = [
             AxiLiteRam(
@@ -58,7 +58,7 @@ class TB:
                 dut.rst,
                 size=1 << parameter_int("TARGET_ADDR_W"),
             )
-            for channel in dut.m_axil
+            for channel in dut.m_axil_if
         ]
 
     async def reset(self):
@@ -72,10 +72,10 @@ class TB:
         await RisingEdge(self.dut.clk)
         await RisingEdge(self.dut.clk)
 
-        for source in self.dut.s_axil:
+        for source in self.dut.s_axil_if:
             assert int(source.bvalid.value) == 0
             assert int(source.rvalid.value) == 0
-        for target in self.dut.m_axil:
+        for target in self.dut.m_axil_if:
             assert int(target.awvalid.value) == 0
             assert int(target.wvalid.value) == 0
             assert int(target.arvalid.value) == 0
@@ -194,7 +194,7 @@ async def test_002_bubble_free_single_target_throughput(dut):
 
     ar_monitor = cocotb.start_soon(
         collect_handshake_cycles(
-            dut.clk, dut.m_axil[target_index], "arvalid", "arready", word_count
+            dut.clk, dut.m_axil_if[target_index], "arvalid", "arready", word_count
         )
     )
     read = await tb.masters[0].read(address, len(read_data))
@@ -208,12 +208,12 @@ async def test_002_bubble_free_single_target_throughput(dut):
     )
     aw_monitor = cocotb.start_soon(
         collect_handshake_cycles(
-            dut.clk, dut.m_axil[target_index], "awvalid", "awready", word_count
+            dut.clk, dut.m_axil_if[target_index], "awvalid", "awready", word_count
         )
     )
     w_monitor = cocotb.start_soon(
         collect_handshake_cycles(
-            dut.clk, dut.m_axil[target_index], "wvalid", "wready", word_count
+            dut.clk, dut.m_axil_if[target_index], "wvalid", "wready", word_count
         )
     )
     write = await tb.masters[0].write(address, write_data)
@@ -319,35 +319,35 @@ async def test_005_stalled_payload_stability(dut):
     )
 
     read_task = cocotb.start_soon(tb.masters[0].read(address, len(data)))
-    await wait_for_stall(dut.clk, dut.m_axil[target_index], "arvalid", "arready")
+    await wait_for_stall(dut.clk, dut.m_axil_if[target_index], "arvalid", "arready")
     held_ar = (
-        int(dut.m_axil[target_index].araddr.value),
-        int(dut.m_axil[target_index].arprot.value),
+        int(dut.m_axil_if[target_index].araddr.value),
+        int(dut.m_axil_if[target_index].arprot.value),
     )
     for _ in range(5):
         await RisingEdge(dut.clk)
         await ReadOnly()
-        assert int(dut.m_axil[target_index].arvalid.value) == 1
+        assert int(dut.m_axil_if[target_index].arvalid.value) == 1
         assert (
-            int(dut.m_axil[target_index].araddr.value),
-            int(dut.m_axil[target_index].arprot.value),
+            int(dut.m_axil_if[target_index].araddr.value),
+            int(dut.m_axil_if[target_index].arprot.value),
         ) == held_ar
 
     tb.masters[0].read_if.r_channel.set_pause_generator(itertools.repeat(True))
     tb.rams[target_index].read_if.ar_channel.set_pause_generator(None)
     tb.rams[target_index].read_if.ar_channel.pause = False
-    await wait_for_stall(dut.clk, dut.s_axil[0], "rvalid", "rready")
+    await wait_for_stall(dut.clk, dut.s_axil_if[0], "rvalid", "rready")
     held_r = (
-        int(dut.s_axil[0].rdata.value),
-        int(dut.s_axil[0].rresp.value),
+        int(dut.s_axil_if[0].rdata.value),
+        int(dut.s_axil_if[0].rresp.value),
     )
     for _ in range(5):
         await RisingEdge(dut.clk)
         await ReadOnly()
-        assert int(dut.s_axil[0].rvalid.value) == 1
+        assert int(dut.s_axil_if[0].rvalid.value) == 1
         assert (
-            int(dut.s_axil[0].rdata.value),
-            int(dut.s_axil[0].rresp.value),
+            int(dut.s_axil_if[0].rdata.value),
+            int(dut.s_axil_if[0].rresp.value),
         ) == held_r
     tb.masters[0].read_if.r_channel.set_pause_generator(None)
     tb.masters[0].read_if.r_channel.pause = False
@@ -355,28 +355,28 @@ async def test_005_stalled_payload_stability(dut):
     assert_okay(read)
 
     write_task = cocotb.start_soon(tb.masters[0].write(address, data))
-    await wait_for_stall(dut.clk, dut.m_axil[target_index], "awvalid", "awready")
-    await wait_for_stall(dut.clk, dut.m_axil[target_index], "wvalid", "wready")
+    await wait_for_stall(dut.clk, dut.m_axil_if[target_index], "awvalid", "awready")
+    await wait_for_stall(dut.clk, dut.m_axil_if[target_index], "wvalid", "wready")
     held_aw = (
-        int(dut.m_axil[target_index].awaddr.value),
-        int(dut.m_axil[target_index].awprot.value),
+        int(dut.m_axil_if[target_index].awaddr.value),
+        int(dut.m_axil_if[target_index].awprot.value),
     )
     held_w = (
-        int(dut.m_axil[target_index].wdata.value),
-        int(dut.m_axil[target_index].wstrb.value),
+        int(dut.m_axil_if[target_index].wdata.value),
+        int(dut.m_axil_if[target_index].wstrb.value),
     )
     for _ in range(5):
         await RisingEdge(dut.clk)
         await ReadOnly()
-        assert int(dut.m_axil[target_index].awvalid.value) == 1
-        assert int(dut.m_axil[target_index].wvalid.value) == 1
+        assert int(dut.m_axil_if[target_index].awvalid.value) == 1
+        assert int(dut.m_axil_if[target_index].wvalid.value) == 1
         assert (
-            int(dut.m_axil[target_index].awaddr.value),
-            int(dut.m_axil[target_index].awprot.value),
+            int(dut.m_axil_if[target_index].awaddr.value),
+            int(dut.m_axil_if[target_index].awprot.value),
         ) == held_aw
         assert (
-            int(dut.m_axil[target_index].wdata.value),
-            int(dut.m_axil[target_index].wstrb.value),
+            int(dut.m_axil_if[target_index].wdata.value),
+            int(dut.m_axil_if[target_index].wstrb.value),
         ) == held_w
 
     # Release the independent channels in different cycles.
@@ -387,13 +387,13 @@ async def test_005_stalled_payload_stability(dut):
         await RisingEdge(dut.clk)
     tb.rams[target_index].write_if.aw_channel.set_pause_generator(None)
     tb.rams[target_index].write_if.aw_channel.pause = False
-    await wait_for_stall(dut.clk, dut.s_axil[0], "bvalid", "bready")
-    held_b = int(dut.s_axil[0].bresp.value)
+    await wait_for_stall(dut.clk, dut.s_axil_if[0], "bvalid", "bready")
+    held_b = int(dut.s_axil_if[0].bresp.value)
     for _ in range(5):
         await RisingEdge(dut.clk)
         await ReadOnly()
-        assert int(dut.s_axil[0].bvalid.value) == 1
-        assert int(dut.s_axil[0].bresp.value) == held_b
+        assert int(dut.s_axil_if[0].bvalid.value) == 1
+        assert int(dut.s_axil_if[0].bresp.value) == held_b
     tb.masters[0].write_if.b_channel.set_pause_generator(None)
     tb.masters[0].write_if.b_channel.pause = False
     write = await write_task

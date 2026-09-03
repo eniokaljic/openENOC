@@ -22,23 +22,23 @@ module test_traffic #
     logic rst;
     logic pcapfinished;
 
-    avalon_if #(.DATA_WIDTH(DATA_WIDTH)) avst(.clk(clk),.rst(rst));
-    taxi_axis_if #(.DATA_W(DATA_WIDTH)) axis();
+    avalon_if #(.DATA_WIDTH(DATA_WIDTH)) avst_avalon_if(.clk(clk),.rst(rst));
+    taxi_axis_if #(.DATA_W(DATA_WIDTH)) axis_if();
 
     pcapreader #(
         .PCAP_FILENAME(PCAP_IN_FILENAME),
         .SIGNAL_TYPE("axisif"),
         .DATA_WIDTH(DATA_WIDTH),
         .CLOCK_PERIOD(CLOCK_PERIOD)
-    ) uut_pcapreader (
+    ) u_pcapreader (
         .clk(clk),
         .rst(rst),
         .pktcount(),
         .newpkt(),
         .pcapfinished(pcapfinished),
 
-        .from_reader_avalon(avst),
-        .from_reader_axis(axis)
+        .from_reader_avalon(avst_avalon_if),
+        .from_reader_axis(axis_if)
     );
 
     pcapwriter #(
@@ -46,12 +46,12 @@ module test_traffic #
         .SIGNAL_TYPE("axisif"),
         .DATA_WIDTH(DATA_WIDTH),
         .CLOCK_PERIOD(CLOCK_PERIOD)
-    ) uut_pcapwriter (
+    ) u_pcapwriter (
         .clk(clk),
         .rst(rst),
 
-        .to_writer_avalon(avst),
-        .to_writer_axis(axis),
+        .to_writer_avalon(avst_avalon_if),
+        .to_writer_axis(axis_if),
 
         .pktcount()
     );

@@ -33,25 +33,19 @@ module test_openenoc_forwarding_table #
     logic                  cpuif_rd_ack;
     logic [31:0]           cpuif_rd_data;
 
-    // Lookup interface
-    logic        lookup_req;
-    logic [47:0] lookup_mac_addr;
+    openenoc_lookup_if #(
+        .NUM_OF_INTERFACES(NUM_OF_INTERFACES)
+    ) lookup_if();
 
-    logic                         lookup_ack;
-    logic [NUM_OF_INTERFACES-1:0] lookup_port_bitmap;
-
-    // Learning interface
-    logic                         learning_req;
-    logic [47:0]                  learning_mac_addr;
-    logic [NUM_OF_INTERFACES-1:0] learning_port_bitmap;
-
-    logic learning_ack;
+    openenoc_learning_if #(
+        .NUM_OF_INTERFACES(NUM_OF_INTERFACES)
+    ) learning_if();
 
     openenoc_forwarding_table #(
         .NUM_OF_INTERFACES(NUM_OF_INTERFACES),
         .TABLE_DEPTH(TABLE_DEPTH)
     )
-    uut (
+    u_openenoc_forwarding_table (
         .clk(clk),
         .rst(rst),
 
@@ -68,17 +62,8 @@ module test_openenoc_forwarding_table #
         .cpuif_rd_ack(cpuif_rd_ack),
         .cpuif_rd_data(cpuif_rd_data),
 
-        .lookup_req(lookup_req),
-        .lookup_mac_addr(lookup_mac_addr),
-
-        .lookup_ack(lookup_ack),
-        .lookup_port_bitmap(lookup_port_bitmap),
-
-        .learning_req(learning_req),
-        .learning_mac_addr(learning_mac_addr),
-        .learning_port_bitmap(learning_port_bitmap),
-
-        .learning_ack(learning_ack)
+        .lookup_if(lookup_if),
+        .learning_if(learning_if)
     );
 
 endmodule

@@ -28,13 +28,13 @@ module test_openenoc_axil_crossbar #(
         .DATA_W(DATA_W),
         .ADDR_W(ADDR_W),
         .STRB_W(STRB_W)
-    ) s_axil[S_COUNT]();
+    ) s_axil_if[S_COUNT]();
 
     taxi_axil_if #(
         .DATA_W(DATA_W),
         .ADDR_W(ADDR_W),
         .STRB_W(STRB_W)
-    ) m_axil[M_COUNT]();
+    ) m_axil_if[M_COUNT]();
 
     openenoc_axil_crossbar #(
         .S_COUNT(S_COUNT),
@@ -45,13 +45,13 @@ module test_openenoc_axil_crossbar #(
         .M_CONNECT_RD({M_COUNT{{S_COUNT{1'b1}}}}),
         .M_CONNECT_WR({M_COUNT{{S_COUNT{1'b1}}}}),
         .M_ISSUE(M_ISSUE)
-    ) uut (
+    ) u_openenoc_axil_crossbar (
         .clk(clk),
         .rst(rst),
-        .s_axil_wr(s_axil),
-        .s_axil_rd(s_axil),
-        .m_axil_wr(m_axil),
-        .m_axil_rd(m_axil)
+        .s_axil_wr(s_axil_if),
+        .s_axil_rd(s_axil_if),
+        .m_axil_wr(m_axil_if),
+        .m_axil_rd(m_axil_if)
     );
 
 endmodule

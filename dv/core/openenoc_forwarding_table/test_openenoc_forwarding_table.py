@@ -63,12 +63,12 @@ class TB:
         dut.cpuif_wr_data.setimmediatevalue(0)
         dut.cpuif_wr_biten.setimmediatevalue(0)
 
-        dut.lookup_req.setimmediatevalue(0)
-        dut.lookup_mac_addr.setimmediatevalue(0)
+        dut.lookup_if.req.setimmediatevalue(0)
+        dut.lookup_if.mac_addr.setimmediatevalue(0)
 
-        dut.learning_req.setimmediatevalue(0)
-        dut.learning_mac_addr.setimmediatevalue(0)
-        dut.learning_port_bitmap.setimmediatevalue(0)
+        dut.learning_if.req.setimmediatevalue(0)
+        dut.learning_if.mac_addr.setimmediatevalue(0)
+        dut.learning_if.port_bitmap.setimmediatevalue(0)
 
         await self.cycle(2)
         dut.rst.value = 1
@@ -148,17 +148,17 @@ class TB:
     async def lookup(self, mac):
         dut = self.dut
 
-        dut.lookup_mac_addr.value = mac
-        dut.lookup_req.value = 1
+        dut.lookup_if.mac_addr.value = mac
+        dut.lookup_if.req.value = 1
 
         await self.cycle()
-        dut.lookup_req.value = 0
-        dut.lookup_mac_addr.value = STALE
+        dut.lookup_if.req.value = 0
+        dut.lookup_if.mac_addr.value = STALE
 
-        while int(dut.lookup_ack.value) != 1:
+        while int(dut.lookup_if.ack.value) != 1:
             await self.cycle()
 
-        bitmap = int(dut.lookup_port_bitmap.value)
+        bitmap = int(dut.lookup_if.port_bitmap.value)
         await self.cycle()
 
         return bitmap
@@ -166,16 +166,16 @@ class TB:
     async def learn(self, mac, bitmap):
         dut = self.dut
 
-        dut.learning_mac_addr.value = mac
-        dut.learning_port_bitmap.value = bitmap
-        dut.learning_req.value = 1
+        dut.learning_if.mac_addr.value = mac
+        dut.learning_if.port_bitmap.value = bitmap
+        dut.learning_if.req.value = 1
 
         await self.cycle()
-        dut.learning_req.value = 0
-        dut.learning_mac_addr.value = STALE
-        dut.learning_port_bitmap.value = 0
+        dut.learning_if.req.value = 0
+        dut.learning_if.mac_addr.value = STALE
+        dut.learning_if.port_bitmap.value = 0
 
-        while int(dut.learning_ack.value) != 1:
+        while int(dut.learning_if.ack.value) != 1:
             await self.cycle()
 
         await self.cycle()
@@ -358,21 +358,21 @@ async def run_exclusive_access(dut):
 
     # a lookup request and a CPU access overlap in time, the table serves only
     # one of them at a time, but both must complete
-    dut.lookup_mac_addr.value = mac
-    dut.lookup_req.value = 1
+    dut.lookup_if.mac_addr.value = mac
+    dut.lookup_if.req.value = 1
     read_task = cocotb.start_soon(tb.cpu_read(0, WORD_IFACE))
 
     await tb.cycle()
-    dut.lookup_req.value = 0
-    dut.lookup_mac_addr.value = STALE
+    dut.lookup_if.req.value = 0
+    dut.lookup_if.mac_addr.value = STALE
 
-    while int(dut.lookup_ack.value) != 1:
-        assert int(dut.lookup_ack.value) + int(dut.cpuif_rd_ack.value) \
+    while int(dut.lookup_if.ack.value) != 1:
+        assert int(dut.lookup_if.ack.value) + int(dut.cpuif_rd_ack.value) \
             + int(dut.cpuif_wr_ack.value) <= 1, "table served two masters at once"
         await tb.cycle()
 
     assert int(dut.cpuif_rd_ack.value) == 0, "table served two masters at once"
-    lookup_bitmap = int(dut.lookup_port_bitmap.value)
+    lookup_bitmap = int(dut.lookup_if.port_bitmap.value)
     await tb.cycle()
 
     assert lookup_bitmap == bitmap
@@ -393,23 +393,23 @@ async def run_concurrent_requests(dut):
     dut.cpuif_req_is_wr.value = 0
     dut.cpuif_req.value = 1
 
-    dut.lookup_mac_addr.value = mac
-    dut.lookup_req.value = 1
+    dut.lookup_if.mac_addr.value = mac
+    dut.lookup_if.req.value = 1
 
-    dut.learning_mac_addr.value = mac
-    dut.learning_port_bitmap.value = bitmap
-    dut.learning_req.value = 1
+    dut.learning_if.mac_addr.value = mac
+    dut.learning_if.port_bitmap.value = bitmap
+    dut.learning_if.req.value = 1
 
     await tb.cycle()
 
     # the request payload is only required to be valid in the request cycle
     dut.cpuif_req.value = 0
     dut.cpuif_addr.value = 0
-    dut.lookup_req.value = 0
-    dut.lookup_mac_addr.value = STALE
-    dut.learning_req.value = 0
-    dut.learning_mac_addr.value = STALE
-    dut.learning_port_bitmap.value = 0
+    dut.lookup_if.req.value = 0
+    dut.lookup_if.mac_addr.value = STALE
+    dut.learning_if.req.value = 0
+    dut.learning_if.mac_addr.value = STALE
+    dut.learning_if.port_bitmap.value = 0
 
     acks = {"cpu": 0, "lookup": 0, "learning": 0}
     order = []
@@ -418,21 +418,21 @@ async def run_concurrent_requests(dut):
 
     for _ in range(16):
         active = int(dut.cpuif_rd_ack.value) + int(dut.cpuif_wr_ack.value) \
-            + int(dut.lookup_ack.value) + int(dut.learning_ack.value)
+            + int(dut.lookup_if.ack.value) + int(dut.learning_if.ack.value)
         assert active <= 1, "more than one interface acknowledged in one cycle"
 
         if int(dut.cpuif_rd_ack.value):
             order.append("cpu")
             rd_data = int(dut.cpuif_rd_data.value)
-        if int(dut.lookup_ack.value):
+        if int(dut.lookup_if.ack.value):
             order.append("lookup")
-            lookup_bitmap = int(dut.lookup_port_bitmap.value)
-        if int(dut.learning_ack.value):
+            lookup_bitmap = int(dut.lookup_if.port_bitmap.value)
+        if int(dut.learning_if.ack.value):
             order.append("learning")
 
         acks["cpu"] += int(dut.cpuif_rd_ack.value)
-        acks["lookup"] += int(dut.lookup_ack.value)
-        acks["learning"] += int(dut.learning_ack.value)
+        acks["lookup"] += int(dut.lookup_if.ack.value)
+        acks["learning"] += int(dut.learning_if.ack.value)
         await tb.cycle()
 
     assert acks == {"cpu": 1, "lookup": 1, "learning": 1}, \
@@ -583,17 +583,17 @@ async def run_held_request(dut):
 
     # the request is kept asserted past the acknowledge instead of being a
     # single cycle strobe, the table must still perform exactly one transaction
-    dut.learning_mac_addr.value = mac
-    dut.learning_port_bitmap.value = bitmap
-    dut.learning_req.value = 1
+    dut.learning_if.mac_addr.value = mac
+    dut.learning_if.port_bitmap.value = bitmap
+    dut.learning_if.req.value = 1
 
     acks = 0
     for i in range(16):
-        acks += int(dut.learning_ack.value)
+        acks += int(dut.learning_if.ack.value)
         if i == 5:
-            dut.learning_req.value = 0
-            dut.learning_mac_addr.value = STALE
-            dut.learning_port_bitmap.value = 0
+            dut.learning_if.req.value = 0
+            dut.learning_if.mac_addr.value = STALE
+            dut.learning_if.port_bitmap.value = 0
         await tb.cycle()
 
     assert acks == 1, f"a held learning request produced {acks} acknowledges"
@@ -607,17 +607,17 @@ async def run_held_request(dut):
         "a held learning request consumed more than one entry"
 
     # the same for the lookup interface
-    dut.lookup_mac_addr.value = mac
-    dut.lookup_req.value = 1
+    dut.lookup_if.mac_addr.value = mac
+    dut.lookup_if.req.value = 1
 
     acks = 0
     for i in range(16):
-        acks += int(dut.lookup_ack.value)
-        if int(dut.lookup_ack.value) == 1:
-            assert int(dut.lookup_port_bitmap.value) == bitmap
+        acks += int(dut.lookup_if.ack.value)
+        if int(dut.lookup_if.ack.value) == 1:
+            assert int(dut.lookup_if.port_bitmap.value) == bitmap
         if i == 5:
-            dut.lookup_req.value = 0
-            dut.lookup_mac_addr.value = STALE
+            dut.lookup_if.req.value = 0
+            dut.lookup_if.mac_addr.value = STALE
         await tb.cycle()
 
     assert acks == 1, f"a held lookup request produced {acks} acknowledges"
@@ -637,22 +637,22 @@ async def run_back_to_back_requests(dut):
     # every request is issued in the cycle right after the previous acknowledge,
     # without the settling cycle the TB helpers normally insert
     for index in range(count):
-        dut.lookup_mac_addr.value = make_mac(index)
-        dut.lookup_req.value = 1
+        dut.lookup_if.mac_addr.value = make_mac(index)
+        dut.lookup_if.req.value = 1
 
         await tb.cycle()
-        dut.lookup_req.value = 0
-        dut.lookup_mac_addr.value = STALE
+        dut.lookup_if.req.value = 0
+        dut.lookup_if.mac_addr.value = STALE
 
-        while int(dut.lookup_ack.value) != 1:
+        while int(dut.lookup_if.ack.value) != 1:
             await tb.cycle()
 
         expected = single_port(index, tb.num_of_interfaces)
-        got = int(dut.lookup_port_bitmap.value)
+        got = int(dut.lookup_if.port_bitmap.value)
         assert got == expected, \
             f"back to back lookup {index} returned {got:x}, expected {expected:x}"
 
-    dut.lookup_mac_addr.value = 0
+    dut.lookup_if.mac_addr.value = 0
 
 
 # ----------------------------------------------------------------------
@@ -699,6 +699,8 @@ def test_openenoc_forwarding_table(request, num_of_interfaces, table_depth):
 
     verilog_sources = [
         os.path.join(tests_dir, f"{toplevel}.sv"),
+        os.path.join(core_dir, "openenoc_lookup_if.sv"),
+        os.path.join(core_dir, "openenoc_learning_if.sv"),
         os.path.join(core_dir, f"{dut}.sv"),
     ]
 

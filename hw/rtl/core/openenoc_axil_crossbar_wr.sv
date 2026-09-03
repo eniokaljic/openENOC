@@ -192,7 +192,7 @@ module openenoc_axil_crossbar_wr #(
             .M_ADDR_W(M_ADDR_W),
             .M_CONNECT(M_CONNECT),
             .M_SECURE(M_SECURE)
-        ) addr_inst (
+        ) u_addr (
             .addr(s_awaddr[s]),
             .prot(s_awprot[s]),
             .match(decode_match[s]),
@@ -201,7 +201,7 @@ module openenoc_axil_crossbar_wr #(
 
         openenoc_axil_crossbar_skid_buffer #(
             .DATA_W(B_PAYLOAD_W)
-        ) b_buffer_inst (
+        ) u_b_buffer (
             .clk(clk),
             .rst(rst),
             .s_data(b_input_data[s]),
@@ -225,7 +225,7 @@ module openenoc_axil_crossbar_wr #(
         openenoc_axil_crossbar_arbiter #(
             .PORTS(S_COUNT),
             .INDEX_W(S_SELECT_W)
-        ) aw_arbiter_inst (
+        ) u_aw_arbiter (
             .clk(clk),
             .rst(rst),
             .request(aw_request[m]),
@@ -237,7 +237,7 @@ module openenoc_axil_crossbar_wr #(
 
         openenoc_axil_crossbar_skid_buffer #(
             .DATA_W(AW_PAYLOAD_W)
-        ) aw_buffer_inst (
+        ) u_aw_buffer (
             .clk(clk),
             .rst(rst),
             .s_data(aw_input_data[m]),
@@ -257,7 +257,7 @@ module openenoc_axil_crossbar_wr #(
 
         openenoc_axil_crossbar_skid_buffer #(
             .DATA_W(W_PAYLOAD_W)
-        ) w_buffer_inst (
+        ) u_w_buffer (
             .clk(clk),
             .rst(rst),
             .s_data(w_input_data[m]),

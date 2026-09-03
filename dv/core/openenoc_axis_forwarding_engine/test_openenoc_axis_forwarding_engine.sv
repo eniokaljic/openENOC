@@ -42,7 +42,7 @@ taxi_axis_if #(
     .DEST_W(DEST_W),
     .USER_EN(1'b0),
     .USER_W(1)
-) s_axis();
+) s_axis_if();
 
 taxi_axis_if #(
     .DATA_W(DATA_W),
@@ -56,25 +56,23 @@ taxi_axis_if #(
     .DEST_W(DEST_W),
     .USER_EN(USER_EN),
     .USER_W(USER_W)
-) m_axis();
+) m_axis_if();
 
 logic pause_request;
 logic pause_done;
 
-logic                         lookup_req;
-logic [47:0]                  lookup_mac_addr;
-logic                         lookup_ack;
-logic [NUM_OF_INTERFACES-1:0] lookup_port_bitmap;
+openenoc_lookup_if #(
+    .NUM_OF_INTERFACES(NUM_OF_INTERFACES)
+) lookup_if();
 
-logic                         learning_req;
-logic [47:0]                  learning_mac_addr;
-logic [NUM_OF_INTERFACES-1:0] learning_port_bitmap;
-logic                         learning_ack;
+openenoc_learning_if #(
+    .NUM_OF_INTERFACES(NUM_OF_INTERFACES)
+) learning_if();
 
 openenoc_axis_forwarding_engine #(
     .NUM_OF_INTERFACES(NUM_OF_INTERFACES)
 )
-uut (
+u_openenoc_axis_forwarding_engine (
     .clk(clk),
     .rst(rst),
 
@@ -84,28 +82,22 @@ uut (
     /*
      * AXI4-Stream input (sink)
      */
-    .s_axis(s_axis),
+    .s_axis(s_axis_if),
 
     /*
      * AXI4-Stream output (source)
      */
-    .m_axis(m_axis),
+    .m_axis(m_axis_if),
 
     /*
      * Lookup interface
      */
-    .lookup_req(lookup_req),
-    .lookup_mac_addr(lookup_mac_addr),
-    .lookup_ack(lookup_ack),
-    .lookup_port_bitmap(lookup_port_bitmap),
+    .lookup_if(lookup_if),
 
     /*
      * Learning interface
      */
-    .learning_req(learning_req),
-    .learning_mac_addr(learning_mac_addr),
-    .learning_port_bitmap(learning_port_bitmap),
-    .learning_ack(learning_ack)
+    .learning_if(learning_if)
 );
 
 endmodule

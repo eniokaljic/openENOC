@@ -39,20 +39,12 @@ module openenoc_forwarding_table #
     /*
      * Lookup interface
      */
-    input  wire logic                         lookup_req,
-    input  wire logic [47:0]                  lookup_mac_addr,
-
-    output logic                              lookup_ack,
-    output logic [NUM_OF_INTERFACES-1:0]      lookup_port_bitmap,
+    openenoc_lookup_if.slv                    lookup_if,
 
     /*
      * Learning interface
      */
-    input  wire logic                         learning_req,
-    input  wire logic [47:0]                  learning_mac_addr,
-    input  wire logic [NUM_OF_INTERFACES-1:0] learning_port_bitmap,
-
-    output logic                              learning_ack
+    openenoc_learning_if.slv                  learning_if
 );
 
     // ---------------------------------------------------------------------------
@@ -282,8 +274,8 @@ module openenoc_forwarding_table #
             // still be captured. Capturing on the rising edge of the strobe keeps
             // a request that is held until the acknowledge a single transaction.
             cpuif_req_d    <= cpuif_req;
-            lookup_req_d   <= lookup_req;
-            learning_req_d <= learning_req;
+            lookup_req_d   <= lookup_if.req;
+            learning_req_d <= learning_if.req;
 
             if (cpuif_req && !cpuif_req_d && !cpu_pending) begin
                 cpu_pending  <= 1'b1;
@@ -293,15 +285,15 @@ module openenoc_forwarding_table #
                 cpu_wr_biten <= cpuif_wr_biten;
             end
 
-            if (lookup_req && !lookup_req_d && !lookup_pending) begin
+            if (lookup_if.req && !lookup_req_d && !lookup_pending) begin
                 lookup_pending <= 1'b1;
-                lookup_mac     <= lookup_mac_addr;
+                lookup_mac     <= lookup_if.mac_addr;
             end
 
-            if (learning_req && !learning_req_d && !learn_pending) begin
+            if (learning_if.req && !learning_req_d && !learn_pending) begin
                 learn_pending <= 1'b1;
-                learn_mac     <= learning_mac_addr;
-                learn_bitmap  <= learning_port_bitmap;
+                learn_mac     <= learning_if.mac_addr;
+                learn_bitmap  <= learning_if.port_bitmap;
             end
         end
     end
@@ -312,10 +304,10 @@ module openenoc_forwarding_table #
     assign cpuif_wr_ack = (state == ST_CPU) && cpu_is_wr;
     assign cpuif_rd_ack = (state == ST_CPU) && !cpu_is_wr;
 
-    assign lookup_ack         = (state == ST_LOOKUP);
-    assign lookup_port_bitmap = lookup_result;
+    assign lookup_if.ack         = (state == ST_LOOKUP);
+    assign lookup_if.port_bitmap = lookup_result;
 
-    assign learning_ack = (state == ST_LEARN);
+    assign learning_if.ack = (state == ST_LEARN);
 
 endmodule
 

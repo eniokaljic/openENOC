@@ -37,14 +37,14 @@ pcapreader #(
     .SIGNAL_TYPE("axisif"),
     .DATA_WIDTH(DATA_WIDTH),
     .CLOCK_PERIOD(CLOCK_PERIOD)
-) uut_pcapreader (...);
+) u_pcapreader (...);
 
 pcapwriter #(
     .PCAP_FILENAME(PCAP_OUT_FILENAME),
     .SIGNAL_TYPE("axisif"),
     .DATA_WIDTH(DATA_WIDTH),
     .CLOCK_PERIOD(CLOCK_PERIOD)
-) uut_pcapwriter (...);
+) u_pcapwriter (...);
 ```
 
 The reader drives the shared AXI4-Stream interface, while the writer consumes the same stream and reconstructs the packets into a PCAP file. The `pcapfinished` signal is asserted once the reader reaches the end of the input file.

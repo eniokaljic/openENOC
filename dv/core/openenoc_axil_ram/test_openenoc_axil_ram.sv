@@ -28,19 +28,19 @@ module test_openenoc_axil_ram #
         .DATA_W(DATA_W),
         .ADDR_W(AXIL_ADDR_W),
         .STRB_W(STRB_W)
-    ) s_axil();
+    ) s_axil_if();
 
     openenoc_axil_ram #(
         .ADDR_W(ADDR_W),
         .PIPELINE_OUTPUT(PIPELINE_OUTPUT),
         .INIT_FILE(INIT_FILE)
     )
-    uut (
+    u_openenoc_axil_ram (
         .clk(clk),
         .rst(rst),
 
-        .s_axil_wr(s_axil),
-        .s_axil_rd(s_axil)
+        .s_axil_wr(s_axil_if),
+        .s_axil_rd(s_axil_if)
     );
 
     endmodule

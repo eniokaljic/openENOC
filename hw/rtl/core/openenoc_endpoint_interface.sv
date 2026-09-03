@@ -40,7 +40,7 @@ module openenoc_endpoint_interface #
         .KEEP_EN (1'b1),
         .STRB_EN (1'b0),
         .LAST_EN (1'b1)
-    ) csr_source_axis();
+    ) csr_source_axis_if();
 
     taxi_axis_if #(
         .DATA_W  (eth_if.DATA_W),
@@ -54,7 +54,7 @@ module openenoc_endpoint_interface #
         .DEST_W  (eth_if.DEST_W),
         .USER_EN (eth_if.USER_EN),
         .USER_W  (eth_if.USER_W)
-    ) eth_source_axis();
+    ) eth_source_axis_if();
 
     taxi_axis_if #(
         .DATA_W  (eth_if.DATA_W),
@@ -68,7 +68,7 @@ module openenoc_endpoint_interface #
         .DEST_W  (eth_if.DEST_W),
         .USER_EN (eth_if.USER_EN),
         .USER_W  (eth_if.USER_W)
-    ) eth_sink_axis();
+    ) eth_sink_axis_if();
 
     taxi_axis_if #(
         .DATA_W  (CSR_AXIS_DATA_W),
@@ -76,80 +76,80 @@ module openenoc_endpoint_interface #
         .KEEP_EN (1'b1),
         .STRB_EN (1'b0),
         .LAST_EN (1'b1)
-    ) csr_sink_axis();
+    ) csr_sink_axis_if();
 
     // CSR source -> FIFO input
-    assign csr_source_axis.tdata =
+    assign csr_source_axis_if.tdata =
         endpoint_if.csr_to_core.axis_if.source.data.tdata.value;
-    assign csr_source_axis.tkeep =
+    assign csr_source_axis_if.tkeep =
         endpoint_if.csr_to_core.axis_if.source.control.tkeep.value;
-    assign csr_source_axis.tstrb  = csr_source_axis.tkeep;
-    assign csr_source_axis.tid    = '0;
-    assign csr_source_axis.tdest  = '0;
-    assign csr_source_axis.tuser  = '0;
-    assign csr_source_axis.tlast =
+    assign csr_source_axis_if.tstrb  = csr_source_axis_if.tkeep;
+    assign csr_source_axis_if.tid    = '0;
+    assign csr_source_axis_if.tdest  = '0;
+    assign csr_source_axis_if.tuser  = '0;
+    assign csr_source_axis_if.tlast =
         endpoint_if.csr_to_core.axis_if.source.control.tlast.value;
-    assign csr_source_axis.tvalid =
+    assign csr_source_axis_if.tvalid =
         endpoint_if.csr_to_core.axis_if.source.control.tvalid.value;
 
     // Source FIFO output -> Ethernet transmit direction
-    assign eth_if.a2b.tdata       = eth_source_axis.tdata;
-    assign eth_if.a2b.tkeep       = eth_source_axis.tkeep;
-    assign eth_if.a2b.tstrb       = eth_source_axis.tstrb;
-    assign eth_if.a2b.tid         = eth_source_axis.tid;
-    assign eth_if.a2b.tdest       = eth_source_axis.tdest;
-    assign eth_if.a2b.tuser       = eth_source_axis.tuser;
-    assign eth_if.a2b.tlast       = eth_source_axis.tlast;
-    assign eth_if.a2b.tvalid      = eth_source_axis.tvalid;
-    assign eth_source_axis.tready = eth_if.a2b.tready;
+    assign eth_if.a2b_axis_if.tdata       = eth_source_axis_if.tdata;
+    assign eth_if.a2b_axis_if.tkeep       = eth_source_axis_if.tkeep;
+    assign eth_if.a2b_axis_if.tstrb       = eth_source_axis_if.tstrb;
+    assign eth_if.a2b_axis_if.tid         = eth_source_axis_if.tid;
+    assign eth_if.a2b_axis_if.tdest       = eth_source_axis_if.tdest;
+    assign eth_if.a2b_axis_if.tuser       = eth_source_axis_if.tuser;
+    assign eth_if.a2b_axis_if.tlast       = eth_source_axis_if.tlast;
+    assign eth_if.a2b_axis_if.tvalid      = eth_source_axis_if.tvalid;
+    assign eth_source_axis_if.tready = eth_if.a2b_axis_if.tready;
 
     // Ethernet receive direction -> sink FIFO input
-    assign eth_sink_axis.tdata  = eth_if.b2a.tdata;
-    assign eth_sink_axis.tkeep  = eth_if.b2a.tkeep;
-    assign eth_sink_axis.tstrb  = eth_if.b2a.tstrb;
-    assign eth_sink_axis.tid    = eth_if.b2a.tid;
-    assign eth_sink_axis.tdest  = eth_if.b2a.tdest;
-    assign eth_sink_axis.tuser  = eth_if.b2a.tuser;
-    assign eth_sink_axis.tlast  = eth_if.b2a.tlast;
-    assign eth_sink_axis.tvalid = eth_if.b2a.tvalid;
-    assign eth_if.b2a.tready    = eth_sink_axis.tready;
+    assign eth_sink_axis_if.tdata  = eth_if.b2a_axis_if.tdata;
+    assign eth_sink_axis_if.tkeep  = eth_if.b2a_axis_if.tkeep;
+    assign eth_sink_axis_if.tstrb  = eth_if.b2a_axis_if.tstrb;
+    assign eth_sink_axis_if.tid    = eth_if.b2a_axis_if.tid;
+    assign eth_sink_axis_if.tdest  = eth_if.b2a_axis_if.tdest;
+    assign eth_sink_axis_if.tuser  = eth_if.b2a_axis_if.tuser;
+    assign eth_sink_axis_if.tlast  = eth_if.b2a_axis_if.tlast;
+    assign eth_sink_axis_if.tvalid = eth_if.b2a_axis_if.tvalid;
+    assign eth_if.b2a_axis_if.tready    = eth_sink_axis_if.tready;
 
     // Sink FIFO output -> CSR sink
-    assign csr_sink_axis.tready =
+    assign csr_sink_axis_if.tready =
         endpoint_if.csr_to_core.axis_if.sink.control.tready.value;
 
     always_comb begin
         endpoint_if.core_to_csr = '{default: '0};
 
         endpoint_if.core_to_csr.axis_if.source.control.tvalid.hwclr =
-            csr_source_axis.tvalid && csr_source_axis.tready;
+            csr_source_axis_if.tvalid && csr_source_axis_if.tready;
         endpoint_if.core_to_csr.axis_if.source.status.tready.next =
-            csr_source_axis.tready;
+            csr_source_axis_if.tready;
 
         endpoint_if.core_to_csr.axis_if.sink.data.tdata.next =
-            csr_sink_axis.tdata;
+            csr_sink_axis_if.tdata;
         endpoint_if.core_to_csr.axis_if.sink.control.tready.hwclr =
-            csr_sink_axis.tvalid && csr_sink_axis.tready;
+            csr_sink_axis_if.tvalid && csr_sink_axis_if.tready;
         endpoint_if.core_to_csr.axis_if.sink.status.tvalid.next =
-            csr_sink_axis.tvalid;
+            csr_sink_axis_if.tvalid;
         endpoint_if.core_to_csr.axis_if.sink.status.tlast.next =
-            csr_sink_axis.tlast;
+            csr_sink_axis_if.tlast;
         endpoint_if.core_to_csr.axis_if.sink.status.tkeep.next =
-            csr_sink_axis.tkeep;
+            csr_sink_axis_if.tkeep;
     end
 
     taxi_axis_async_fifo_adapter #(
         .DEPTH        (FIFO_DEPTH),
         .RAM_PIPELINE (FIFO_RAM_PIPELINE)
     )
-    source_fifo_inst (
+    u_source_fifo (
         .s_clk  (clk),
         .s_rst  (rst),
-        .s_axis (csr_source_axis),
+        .s_axis (csr_source_axis_if),
 
         .m_clk  (eth_if.clk),
         .m_rst  (eth_if.rst),
-        .m_axis (eth_source_axis),
+        .m_axis (eth_source_axis_if),
 
         .s_pause_req (1'b0),
         .s_pause_ack (),
@@ -172,14 +172,14 @@ module openenoc_endpoint_interface #
         .DEPTH        (FIFO_DEPTH),
         .RAM_PIPELINE (FIFO_RAM_PIPELINE)
     )
-    sink_fifo_inst (
+    u_sink_fifo (
         .s_clk  (eth_if.clk),
         .s_rst  (eth_if.rst),
-        .s_axis (eth_sink_axis),
+        .s_axis (eth_sink_axis_if),
 
         .m_clk  (clk),
         .m_rst  (rst),
-        .m_axis (csr_sink_axis),
+        .m_axis (csr_sink_axis_if),
 
         .s_pause_req (1'b0),
         .s_pause_ack (),

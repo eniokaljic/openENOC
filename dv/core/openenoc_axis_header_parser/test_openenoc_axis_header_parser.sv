@@ -35,7 +35,7 @@ module test_openenoc_axis_header_parser #
 		.LAST_EN(LAST_EN),
 		.USER_EN(1'b0),
 		.USER_W(1)
-	) s_axis();
+	) s_axis_if();
 
 	// output: delayed frames, 128-bit header on tuser
 	taxi_axis_if #(
@@ -46,17 +46,17 @@ module test_openenoc_axis_header_parser #
 		.LAST_EN(LAST_EN),
 		.USER_EN(1'b1),
 		.USER_W(USER_W)
-	) m_axis();
+	) m_axis_if();
 
 	openenoc_axis_header_parser #(
 		.DEPTH(DEPTH),
 		.M_REG_TYPE(M_REG_TYPE)
 	)
-	uut (
+	u_openenoc_axis_header_parser (
 		.clk(clk),
 		.rst(rst),
-		.s_axis(s_axis),
-		.m_axis(m_axis)
+		.s_axis(s_axis_if),
+		.m_axis(m_axis_if)
 	);
 
 endmodule

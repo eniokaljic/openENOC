@@ -66,7 +66,7 @@ module openenoc_axil_crossbar #(
         .M_CONNECT(M_CONNECT_WR),
         .M_ISSUE(M_ISSUE),
         .M_SECURE(M_SECURE)
-    ) wr_inst (
+    ) u_wr (
         .clk(clk),
         .rst(rst),
         .s_axil_wr(s_axil_wr),
@@ -84,7 +84,7 @@ module openenoc_axil_crossbar #(
         .M_CONNECT(M_CONNECT_RD),
         .M_ISSUE(M_ISSUE),
         .M_SECURE(M_SECURE)
-    ) rd_inst (
+    ) u_rd (
         .clk(clk),
         .rst(rst),
         .s_axil_rd(s_axil_rd),

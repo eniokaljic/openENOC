@@ -90,7 +90,7 @@ module openenoc_axis_switch #
 		.DEST_W(S_DEST_W),
 		.USER_EN(USER_EN),
 		.USER_W(USER_W)
-	) int_s_axis[S_COUNT]();
+	) int_s_axis_if[S_COUNT]();
 
 	taxi_axis_if #(
 		.DATA_W(DATA_W),
@@ -104,17 +104,17 @@ module openenoc_axis_switch #
 		.DEST_W(M_DEST_W),
 		.USER_EN(USER_EN),
 		.USER_W(USER_W)
-	) int_m_axis[M_COUNT]();
+	) int_m_axis_if[M_COUNT]();
 
 	for (genvar s = 0; s < S_COUNT; s = s + 1) begin : s_reg_gen
 		taxi_axis_register #(
 			.REG_TYPE(S_REG_TYPE)
 		)
-		s_reg_inst (
+		u_s_reg (
 			.clk(clk),
 			.rst(rst),
 			.s_axis(s_axis[s]),
-			.m_axis(int_s_axis[s])
+			.m_axis(int_s_axis_if[s])
 		);
 	end
 
@@ -122,10 +122,10 @@ module openenoc_axis_switch #
 		taxi_axis_register #(
 			.REG_TYPE(M_REG_TYPE)
 		)
-		m_reg_inst (
+		u_m_reg (
 			.clk(clk),
 			.rst(rst),
-			.s_axis(int_m_axis[m]),
+			.s_axis(int_m_axis_if[m]),
 			.m_axis(m_axis[m])
 		);
 	end
@@ -151,27 +151,27 @@ module openenoc_axis_switch #
 	logic                 out_tready[M_COUNT];
 
 	for (genvar s = 0; s < S_COUNT; s = s + 1) begin : s_bridge
-		assign in_tdata[s] = int_s_axis[s].tdata;
-		assign in_tkeep[s] = int_s_axis[s].tkeep;
-		assign in_tstrb[s] = int_s_axis[s].tstrb;
-		assign in_tid[s] = int_s_axis[s].tid;
-		assign in_tdest[s] = int_s_axis[s].tdest;
-		assign in_tuser[s] = int_s_axis[s].tuser;
-		assign in_tlast[s] = int_s_axis[s].tlast;
-		assign in_tvalid[s] = int_s_axis[s].tvalid;
-		assign int_s_axis[s].tready = in_tready[s];
+		assign in_tdata[s] = int_s_axis_if[s].tdata;
+		assign in_tkeep[s] = int_s_axis_if[s].tkeep;
+		assign in_tstrb[s] = int_s_axis_if[s].tstrb;
+		assign in_tid[s] = int_s_axis_if[s].tid;
+		assign in_tdest[s] = int_s_axis_if[s].tdest;
+		assign in_tuser[s] = int_s_axis_if[s].tuser;
+		assign in_tlast[s] = int_s_axis_if[s].tlast;
+		assign in_tvalid[s] = int_s_axis_if[s].tvalid;
+		assign int_s_axis_if[s].tready = in_tready[s];
 	end
 
 	for (genvar m = 0; m < M_COUNT; m = m + 1) begin : m_bridge
-		assign int_m_axis[m].tdata = out_tdata[m];
-		assign int_m_axis[m].tkeep = out_tkeep[m];
-		assign int_m_axis[m].tstrb = out_tstrb[m];
-		assign int_m_axis[m].tid = out_tid[m];
-		assign int_m_axis[m].tdest = out_tdest[m];
-		assign int_m_axis[m].tuser = out_tuser[m];
-		assign int_m_axis[m].tlast = out_tlast[m];
-		assign int_m_axis[m].tvalid = out_tvalid[m];
-		assign out_tready[m] = int_m_axis[m].tready;
+		assign int_m_axis_if[m].tdata = out_tdata[m];
+		assign int_m_axis_if[m].tkeep = out_tkeep[m];
+		assign int_m_axis_if[m].tstrb = out_tstrb[m];
+		assign int_m_axis_if[m].tid = out_tid[m];
+		assign int_m_axis_if[m].tdest = out_tdest[m];
+		assign int_m_axis_if[m].tuser = out_tuser[m];
+		assign int_m_axis_if[m].tlast = out_tlast[m];
+		assign int_m_axis_if[m].tvalid = out_tvalid[m];
+		assign out_tready[m] = int_m_axis_if[m].tready;
 	end
 
 	localparam CL_S_COUNT = S_COUNT > 1 ? $clog2(S_COUNT) : 1;
