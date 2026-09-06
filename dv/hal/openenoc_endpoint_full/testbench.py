@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import cocotb
-import threading
 from cocotb.clock import Clock
+from cocotb.task import bridge
 from cocotb.triggers import Timer
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 
@@ -12,6 +12,7 @@ from csr.reg_model.csr import csr_cls
 
 from rtl_simulator import RTLSimulator
 from tests import *
+
 
 async def create_csr(dut):
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
@@ -24,7 +25,6 @@ async def create_csr(dut):
     axi_master = AxiLiteMaster(axi_bus, dut.clk, dut.rst)
 
     hw = RTLSimulator(axi_master)
-    cocotb.start_soon(hw.worker())
 
     csr = csr_cls(
         callbacks=NormalCallbackSet(
@@ -38,28 +38,7 @@ async def create_csr(dut):
 
 async def run_reg_test(dut, test_func):
     csr = await create_csr(dut)
-
-    exc = None
-
-    def worker():
-        nonlocal exc
-
-        try:
-            test_func(csr)
-
-        except Exception as e:
-            exc = e
-
-    t = threading.Thread(target=worker)
-    t.start()
-
-    while t.is_alive():
-        await Timer(1, unit="ns")
-
-    t.join()
-
-    if exc is not None:
-        raise exc
+    await bridge(test_func)(csr)
 
 
 @cocotb.test()
