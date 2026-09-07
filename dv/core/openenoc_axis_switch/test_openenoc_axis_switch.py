@@ -62,8 +62,8 @@ def make_payload(length):
 def encode_unicast_tdest(port, m_dest_w):
 	return port << m_dest_w
 
-def cycle_pause():
-	return itertools.cycle([1, 1, 1, 0])
+def cycle_pause(pattern=(1, 1, 1, 0)):
+	return itertools.cycle(pattern)
 
 def size_list():
 	data_width = len(cocotb.top.s_axis_if[0].tdata)
@@ -92,6 +92,41 @@ def multicast_mask_list():
 	masks.append(0)
 
 	return list(dict.fromkeys(masks))
+
+
+@cocotb.test()
+async def test_multicast_asymmetric_backpressure(dut):
+	"""Each multicast output must accept every beat exactly once."""
+	if os.environ.get('PARAM_TUSER_BITMAP_ROUTE', '0') != '1':
+		return
+
+	tb = TB(dut)
+	await tb.reset()
+
+	if len(tb.sink) < 2:
+		return
+
+	mask = (1 << 0) | (1 << 1)
+	tb.sink[0].set_pause_generator(cycle_pause((1, 0, 0, 0)))
+	tb.sink[1].set_pause_generator(cycle_pause((1, 1, 1, 0, 0)))
+
+	frames = []
+	for index, length in enumerate((17, 64, 129)):
+		frame = AxiStreamFrame(bytes([0x31 + index]) * length)
+		frame.tid = 0x40 + index
+		frame.tdest = 0
+		frame.tuser = mask
+		frames.append(frame)
+		await tb.source[0].send(frame)
+
+	for frame in frames:
+		for port in (0, 1):
+			rx_frame = await tb.sink[port].recv()
+			assert rx_frame.tdata == frame.tdata
+			assert rx_frame.tid == frame.tid
+			assert rx_frame.tuser == mask
+
+	assert all(sink.empty() for sink in tb.sink)
 
 # ----------------------------------------------------------------------
 # UNICAST test logic

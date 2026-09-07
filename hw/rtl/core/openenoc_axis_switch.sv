@@ -181,6 +181,7 @@ module openenoc_axis_switch #
 	logic [S_COUNT-1:0] active_reg, active_next;
 	logic [S_COUNT-1:0] drop_reg, drop_next;
 	logic [M_COUNT-1:0] route_mask_reg[S_COUNT], route_mask_next[S_COUNT];
+	logic [M_COUNT-1:0] beat_pending_reg[S_COUNT], beat_pending_next[S_COUNT];
 
 	logic [M_COUNT-1:0] out_lock_reg, out_lock_next;
 	logic [CL_S_COUNT-1:0] out_owner_reg[M_COUNT], out_owner_next[M_COUNT];
@@ -235,7 +236,7 @@ module openenoc_axis_switch #
 		end
 
 		for (integer s = 0; s < S_COUNT; s = s + 1) begin
-			in_all_targets_ready[s] = all_targets_ready(route_mask_reg[s], out_ready_vec);
+			in_all_targets_ready[s] = all_targets_ready(beat_pending_reg[s], out_ready_vec);
 		end
 	end
 
@@ -254,6 +255,7 @@ module openenoc_axis_switch #
 
 		for (integer s = 0; s < S_COUNT; s = s + 1) begin
 			route_mask_next[s] = route_mask_reg[s];
+			beat_pending_next[s] = beat_pending_reg[s];
 		end
 
 		for (integer m = 0; m < M_COUNT; m = m + 1) begin
@@ -274,6 +276,7 @@ module openenoc_axis_switch #
 			active_next[scan_idx] = 1'b1;
 			drop_next[scan_idx] = start_route_drop;
 			route_mask_next[scan_idx] = start_route_mask;
+			beat_pending_next[scan_idx] = start_route_mask;
 
 			if (!start_route_drop) begin
 				for (integer m = 0; m < M_COUNT; m = m + 1) begin
@@ -285,17 +288,33 @@ module openenoc_axis_switch #
 			end
 		end
 
+		// Track each output that still needs to accept the current input beat.
+		for (integer s = 0; s < S_COUNT; s = s + 1) begin
+			if (active_reg[s] && !drop_reg[s] && in_tvalid[s]) begin
+				for (integer m = 0; m < M_COUNT; m = m + 1) begin
+					if (beat_pending_reg[s][m] && out_tready[m]) begin
+						beat_pending_next[s][m] = 1'b0;
+					end
+				end
+			end
+		end
+
 		// release output ownership at frame end
 		for (integer s = 0; s < S_COUNT; s = s + 1) begin
-			if (active_reg[s] && in_fire[s] && in_tlast[s]) begin
-				active_next[s] = 1'b0;
-				drop_next[s] = 1'b0;
-				route_mask_next[s] = '0;
+			if (active_reg[s] && in_fire[s]) begin
+				if (in_tlast[s]) begin
+					active_next[s] = 1'b0;
+					drop_next[s] = 1'b0;
+					route_mask_next[s] = '0;
+					beat_pending_next[s] = '0;
 
-				for (integer m = 0; m < M_COUNT; m = m + 1) begin
-					if (out_lock_reg[m] && out_owner_reg[m] == CL_S_COUNT'(s)) begin
-						out_lock_next[m] = 1'b0;
+					for (integer m = 0; m < M_COUNT; m = m + 1) begin
+						if (out_lock_reg[m] && out_owner_reg[m] == CL_S_COUNT'(s)) begin
+							out_lock_next[m] = 1'b0;
+						end
 					end
+				end else begin
+					beat_pending_next[s] = route_mask_reg[s];
 				end
 			end
 		end
@@ -309,6 +328,7 @@ module openenoc_axis_switch #
 
 		for (integer s = 0; s < S_COUNT; s = s + 1) begin
 			route_mask_reg[s] <= route_mask_next[s];
+			beat_pending_reg[s] <= beat_pending_next[s];
 		end
 
 		for (integer m = 0; m < M_COUNT; m = m + 1) begin
@@ -323,6 +343,7 @@ module openenoc_axis_switch #
 
 			for (integer s = 0; s < S_COUNT; s = s + 1) begin
 				route_mask_reg[s] <= '0;
+				beat_pending_reg[s] <= '0;
 			end
 
 			for (integer m = 0; m < M_COUNT; m = m + 1) begin
@@ -352,7 +373,7 @@ module openenoc_axis_switch #
 			logic owner_valid;
 
 			owner_idx = out_owner_reg[m];
-			owner_active = out_lock_reg[m] && active_reg[owner_idx] && !drop_reg[owner_idx] && route_mask_reg[owner_idx][m];
+			owner_active = out_lock_reg[m] && active_reg[owner_idx] && !drop_reg[owner_idx] && beat_pending_reg[owner_idx][m];
 			owner_valid = owner_active && in_tvalid[owner_idx];
 
 			out_tdata[m]  = in_tdata[owner_idx];
