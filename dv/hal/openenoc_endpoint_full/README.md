@@ -75,7 +75,7 @@ csr = csr_cls(
 )
 ```
 
-The `RTLSimulator` class adapts the blocking register access model used by the PeakRDL Python model to the asynchronous cocotb simulation environment. Register reads and writes are placed into a request queue, processed by a cocotb worker coroutine, and completed through AXI4-Lite transactions.
+The `RTLSimulator` class adapts the blocking register access model used by the PeakRDL Python model to the asynchronous cocotb simulation environment. Its synchronous PeakRDL callbacks use cocotb `resume` wrappers to execute AXI4-Lite transactions in the simulator.
 
 This allows the register tests to be written as normal Python functions while still driving the RTL through the actual bus interface.
 
@@ -167,14 +167,13 @@ Each cocotb test performs the following sequence:
 2. Assert reset.
 3. Release reset after the configured reset interval.
 4. Create an AXI4-Lite master connected to the generated CSR RTL.
-5. Start the `RTLSimulator` worker coroutine.
-6. Create the PeakRDL-generated Python CSR model.
-7. Connect the CSR model to the simulator through read and write callbacks.
-8. Run the selected software-style register test in a separate Python thread.
-9. Convert register model reads and writes into AXI4-Lite bus transactions.
-10. Report any assertion failure from the register test back to cocotb.
+5. Create the PeakRDL-generated Python CSR model.
+6. Connect the CSR model to the simulator through `resume`-wrapped read and write callbacks.
+7. Run the selected software-style register test through cocotb `bridge`.
+8. Convert register model reads and writes into AXI4-Lite bus transactions.
+9. Report any assertion failure from the register test back to cocotb.
 
-The use of a separate Python thread allows blocking software-style register tests to coexist with the asynchronous cocotb event loop.
+The cocotb `bridge`/`resume` pair allows blocking software-style register tests to coexist with the asynchronous cocotb event loop without manually polling a worker thread or advancing simulation time while Python code runs.
 
 ## Register Tests
 
