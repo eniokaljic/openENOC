@@ -392,17 +392,23 @@ module openenoc_axil_crossbar_wr #(
         end
     end
 
+    // Keep request generation independent of the combinational arbiter outputs
+    // so the process dependency graph does not contain a request/grant loop.
     always_comb begin
         for (integer m = 0; m < M_COUNT; m = m + 1) begin
             aw_request[m] = '0;
-            aw_input_data[m] = '0;
-            aw_input_valid[m] = aw_grant_valid[m];
-
             for (integer s = 0; s < S_COUNT; s = s + 1) begin
                 aw_request[m][s] = !rst && s_awvalid[s] &&
                     decode_match[s] && decode_select[s] == M_SELECT_W'(m) &&
                     s_b_available[s] && m_b_available[m];
             end
+        end
+    end
+
+    always_comb begin
+        for (integer m = 0; m < M_COUNT; m = m + 1) begin
+            aw_input_data[m] = '0;
+            aw_input_valid[m] = aw_grant_valid[m];
 
             if (aw_grant_valid[m]) begin
                 aw_input_data[m] = {
