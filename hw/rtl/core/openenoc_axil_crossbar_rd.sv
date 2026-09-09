@@ -193,7 +193,7 @@ module openenoc_axil_crossbar_rd #(
         assign m_rvalid[m] = m_axil_rd[m].rvalid;
         assign m_axil_rd[m].rready = m_rready[m];
 
-        openenoc_axil_crossbar_arbiter #(
+        openenoc_rr_arbiter #(
             .PORTS(S_COUNT),
             .INDEX_W(S_SELECT_W)
         ) u_ar_arbiter (

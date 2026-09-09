@@ -22,7 +22,7 @@ TOPLEVEL = $(COCOTB_TOPLEVEL)
 
 VERILOG_SOURCES += $(TAXI_AXI_DIR)/taxi_axil_if.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_skid_buffer.sv
-VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_arbiter.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_rr_arbiter.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_addr.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_wr.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_rd.sv

@@ -416,7 +416,7 @@ def test_openenoc_axil_crossbar(request, s_count, m_count):
     verilog_sources = [
         os.path.join(taxi_axi_dir, "taxi_axil_if.sv"),
         os.path.join(core_dir, "openenoc_axil_crossbar_skid_buffer.sv"),
-        os.path.join(core_dir, "openenoc_axil_crossbar_arbiter.sv"),
+        os.path.join(core_dir, "openenoc_rr_arbiter.sv"),
         os.path.join(core_dir, "openenoc_axil_crossbar_addr.sv"),
         os.path.join(core_dir, "openenoc_axil_crossbar_wr.sv"),
         os.path.join(core_dir, "openenoc_axil_crossbar_rd.sv"),

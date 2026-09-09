@@ -222,7 +222,7 @@ module openenoc_axil_crossbar_wr #(
         assign m_bvalid[m] = m_axil_wr[m].bvalid;
         assign m_axil_wr[m].bready = m_bready[m];
 
-        openenoc_axil_crossbar_arbiter #(
+        openenoc_rr_arbiter #(
             .PORTS(S_COUNT),
             .INDEX_W(S_SELECT_W)
         ) u_aw_arbiter (
