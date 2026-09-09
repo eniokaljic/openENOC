@@ -1,13 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Kerim Bavcic
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-"""Shared-bus functional scenarios applied directly to the crossbar DUT.
-
-The CSR model, AXI agents, TestFactory and pytest matrix follow the shared-bus
-suite. Only architecture-dependent observation changes: there is no common
-ingress arbiter stream and no global ordering between independent flows.
-"""
-
 import itertools
 import os
 
@@ -24,9 +17,9 @@ MANAGED, UNMANAGED = 1, 0
 WORD_MAC_LO, WORD_MAC_HI, WORD_IFACE, WORD_CONFIG = range(4)
 ALL_BITS = 0xFFFFFFFF
 
-
-# Helper functions and testbench model
-
+# ----------------------------------------------------------------------
+# Helper functions for test frame generation
+# ----------------------------------------------------------------------
 
 def ethernet_frame(da, sa, payload, ether_type=None):
     header = da.to_bytes(6, "big") + sa.to_bytes(6, "big")
@@ -34,14 +27,11 @@ def ethernet_frame(da, sa, payload, ether_type=None):
         header += ether_type.to_bytes(2, "big")
     return header + bytes(payload)
 
-
 def cycle_pause(pattern=(1, 1, 0, 0, 0)):
     return itertools.cycle(pattern)
 
-
 def factory_payload_lengths():
     return [0, 1, 3, 16, 47, 128]
-
 
 def incrementing_payload(length):
     return bytes(itertools.islice(itertools.cycle(range(256)), length))
@@ -50,7 +40,6 @@ def incrementing_payload(length):
 def field(value, index, width):
     return (int(value) >> (index * width)) & ((1 << width) - 1)
 
-
 class TB:
     def __init__(self, dut):
         self.dut = dut
@@ -58,7 +47,9 @@ class TB:
         self.table_depth = int(os.environ.get("PARAM_TABLE_DEPTH", 8))
         self.index_w = (self.num_ports - 1).bit_length()
         self.mask = (1 << self.num_ports) - 1
+
         cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
+
         self.sources = [
             AxiStreamSource(
                 AxiStreamBus.from_entity(bus),
@@ -67,6 +58,7 @@ class TB:
             )
             for bus in dut.port_rx_axis_if
         ]
+
         self.sinks = [
             AxiStreamSink(
                 AxiStreamBus.from_entity(bus),
@@ -225,13 +217,16 @@ class TB:
         d.cpuif_wr_data.value = data
         d.cpuif_wr_biten.value = biten
         d.cpuif_req.value = 1
+
         await self.cycle()
         d.cpuif_req.value = 0
         d.cpuif_addr.value = 0
         d.cpuif_req_is_wr.value = 0
         d.cpuif_wr_data.value = 0
         d.cpuif_wr_biten.value = 0
+
         await self.wait_asserted(d.cpuif_wr_ack, "cpuif_wr_ack")
+
         assert not int(d.cpuif_rd_ack.value)
         await self.cycle()
 
@@ -240,13 +235,17 @@ class TB:
         d.cpuif_addr.value = index * 16 + word * 4
         d.cpuif_req_is_wr.value = 0
         d.cpuif_req.value = 1
+
         await self.cycle()
         d.cpuif_req.value = 0
         d.cpuif_addr.value = 0
+
         await self.wait_asserted(d.cpuif_rd_ack, "cpuif_rd_ack")
+        
         assert not int(d.cpuif_wr_ack.value)
         data = int(d.cpuif_rd_data.value)
         await self.cycle()
+
         return data
 
     async def cpu_write_entry(self, index, mac, bitmap, enabled=True):
@@ -315,9 +314,9 @@ class TB:
                 completed += 1
                 expect_next = completed < frame_count
 
-
-# Shared-bus-equivalent functional scenarios
-
+# ----------------------------------------------------------------------
+# Standalone cocotb test cases: simple routing and forwarding scenarios
+# ----------------------------------------------------------------------
 
 @cocotb.test()
 async def test_default_forwarding(dut):
@@ -575,9 +574,9 @@ async def test_pause_completes_current_frame_and_blocks_next(dut):
     await tb.check_frame(1, second, 0)
     await tb.check_empty()
 
-
-# Crossbar-specific directed scenarios
-
+# ------------------------------------------------------------------------------
+# Crossbar-specific cocotb test cases: simple routing and forwarding scenarios
+# ------------------------------------------------------------------------------
 
 @cocotb.test()
 async def test_parallel_disjoint_paths(dut):
@@ -738,9 +737,9 @@ async def test_overlapping_multicast_routes(dut):
     assert indices == [3, 3]
     await tb.check_empty()
 
-
-# TestFactory traffic scenarios
-
+# ----------------------------------------------------------------------
+# TestFactory logic: idle and backpressure combinations
+# ----------------------------------------------------------------------
 
 async def run_factory_routing(
     dut,
@@ -765,6 +764,9 @@ async def run_factory_routing(
             await tb.check_frame(port, data, ingress, 0x70+ingress)
     await tb.check_empty()
 
+# ----------------------------------------------------------------------
+# Dispatch: select test cases to run based on Makefile configuration
+# ----------------------------------------------------------------------
 
 if getattr(cocotb, "top", None) is not None:
     factory = TestFactory(run_factory_routing)
@@ -782,46 +784,18 @@ if getattr(cocotb, "top", None) is not None:
     factory.add_option("backpressure_inserter", [None, cycle_pause])
     factory.generate_tests()
 
-
-# Pytest parameter sweep and simulator runner
-
+# ----------------------------------------------------------------------
+# PyTest framework: parameter sweep and simulator runner
+# ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
 repo_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", ".."))
-core_dir = os.path.join(repo_dir, "hw", "rtl", "core")
-taxi_dir = os.path.join(repo_dir, "libs", "taxi", "src")
-
-
-def verilog_sources():
-    axis = [
-        "taxi_axis_if",
-        "taxi_axis_register",
-        "taxi_axis_pipeline_register",
-        "taxi_axis_adapter",
-        "taxi_axis_async_fifo",
-        "taxi_axis_async_fifo_adapter",
-    ]
-    core = [
-        "openenoc_eth_if",
-        "openenoc_lookup_if",
-        "openenoc_learning_if",
-        "openenoc_axil_crossbar_arbiter",
-        "openenoc_forwarding_table_arb_mux",
-        "openenoc_axis_forwarding_engine",
-        "openenoc_forwarding_table",
-        "openenoc_axis_switch",
-        "openenoc_eth_switch_crossbar",
-    ]
-    return (
-        [os.path.join(taxi_dir, "axis", "rtl", f"{name}.sv") for name in axis]
-        + [
-            os.path.join(taxi_dir, "sync", "rtl", f"{name}.sv")
-            for name in ("taxi_sync_reset", "taxi_sync_signal")
-        ]
-        + [os.path.join(repo_dir, "build", "hal", "rtl", "openenoc_switch_if.sv")]
-        + [os.path.join(core_dir, f"{name}.sv") for name in core]
-        + [os.path.join(tests_dir, "test_openenoc_eth_switch_crossbar.sv")]
-    )
+hw_dir = os.path.join(repo_dir, "hw")
+libs_dir = os.path.join(repo_dir, "libs")
+core_dir = os.path.join(hw_dir, "rtl", "core")
+taxi_axis_dir = os.path.join(libs_dir, "taxi", "src", "axis", "rtl")
+taxi_sync_dir = os.path.join(libs_dir, "taxi", "src", "sync", "rtl")
+hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "rtl")
 
 
 @pytest.mark.parametrize(
@@ -843,6 +817,29 @@ def test_openenoc_eth_switch_crossbar(
     port_side,
 ):
     module = os.path.splitext(os.path.basename(__file__))[0]
+
+    verilog_sources = [
+        os.path.join(taxi_axis_dir, "taxi_axis_if.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_register.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_pipeline_register.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_adapter.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_async_fifo.sv"),
+        os.path.join(taxi_axis_dir, "taxi_axis_async_fifo_adapter.sv"),
+        os.path.join(taxi_sync_dir, "taxi_sync_reset.sv"),
+        os.path.join(taxi_sync_dir, "taxi_sync_signal.sv"),
+        os.path.join(hal_rtl_dir, "openenoc_switch_if.sv"),
+        os.path.join(core_dir, "openenoc_eth_if.sv"),
+        os.path.join(core_dir, "openenoc_lookup_if.sv"),
+        os.path.join(core_dir, "openenoc_learning_if.sv"),
+        os.path.join(core_dir, "openenoc_rr_arbiter.sv"),
+        os.path.join(core_dir, "openenoc_forwarding_table_arb_mux.sv"),
+        os.path.join(core_dir, "openenoc_axis_forwarding_engine.sv"),
+        os.path.join(core_dir, "openenoc_forwarding_table.sv"),
+        os.path.join(core_dir, "openenoc_axis_switch.sv"),
+        os.path.join(core_dir, "openenoc_eth_switch_crossbar.sv"),
+        os.path.join(tests_dir, f"{module}.sv"),
+    ]
+
     parameters = {
         "NUM_OF_INTERFACES": num_interfaces,
         "TABLE_DEPTH": table_depth,
@@ -856,7 +853,7 @@ def test_openenoc_eth_switch_crossbar(
     cocotb_test.simulator.run(
         simulator="verilator",
         python_search=[tests_dir],
-        verilog_sources=verilog_sources(),
+        verilog_sources=verilog_sources,
         toplevel=module,
         module=module,
         parameters=parameters,

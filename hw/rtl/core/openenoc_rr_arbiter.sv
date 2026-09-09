@@ -13,7 +13,7 @@
  * round-robin pointer is registered, so a completed grant can be followed by
  * another grant on the next clock cycle without an empty arbitration cycle.
  */
-module openenoc_axil_crossbar_arbiter #(
+module openenoc_rr_arbiter #(
     parameter PORTS = 2,
     parameter INDEX_W = PORTS > 1 ? $clog2(PORTS) : 1
 ) (

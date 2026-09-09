@@ -471,7 +471,7 @@ def test_openenoc_forwarding_table_arb_mux(request, num_of_interfaces):
         os.path.join(tests_dir, f"{toplevel}.sv"),
         os.path.join(core_dir, "openenoc_lookup_if.sv"),
         os.path.join(core_dir, "openenoc_learning_if.sv"),
-        os.path.join(core_dir, "openenoc_axil_crossbar_arbiter.sv"),
+        os.path.join(core_dir, "openenoc_rr_arbiter.sv"),
         os.path.join(core_dir, f"{dut}.sv"),
     ]
 

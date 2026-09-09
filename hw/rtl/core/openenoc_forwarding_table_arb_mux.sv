@@ -114,7 +114,7 @@ module openenoc_forwarding_table_arb_mux #
         wire                          grant_valid;
         wire [NUM_OF_INTERFACES-1:0] capture = request[channel] & ~request_d;
 
-        openenoc_axil_crossbar_arbiter #(
+        openenoc_rr_arbiter #(
             .PORTS(NUM_OF_INTERFACES),
             .INDEX_W(INDEX_W)
         ) u_arbiter (

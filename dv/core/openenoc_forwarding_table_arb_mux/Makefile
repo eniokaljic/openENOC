@@ -21,7 +21,7 @@ TOPLEVEL = $(COCOTB_TOPLEVEL)
 VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_lookup_if.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_learning_if.sv
-VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_arbiter.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_rr_arbiter.sv
 VERILOG_SOURCES += $(CORE_DIR)/$(DUT).sv
 
 # module parameters
