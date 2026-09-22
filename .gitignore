@@ -26,3 +26,6 @@ output.pcap
 
 # Bare-metal software build output
 /build/sw/
+
+# Design-verification build output
+/build/dv/
