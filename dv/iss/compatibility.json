@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "spike": {
+    "repository": "https://github.com/riscv-software-src/riscv-isa-sim.git",
+    "commit": "4ffd6ba860f4190ceac2716fa3c2cf139e85538f"
+  },
+  "initial_cpu_profile": {
+    "isa": "RV32I",
+    "privilege": "M",
+    "interrupts": false
+  }
+}
