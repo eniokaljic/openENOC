@@ -16,9 +16,9 @@ SPIKE_INSTALL_DIR := $(BUILD_DIR)/spike-install
 NATIVE_BUILD_DIR := $(BUILD_DIR)/native
 SPIKE_COMMIT := $(shell $(PYTHON) -c 'import json; print(json.load(open("$(ISS_DIR)/compatibility.json"))["spike"]["commit"])')
 
-.PHONY: check check-submodule clean configure install link-smoke spike
+.PHONY: check check-submodule clean configure install link-smoke processor-smoke spike test-native
 
-check: link-smoke
+check: test-native
 
 check-submodule:
 	@test -f $(SPIKE_SRC)/configure || { \
@@ -56,6 +56,20 @@ $(NATIVE_BUILD_DIR)/openenoc_iss_link_smoke: tests/native/link_smoke.cpp $(SPIKE
 link-smoke: check-submodule $(NATIVE_BUILD_DIR)/openenoc_iss_link_smoke
 	@LD_LIBRARY_PATH=$(SPIKE_INSTALL_DIR)/lib$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
 		$(NATIVE_BUILD_DIR)/openenoc_iss_link_smoke
+
+$(NATIVE_BUILD_DIR)/openenoc_iss_processor_smoke: tests/native/processor_smoke.cpp $(SPIKE_INSTALL_DIR)/bin/spike
+	@mkdir -p $(NATIVE_BUILD_DIR)
+	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) -std=c++20 -Wall -Wextra \
+		-I$(SPIKE_INSTALL_DIR)/include $< \
+		$(LDFLAGS) -L$(SPIKE_INSTALL_DIR)/lib \
+		-Wl,-rpath,$(SPIKE_INSTALL_DIR)/lib \
+		$(LDLIBS) -lriscv -o $@
+
+processor-smoke: check-submodule $(NATIVE_BUILD_DIR)/openenoc_iss_processor_smoke
+	@LD_LIBRARY_PATH=$(SPIKE_INSTALL_DIR)/lib$${LD_LIBRARY_PATH:+:$$LD_LIBRARY_PATH} \
+		$(NATIVE_BUILD_DIR)/openenoc_iss_processor_smoke
+
+test-native: link-smoke processor-smoke
 
 clean:
 	@$(RM) -r $(BUILD_DIR)
