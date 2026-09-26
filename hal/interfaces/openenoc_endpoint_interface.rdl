@@ -4,6 +4,12 @@
 regfile openenoc_endpoint_interface #(
     longint unsigned RMEM_TOTAL_DEPTH = 256,
     longint unsigned NUM_OF_PEERS = 1,
+    longint unsigned MAX_DMA_FRAME_SIZE_BYTES = 8192,
+    longint unsigned HAS_PEER_DMA = 1,
+    longint unsigned HAS_NON_OETP_DMA = 1,
+    longint unsigned HAS_DIRECT_AXIS = 1,
+    longint unsigned HAS_RMEM = 1,
+    longint unsigned HAS_IRQ = 0,
     string INST_NAME = "openenoc_endpoint_interface"
 ) {
     name = INST_NAME;
@@ -20,7 +26,7 @@ regfile openenoc_endpoint_interface #(
         regwidth = 64;
 
         field {
-            name = {INST_NAME, ".info.rmem_total_depth[15:0]"};
+            name = {INST_NAME, ".info.rmem_total_depth[31:0]"};
             desc = "Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.";
 
             sw = r;
@@ -28,12 +34,60 @@ regfile openenoc_endpoint_interface #(
         } rmem_total_depth[31:0] = RMEM_TOTAL_DEPTH;
 
         field {
-            name = {INST_NAME, ".info.num_of_peers[31:16]"};
-            desc = "Number of remote peers supported by this openENOC Endpoint Interface instance. This field reflects the NUM_OF_PEERS parameter value.";
+            name = {INST_NAME, ".info.num_of_peers[42:32]"};
+            desc = "Number of remote peers supported by this openENOC Endpoint Interface instance, from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.";
 
             sw = r;
             hw = r;
-        } num_of_peers[63:32] = NUM_OF_PEERS;
+        } num_of_peers[42:32] = NUM_OF_PEERS;
+
+        field {
+            name = {INST_NAME, ".info.peer_dma_supported"};
+            desc = "Indicates whether DMA transfers associated with configured remote peers are supported.";
+
+            sw = r;
+            hw = r;
+        } peer_dma_supported[43:43] = HAS_PEER_DMA;
+
+        field {
+            name = {INST_NAME, ".info.non_oetp_dma_supported"};
+            desc = "Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet frames are supported.";
+
+            sw = r;
+            hw = r;
+        } non_oetp_dma_supported[44:44] = HAS_NON_OETP_DMA;
+
+        field {
+            name = {INST_NAME, ".info.direct_axis_supported"};
+            desc = "Indicates whether direct CSR-driven AXI4-Stream access is supported for non-oETP Ethernet frames.";
+
+            sw = r;
+            hw = r;
+        } direct_axis_supported[45:45] = HAS_DIRECT_AXIS;
+
+        field {
+            name = {INST_NAME, ".info.rmem_supported"};
+            desc = "Indicates whether the transparent Remote Memory (RMEM) interface is supported.";
+
+            sw = r;
+            hw = r;
+        } rmem_supported[46:46] = HAS_RMEM;
+
+        field {
+            name = {INST_NAME, ".info.irq_supported"};
+            desc = "Indicates whether the endpoint interrupt output and interrupt-control logic are implemented.";
+
+            sw = r;
+            hw = r;
+        } irq_supported[47:47] = HAS_IRQ;
+
+        field {
+            name = {INST_NAME, ".info.max_dma_frame_size_bytes[63:48]"};
+            desc = "Maximum size in bytes of one AXI4-Stream frame generated or consumed by the DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value. A value of zero indicates that DMA is not supported.";
+
+            sw = r;
+            hw = r;
+        } max_dma_frame_size_bytes[63:48] = MAX_DMA_FRAME_SIZE_BYTES;
     } info;
 
     regfile config {
@@ -51,7 +105,7 @@ regfile openenoc_endpoint_interface #(
                 desc = "Lower 32 bits [31:0] of the 48-bit MAC address.";
 
                 sw = rw;
-                hw = rw;
+                hw = r;
             } lo_word[31:0] = 0;
 
             field {
@@ -59,9 +113,30 @@ regfile openenoc_endpoint_interface #(
                 desc = "Upper 16 bits [47:32] of the 48-bit MAC address.";
 
                 sw = rw;
-                hw = rw;
+                hw = r;
             } hi_word[47:32] = 0;
         } mac_address;
+
+        reg non_oetp_control {
+            name = {INST_NAME, ".config.non_oetp_control"};
+            desc = "Receive policy for Ethernet frames that do not carry oETP traffic.";
+
+            field {
+                name = {INST_NAME, ".config.non_oetp_control.receive_mode[1:0]"};
+                desc = "
+                    Receive mode for non-oETP Ethernet frames:<ul>
+                    <li>0: Drop all non-oETP Ethernet frames.</li>
+                    <li>1: Filtered mode. Accept frames addressed to the configured local MAC address and Ethernet broadcast frames.</li>
+                    <li>2: Promiscuous mode. Accept all non-oETP Ethernet frames.</li>
+                    <li>3: Reserved. Hardware shall treat this value as drop mode.</li>
+                    </ul>
+                    An accepted frame is directed to the non-oETP RX DMA channel when that channel is armed; otherwise it is directed to the CSR AXI4-Stream sink.
+                ";
+
+                sw = rw;
+                hw = r;
+            } receive_mode[1:0] = 1;
+        } non_oetp_control;
     } config;
 
     regfile axis_if {
@@ -191,6 +266,225 @@ regfile openenoc_endpoint_interface #(
         } sink;
     } axis_if;
 
+    regfile non_oetp_dma {
+        name = {INST_NAME, ".non_oetp_dma"};
+        desc = "Endpoint-level DMA control and status for complete non-oETP Ethernet frames. Frame data includes the Ethernet header and payload, but excludes the preamble, Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).";
+
+        regfile tx {
+            name = {INST_NAME, ".non_oetp_dma.tx"};
+            desc = "Transmit DMA channel for complete non-oETP Ethernet frames.";
+
+            reg buffer_address {
+                name = {INST_NAME, ".non_oetp_dma.tx.buffer_address"};
+                desc = "Local memory address of the non-oETP Ethernet frame to transmit.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.buffer_address.base[31:0]"};
+                    desc = "32-bit byte address of the first byte of the transmit buffer.";
+
+                    sw = rw;
+                    hw = r;
+                } base[31:0] = 0;
+            } buffer_address;
+
+            reg frame_length {
+                name = {INST_NAME, ".non_oetp_dma.tx.frame_length"};
+                desc = "Length of the complete non-oETP Ethernet frame to transmit.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.frame_length.bytes[31:0]"};
+                    desc = "Frame length in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.";
+
+                    sw = rw;
+                    hw = r;
+                } bytes[31:0] = 0;
+            } frame_length;
+
+            reg command_status {
+                name = {INST_NAME, ".non_oetp_dma.tx.command_status"};
+                desc = "Command and completion status for the non-oETP transmit DMA channel.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.command_status.request"};
+                    desc = "Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.";
+
+                    sw = rw;
+                    hw = r;
+                    hwclr = true;
+                } request[8:8] = 0;
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.command_status.idle"};
+                    desc = "Indicates that the channel has no accepted transfer in progress. Hardware deasserts this field when a request is accepted and asserts it when the transfer completes.";
+
+                    sw = r;
+                    hw = w;
+                } idle[16:16];
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.command_status.done"};
+                    desc = "Sticky successful-completion flag. Hardware sets this field after the accepted transfer completes successfully and clears it when the next request is accepted.";
+
+                    sw = r;
+                    hw = w;
+                } done[24:24];
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.command_status.error"};
+                    desc = "Sticky error-completion flag. Hardware sets this field when the accepted transfer terminates with an error and clears it when the next request is accepted.";
+
+                    sw = r;
+                    hw = w;
+                } error[25:25];
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.command_status.error_code[31:28]"};
+                    desc = "
+                        Sticky error code for the most recently completed transfer:<ul>
+                        <li>0: No error.</li>
+                        <li>1: Invalid DMA configuration or descriptor.</li>
+                        <li>2: AXI4-Stream length or TLAST error.</li>
+                        <li>3: Frame exceeds the supported size or configured buffer capacity.</li>
+                        <li>4: AXI read SLVERR response.</li>
+                        <li>5: AXI read DECERR response.</li>
+                        <li>6: AXI write SLVERR response.</li>
+                        <li>7: AXI write DECERR response.</li>
+                        <li>8-15: Reserved.</li>
+                        </ul>
+                        Hardware clears this field when the next request is accepted.
+                    ";
+
+                    sw = r;
+                    hw = w;
+                } error_code[31:28];
+            } command_status;
+
+            reg transferred_length {
+                name = {INST_NAME, ".non_oetp_dma.tx.transferred_length"};
+                desc = "Number of bytes transferred for the most recently accepted transmit request.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.tx.transferred_length.bytes[31:0]"};
+                    desc = "Actual number of bytes transferred. Hardware clears this field when the next request is accepted.";
+
+                    sw = r;
+                    hw = w;
+                } bytes[31:0];
+            } transferred_length;
+        } tx;
+
+        regfile rx {
+            name = {INST_NAME, ".non_oetp_dma.rx"};
+            desc = "Receive DMA channel for complete non-oETP Ethernet frames.";
+
+            reg buffer_address {
+                name = {INST_NAME, ".non_oetp_dma.rx.buffer_address"};
+                desc = "Local memory address of the receive buffer for a non-oETP Ethernet frame.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.buffer_address.base[31:0]"};
+                    desc = "32-bit byte address of the first byte of the receive buffer.";
+
+                    sw = rw;
+                    hw = r;
+                } base[31:0] = 0;
+            } buffer_address;
+
+            reg buffer_capacity {
+                name = {INST_NAME, ".non_oetp_dma.rx.buffer_capacity"};
+                desc = "Capacity of the receive buffer for one complete non-oETP Ethernet frame.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.buffer_capacity.bytes[31:0]"};
+                    desc = "Receive-buffer capacity in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.";
+
+                    sw = rw;
+                    hw = r;
+                } bytes[31:0] = 0;
+            } buffer_capacity;
+
+            reg command_status {
+                name = {INST_NAME, ".non_oetp_dma.rx.command_status"};
+                desc = "Command and completion status for the non-oETP receive DMA channel.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.command_status.request"};
+                    desc = "Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.";
+
+                    sw = rw;
+                    hw = r;
+                    hwclr = true;
+                } request[8:8] = 0;
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.command_status.idle"};
+                    desc = "Indicates that the channel has no accepted receive request in progress. After acceptance, the channel may be armed and waiting for an eligible non-oETP frame or may be writing a received frame to memory.";
+
+                    sw = r;
+                    hw = w;
+                } idle[16:16];
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.command_status.armed"};
+                    desc = "Indicates that the accepted receive request is waiting for an eligible non-oETP Ethernet frame. Hardware sets this field when it accepts a request and clears it when the first beat of the selected frame is accepted by the RX DMA datapath. The frame-routing logic uses this field to select the RX DMA path; otherwise an accepted non-oETP frame is directed to the CSR AXI4-Stream sink.";
+
+                    sw = r;
+                    hw = w;
+                } armed[17:17];
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.command_status.done"};
+                    desc = "Sticky successful-completion flag. Hardware sets this field after a received frame has been written successfully and clears it when the next request is accepted.";
+
+                    sw = r;
+                    hw = w;
+                } done[24:24];
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.command_status.error"};
+                    desc = "Sticky error-completion flag. Hardware sets this field when the accepted receive request terminates with an error and clears it when the next request is accepted.";
+
+                    sw = r;
+                    hw = w;
+                } error[25:25];
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.command_status.error_code[31:28]"};
+                    desc = "
+                        Sticky error code for the most recently completed receive transfer:<ul>
+                        <li>0: No error.</li>
+                        <li>1: Invalid DMA configuration or descriptor.</li>
+                        <li>2: AXI4-Stream length or TLAST error.</li>
+                        <li>3: Received frame exceeds the configured buffer capacity.</li>
+                        <li>4: AXI read SLVERR response.</li>
+                        <li>5: AXI read DECERR response.</li>
+                        <li>6: AXI write SLVERR response.</li>
+                        <li>7: AXI write DECERR response.</li>
+                        <li>8-15: Reserved.</li>
+                        </ul>
+                        Hardware clears this field when the next request is accepted.
+                    ";
+
+                    sw = r;
+                    hw = w;
+                } error_code[31:28];
+            } command_status;
+
+            reg received_length {
+                name = {INST_NAME, ".non_oetp_dma.rx.received_length"};
+                desc = "Length of the most recently received non-oETP Ethernet frame.";
+
+                field {
+                    name = {INST_NAME, ".non_oetp_dma.rx.received_length.bytes[31:0]"};
+                    desc = "Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted.";
+
+                    sw = r;
+                    hw = w;
+                } bytes[31:0];
+            } received_length;
+        } rx;
+    } non_oetp_dma;
+
     regfile peers {
         name = {INST_NAME, ".peers"};
         desc = "Register file for remote peer configuration and memory region information.";
@@ -210,7 +504,7 @@ regfile openenoc_endpoint_interface #(
                     desc = "Lower 32 bits [31:0] of the 48-bit MAC address.";
 
                     sw = rw;
-                    hw = rw;
+                    hw = r;
                 } lo_word[31:0];
 
                 field {
@@ -218,7 +512,7 @@ regfile openenoc_endpoint_interface #(
                     desc = "Upper 16 bits [47:32] of the 48-bit MAC address.";
 
                     sw = rw;
-                    hw = rw;
+                    hw = r;
                 } hi_word[47:32];
             } mac_address;
 
@@ -228,7 +522,7 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]"};
-                    desc = "Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer's memory.";
+                    desc = "32-bit byte offset of the virtual memory region corresponding to the remote peer's memory. The value shall be aligned to a 32-bit word boundary.";
 
                     sw = rw;
                     hw = r;
@@ -295,16 +589,16 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]"};
-                    desc = "Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.";
+                    desc = "Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.";
 
-                    singlepulse = true;
                     sw = rw;
                     hw = r;
+                    hwclr = true;
                 } request[8:8] = 0;
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]"};
-                    desc = "Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.";
+                    desc = "Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.";
 
                     sw = r;
                     hw = w;
@@ -312,7 +606,7 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]"};
-                    desc = "Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.";
+                    desc = "Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.";
 
                     sw = r;
                     hw = w;
@@ -320,11 +614,32 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]"};
-                    desc = "Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.";
+                    desc = "Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.";
 
                     sw = r;
                     hw = w;
                 } error[25:25];
+
+                field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]"};
+                    desc = "
+                        Sticky error code for the most recently completed peer DMA transfer:<ul>
+                        <li>0: No error.</li>
+                        <li>1: Invalid DMA configuration or descriptor.</li>
+                        <li>2: AXI4-Stream length or TLAST error.</li>
+                        <li>3: Frame exceeds the supported size or configured buffer capacity.</li>
+                        <li>4: AXI read SLVERR response.</li>
+                        <li>5: AXI read DECERR response.</li>
+                        <li>6: AXI write SLVERR response.</li>
+                        <li>7: AXI write DECERR response.</li>
+                        <li>8-15: Reserved.</li>
+                        </ul>
+                        Hardware clears this field when the next request is accepted.
+                    ";
+
+                    sw = r;
+                    hw = w;
+                } error_code[31:28];
             } dma;
         } entry[NUM_OF_PEERS];
     } peers;
@@ -361,6 +676,12 @@ addrmap openenoc_endpoint_interface_top {
     openenoc_endpoint_interface #(
         .RMEM_TOTAL_DEPTH(1),
         .NUM_OF_PEERS(1),
+        .MAX_DMA_FRAME_SIZE_BYTES(8192),
+        .HAS_PEER_DMA(1),
+        .HAS_NON_OETP_DMA(1),
+        .HAS_DIRECT_AXIS(1),
+        .HAS_RMEM(1),
+        .HAS_IRQ(0),
         .INST_NAME("openenoc_endpoint_interface")
     ) openenoc_endpoint_interface;
 };

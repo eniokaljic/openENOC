@@ -78,7 +78,7 @@ module test_openenoc_endpoint_full #
     wire logic [3:0] switch_default_forwarding =
         switch_if.csr_to_core.default_forwarding.bitmap.value;
     wire logic [31:0] endpoint_mac_lo_hwif =
-        u_openenoc_endpoint_full.csr_hwif_in.endpoint_interface.config_.mac_address.lo_word.next;
+        u_openenoc_endpoint_full.endpoint_if.csr_to_core.config_.mac_address.lo_word.value;
 
     wire logic [31:0] endpoint_tx_data = eth_if.a2b_axis_if.tdata;
     wire logic [3:0] endpoint_tx_keep = eth_if.a2b_axis_if.tkeep;

@@ -88,6 +88,21 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers'):
             
             
@@ -188,6 +203,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.config.non_oetp_control.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data'):
             
             
@@ -217,6 +237,46 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
             
@@ -1788,6 +1848,36 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.info.num_of_peers.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.info.peer_dma_supported'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.info.peer_dma_supported.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.info.non_oetp_dma_supported'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.info.non_oetp_dma_supported.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.info.direct_axis_supported'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.info.direct_axis_supported.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.info.rmem_supported'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.info.rmem_supported.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.info.irq_supported'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.info.irq_supported.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.info.max_dma_frame_size_bytes'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.info.max_dma_frame_size_bytes.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.config.mac_address.lo_word'):
             
             
@@ -1797,6 +1887,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             
             self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.hi_word.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control.receive_mode'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.config.non_oetp_control.receive_mode.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data.tdata'):
             
@@ -1814,10 +1909,10 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tlast.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tkeep'):
-
-
+            
+            
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tkeep.udp,{})
-
+            
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status.tready'):
             
             
@@ -1844,10 +1939,95 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tlast.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tkeep'):
-
-
+            
+            
             self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tkeep.udp,{})
-
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.base.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.bytes.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.request'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.idle'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.done'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.done.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.error'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error_code.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.base.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.request'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.idle'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.armed'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.armed.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.done'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.done.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.error'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error_code.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
             
             
@@ -1902,6 +2082,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.error.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.error_code'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.error_code.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address.lo_word'):
             
@@ -1958,6 +2143,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.error.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.error_code'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.error_code.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address.lo_word'):
             
             
@@ -2013,6 +2203,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.error.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.error_code'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.error_code.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address.lo_word'):
             
             
@@ -2067,6 +2262,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.error.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.error_code'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.error_code.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0].data'):
             
@@ -3573,10 +3773,10 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='info',
                                                 parent_full_inst_name='csr.endpoint_interface')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.info, has_sw_readable=True, has_sw_writable=False,
-                                                                                          readable_fields=set(['rmem_total_depth','num_of_peers', ]),
+                                                                                          readable_fields=set(['rmem_total_depth','num_of_peers','peer_dma_supported','non_oetp_dma_supported','direct_axis_supported','rmem_supported','irq_supported','max_dma_frame_size_bytes', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.config.mac_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.config.mac_address, address=2056, width=64, accesswidth=32, size=8,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.mac_address, address=2064, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.config.mac_address",
                                                 rdl_desc="Local site 48-bit destination MAC address.",
                                                 inst_name='mac_address',
@@ -3584,6 +3784,15 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.non_oetp_control, address=2072, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.config.non_oetp_control",
+                                                rdl_desc="Receive policy for Ethernet frames that do not carry oETP traffic.",
+                                                inst_name='non_oetp_control',
+                                                parent_full_inst_name='csr.endpoint_interface.config')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.non_oetp_control, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['receive_mode', ]),
+                                                                                          writeable_fields=set(['receive_mode', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.data, address=2080, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.source.data",
@@ -3638,6 +3847,78 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.axis_if.sink.status, has_sw_readable=True, has_sw_writable=False,
                                                                                           readable_fields=set(['tvalid','tlast','tkeep', ]),
                                                                                           writeable_fields=set([ ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address, address=2112, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.tx.buffer_address",
+                                                rdl_desc="Local memory address of the non-oETP Ethernet frame to transmit.",
+                                                inst_name='buffer_address',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length, address=2116, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.tx.frame_length",
+                                                rdl_desc="Length of the complete non-oETP Ethernet frame to transmit.",
+                                                inst_name='frame_length',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['bytes', ]),
+                                                                                          writeable_fields=set(['bytes', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status, address=2120, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status",
+                                                rdl_desc="Command and completion status for the non-oETP transmit DMA channel.",
+                                                inst_name='command_status',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['request','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['request', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length, address=2124, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.tx.transferred_length",
+                                                rdl_desc="Number of bytes transferred for the most recently accepted transmit request.",
+                                                inst_name='transferred_length',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length, has_sw_readable=True, has_sw_writable=False,
+                                                                                          readable_fields=set(['bytes', ]),
+                                                                                          writeable_fields=set([ ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address, address=2128, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.rx.buffer_address",
+                                                rdl_desc="Local memory address of the receive buffer for a non-oETP Ethernet frame.",
+                                                inst_name='buffer_address',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['base', ]),
+                                                                                          writeable_fields=set(['base', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity, address=2132, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity",
+                                                rdl_desc="Capacity of the receive buffer for one complete non-oETP Ethernet frame.",
+                                                inst_name='buffer_capacity',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['bytes', ]),
+                                                                                          writeable_fields=set(['bytes', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status, address=2136, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status",
+                                                rdl_desc="Command and completion status for the non-oETP receive DMA channel.",
+                                                inst_name='command_status',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['request','idle','armed','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['request', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length, address=2140, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.non_oetp_dma.rx.received_length",
+                                                rdl_desc="Length of the most recently received non-oETP Ethernet frame.",
+                                                inst_name='received_length',
+                                                parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length, has_sw_readable=True, has_sw_writable=False,
+                                                                                          readable_fields=set(['bytes', ]),
+                                                                                          writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].mac_address, address=2176, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
@@ -3690,7 +3971,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[0]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[0].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error', ]),
+                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
                                                                                           writeable_fields=set(['mode','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].mac_address, address=2204, width=64, accesswidth=32, size=8,
@@ -3744,7 +4025,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[1]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[1].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error', ]),
+                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
                                                                                           writeable_fields=set(['mode','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].mac_address, address=2232, width=64, accesswidth=32, size=8,
@@ -3798,7 +4079,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[2]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[2].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error', ]),
+                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
                                                                                           writeable_fields=set(['mode','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].mac_address, address=2260, width=64, accesswidth=32, size=8,
@@ -3852,7 +4133,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[3]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[3].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error', ]),
+                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
                                                                                           writeable_fields=set(['mode','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0]'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.rmem.word[0], address=3072, width=32, accesswidth=32, size=4,
@@ -6445,32 +6726,81 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_int_field_read_and_write_test(fut=self.dut.regB.f3, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.info.rmem_total_depth'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.rmem_total_depth, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=256,
-                                             rdl_name="csr.endpoint_interface.info.rmem_total_depth[15:0]",
+                                             rdl_name="csr.endpoint_interface.info.rmem_total_depth[31:0]",
                                              rdl_desc="Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.",
                                              inst_name='rmem_total_depth',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.rmem_total_depth, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.info.num_of_peers'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.info.num_of_peers, lsb=32, msb=63, low=32, high=63, is_volatile=False, default=4,
-                                             rdl_name="csr.endpoint_interface.info.num_of_peers[31:16]",
-                                             rdl_desc="Number of remote peers supported by this openENOC Endpoint Interface instance. This field reflects the NUM_OF_PEERS parameter value.",
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.num_of_peers, lsb=32, msb=42, low=32, high=42, is_volatile=False, default=4,
+                                             rdl_name="csr.endpoint_interface.info.num_of_peers[42:32]",
+                                             rdl_desc="Number of remote peers supported by this openENOC Endpoint Interface instance, from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.",
                                              inst_name='num_of_peers',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.num_of_peers, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.info.peer_dma_supported'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.peer_dma_supported, lsb=43, msb=43, low=43, high=43, is_volatile=False, default=1,
+                                             rdl_name="csr.endpoint_interface.info.peer_dma_supported",
+                                             rdl_desc="Indicates whether DMA transfers associated with configured remote peers are supported.",
+                                             inst_name='peer_dma_supported',
+                                             parent_full_inst_name='csr.endpoint_interface.info')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.peer_dma_supported, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.info.non_oetp_dma_supported'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.non_oetp_dma_supported, lsb=44, msb=44, low=44, high=44, is_volatile=False, default=1,
+                                             rdl_name="csr.endpoint_interface.info.non_oetp_dma_supported",
+                                             rdl_desc="Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet frames are supported.",
+                                             inst_name='non_oetp_dma_supported',
+                                             parent_full_inst_name='csr.endpoint_interface.info')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.non_oetp_dma_supported, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.info.direct_axis_supported'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.direct_axis_supported, lsb=45, msb=45, low=45, high=45, is_volatile=False, default=1,
+                                             rdl_name="csr.endpoint_interface.info.direct_axis_supported",
+                                             rdl_desc="Indicates whether direct CSR-driven AXI4-Stream access is supported for non-oETP Ethernet frames.",
+                                             inst_name='direct_axis_supported',
+                                             parent_full_inst_name='csr.endpoint_interface.info')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.direct_axis_supported, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.info.rmem_supported'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.rmem_supported, lsb=46, msb=46, low=46, high=46, is_volatile=False, default=1,
+                                             rdl_name="csr.endpoint_interface.info.rmem_supported",
+                                             rdl_desc="Indicates whether the transparent Remote Memory (RMEM) interface is supported.",
+                                             inst_name='rmem_supported',
+                                             parent_full_inst_name='csr.endpoint_interface.info')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.rmem_supported, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.info.irq_supported'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.irq_supported, lsb=47, msb=47, low=47, high=47, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.info.irq_supported",
+                                             rdl_desc="Indicates whether the endpoint interrupt output and interrupt-control logic are implemented.",
+                                             inst_name='irq_supported',
+                                             parent_full_inst_name='csr.endpoint_interface.info')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.irq_supported, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.info.max_dma_frame_size_bytes'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.max_dma_frame_size_bytes, lsb=48, msb=63, low=48, high=63, is_volatile=False, default=8192,
+                                             rdl_name="csr.endpoint_interface.info.max_dma_frame_size_bytes[63:48]",
+                                             rdl_desc="Maximum size in bytes of one AXI4-Stream frame generated or consumed by the DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value. A value of zero indicates that DMA is not supported.",
+                                             inst_name='max_dma_frame_size_bytes',
+                                             parent_full_inst_name='csr.endpoint_interface.info')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.max_dma_frame_size_bytes, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.config.mac_address.lo_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.config.mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=0,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.config.mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
                                              inst_name='lo_word',
                                              parent_full_inst_name='csr.endpoint_interface.config.mac_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.config.mac_address.hi_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.config.mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=0,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.config.mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
                                              inst_name='hi_word',
                                              parent_full_inst_name='csr.endpoint_interface.config.mac_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.config.non_oetp_control.receive_mode'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.non_oetp_control.receive_mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=1,
+                                             rdl_name="csr.endpoint_interface.config.non_oetp_control.receive_mode[1:0]",
+                                             rdl_desc="Receive mode for non-oETP Ethernet frames:\u003cul\u003e\n\u003cli\u003e0: Drop all non-oETP Ethernet frames.\u003c/li\u003e\n\u003cli\u003e1: Filtered mode. Accept frames addressed to the configured local MAC address and Ethernet broadcast frames.\u003c/li\u003e\n\u003cli\u003e2: Promiscuous mode. Accept all non-oETP Ethernet frames.\u003c/li\u003e\n\u003cli\u003e3: Reserved. Hardware shall treat this value as drop mode.\u003c/li\u003e\n\u003c/ul\u003e\nAn accepted frame is directed to the non-oETP RX DMA channel when that channel is armed; otherwise it is directed to the CSR AXI4-Stream sink.",
+                                             inst_name='receive_mode',
+                                             parent_full_inst_name='csr.endpoint_interface.config.non_oetp_control')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.non_oetp_control.receive_mode, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.data.tdata'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.data.tdata, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.data.tdata[31:0]",
@@ -6541,15 +6871,134 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='tkeep',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.sink.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tkeep, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.buffer_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.buffer_address.base[31:0]",
+                                             rdl_desc="32-bit byte address of the first byte of the transmit buffer.",
+                                             inst_name='base',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.buffer_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes[31:0]",
+                                             rdl_desc="Frame length in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.",
+                                             inst_name='bytes',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.frame_length')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.bytes, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.request'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.request",
+                                             rdl_desc="Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.",
+                                             inst_name='request',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.idle'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.idle",
+                                             rdl_desc="Indicates that the channel has no accepted transfer in progress. Hardware deasserts this field when a request is accepted and asserts it when the transfer completes.",
+                                             inst_name='idle',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.done'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.done",
+                                             rdl_desc="Sticky successful-completion flag. Hardware sets this field after the accepted transfer completes successfully and clears it when the next request is accepted.",
+                                             inst_name='done',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.done, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.error'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.error",
+                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted transfer terminates with an error and clears it when the next request is accepted.",
+                                             inst_name='error',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code[31:28]",
+                                             rdl_desc="Sticky error code for the most recently completed transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             inst_name='error_code',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error_code, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes[31:0]",
+                                             rdl_desc="Actual number of bytes transferred. Hardware clears this field when the next request is accepted.",
+                                             inst_name='bytes',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.transferred_length')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base[31:0]",
+                                             rdl_desc="32-bit byte address of the first byte of the receive buffer.",
+                                             inst_name='base',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.buffer_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.base, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes[31:0]",
+                                             rdl_desc="Receive-buffer capacity in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.",
+                                             inst_name='bytes',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.request'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.request",
+                                             rdl_desc="Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.",
+                                             inst_name='request',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.idle'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.idle",
+                                             rdl_desc="Indicates that the channel has no accepted receive request in progress. After acceptance, the channel may be armed and waiting for an eligible non-oETP frame or may be writing a received frame to memory.",
+                                             inst_name='idle',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.armed'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.armed, lsb=17, msb=17, low=17, high=17, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.armed",
+                                             rdl_desc="Indicates that the accepted receive request is waiting for an eligible non-oETP Ethernet frame. Hardware sets this field when it accepts a request and clears it when the first beat of the selected frame is accepted by the RX DMA datapath. The frame-routing logic uses this field to select the RX DMA path; otherwise an accepted non-oETP frame is directed to the CSR AXI4-Stream sink.",
+                                             inst_name='armed',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.armed, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.done'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.done",
+                                             rdl_desc="Sticky successful-completion flag. Hardware sets this field after a received frame has been written successfully and clears it when the next request is accepted.",
+                                             inst_name='done',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.done, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.error'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.error",
+                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted receive request terminates with an error and clears it when the next request is accepted.",
+                                             inst_name='error',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code[31:28]",
+                                             rdl_desc="Sticky error code for the most recently completed receive transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Received frame exceeds the configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             inst_name='error_code',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error_code, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes[31:0]",
+                                             rdl_desc="Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted.",
+                                             inst_name='bytes',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.received_length')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
                                              inst_name='lo_word',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].mac_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].mac_address.hi_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
                                              inst_name='hi_word',
@@ -6558,7 +7007,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
@@ -6593,40 +7042,47 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.error_code'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
+                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             inst_name='error_code',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error_code, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].mac_address.lo_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
                                              inst_name='lo_word',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].mac_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].mac_address.hi_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
                                              inst_name='hi_word',
@@ -6635,7 +7091,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
@@ -6670,40 +7126,47 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.error_code'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
+                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             inst_name='error_code',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error_code, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].mac_address.lo_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
                                              inst_name='lo_word',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].mac_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].mac_address.hi_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
                                              inst_name='hi_word',
@@ -6712,7 +7175,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
@@ -6747,40 +7210,47 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.error_code'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
+                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             inst_name='error_code',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error_code, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].mac_address.lo_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
                                              rdl_desc="Lower 32 bits [31:0] of the 48-bit MAC address.",
                                              inst_name='lo_word',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].mac_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].mac_address.lo_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].mac_address.hi_word'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=True, default=None,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].mac_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]",
                                              rdl_desc="Upper 16 bits [47:32] of the 48-bit MAC address.",
                                              inst_name='hi_word',
@@ -6789,7 +7259,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
@@ -6824,31 +7294,38 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.error_code'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
+                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             inst_name='error_code',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error_code, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.rmem.word[0].data'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.rmem.word[0].data, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1].data[31:0]",
@@ -8948,17 +9425,17 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._test_regfile_iterators(dut=self.dut.endpoint_interface,
                                          writeable_registers=NodeIterators(),
                                          readable_registers=NodeIterators('info',),
-                                         sections=NodeIterators('config','axis_if','peers','rmem',))
+                                         sections=NodeIterators('config','axis_if','non_oetp_dma','peers','rmem',))
         with self.subTest(msg='regfile: csr.endpoint_interface.config'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.config,
-                                               size=8,
+                                               size=12,
                                                rdl_name="csr.endpoint_interface.config",
                                                rdl_desc="Configuration register file for this openENOC Endpoint Interface instance.",
                                                inst_name='config',
                                                parent_full_inst_name='csr.endpoint_interface')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.config,
-                                         writeable_registers=NodeIterators('mac_address',),
-                                         readable_registers=NodeIterators('mac_address',),
+                                         writeable_registers=NodeIterators('mac_address','non_oetp_control',),
+                                         readable_registers=NodeIterators('mac_address','non_oetp_control',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: csr.endpoint_interface.axis_if'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.axis_if,
@@ -8992,6 +9469,39 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.axis_if.sink,
                                          writeable_registers=NodeIterators('control',),
                                          readable_registers=NodeIterators('data','control','status',),
+                                         sections=NodeIterators())
+        with self.subTest(msg='regfile: csr.endpoint_interface.non_oetp_dma'):
+            self._single_regfile_property_test(dut=self.dut.endpoint_interface.non_oetp_dma,
+                                               size=32,
+                                               rdl_name="csr.endpoint_interface.non_oetp_dma",
+                                               rdl_desc="Endpoint-level DMA control and status for complete non-oETP Ethernet frames. Frame data includes the Ethernet header and payload, but excludes the preamble, Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).",
+                                               inst_name='non_oetp_dma',
+                                               parent_full_inst_name='csr.endpoint_interface')
+            self._test_regfile_iterators(dut=self.dut.endpoint_interface.non_oetp_dma,
+                                         writeable_registers=NodeIterators(),
+                                         readable_registers=NodeIterators(),
+                                         sections=NodeIterators('tx','rx',))
+        with self.subTest(msg='regfile: csr.endpoint_interface.non_oetp_dma.tx'):
+            self._single_regfile_property_test(dut=self.dut.endpoint_interface.non_oetp_dma.tx,
+                                               size=16,
+                                               rdl_name="csr.endpoint_interface.non_oetp_dma.tx",
+                                               rdl_desc="Transmit DMA channel for complete non-oETP Ethernet frames.",
+                                               inst_name='tx',
+                                               parent_full_inst_name='csr.endpoint_interface.non_oetp_dma')
+            self._test_regfile_iterators(dut=self.dut.endpoint_interface.non_oetp_dma.tx,
+                                         writeable_registers=NodeIterators('buffer_address','frame_length','command_status',),
+                                         readable_registers=NodeIterators('buffer_address','frame_length','command_status','transferred_length',),
+                                         sections=NodeIterators())
+        with self.subTest(msg='regfile: csr.endpoint_interface.non_oetp_dma.rx'):
+            self._single_regfile_property_test(dut=self.dut.endpoint_interface.non_oetp_dma.rx,
+                                               size=16,
+                                               rdl_name="csr.endpoint_interface.non_oetp_dma.rx",
+                                               rdl_desc="Receive DMA channel for complete non-oETP Ethernet frames.",
+                                               inst_name='rx',
+                                               parent_full_inst_name='csr.endpoint_interface.non_oetp_dma')
+            self._test_regfile_iterators(dut=self.dut.endpoint_interface.non_oetp_dma.rx,
+                                         writeable_registers=NodeIterators('buffer_address','buffer_capacity','command_status',),
+                                         readable_registers=NodeIterators('buffer_address','buffer_capacity','command_status','received_length',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: csr.endpoint_interface.peers'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.peers,

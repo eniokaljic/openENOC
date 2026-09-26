@@ -91,13 +91,14 @@ No supported members.
 
 <p>Control and status register file for an openENOC Endpoint Interface instance.</p>
 
-|Offset|Identifier|             Name             |
-|------|----------|------------------------------|
-| 0x000|   info   |  csr.endpoint_interface.info |
-| 0x008|  config  | csr.endpoint_interface.config|
-| 0x020|  axis_if |csr.endpoint_interface.axis_if|
-| 0x080|   peers  | csr.endpoint_interface.peers |
-| 0x400|   rmem   |  csr.endpoint_interface.rmem |
+|Offset| Identifier |                Name               |
+|------|------------|-----------------------------------|
+| 0x000|    info    |    csr.endpoint_interface.info    |
+| 0x010|   config   |   csr.endpoint_interface.config   |
+| 0x020|   axis_if  |   csr.endpoint_interface.axis_if  |
+| 0x040|non_oetp_dma|csr.endpoint_interface.non_oetp_dma|
+| 0x080|    peers   |    csr.endpoint_interface.peers   |
+| 0x400|    rmem    |    csr.endpoint_interface.rmem    |
 
 ### info register
 
@@ -107,10 +108,16 @@ No supported members.
 
 <p>Read-only information register for this openENOC Endpoint Interface instance.</p>
 
-| Bits|   Identifier   |Access|Reset|                       Name                       |
-|-----|----------------|------|-----|--------------------------------------------------|
-| 31:0|rmem_total_depth|   r  |0x100|csr.endpoint_interface.info.rmem_total_depth[15:0]|
-|63:32|  num_of_peers  |   r  | 0x4 |  csr.endpoint_interface.info.num_of_peers[31:16] |
+| Bits|       Identifier       |Access| Reset|                            Name                           |
+|-----|------------------------|------|------|-----------------------------------------------------------|
+| 31:0|    rmem_total_depth    |   r  | 0x100|     csr.endpoint_interface.info.rmem_total_depth[31:0]    |
+|42:32|      num_of_peers      |   r  |  0x4 |      csr.endpoint_interface.info.num_of_peers[42:32]      |
+|  43 |   peer_dma_supported   |   r  |  0x1 |       csr.endpoint_interface.info.peer_dma_supported      |
+|  44 | non_oetp_dma_supported |   r  |  0x1 |     csr.endpoint_interface.info.non_oetp_dma_supported    |
+|  45 |  direct_axis_supported |   r  |  0x1 |     csr.endpoint_interface.info.direct_axis_supported     |
+|  46 |     rmem_supported     |   r  |  0x1 |         csr.endpoint_interface.info.rmem_supported        |
+|  47 |      irq_supported     |   r  |  0x0 |         csr.endpoint_interface.info.irq_supported         |
+|63:48|max_dma_frame_size_bytes|   r  |0x2000|csr.endpoint_interface.info.max_dma_frame_size_bytes[63:48]|
 
 #### rmem_total_depth field
 
@@ -118,23 +125,48 @@ No supported members.
 
 #### num_of_peers field
 
-<p>Number of remote peers supported by this openENOC Endpoint Interface instance. This field reflects the NUM_OF_PEERS parameter value.</p>
+<p>Number of remote peers supported by this openENOC Endpoint Interface instance, from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.</p>
+
+#### peer_dma_supported field
+
+<p>Indicates whether DMA transfers associated with configured remote peers are supported.</p>
+
+#### non_oetp_dma_supported field
+
+<p>Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet frames are supported.</p>
+
+#### direct_axis_supported field
+
+<p>Indicates whether direct CSR-driven AXI4-Stream access is supported for non-oETP Ethernet frames.</p>
+
+#### rmem_supported field
+
+<p>Indicates whether the transparent Remote Memory (RMEM) interface is supported.</p>
+
+#### irq_supported field
+
+<p>Indicates whether the endpoint interrupt output and interrupt-control logic are implemented.</p>
+
+#### max_dma_frame_size_bytes field
+
+<p>Maximum size in bytes of one AXI4-Stream frame generated or consumed by the DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value. A value of zero indicates that DMA is not supported.</p>
 
 ## config register file
 
-- Absolute Address: 0x20000808
-- Base Offset: 0x8
-- Size: 0x8
+- Absolute Address: 0x20000810
+- Base Offset: 0x10
+- Size: 0xC
 
 <p>Configuration register file for this openENOC Endpoint Interface instance.</p>
 
-|Offset| Identifier|                   Name                  |
-|------|-----------|-----------------------------------------|
-|  0x0 |mac_address|csr.endpoint_interface.config.mac_address|
+|Offset|   Identifier   |                     Name                     |
+|------|----------------|----------------------------------------------|
+|  0x0 |   mac_address  |   csr.endpoint_interface.config.mac_address  |
+|  0x8 |non_oetp_control|csr.endpoint_interface.config.non_oetp_control|
 
 ### mac_address register
 
-- Absolute Address: 0x20000808
+- Absolute Address: 0x20000810
 - Base Offset: 0x0
 - Size: 0x8
 
@@ -152,6 +184,28 @@ No supported members.
 #### hi_word field
 
 <p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
+
+### non_oetp_control register
+
+- Absolute Address: 0x20000818
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Receive policy for Ethernet frames that do not carry oETP traffic.</p>
+
+|Bits| Identifier |Access|Reset|                              Name                              |
+|----|------------|------|-----|----------------------------------------------------------------|
+| 1:0|receive_mode|  rw  | 0x1 |csr.endpoint_interface.config.non_oetp_control.receive_mode[1:0]|
+
+#### receive_mode field
+
+<p>Receive mode for non-oETP Ethernet frames:<ul></p>
+<li>0: Drop all non-oETP Ethernet frames.</li>
+<li>1: Filtered mode. Accept frames addressed to the configured local MAC address and Ethernet broadcast frames.</li>
+<li>2: Promiscuous mode. Accept all non-oETP Ethernet frames.</li>
+<li>3: Reserved. Hardware shall treat this value as drop mode.</li>
+<p></ul>
+An accepted frame is directed to the non-oETP RX DMA channel when that channel is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
 ## axis_if register file
 
@@ -310,6 +364,244 @@ No supported members.
 
 <p>Indicates which byte lanes contain valid data on the AXI4-Stream sink interface.</p>
 
+## non_oetp_dma register file
+
+- Absolute Address: 0x20000840
+- Base Offset: 0x40
+- Size: 0x20
+
+<p>Endpoint-level DMA control and status for complete non-oETP Ethernet frames. Frame data includes the Ethernet header and payload, but excludes the preamble, Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).</p>
+
+|Offset|Identifier|                 Name                 |
+|------|----------|--------------------------------------|
+| 0x00 |    tx    |csr.endpoint_interface.non_oetp_dma.tx|
+| 0x10 |    rx    |csr.endpoint_interface.non_oetp_dma.rx|
+
+## tx register file
+
+- Absolute Address: 0x20000840
+- Base Offset: 0x0
+- Size: 0x10
+
+<p>Transmit DMA channel for complete non-oETP Ethernet frames.</p>
+
+|Offset|    Identifier    |                           Name                          |
+|------|------------------|---------------------------------------------------------|
+|  0x0 |  buffer_address  |  csr.endpoint_interface.non_oetp_dma.tx.buffer_address  |
+|  0x4 |   frame_length   |   csr.endpoint_interface.non_oetp_dma.tx.frame_length   |
+|  0x8 |  command_status  |  csr.endpoint_interface.non_oetp_dma.tx.command_status  |
+|  0xC |transferred_length|csr.endpoint_interface.non_oetp_dma.tx.transferred_length|
+
+### buffer_address register
+
+- Absolute Address: 0x20000840
+- Base Offset: 0x0
+- Size: 0x4
+
+<p>Local memory address of the non-oETP Ethernet frame to transmit.</p>
+
+|Bits|Identifier|Access|Reset|                              Name                              |
+|----|----------|------|-----|----------------------------------------------------------------|
+|31:0|   base   |  rw  | 0x0 |csr.endpoint_interface.non_oetp_dma.tx.buffer_address.base[31:0]|
+
+#### base field
+
+<p>32-bit byte address of the first byte of the transmit buffer.</p>
+
+### frame_length register
+
+- Absolute Address: 0x20000844
+- Base Offset: 0x4
+- Size: 0x4
+
+<p>Length of the complete non-oETP Ethernet frame to transmit.</p>
+
+|Bits|Identifier|Access|Reset|                              Name                             |
+|----|----------|------|-----|---------------------------------------------------------------|
+|31:0|   bytes  |  rw  | 0x0 |csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes[31:0]|
+
+#### bytes field
+
+<p>Frame length in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.</p>
+
+### command_status register
+
+- Absolute Address: 0x20000848
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Command and completion status for the non-oETP transmit DMA channel.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+|  8  |  request |  rw  | 0x0 |     csr.endpoint_interface.non_oetp_dma.tx.command_status.request     |
+|  16 |   idle   |   r  |  —  |       csr.endpoint_interface.non_oetp_dma.tx.command_status.idle      |
+|  24 |   done   |   r  |  —  |       csr.endpoint_interface.non_oetp_dma.tx.command_status.done      |
+|  25 |   error  |   r  |  —  |      csr.endpoint_interface.non_oetp_dma.tx.command_status.error      |
+|31:28|error_code|   r  |  —  |csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code[31:28]|
+
+#### request field
+
+<p>Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.</p>
+
+#### idle field
+
+<p>Indicates that the channel has no accepted transfer in progress. Hardware deasserts this field when a request is accepted and asserts it when the transfer completes.</p>
+
+#### done field
+
+<p>Sticky successful-completion flag. Hardware sets this field after the accepted transfer completes successfully and clears it when the next request is accepted.</p>
+
+#### error field
+
+<p>Sticky error-completion flag. Hardware sets this field when the accepted transfer terminates with an error and clears it when the next request is accepted.</p>
+
+#### error_code field
+
+<p>Sticky error code for the most recently completed transfer:<ul></p>
+<li>0: No error.</li>
+<li>1: Invalid DMA configuration or descriptor.</li>
+<li>2: AXI4-Stream length or TLAST error.</li>
+<li>3: Frame exceeds the supported size or configured buffer capacity.</li>
+<li>4: AXI read SLVERR response.</li>
+<li>5: AXI read DECERR response.</li>
+<li>6: AXI write SLVERR response.</li>
+<li>7: AXI write DECERR response.</li>
+<li>8-15: Reserved.</li>
+<p></ul>
+Hardware clears this field when the next request is accepted.</p>
+
+### transferred_length register
+
+- Absolute Address: 0x2000084C
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Number of bytes transferred for the most recently accepted transmit request.</p>
+
+|Bits|Identifier|Access|Reset|                                 Name                                |
+|----|----------|------|-----|---------------------------------------------------------------------|
+|31:0|   bytes  |   r  |  —  |csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes[31:0]|
+
+#### bytes field
+
+<p>Actual number of bytes transferred. Hardware clears this field when the next request is accepted.</p>
+
+## rx register file
+
+- Absolute Address: 0x20000850
+- Base Offset: 0x10
+- Size: 0x10
+
+<p>Receive DMA channel for complete non-oETP Ethernet frames.</p>
+
+|Offset|   Identifier  |                         Name                         |
+|------|---------------|------------------------------------------------------|
+|  0x0 | buffer_address| csr.endpoint_interface.non_oetp_dma.rx.buffer_address|
+|  0x4 |buffer_capacity|csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity|
+|  0x8 | command_status| csr.endpoint_interface.non_oetp_dma.rx.command_status|
+|  0xC |received_length|csr.endpoint_interface.non_oetp_dma.rx.received_length|
+
+### buffer_address register
+
+- Absolute Address: 0x20000850
+- Base Offset: 0x0
+- Size: 0x4
+
+<p>Local memory address of the receive buffer for a non-oETP Ethernet frame.</p>
+
+|Bits|Identifier|Access|Reset|                              Name                              |
+|----|----------|------|-----|----------------------------------------------------------------|
+|31:0|   base   |  rw  | 0x0 |csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base[31:0]|
+
+#### base field
+
+<p>32-bit byte address of the first byte of the receive buffer.</p>
+
+### buffer_capacity register
+
+- Absolute Address: 0x20000854
+- Base Offset: 0x4
+- Size: 0x4
+
+<p>Capacity of the receive buffer for one complete non-oETP Ethernet frame.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                               |
+|----|----------|------|-----|------------------------------------------------------------------|
+|31:0|   bytes  |  rw  | 0x0 |csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes[31:0]|
+
+#### bytes field
+
+<p>Receive-buffer capacity in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.</p>
+
+### command_status register
+
+- Absolute Address: 0x20000858
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Command and completion status for the non-oETP receive DMA channel.</p>
+
+| Bits|Identifier|Access|Reset|                                  Name                                 |
+|-----|----------|------|-----|-----------------------------------------------------------------------|
+|  8  |  request |  rw  | 0x0 |     csr.endpoint_interface.non_oetp_dma.rx.command_status.request     |
+|  16 |   idle   |   r  |  —  |       csr.endpoint_interface.non_oetp_dma.rx.command_status.idle      |
+|  17 |   armed  |   r  |  —  |      csr.endpoint_interface.non_oetp_dma.rx.command_status.armed      |
+|  24 |   done   |   r  |  —  |       csr.endpoint_interface.non_oetp_dma.rx.command_status.done      |
+|  25 |   error  |   r  |  —  |      csr.endpoint_interface.non_oetp_dma.rx.command_status.error      |
+|31:28|error_code|   r  |  —  |csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code[31:28]|
+
+#### request field
+
+<p>Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.</p>
+
+#### idle field
+
+<p>Indicates that the channel has no accepted receive request in progress. After acceptance, the channel may be armed and waiting for an eligible non-oETP frame or may be writing a received frame to memory.</p>
+
+#### armed field
+
+<p>Indicates that the accepted receive request is waiting for an eligible non-oETP Ethernet frame. Hardware sets this field when it accepts a request and clears it when the first beat of the selected frame is accepted by the RX DMA datapath. The frame-routing logic uses this field to select the RX DMA path; otherwise an accepted non-oETP frame is directed to the CSR AXI4-Stream sink.</p>
+
+#### done field
+
+<p>Sticky successful-completion flag. Hardware sets this field after a received frame has been written successfully and clears it when the next request is accepted.</p>
+
+#### error field
+
+<p>Sticky error-completion flag. Hardware sets this field when the accepted receive request terminates with an error and clears it when the next request is accepted.</p>
+
+#### error_code field
+
+<p>Sticky error code for the most recently completed receive transfer:<ul></p>
+<li>0: No error.</li>
+<li>1: Invalid DMA configuration or descriptor.</li>
+<li>2: AXI4-Stream length or TLAST error.</li>
+<li>3: Received frame exceeds the configured buffer capacity.</li>
+<li>4: AXI read SLVERR response.</li>
+<li>5: AXI read DECERR response.</li>
+<li>6: AXI write SLVERR response.</li>
+<li>7: AXI write DECERR response.</li>
+<li>8-15: Reserved.</li>
+<p></ul>
+Hardware clears this field when the next request is accepted.</p>
+
+### received_length register
+
+- Absolute Address: 0x2000085C
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Length of the most recently received non-oETP Ethernet frame.</p>
+
+|Bits|Identifier|Access|Reset|                               Name                               |
+|----|----------|------|-----|------------------------------------------------------------------|
+|31:0|   bytes  |   r  |  —  |csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes[31:0]|
+
+#### bytes field
+
+<p>Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted.</p>
+
 ## peers register file
 
 - Absolute Address: 0x20000880
@@ -380,7 +672,7 @@ No supported members.
 
 #### offset field
 
-<p>Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+<p>32-bit byte offset of the virtual memory region corresponding to the remote peer's memory. The value shall be aligned to a 32-bit word boundary.</p>
 
 ### local_address register
 
@@ -438,13 +730,14 @@ No supported members.
 
 <p>DMA configuration and control for the remote peer.</p>
 
-|Bits|Identifier|Access|Reset|                                 Name                                 |
-|----|----------|------|-----|----------------------------------------------------------------------|
-| 1:0|   mode   |  rw  |  —  |  csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0] |
-|  8 |  request |  rw  | 0x0 |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]|
-| 16 |   idle   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]|
-| 24 |   done   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]|
-| 25 |   error  |   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]|
+| Bits|Identifier|Access|Reset|                                    Name                                   |
+|-----|----------|------|-----|---------------------------------------------------------------------------|
+| 1:0 |   mode   |  rw  |  —  |    csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]    |
+|  8  |  request |  rw  | 0x0 |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]  |
+|  16 |   idle   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]   |
+|  24 |   done   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]   |
+|  25 |   error  |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]  |
+|31:28|error_code|   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]|
 
 #### mode field
 
@@ -457,19 +750,34 @@ No supported members.
 
 #### request field
 
-<p>Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.</p>
+<p>Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.</p>
 
 #### idle field
 
-<p>Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.</p>
+<p>Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.</p>
 
 #### done field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.</p>
+<p>Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.</p>
 
 #### error field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.</p>
+<p>Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.</p>
+
+#### error_code field
+
+<p>Sticky error code for the most recently completed peer DMA transfer:<ul></p>
+<li>0: No error.</li>
+<li>1: Invalid DMA configuration or descriptor.</li>
+<li>2: AXI4-Stream length or TLAST error.</li>
+<li>3: Frame exceeds the supported size or configured buffer capacity.</li>
+<li>4: AXI read SLVERR response.</li>
+<li>5: AXI read DECERR response.</li>
+<li>6: AXI write SLVERR response.</li>
+<li>7: AXI write DECERR response.</li>
+<li>8-15: Reserved.</li>
+<p></ul>
+Hardware clears this field when the next request is accepted.</p>
 
 ## entry register file
 
@@ -526,7 +834,7 @@ No supported members.
 
 #### offset field
 
-<p>Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+<p>32-bit byte offset of the virtual memory region corresponding to the remote peer's memory. The value shall be aligned to a 32-bit word boundary.</p>
 
 ### local_address register
 
@@ -584,13 +892,14 @@ No supported members.
 
 <p>DMA configuration and control for the remote peer.</p>
 
-|Bits|Identifier|Access|Reset|                                 Name                                 |
-|----|----------|------|-----|----------------------------------------------------------------------|
-| 1:0|   mode   |  rw  |  —  |  csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0] |
-|  8 |  request |  rw  | 0x0 |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]|
-| 16 |   idle   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]|
-| 24 |   done   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]|
-| 25 |   error  |   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]|
+| Bits|Identifier|Access|Reset|                                    Name                                   |
+|-----|----------|------|-----|---------------------------------------------------------------------------|
+| 1:0 |   mode   |  rw  |  —  |    csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]    |
+|  8  |  request |  rw  | 0x0 |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]  |
+|  16 |   idle   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]   |
+|  24 |   done   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]   |
+|  25 |   error  |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]  |
+|31:28|error_code|   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]|
 
 #### mode field
 
@@ -603,19 +912,34 @@ No supported members.
 
 #### request field
 
-<p>Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.</p>
+<p>Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.</p>
 
 #### idle field
 
-<p>Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.</p>
+<p>Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.</p>
 
 #### done field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.</p>
+<p>Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.</p>
 
 #### error field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.</p>
+<p>Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.</p>
+
+#### error_code field
+
+<p>Sticky error code for the most recently completed peer DMA transfer:<ul></p>
+<li>0: No error.</li>
+<li>1: Invalid DMA configuration or descriptor.</li>
+<li>2: AXI4-Stream length or TLAST error.</li>
+<li>3: Frame exceeds the supported size or configured buffer capacity.</li>
+<li>4: AXI read SLVERR response.</li>
+<li>5: AXI read DECERR response.</li>
+<li>6: AXI write SLVERR response.</li>
+<li>7: AXI write DECERR response.</li>
+<li>8-15: Reserved.</li>
+<p></ul>
+Hardware clears this field when the next request is accepted.</p>
 
 ## entry register file
 
@@ -672,7 +996,7 @@ No supported members.
 
 #### offset field
 
-<p>Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+<p>32-bit byte offset of the virtual memory region corresponding to the remote peer's memory. The value shall be aligned to a 32-bit word boundary.</p>
 
 ### local_address register
 
@@ -730,13 +1054,14 @@ No supported members.
 
 <p>DMA configuration and control for the remote peer.</p>
 
-|Bits|Identifier|Access|Reset|                                 Name                                 |
-|----|----------|------|-----|----------------------------------------------------------------------|
-| 1:0|   mode   |  rw  |  —  |  csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0] |
-|  8 |  request |  rw  | 0x0 |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]|
-| 16 |   idle   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]|
-| 24 |   done   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]|
-| 25 |   error  |   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]|
+| Bits|Identifier|Access|Reset|                                    Name                                   |
+|-----|----------|------|-----|---------------------------------------------------------------------------|
+| 1:0 |   mode   |  rw  |  —  |    csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]    |
+|  8  |  request |  rw  | 0x0 |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]  |
+|  16 |   idle   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]   |
+|  24 |   done   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]   |
+|  25 |   error  |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]  |
+|31:28|error_code|   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]|
 
 #### mode field
 
@@ -749,19 +1074,34 @@ No supported members.
 
 #### request field
 
-<p>Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.</p>
+<p>Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.</p>
 
 #### idle field
 
-<p>Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.</p>
+<p>Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.</p>
 
 #### done field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.</p>
+<p>Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.</p>
 
 #### error field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.</p>
+<p>Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.</p>
+
+#### error_code field
+
+<p>Sticky error code for the most recently completed peer DMA transfer:<ul></p>
+<li>0: No error.</li>
+<li>1: Invalid DMA configuration or descriptor.</li>
+<li>2: AXI4-Stream length or TLAST error.</li>
+<li>3: Frame exceeds the supported size or configured buffer capacity.</li>
+<li>4: AXI read SLVERR response.</li>
+<li>5: AXI read DECERR response.</li>
+<li>6: AXI write SLVERR response.</li>
+<li>7: AXI write DECERR response.</li>
+<li>8-15: Reserved.</li>
+<p></ul>
+Hardware clears this field when the next request is accepted.</p>
 
 ## entry register file
 
@@ -818,7 +1158,7 @@ No supported members.
 
 #### offset field
 
-<p>Word-aligned 32-bit address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+<p>32-bit byte offset of the virtual memory region corresponding to the remote peer's memory. The value shall be aligned to a 32-bit word boundary.</p>
 
 ### local_address register
 
@@ -876,13 +1216,14 @@ No supported members.
 
 <p>DMA configuration and control for the remote peer.</p>
 
-|Bits|Identifier|Access|Reset|                                 Name                                 |
-|----|----------|------|-----|----------------------------------------------------------------------|
-| 1:0|   mode   |  rw  |  —  |  csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0] |
-|  8 |  request |  rw  | 0x0 |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]|
-| 16 |   idle   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]|
-| 24 |   done   |   r  |  —  | csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]|
-| 25 |   error  |   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]|
+| Bits|Identifier|Access|Reset|                                    Name                                   |
+|-----|----------|------|-----|---------------------------------------------------------------------------|
+| 1:0 |   mode   |  rw  |  —  |    csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]    |
+|  8  |  request |  rw  | 0x0 |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]  |
+|  16 |   idle   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]   |
+|  24 |   done   |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]   |
+|  25 |   error  |   r  |  —  |   csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]  |
+|31:28|error_code|   r  |  —  |csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]|
 
 #### mode field
 
@@ -895,19 +1236,34 @@ No supported members.
 
 #### request field
 
-<p>Writing a 1 to this field initiates a DMA transfer to/from the remote peer. This field is a single-pulse register that is automatically cleared back to zero after being written.</p>
+<p>Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.</p>
 
 #### idle field
 
-<p>Indicates whether the DMA transfer to/from the remote peer is idle. A value of 1 indicates that the DMA transfer is idle, while a value of 0 indicates that the DMA transfer is in progress.</p>
+<p>Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.</p>
 
 #### done field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has been successful. A value of 1 indicates that the DMA transfer has completed successfully, while a value of 0 indicates that the DMA transfer is still in progress or has encountered an error.</p>
+<p>Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.</p>
 
 #### error field
 
-<p>Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error.</p>
+<p>Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.</p>
+
+#### error_code field
+
+<p>Sticky error code for the most recently completed peer DMA transfer:<ul></p>
+<li>0: No error.</li>
+<li>1: Invalid DMA configuration or descriptor.</li>
+<li>2: AXI4-Stream length or TLAST error.</li>
+<li>3: Frame exceeds the supported size or configured buffer capacity.</li>
+<li>4: AXI read SLVERR response.</li>
+<li>5: AXI read DECERR response.</li>
+<li>6: AXI write SLVERR response.</li>
+<li>7: AXI write DECERR response.</li>
+<li>8-15: Reserved.</li>
+<p></ul>
+Hardware clears this field when the next request is accepted.</p>
 
 ## rmem register file
 

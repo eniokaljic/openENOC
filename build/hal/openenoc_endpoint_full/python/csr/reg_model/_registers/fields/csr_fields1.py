@@ -22,7 +22,957 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class openenoc_endpoint_interface_peers_entry_dma_error_neg_0x3bc21446ddde2a6c_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_0x1b640ca41a49f1cd_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.tx.command_status.idle         |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Indicates that the channel has no accepted transfer in          |
+    |              |      progress. Hardware deasserts this field when a request is accepted |
+    |              |      and asserts it when the transfer completes.</p>                    |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.tx.command_status.idle"
+    @property
+    def rdl_desc(self) -> str:
+        return "Indicates that the channel has no accepted transfer in progress. Hardware deasserts this field when a request is accepted and asserts it when the transfer completes."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x3d818096c770e07b_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.tx.command_status.done         |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Sticky successful-completion flag. Hardware sets this field     |
+    |              |      after the accepted transfer completes successfully and clears it   |
+    |              |      when the next request is accepted.</p>                             |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.tx.command_status.done"
+    @property
+    def rdl_desc(self) -> str:
+        return "Sticky successful-completion flag. Hardware sets this field after the accepted transfer completes successfully and clears it when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x1a81c472c69ea5ba_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.tx.command_status.error        |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Sticky error-completion flag. Hardware sets this field when the |
+    |              |      accepted transfer terminates with an error and clears it when the  |
+    |              |      next request is accepted.</p>                                      |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.tx.command_status.error"
+    @property
+    def rdl_desc(self) -> str:
+        return "Sticky error-completion flag. Hardware sets this field when the accepted transfer terminates with an error and clears it when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x3b9ff1f5566d37f9_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code[3 |
+    |              |      1:28]                                                              |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Sticky error code for the most recently completed               |
+    |              |      transfer:<ul></p> <li>0: No error.</li> <li>1: Invalid DMA         |
+    |              |      configuration or descriptor.</li> <li>2: AXI4-Stream length or     |
+    |              |      TLAST error.</li> <li>3: Frame exceeds the supported size or       |
+    |              |      configured buffer capacity.</li> <li>4: AXI read SLVERR            |
+    |              |      response.</li> <li>5: AXI read DECERR response.</li> <li>6: AXI    |
+    |              |      write SLVERR response.</li> <li>7: AXI write DECERR response.</li> |
+    |              |      <li>8-15: Reserved.</li> <p></ul> Hardware clears this field when  |
+    |              |      the next request is accepted.</p>                                  |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code[31:28]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Sticky error code for the most recently completed transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_0x392615bcffa7f2a2_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes[31 |
+    |              |      :0]                                                                |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Actual number of bytes transferred. Hardware clears this field  |
+    |              |      when the next request is accepted.</p>                             |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Actual number of bytes transferred. Hardware clears this field when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0xbdf1c67849ee26b_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base[31:0]   |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>32-bit byte address of the first byte of the receive            |
+    |              |      buffer.</p>                                                        |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "32-bit byte address of the first byte of the receive buffer."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x3da14d50150c8859_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes[31:0] |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Receive-buffer capacity in bytes. Valid non-zero values shall   |
+    |              |      not exceed info.max_dma_frame_size_bytes.</p>                      |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Receive-buffer capacity in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0xd8d6051f536c356_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.command_status.request      |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Writing one arms reception into the configured buffer. The      |
+    |              |      field remains asserted until the DMA engine accepts the request.   |
+    |              |      Hardware clears it upon acceptance; while the channel is busy, a   |
+    |              |      newly asserted request remains pending.</p>                        |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.command_status.request"
+    @property
+    def rdl_desc(self) -> str:
+        return "Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x13bb001abf57c766_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.command_status.idle         |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Indicates that the channel has no accepted receive request in   |
+    |              |      progress. After acceptance, the channel may be armed and waiting   |
+    |              |      for an eligible non-oETP frame or may be writing a received frame  |
+    |              |      to memory.</p>                                                     |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.command_status.idle"
+    @property
+    def rdl_desc(self) -> str:
+        return "Indicates that the channel has no accepted receive request in progress. After acceptance, the channel may be armed and waiting for an eligible non-oETP frame or may be writing a received frame to memory."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x676c1af1ff7d2bb4_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.command_status.armed        |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Indicates that the accepted receive request is waiting for an   |
+    |              |      eligible non-oETP Ethernet frame. Hardware sets this field when it |
+    |              |      accepts a request and clears it when the first beat of the         |
+    |              |      selected frame is accepted by the RX DMA datapath. The frame-      |
+    |              |      routing logic uses this field to select the RX DMA path; otherwise |
+    |              |      an accepted non-oETP frame is directed to the CSR AXI4-Stream      |
+    |              |      sink.</p>                                                          |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.command_status.armed"
+    @property
+    def rdl_desc(self) -> str:
+        return "Indicates that the accepted receive request is waiting for an eligible non-oETP Ethernet frame. Hardware sets this field when it accepts a request and clears it when the first beat of the selected frame is accepted by the RX DMA datapath. The frame-routing logic uses this field to select the RX DMA path; otherwise an accepted non-oETP frame is directed to the CSR AXI4-Stream sink."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x41309f270480f35a_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.command_status.done         |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Sticky successful-completion flag. Hardware sets this field     |
+    |              |      after a received frame has been written successfully and clears it |
+    |              |      when the next request is accepted.</p>                             |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.command_status.done"
+    @property
+    def rdl_desc(self) -> str:
+        return "Sticky successful-completion flag. Hardware sets this field after a received frame has been written successfully and clears it when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_0x16d15edb1ba03f16_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.command_status.error        |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Sticky error-completion flag. Hardware sets this field when the |
+    |              |      accepted receive request terminates with an error and clears it    |
+    |              |      when the next request is accepted.</p>                             |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.command_status.error"
+    @property
+    def rdl_desc(self) -> str:
+        return "Sticky error-completion flag. Hardware sets this field when the accepted receive request terminates with an error and clears it when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x7b4d8ee5c1b7a654_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code[3 |
+    |              |      1:28]                                                              |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Sticky error code for the most recently completed receive       |
+    |              |      transfer:<ul></p> <li>0: No error.</li> <li>1: Invalid DMA         |
+    |              |      configuration or descriptor.</li> <li>2: AXI4-Stream length or     |
+    |              |      TLAST error.</li> <li>3: Received frame exceeds the configured     |
+    |              |      buffer capacity.</li> <li>4: AXI read SLVERR response.</li> <li>5: |
+    |              |      AXI read DECERR response.</li> <li>6: AXI write SLVERR             |
+    |              |      response.</li> <li>7: AXI write DECERR response.</li> <li>8-15:    |
+    |              |      Reserved.</li> <p></ul> Hardware clears this field when the next   |
+    |              |      request is accepted.</p>                                           |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code[31:28]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Sticky error code for the most recently completed receive transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Received frame exceeds the configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x3d06bd985ea57c4_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes[31:0] |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Actual number of frame bytes written to the receive buffer.     |
+    |              |      Hardware clears this field when the next request is accepted.</p>  |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_neg_0x4a418812823ae52_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].mac_address.lo_word[31:0]                                       |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>             |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Lower 32 bits [31:0] of the 48-bit MAC address."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_neg_0x697bdf29ce41edb5_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].mac_address.hi_word[47:32]                                      |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>            |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Upper 16 bits [47:32] of the 48-bit MAC address."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x660419d2f3cd0bf8_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].rmem_address.offset[31:0]                                       |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>32-bit byte offset of the virtual memory region corresponding   |
+    |              |      to the remote peer's memory. The value shall be aligned to a       |
+    |              |      32-bit word boundary.</p>                                          |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_local_address_base_neg_0x132f4fe3d8257897_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].local_address.base[31:0]                                        |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Word-aligned 32-bit start address of the local memory region    |
+    |              |      for DMA transfers.</p>                                             |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Word-aligned 32-bit start address of the local memory region for DMA transfers."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0x3cdd60ce4b58408_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].remote_address.base[31:0]                                       |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Word-aligned 32-bit start address of the remote peer's memory   |
+    |              |      region.</p>                                                        |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Word-aligned 32-bit start address of the remote peer\u0027s memory region."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_size_bytes_neg_0x3adc214cdc89f32e_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].size.bytes[31:0]                                                |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>32-bit size of the remote peer's memory region in bytes.</p>    |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].size.bytes[31:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "32-bit size of the remote peer\u0027s memory region in bytes."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_dma_mode_neg_0x391e258cd04f6f84_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].dma.mode[1:0]                                                   |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>DMA mode for transfers to/from the remote peer:<ul></p> <li>0:  |
+    |              |      DMA transfers to/from the remote peer are disabled.</li> <li>1:    |
+    |              |      DMA transfers to/from the remote peer are enabled in transparent   |
+    |              |      mode, where accesses to the virtual memory region are directly     |
+    |              |      translated to corresponding accesses to the remote peer's memory   |
+    |              |      region (transactions are word-by-word, i.e., per virtual memory    |
+    |              |      access).</li> <li>2: DMA transfers to/from the remote peer are     |
+    |              |      enabled in mirror-to-local mode, where the local memory region is  |
+    |              |      used instead of the virtual memory region. The state of the remote |
+    |              |      peer's memory region (remote_address, size) is fetched from the    |
+    |              |      remote peer on demand or periodically.</li> <li>3: DMA transfers   |
+    |              |      to/from the remote peer are enabled in mirror-to-remote mode,      |
+    |              |      where the remote memory region is used instead of the virtual      |
+    |              |      memory region. The state of the local peer's memory region         |
+    |              |      (local_address, size) is sent to the remote peer on demand or      |
+    |              |      periodically.</li> </ul>                                           |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]"
+    @property
+    def rdl_desc(self) -> str:
+        return "DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e"
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_dma_request_0x1b88f4382a6e6598_cls(FieldReadWrite):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].dma.request[8:8]                                                |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Writing one requests a DMA transfer to or from the remote peer, |
+    |              |      according to dma.mode. The field remains asserted until the DMA    |
+    |              |      engine accepts and snapshots the request. Hardware clears it upon  |
+    |              |      acceptance; while a transfer for this peer is active, a newly      |
+    |              |      asserted request remains pending. Software or an RTL controller    |
+    |              |      shall keep the peer configuration stable while this field is       |
+    |              |      asserted.</p>                                                      |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_dma_idle_0x36662f605b9df709_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].dma.idle[16:16]                                                 |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Indicates whether this peer has no accepted DMA request in      |
+    |              |      progress. Hardware deasserts this field when a request is accepted |
+    |              |      and asserts it after all fragments of the requested block have     |
+    |              |      completed.</p>                                                     |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_dma_done_neg_0x1c2b4b158bd12e74_cls(FieldReadOnly):
+    """
+    Class to represent a register field in the register model
+
+    +--------------+-------------------------------------------------------------------------+
+    | SystemRDL    | Value                                                                   |
+    | Field        |                                                                         |
+    +==============+=========================================================================+
+    | Name         | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
+    |              |      1].dma.done[24:24]                                                 |
+    +--------------+-------------------------------------------------------------------------+
+    | Description  | .. raw:: html                                                           |
+    |              |                                                                         |
+    |              |      <p>Sticky successful-completion flag for this peer. Hardware sets  |
+    |              |      this field after all fragments of the accepted block transfer      |
+    |              |      complete successfully and clears it when the next request is       |
+    |              |      accepted.</p>                                                      |
+    +--------------+-------------------------------------------------------------------------+
+    """
+    __slots__ : list[str] = []
+
+    
+
+    
+    
+
+    @property
+    def rdl_name(self) -> str:
+        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]"
+    @property
+    def rdl_desc(self) -> str:
+        return "Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted."
+    
+    
+    
+
+    
+    
+class openenoc_endpoint_interface_peers_entry_dma_error_0x753daff6f507dbda_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -37,446 +987,24 @@ class openenoc_endpoint_interface_peers_entry_dma_error_neg_0x3bc21446ddde2a6c_c
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Indicates whether the DMA transfer to/from the remote peer has  |
-    |              |      encountered an error. A value of 1 indicates an error, while a     |
-    |              |      value of 0 indicates no error.</p>                                 |
+    |              |      <p>Sticky error-completion flag for this peer. Hardware sets this  |
+    |              |      field if the accepted block transfer terminates with an error and  |
+    |              |      clears it when the next request is accepted.</p>                   |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
 
+    
 
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
         return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]"
     @property
     def rdl_desc(self) -> str:
-        return "Indicates whether the DMA transfer to/from the remote peer has encountered an error. A value of 1 indicates an error, while a value of 0 indicates no error."
-
-
-
-
-
-
-class openenoc_endpoint_interface_rmem_word_data_0x5406d30947de088f_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1].data[31:0] |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Data stored in this virtual memory word.</p>                    |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-
-
-
-
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1].data[31:0]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Data stored in this virtual memory word."
-
-
-
-
-
-
-class openenoc_switch_interface_info_table_depth_0x6ac92ba3afd39d3f_cls(FieldReadOnly):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.info.table_depth[15:0]                        |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Depth of the forwarding table in this openENOC Switch instance. |
-    |              |      This field reflects the TABLE_DEPTH parameter value.</p>           |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.info.table_depth[15:0]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Depth of the forwarding table in this openENOC Switch instance. This field reflects the TABLE_DEPTH parameter value."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_info_num_of_interfaces_0x2e18ede9bb02fce4_cls(FieldReadOnly):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.info.num_of_interfaces[21:16]                 |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Number of interfaces in this openENOC Switch instance. This     |
-    |              |      field reflects the NUM_OF_INTERFACES parameter value.</p>          |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.info.num_of_interfaces[21:16]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Number of interfaces in this openENOC Switch instance. This field reflects the NUM_OF_INTERFACES parameter value."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_forwarding_control_operation_mode_neg_0x1bed4712acd488c5_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.forwarding_control.operation_mode[0:0]        |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Mode of operation for the openENOC Switch instance. When set to |
-    |              |      1, the switch operates in managed mode, allowing software to       |
-    |              |      configure the forwarding table and control forwarding operations.  |
-    |              |      When set to 0, the switch operates in unmanaged mode, where        |
-    |              |      forwarding state is maintained autonomously by internal hardware   |
-    |              |      logic without software intervention.</p>                           |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.forwarding_control.operation_mode[0:0]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Mode of operation for the openENOC Switch instance. When set to 1, the switch operates in managed mode, allowing software to configure the forwarding table and control forwarding operations. When set to 0, the switch operates in unmanaged mode, where forwarding state is maintained autonomously by internal hardware logic without software intervention."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_forwarding_control_pause_request_neg_0x65b63504e60e16be_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.forwarding_control.pause_request[7:7]         |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Pause request for the forwarding logic. When set, this field    |
-    |              |      requests the switch to pause frame forwarding and clear its        |
-    |              |      internal pipeline before forwarding table updates are              |
-    |              |      performed.</p>                                                     |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.forwarding_control.pause_request[7:7]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Pause request for the forwarding logic. When set, this field requests the switch to pause frame forwarding and clear its internal pipeline before forwarding table updates are performed."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_forwarding_control_pause_done_neg_0x5ee8ccac09e5f27d_cls(FieldReadOnly):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.forwarding_control.pause_done[15:15]          |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Pause done status. When set, this field indicates that the      |
-    |              |      switch has paused frame forwarding and reached a safe state for    |
-    |              |      forwarding table modification.</p>                                 |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.forwarding_control.pause_done[15:15]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Pause done status. When set, this field indicates that the switch has paused frame forwarding and reached a safe state for forwarding table modification."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_default_forwarding_bitmap_0x79aa258c5bb4962d_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.default_forwarding.bitmap[NUM_OF_INTERFACES-  |
-    |              |      1:0]                                                               |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Bitmap selecting the output interface or interfaces to which    |
-    |              |      frames that do not match any enabled forwarding table entry are    |
-    |              |      forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the    |
-    |              |      first interface; bit 0 corresponds to the last interface.</p>      |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.default_forwarding.bitmap[NUM_OF_INTERFACES-1:0]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Bitmap selecting the output interface or interfaces to which frames that do not match any enabled forwarding table entry are forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_forwarding_table_entry_mac_address_lo_word_0x4ac61d356e44e548_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-        |
-    |              |      1].mac_address.lo_word[31:0]                                       |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Lower 32 bits [31:0] of the 48-bit MAC address stored in this   |
-    |              |      forwarding table entry.</p>                                        |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.lo_word[31:0]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Lower 32 bits [31:0] of the 48-bit MAC address stored in this forwarding table entry."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_forwarding_table_entry_mac_address_hi_word_neg_0x61d6e4d75dd2df73_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-        |
-    |              |      1].mac_address.hi_word[47:32]                                      |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Upper 16 bits [47:32] of the 48-bit MAC address stored in this  |
-    |              |      forwarding table entry.</p>                                        |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address.hi_word[47:32]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Upper 16 bits [47:32] of the 48-bit MAC address stored in this forwarding table entry."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_forwarding_table_entry_iface_bitmap_neg_0x28d5385d57cc0fa4_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-        |
-    |              |      1].iface.bitmap[NUM_OF_INTERFACES-1:0]                             |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Bitmap selecting the output interface or interfaces to which a  |
-    |              |      matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB,     |
-    |              |      corresponds to the first interface; bit 0 corresponds to the last  |
-    |              |      interface.</p>                                                     |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface.bitmap[NUM_OF_INTERFACES-1:0]"
-    @property
-    def rdl_desc(self) -> str:
-        return "Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface."
-    
-    
-    
-
-    
-    
-class openenoc_switch_interface_forwarding_table_entry_config_enabled_0x507eeb43cb8225a4_cls(FieldReadWrite):
-    """
-    Class to represent a register field in the register model
-
-    +--------------+-------------------------------------------------------------------------+
-    | SystemRDL    | Value                                                                   |
-    | Field        |                                                                         |
-    +==============+=========================================================================+
-    | Name         | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-        |
-    |              |      1].config.enabled                                                  |
-    +--------------+-------------------------------------------------------------------------+
-    | Description  | .. raw:: html                                                           |
-    |              |                                                                         |
-    |              |      <p>Enables this forwarding table entry. When cleared, the entry is |
-    |              |      ignored during forwarding table lookup.</p>                        |
-    +--------------+-------------------------------------------------------------------------+
-    """
-    __slots__ : list[str] = []
-
-    
-
-    
-    
-
-    @property
-    def rdl_name(self) -> str:
-        return "csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled"
-    @property
-    def rdl_desc(self) -> str:
-        return "Enables this forwarding table entry. When cleared, the entry is ignored during forwarding table lookup."
+        return "Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted."
     
     
     

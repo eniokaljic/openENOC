@@ -18,23 +18,6 @@ interface openenoc_endpoint_if #
 );
 
     typedef struct {
-        logic [31:0] next;
-    } core_to_csr__config___mac_address__lo_word_t;
-
-    typedef struct {
-        logic [15:0] next;
-    } core_to_csr__config___mac_address__hi_word_t;
-
-    typedef struct {
-        core_to_csr__config___mac_address__lo_word_t lo_word;
-        core_to_csr__config___mac_address__hi_word_t hi_word;
-    } core_to_csr__config___mac_address_t;
-
-    typedef struct {
-        core_to_csr__config___mac_address_t mac_address;
-    } core_to_csr__config__t;
-
-    typedef struct {
         logic hwclr;
     } core_to_csr__axis_if__source__control__tvalid_t;
 
@@ -101,17 +84,100 @@ interface openenoc_endpoint_if #
     } core_to_csr__axis_if_t;
 
     typedef struct {
+        logic hwclr;
+    } core_to_csr__non_oetp_dma__tx__command_status__request_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__non_oetp_dma__tx__command_status__idle_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__non_oetp_dma__tx__command_status__done_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__non_oetp_dma__tx__command_status__error_t;
+
+    typedef struct {
+        logic [3:0] next;
+    } core_to_csr__non_oetp_dma__tx__command_status__error_code_t;
+
+    typedef struct {
+        core_to_csr__non_oetp_dma__tx__command_status__request_t request;
+        core_to_csr__non_oetp_dma__tx__command_status__idle_t idle;
+        core_to_csr__non_oetp_dma__tx__command_status__done_t done;
+        core_to_csr__non_oetp_dma__tx__command_status__error_t error;
+        core_to_csr__non_oetp_dma__tx__command_status__error_code_t error_code;
+    } core_to_csr__non_oetp_dma__tx__command_status_t;
+
+    typedef struct {
         logic [31:0] next;
-    } core_to_csr__peers__entry__mac_address__lo_word_t;
+    } core_to_csr__non_oetp_dma__tx__transferred_length__bytes_t;
 
     typedef struct {
-        logic [15:0] next;
-    } core_to_csr__peers__entry__mac_address__hi_word_t;
+        core_to_csr__non_oetp_dma__tx__transferred_length__bytes_t bytes;
+    } core_to_csr__non_oetp_dma__tx__transferred_length_t;
 
     typedef struct {
-        core_to_csr__peers__entry__mac_address__lo_word_t lo_word;
-        core_to_csr__peers__entry__mac_address__hi_word_t hi_word;
-    } core_to_csr__peers__entry__mac_address_t;
+        core_to_csr__non_oetp_dma__tx__command_status_t command_status;
+        core_to_csr__non_oetp_dma__tx__transferred_length_t transferred_length;
+    } core_to_csr__non_oetp_dma__tx_t;
+
+    typedef struct {
+        logic hwclr;
+    } core_to_csr__non_oetp_dma__rx__command_status__request_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__non_oetp_dma__rx__command_status__idle_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__non_oetp_dma__rx__command_status__armed_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__non_oetp_dma__rx__command_status__done_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__non_oetp_dma__rx__command_status__error_t;
+
+    typedef struct {
+        logic [3:0] next;
+    } core_to_csr__non_oetp_dma__rx__command_status__error_code_t;
+
+    typedef struct {
+        core_to_csr__non_oetp_dma__rx__command_status__request_t request;
+        core_to_csr__non_oetp_dma__rx__command_status__idle_t idle;
+        core_to_csr__non_oetp_dma__rx__command_status__armed_t armed;
+        core_to_csr__non_oetp_dma__rx__command_status__done_t done;
+        core_to_csr__non_oetp_dma__rx__command_status__error_t error;
+        core_to_csr__non_oetp_dma__rx__command_status__error_code_t error_code;
+    } core_to_csr__non_oetp_dma__rx__command_status_t;
+
+    typedef struct {
+        logic [31:0] next;
+    } core_to_csr__non_oetp_dma__rx__received_length__bytes_t;
+
+    typedef struct {
+        core_to_csr__non_oetp_dma__rx__received_length__bytes_t bytes;
+    } core_to_csr__non_oetp_dma__rx__received_length_t;
+
+    typedef struct {
+        core_to_csr__non_oetp_dma__rx__command_status_t command_status;
+        core_to_csr__non_oetp_dma__rx__received_length_t received_length;
+    } core_to_csr__non_oetp_dma__rx_t;
+
+    typedef struct {
+        core_to_csr__non_oetp_dma__tx_t tx;
+        core_to_csr__non_oetp_dma__rx_t rx;
+    } core_to_csr__non_oetp_dma_t;
+
+    typedef struct {
+        logic hwclr;
+    } core_to_csr__peers__entry__dma__request_t;
 
     typedef struct {
         logic next;
@@ -126,13 +192,18 @@ interface openenoc_endpoint_if #
     } core_to_csr__peers__entry__dma__error_t;
 
     typedef struct {
+        logic [3:0] next;
+    } core_to_csr__peers__entry__dma__error_code_t;
+
+    typedef struct {
+        core_to_csr__peers__entry__dma__request_t request;
         core_to_csr__peers__entry__dma__idle_t idle;
         core_to_csr__peers__entry__dma__done_t done;
         core_to_csr__peers__entry__dma__error_t error;
+        core_to_csr__peers__entry__dma__error_code_t error_code;
     } core_to_csr__peers__entry__dma_t;
 
     typedef struct {
-        core_to_csr__peers__entry__mac_address_t mac_address;
         core_to_csr__peers__entry__dma_t dma;
     } core_to_csr__peers__entry_t;
 
@@ -147,8 +218,8 @@ interface openenoc_endpoint_if #
     } core_to_csr__rmem_t;
 
     typedef struct {
-        core_to_csr__config__t config_;
         core_to_csr__axis_if_t axis_if;
+        core_to_csr__non_oetp_dma_t non_oetp_dma;
         core_to_csr__peers_t peers;
         core_to_csr__rmem_t rmem;
     } core_to_csr_t;
@@ -158,12 +229,42 @@ interface openenoc_endpoint_if #
     } csr_to_core__info__rmem_total_depth_t;
 
     typedef struct {
-        logic [31:0] value;
+        logic [10:0] value;
     } csr_to_core__info__num_of_peers_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__info__peer_dma_supported_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__info__non_oetp_dma_supported_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__info__direct_axis_supported_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__info__rmem_supported_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__info__irq_supported_t;
+
+    typedef struct {
+        logic [15:0] value;
+    } csr_to_core__info__max_dma_frame_size_bytes_t;
 
     typedef struct {
         csr_to_core__info__rmem_total_depth_t rmem_total_depth;
         csr_to_core__info__num_of_peers_t num_of_peers;
+        csr_to_core__info__peer_dma_supported_t peer_dma_supported;
+        csr_to_core__info__non_oetp_dma_supported_t non_oetp_dma_supported;
+        csr_to_core__info__direct_axis_supported_t direct_axis_supported;
+        csr_to_core__info__rmem_supported_t rmem_supported;
+        csr_to_core__info__irq_supported_t irq_supported;
+        csr_to_core__info__max_dma_frame_size_bytes_t max_dma_frame_size_bytes;
     } csr_to_core__info_t;
 
     typedef struct {
@@ -180,7 +281,16 @@ interface openenoc_endpoint_if #
     } csr_to_core__config___mac_address_t;
 
     typedef struct {
+        logic [1:0] value;
+    } csr_to_core__config___non_oetp_control__receive_mode_t;
+
+    typedef struct {
+        csr_to_core__config___non_oetp_control__receive_mode_t receive_mode;
+    } csr_to_core__config___non_oetp_control_t;
+
+    typedef struct {
         csr_to_core__config___mac_address_t mac_address;
+        csr_to_core__config___non_oetp_control_t non_oetp_control;
     } csr_to_core__config__t;
 
     typedef struct {
@@ -230,6 +340,71 @@ interface openenoc_endpoint_if #
         csr_to_core__axis_if__source_t source;
         csr_to_core__axis_if__sink_t sink;
     } csr_to_core__axis_if_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr_to_core__non_oetp_dma__tx__buffer_address__base_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__tx__buffer_address__base_t base;
+    } csr_to_core__non_oetp_dma__tx__buffer_address_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr_to_core__non_oetp_dma__tx__frame_length__bytes_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__tx__frame_length__bytes_t bytes;
+    } csr_to_core__non_oetp_dma__tx__frame_length_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__non_oetp_dma__tx__command_status__request_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__tx__command_status__request_t request;
+    } csr_to_core__non_oetp_dma__tx__command_status_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__tx__buffer_address_t buffer_address;
+        csr_to_core__non_oetp_dma__tx__frame_length_t frame_length;
+        csr_to_core__non_oetp_dma__tx__command_status_t command_status;
+    } csr_to_core__non_oetp_dma__tx_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr_to_core__non_oetp_dma__rx__buffer_address__base_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__rx__buffer_address__base_t base;
+    } csr_to_core__non_oetp_dma__rx__buffer_address_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr_to_core__non_oetp_dma__rx__buffer_capacity__bytes_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__rx__buffer_capacity__bytes_t bytes;
+    } csr_to_core__non_oetp_dma__rx__buffer_capacity_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__non_oetp_dma__rx__command_status__request_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__rx__command_status__request_t request;
+    } csr_to_core__non_oetp_dma__rx__command_status_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__rx__buffer_address_t buffer_address;
+        csr_to_core__non_oetp_dma__rx__buffer_capacity_t buffer_capacity;
+        csr_to_core__non_oetp_dma__rx__command_status_t command_status;
+    } csr_to_core__non_oetp_dma__rx_t;
+
+    typedef struct {
+        csr_to_core__non_oetp_dma__tx_t tx;
+        csr_to_core__non_oetp_dma__rx_t rx;
+    } csr_to_core__non_oetp_dma_t;
 
     typedef struct {
         logic [31:0] value;
@@ -314,6 +489,7 @@ interface openenoc_endpoint_if #
         csr_to_core__info_t info;
         csr_to_core__config__t config_;
         csr_to_core__axis_if_t axis_if;
+        csr_to_core__non_oetp_dma_t non_oetp_dma;
         csr_to_core__peers_t peers;
         csr_to_core__rmem_t rmem;
     } csr_to_core_t;
