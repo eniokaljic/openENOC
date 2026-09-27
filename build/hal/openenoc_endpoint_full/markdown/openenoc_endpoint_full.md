@@ -202,8 +202,8 @@ No supported members.
 <p>Receive mode for non-oETP Ethernet frames:<ul></p>
 <li>0: Drop all non-oETP Ethernet frames.</li>
 <li>1: Filtered mode. Accept frames addressed to the configured local MAC address and Ethernet broadcast frames.</li>
-<li>2: Promiscuous mode. Accept all non-oETP Ethernet frames.</li>
-<li>3: Reserved. Hardware shall treat this value as drop mode.</li>
+<li>2: Multicast mode. Accept the same frames as filtered mode, plus all multicast-addressed frames.</li>
+<li>3: Promiscuous mode. Accept all non-oETP Ethernet frames.</li>
 <p></ul>
 An accepted frame is directed to the non-oETP RX DMA channel when that channel is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
