@@ -19,11 +19,14 @@ ISS_LIB_DIR := $(BUILD_DIR)/lib
 ISS_LIBRARY := $(ISS_LIB_DIR)/libopenenoc_iss.so
 PYTHON_PACKAGE_DIR := $(ISS_DIR)/python
 FIRMWARE_BIN := $(ROOT_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.bin
+FIRMWARE_ELF := $(ROOT_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.elf
+STARTUP_FIRMWARE_BUILD_ROOT := $(BUILD_DIR)/firmware
+STARTUP_FIRMWARE_ELF := $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_startup.elf
 SPIKE_COMMIT := $(shell $(PYTHON) -c 'import json; print(json.load(open("$(ISS_DIR)/compatibility.json"))["spike"]["commit"])')
 
-.PHONY: c-api-smoke check check-all check-submodule clean configure firmware install iss-library link-smoke processor-smoke python-smoke rtl-firmware-smoke rtl-smoke spike test-native
+.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-smoke processor-smoke python-smoke rtl-firmware-smoke rtl-smoke rtl-startup-smoke spike startup-firmware test-native
 
-check: test-native python-smoke
+check: test-native python-smoke elf-smoke
 
 check-submodule:
 	@test -f $(SPIKE_SRC)/configure || { \
@@ -98,19 +101,33 @@ test-native: link-smoke processor-smoke c-api-smoke
 python-smoke: iss-library
 	@PYTHONPATH=$(PYTHON_PACKAGE_DIR) \
 		OPENENOC_ISS_LIBRARY=$(ISS_LIBRARY) \
-		$(PYTHON) -m unittest discover -s tests/python -p 'test_*.py'
+		$(PYTHON) -m unittest discover -s tests/python -p 'test_native.py'
+
+elf-smoke: firmware startup-firmware
+	@PYTHONPATH=$(PYTHON_PACKAGE_DIR) \
+		OPENENOC_FIRMWARE_ELF=$(FIRMWARE_ELF) \
+		OPENENOC_STARTUP_FIRMWARE_ELF=$(STARTUP_FIRMWARE_ELF) \
+		$(PYTHON) -m unittest discover -s tests/python -p 'test_elf.py'
 
 rtl-smoke: iss-library
 	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_accesses_rtl_dmem
 
 firmware:
 	@$(MAKE) -C $(ROOT_DIR)/sw APP=csr_smoke EP=openenoc_endpoint_full
-	@test -f $(FIRMWARE_BIN)
+	@test -f $(FIRMWARE_BIN) -a -f $(FIRMWARE_ELF)
+
+startup-firmware:
+	@$(MAKE) -C $(ROOT_DIR)/sw APP=iss_startup EP=openenoc_endpoint_full \
+		BUILD_ROOT=$(STARTUP_FIRMWARE_BUILD_ROOT)
+	@test -f $(STARTUP_FIRMWARE_ELF)
 
 rtl-firmware-smoke: iss-library firmware
 	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_runs_csr_smoke_firmware
 
-check-all: check rtl-smoke rtl-firmware-smoke
+rtl-startup-smoke: iss-library startup-firmware
+	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_qualifies_elf_startup
+
+check-all: check rtl-smoke rtl-firmware-smoke rtl-startup-smoke
 
 clean:
 	@$(MAKE) -C tests/rtl clean >/dev/null 2>&1 || true
