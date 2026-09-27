@@ -56,23 +56,28 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 
 #### rmem_total_depth field
 
-<p>Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.</p>
+<p>Total depth of the shared memory region for all remote peers. This field
+reflects the RMEM_TOTAL_DEPTH parameter value.</p>
 
 #### num_of_peers field
 
-<p>Number of remote peers supported by this openENOC Endpoint Interface instance, from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.</p>
+<p>Number of remote peers supported by this openENOC Endpoint Interface instance,
+from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.</p>
 
 #### peer_dma_supported field
 
-<p>Indicates whether DMA transfers associated with configured remote peers are supported.</p>
+<p>Indicates whether DMA transfers associated with configured remote peers are
+supported.</p>
 
 #### non_oetp_dma_supported field
 
-<p>Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet frames are supported.</p>
+<p>Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet
+frames are supported.</p>
 
 #### direct_axis_supported field
 
-<p>Indicates whether direct CSR-driven AXI4-Stream access is supported for non-oETP Ethernet frames.</p>
+<p>Indicates whether direct CSR-driven AXI4-Stream access is supported for
+non-oETP Ethernet frames.</p>
 
 #### rmem_supported field
 
@@ -80,11 +85,14 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 
 #### irq_supported field
 
-<p>Indicates whether the endpoint interrupt output and interrupt-control logic are implemented.</p>
+<p>Indicates whether the endpoint interrupt output and interrupt-control logic
+are implemented.</p>
 
 #### max_dma_frame_size_bytes field
 
-<p>Maximum size in bytes of one AXI4-Stream frame generated or consumed by the DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value. A value of zero indicates that DMA is not supported.</p>
+<p>Maximum size in bytes of one AXI4-Stream frame generated or consumed by the
+DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value.
+A value of zero indicates that DMA is not supported.</p>
 
 ## config register file
 
@@ -136,11 +144,14 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 
 <p>Receive mode for non-oETP Ethernet frames:<ul></p>
 <li>0: Drop all non-oETP Ethernet frames.</li>
-<li>1: Filtered mode. Accept frames addressed to the configured local MAC address and Ethernet broadcast frames.</li>
-<li>2: Multicast mode. Accept the same frames as filtered mode, plus all multicast-addressed frames.</li>
+<li>1: Filtered mode. Accept frames addressed to the configured local MAC
+address and Ethernet broadcast frames.</li>
+<li>2: Multicast mode. Accept the same frames as filtered mode, plus all
+multicast-addressed frames.</li>
 <li>3: Promiscuous mode. Accept all non-oETP Ethernet frames.</li>
 <p></ul>
-An accepted frame is directed to the non-oETP RX DMA channel when that channel is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
+An accepted frame is directed to the non-oETP RX DMA channel when that channel
+is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
 ## axis_if register file
 
@@ -201,15 +212,19 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 
 #### tvalid field
 
-<p>Indicates that the AXI4-Stream source interface has valid data to send. Once asserted by software, the field remains asserted until the transfer is accepted by the destination.</p>
+<p>Indicates that the AXI4-Stream source interface has valid data to send.
+Once asserted by software, the field remains asserted until the transfer is
+accepted by the destination.</p>
 
 #### tlast field
 
-<p>Indicates the last data word of a frame on the AXI4-Stream source interface.</p>
+<p>Indicates the last data word of a frame on the AXI4-Stream source
+interface.</p>
 
 #### tkeep field
 
-<p>Indicates which byte lanes contain valid data on the AXI4-Stream source interface.</p>
+<p>Indicates which byte lanes contain valid data on the AXI4-Stream source
+interface.</p>
 
 ### status register
 
@@ -225,7 +240,8 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 
 #### tready field
 
-<p>Indicates that the destination AXI4-Stream interface is ready to receive data.</p>
+<p>Indicates that the destination AXI4-Stream interface is ready to
+receive data.</p>
 
 ## sink register file
 
@@ -271,7 +287,9 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 
 #### tready field
 
-<p>Indicates that the AXI4-Stream sink interface is ready to accept a data transfer. Once asserted by software, the field remains asserted until a transfer occurs.</p>
+<p>Indicates that the AXI4-Stream sink interface is ready to accept a
+data transfer. Once asserted by software, the field remains asserted until
+a transfer occurs.</p>
 
 ### status register
 
@@ -289,15 +307,18 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 
 #### tvalid field
 
-<p>Indicates that the AXI4-Stream sink interface has valid data to receive.</p>
+<p>Indicates that the AXI4-Stream sink interface has valid data
+to receive.</p>
 
 #### tlast field
 
-<p>Indicates the last data word of a frame on the AXI4-Stream sink interface.</p>
+<p>Indicates the last data word of a frame on the AXI4-Stream
+sink interface.</p>
 
 #### tkeep field
 
-<p>Indicates which byte lanes contain valid data on the AXI4-Stream sink interface.</p>
+<p>Indicates which byte lanes contain valid data on the AXI4-Stream
+sink interface.</p>
 
 ## non_oetp_dma register file
 
@@ -305,7 +326,9 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 - Base Offset: 0x40
 - Size: 0x20
 
-<p>Endpoint-level DMA control and status for complete non-oETP Ethernet frames. Frame data includes the Ethernet header and payload, but excludes the preamble, Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).</p>
+<p>Endpoint-level DMA control and status for complete non-oETP Ethernet frames.
+Frame data includes the Ethernet header and payload, but excludes the preamble,
+Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).</p>
 
 |Offset|Identifier|                    Name                   |
 |------|----------|-------------------------------------------|
@@ -357,7 +380,8 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 
 #### bytes field
 
-<p>Frame length in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.</p>
+<p>Frame length in bytes. Valid non-zero values shall not exceed
+info.max_dma_frame_size_bytes.</p>
 
 ### command_status register
 
@@ -377,19 +401,30 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 
 #### request field
 
-<p>Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and transferred length of the previous request before asserting this field for the next request.</p>
+<p>Writing one requests transmission of the configured frame. The field
+remains asserted until the DMA engine accepts the request. Hardware clears
+it upon acceptance; while the channel is busy, a newly asserted request
+remains pending. Software or an RTL controller shall read the completion
+status and transferred length of the previous request before asserting this
+field for the next request.</p>
 
 #### idle field
 
-<p>Indicates that the channel has no accepted transfer in progress. Hardware deasserts this field when a request is accepted and asserts it when the transfer completes.</p>
+<p>Indicates that the channel has no accepted transfer in progress.
+Hardware deasserts this field when a request is accepted and asserts it
+when the transfer completes.</p>
 
 #### done field
 
-<p>Sticky successful-completion flag. Hardware sets this field after the accepted transfer completes successfully and clears it when the next request is accepted.</p>
+<p>Sticky successful-completion flag. Hardware sets this field after the
+accepted transfer completes successfully and clears it when the next request
+is accepted.</p>
 
 #### error field
 
-<p>Sticky error-completion flag. Hardware sets this field when the accepted transfer terminates with an error and clears it when the next request is accepted.</p>
+<p>Sticky error-completion flag. Hardware sets this field when the accepted
+transfer terminates with an error and clears it when the next request
+is accepted.</p>
 
 #### error_code field
 
@@ -412,7 +447,8 @@ Hardware clears this field when the next request is accepted.</p>
 - Base Offset: 0xC
 - Size: 0x4
 
-<p>Number of bytes transferred for the most recently accepted transmit request.</p>
+<p>Number of bytes transferred for the most recently accepted transmit
+request.</p>
 
 |Bits|Identifier|Access|Reset|                                   Name                                   |
 |----|----------|------|-----|--------------------------------------------------------------------------|
@@ -420,7 +456,8 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### bytes field
 
-<p>Actual number of bytes transferred. Hardware clears this field when the next request is accepted.</p>
+<p>Actual number of bytes transferred. Hardware clears this field when
+the next request is accepted.</p>
 
 ## rx register file
 
@@ -467,7 +504,8 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### bytes field
 
-<p>Receive-buffer capacity in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.</p>
+<p>Receive-buffer capacity in bytes. Valid non-zero values shall not exceed
+info.max_dma_frame_size_bytes.</p>
 
 ### command_status register
 
@@ -488,23 +526,39 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### request field
 
-<p>Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and received length of the previous request before asserting this field for the next request.</p>
+<p>Writing one arms reception into the configured buffer. The field remains
+asserted until the DMA engine accepts the request. Hardware clears it upon
+acceptance; while the channel is busy, a newly asserted request remains
+pending. Software or an RTL controller shall read the completion status and
+received length of the previous request before asserting this field for the
+next request.</p>
 
 #### idle field
 
-<p>Indicates that the channel has no accepted receive request in progress. After acceptance, the channel may be armed and waiting for an eligible non-oETP frame or may be writing a received frame to memory.</p>
+<p>Indicates that the channel has no accepted receive request in progress.
+After acceptance, the channel may be armed and waiting for an eligible
+non-oETP frame or may be writing a received frame to memory.</p>
 
 #### armed field
 
-<p>Indicates that the accepted receive request is waiting for an eligible non-oETP Ethernet frame. Hardware sets this field when it accepts a request and clears it when the first beat of the selected frame is accepted by the RX DMA datapath. The frame-routing logic uses this field to select the RX DMA path; otherwise an accepted non-oETP frame is directed to the CSR AXI4-Stream sink.</p>
+<p>Indicates that the accepted receive request is waiting for an eligible
+non-oETP Ethernet frame. Hardware sets this field when it accepts a request
+and clears it when the first beat of the selected frame is accepted by the
+RX DMA datapath. The frame-routing logic uses this field to select the
+RX DMA path; otherwise an accepted non-oETP frame is directed to the
+CSR AXI4-Stream sink.</p>
 
 #### done field
 
-<p>Sticky successful-completion flag. Hardware sets this field after a received frame has been written successfully and clears it when the next request is accepted.</p>
+<p>Sticky successful-completion flag. Hardware sets this field after a
+received frame has been written successfully and clears it when the next
+request is accepted.</p>
 
 #### error field
 
-<p>Sticky error-completion flag. Hardware sets this field when the accepted receive request terminates with an error and clears it when the next request is accepted.</p>
+<p>Sticky error-completion flag. Hardware sets this field when the accepted
+receive request terminates with an error and clears it when the next request
+is accepted.</p>
 
 #### error_code field
 
@@ -535,7 +589,8 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### bytes field
 
-<p>Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted.</p>
+<p>Actual number of frame bytes written to the receive buffer. Hardware
+clears this field when the next request is accepted.</p>
 
 ## irq register file
 
@@ -543,7 +598,9 @@ Hardware clears this field when the next request is accepted.</p>
 - Base Offset: 0x60
 - Size: 0x14
 
-<p>Endpoint-level interrupt control and claim interface. Interrupt events from peer DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared event FIFO.</p>
+<p>Endpoint-level interrupt control and claim interface. Interrupt events from peer
+DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared
+event FIFO.</p>
 
 |Offset| Identifier |                    Name                    |
 |------|------------|--------------------------------------------|
@@ -568,11 +625,16 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### global_enable field
 
-<p>Enables the physical endpoint IRQ output. Clearing this field masks the output but does not prevent enabled events from being queued. Event capture is controlled by irq.event_enable and, for peer DMA, by the selected peer's dma.irq_enable field.</p>
+<p>Enables the physical endpoint IRQ output. Clearing this field masks the
+output but does not prevent enabled events from being queued. Event capture is
+controlled by irq.event_enable and, for peer DMA, by the selected peer's
+dma.irq_enable field.</p>
 
 #### clear_errors field
 
-<p>Writing one requests clearing of the sticky irq.status.overflow and irq.status.invalid_complete flags. The field remains asserted until hardware accepts the request and clears it.</p>
+<p>Writing one requests clearing of the sticky irq.status.overflow and
+irq.status.invalid_complete flags. The field remains asserted until hardware
+accepts the request and clears it.</p>
 
 ### event_enable register
 
@@ -580,7 +642,9 @@ Hardware clears this field when the next request is accepted.</p>
 - Base Offset: 0x4
 - Size: 0x4
 
-<p>Enables generation of individual endpoint IRQ event classes. These fields control event capture; irq.control.global_enable only masks the physical IRQ output.</p>
+<p>Enables generation of individual endpoint IRQ event classes. These fields
+control event capture; irq.control.global_enable only masks the physical
+IRQ output.</p>
 
 |Bits|         Identifier         |Access|Reset|                                   Name                                  |
 |----|----------------------------|------|-----|-------------------------------------------------------------------------|
@@ -592,23 +656,36 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### peer_dma_complete field
 
-<p>Enables PEER_DMA_COMPLETE events. A peer event is queued only when this field and the selected peer's dma.irq_enable field were both set when the DMA request was accepted.</p>
+<p>Enables PEER_DMA_COMPLETE events. A peer event is queued only when this
+field and the selected peer's dma.irq_enable field were both set when the DMA
+request was accepted.</p>
 
 #### non_oetp_dma_tx_complete field
 
-<p>Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when it accepts a non-oETP transmit DMA request.</p>
+<p>Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when
+it accepts a non-oETP transmit DMA request.</p>
 
 #### non_oetp_dma_rx_complete field
 
-<p>Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when it accepts a non-oETP receive DMA request.</p>
+<p>Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when
+it accepts a non-oETP receive DMA request.</p>
 
 #### non_oetp_direct_tx_complete field
 
-<p>Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when the first beat of a direct transmit frame is accepted from the CSR-facing AXI4-Stream interface. When enabled, the frame start is accepted only after an IRQ FIFO credit has been reserved. The event is generated when the final beat is accepted by the oETP engine.</p>
+<p>Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when
+the first beat of a direct transmit frame is accepted from the CSR-facing
+AXI4-Stream interface. When enabled, the frame start is accepted only after an
+IRQ FIFO credit has been reserved. The event is generated when the final beat
+is accepted by the oETP engine.</p>
 
 #### non_oetp_direct_rx_available field
 
-<p>Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when the first beat of a new direct receive frame becomes valid on the CSR-facing AXI4-Stream interface. When enabled, routing logic does not expose that first TVALID until an IRQ FIFO credit is available, so the event cannot be lost. The event does not depend on TLAST and therefore supports both cut-through and frame-FIFO operation.</p>
+<p>Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when
+the first beat of a new direct receive frame becomes valid on the CSR-facing
+AXI4-Stream interface. When enabled, routing logic does not expose that first
+TVALID until an IRQ FIFO credit is available, so the event cannot be lost.
+The event does not depend on TLAST and therefore supports both cut-through and
+frame-FIFO operation.</p>
 
 ### status register
 
@@ -634,27 +711,40 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### credit_full field
 
-<p>Indicates that all event FIFO credits are occupied by queued claims or reserved for admitted operations. While no credit is available, new interrupt-enabled DMA requests are not accepted and the start of an interrupt-enabled direct AXI4-Stream frame is backpressured.</p>
+<p>Indicates that all event FIFO credits are occupied by queued claims or
+reserved for admitted operations. While no credit is available, new
+interrupt-enabled DMA requests are not accepted and the start of an
+interrupt-enabled direct AXI4-Stream frame is backpressured.</p>
 
 #### overflow field
 
-<p>Sticky internal-error flag indicating that an enabled event could not be retained. Correct credit reservation, admission control, and AXI4-Stream backpressure make this condition unreachable during normal operation. Clear with irq.control.clear_errors.</p>
+<p>Sticky internal-error flag indicating that an enabled event could not be
+retained. Correct credit reservation, admission control, and AXI4-Stream
+backpressure make this condition unreachable during normal operation. Clear with
+irq.control.clear_errors.</p>
 
 #### invalid_complete field
 
-<p>Sticky protocol-error flag indicating that irq.complete.valid was accepted while no claim was pending or that the completion token did not match the current claim. No claim is removed on a mismatch. Clear with irq.control.clear_errors.</p>
+<p>Sticky protocol-error flag indicating that irq.complete.valid was accepted
+while no claim was pending or that the completion token did not match the
+current claim. No claim is removed on a mismatch. Clear with
+irq.control.clear_errors.</p>
 
 #### irq_asserted field
 
-<p>Reflects the current value of the physical endpoint IRQ output after application of irq.control.global_enable.</p>
+<p>Reflects the current value of the physical endpoint IRQ output after
+application of irq.control.global_enable.</p>
 
 #### fifo_level field
 
-<p>Number of valid claims currently queued in the IRQ event FIFO. Values greater than 255 are reported as 255.</p>
+<p>Number of valid claims currently queued in the IRQ event FIFO. Values
+greater than 255 are reported as 255.</p>
 
 #### reserved_count field
 
-<p>Number of event FIFO credits reserved for admitted DMA operations or direct transmit frames whose events have not yet been queued. Values greater than 255 are reported as 255.</p>
+<p>Number of event FIFO credits reserved for admitted DMA operations or direct
+transmit frames whose events have not yet been queued. Values greater than 255
+are reported as 255.</p>
 
 ### claim register
 
@@ -662,7 +752,9 @@ Hardware clears this field when the next request is accepted.</p>
 - Base Offset: 0xC
 - Size: 0x4
 
-<p>Read-only view of the event at the head of the IRQ event FIFO. Reading this register has no side effect, and all fields remain stable until a matching irq.complete request removes the claim.</p>
+<p>Read-only view of the event at the head of the IRQ event FIFO. Reading this
+register has no side effect, and all fields remain stable until a matching
+irq.complete request removes the claim.</p>
 
 | Bits|Identifier|Access|Reset|                        Name                        |
 |-----|----------|------|-----|----------------------------------------------------|
@@ -673,27 +765,37 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### peer_idx field
 
-<p>Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven to zero for deterministic readback.</p>
+<p>Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through
+NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven
+to zero for deterministic readback.</p>
 
 #### source field
 
 <p>IRQ event source:<ul></p>
-<li>0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or error; peer_idx identifies the peer.</li>
-<li>1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with either success or error.</li>
-<li>2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with either success or error.</li>
-<li>3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit frame was accepted by the oETP engine.</li>
-<li>4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP receive frame is available on the CSR-facing AXI4-Stream interface.</li>
+<li>0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or
+error; peer_idx identifies the peer.</li>
+<li>1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with
+either success or error.</li>
+<li>2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with
+either success or error.</li>
+<li>3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit
+frame was accepted by the oETP engine.</li>
+<li>4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP
+receive frame is available on the CSR-facing AXI4-Stream interface.</li>
 <li>5-15: Reserved.</li>
 <p></ul>
 This field is meaningful only when valid is set.</p>
 
 #### sequence field
 
-<p>Monotonically increasing event sequence number, modulo 65536. The sequence number distinguishes otherwise identical claims and protects against stale or repeated completion requests.</p>
+<p>Monotonically increasing event sequence number, modulo 65536. The sequence
+number distinguishes otherwise identical claims and protects against stale or
+repeated completion requests.</p>
 
 #### valid field
 
-<p>Indicates that this register contains the valid event at the head of the IRQ event FIFO. When clear, all other claim fields shall be ignored.</p>
+<p>Indicates that this register contains the valid event at the head of the
+IRQ event FIFO. When clear, all other claim fields shall be ignored.</p>
 
 ### complete register
 
@@ -701,7 +803,8 @@ This field is meaningful only when valid is set.</p>
 - Base Offset: 0x10
 - Size: 0x4
 
-<p>Completion request for the current IRQ claim. Software acknowledges an event by copying the complete 32-bit irq.claim value into this register.</p>
+<p>Completion request for the current IRQ claim. Software acknowledges an event by
+copying the complete 32-bit irq.claim value into this register.</p>
 
 | Bits|Identifier|Access|Reset|                          Name                         |
 |-----|----------|------|-----|-------------------------------------------------------|
@@ -724,7 +827,10 @@ This field is meaningful only when valid is set.</p>
 
 #### valid field
 
-<p>Writing one submits the completion token. The field remains asserted until hardware validates the token and clears it. A matching token removes the current claim and releases its FIFO credit; an invalid token leaves the claim unchanged and sets irq.status.invalid_complete.</p>
+<p>Writing one submits the completion token. The field remains asserted until
+hardware validates the token and clears it. A matching token removes the current
+claim and releases its FIFO credit; an invalid token leaves the claim unchanged
+and sets irq.status.invalid_complete.</p>
 
 ## peers register file
 
@@ -747,7 +853,8 @@ This field is meaningful only when valid is set.</p>
 - Array Stride: 0x1C
 - Total Size: 0x1C
 
-<p>Register file for a single remote peer configuration and memory region information.</p>
+<p>Register file for a single remote peer configuration and memory region
+information.</p>
 
 |Offset|  Identifier  |                                   Name                                  |
 |------|--------------|-------------------------------------------------------------------------|
@@ -785,7 +892,8 @@ This field is meaningful only when valid is set.</p>
 - Base Offset: 0x8
 - Size: 0x4
 
-<p>Address offset of the virtual memory region corresponding to the remote peer's memory.</p>
+<p>Address offset of the virtual memory region corresponding to the remote
+peer's memory.</p>
 
 |Bits|Identifier|Access|Reset|                                        Name                                        |
 |----|----------|------|-----|------------------------------------------------------------------------------------|
@@ -793,7 +901,8 @@ This field is meaningful only when valid is set.</p>
 
 #### offset field
 
-<p>32-bit byte offset of the virtual memory region corresponding to the remote peer's memory. The value shall be aligned to a 32-bit word boundary.</p>
+<p>32-bit byte offset of the virtual memory region corresponding to the
+remote peer's memory. The value shall be aligned to a 32-bit word boundary.</p>
 
 ### local_address register
 
@@ -809,7 +918,8 @@ This field is meaningful only when valid is set.</p>
 
 #### base field
 
-<p>Word-aligned 32-bit start address of the local memory region for DMA transfers.</p>
+<p>Word-aligned 32-bit start address of the local memory region for
+DMA transfers.</p>
 
 ### remote_address register
 
@@ -863,32 +973,72 @@ This field is meaningful only when valid is set.</p>
 
 #### mode field
 
-<p>DMA mode for transfers to/from the remote peer:<ul></p>
-<li>0: DMA transfers to/from the remote peer are disabled.</li>
-<li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
-<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand.</li>
-<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand.</li>
+<p>DMA mode and responder access policy for the remote peer:<ul></p>
+<li>0: Disabled. Locally initiated DMA and transparent RMEM
+operations are disabled, and incoming oETP memory requests from
+this peer are rejected.</li>
+
+<li>1: Transparent RMEM mode. Accesses to the virtual RMEM region
+are translated into individual remote memory accesses. Incoming
+transparent RMEM read and write requests from this peer are
+permitted. Bulk DMA read and write requests are rejected.</li>
+
+<li>2: Mirror-to-local mode. A locally initiated DMA request fetches
+the remote memory region into the configured local memory region
+using remote DMA reads. On the responder side, incoming bulk DMA
+write requests from this peer are permitted and target the
+configured local memory region. Incoming bulk DMA read requests
+are rejected.</li>
+
+<li>3: Mirror-to-remote mode. A locally initiated DMA request sends
+the configured local memory region to the remote memory region
+using remote DMA writes. On the responder side, incoming bulk DMA
+read requests from this peer are permitted and source data from
+the configured local memory region. Incoming bulk DMA write
+requests are rejected.</li>
+
 </ul>
+<p>Consequently, a mirror relationship uses complementary modes:
+an initiator operating in mirror-to-local mode communicates with
+a responder entry configured as mirror-to-remote, while an
+initiator operating in mirror-to-remote mode communicates with a
+responder entry configured as mirror-to-local.</p>
 
 #### irq_enable field
 
-<p>Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.</p>
+<p>Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.
+Hardware samples this field together with irq.event_enable.peer_dma_complete
+when it accepts the peer DMA request. Changing the field while a transfer is
+active does not affect that transfer. Disabling the field does not affect
+DMA execution or the done, error, and error_code status fields.</p>
 
 #### request field
 
-<p>Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.</p>
+<p>Writing one requests a DMA transfer to or from the remote peer,
+according to dma.mode. The field remains asserted until the DMA engine
+accepts and snapshots the request. Hardware clears it upon acceptance;
+while a transfer for this peer is active, a newly asserted request remains
+pending. Software or an RTL controller shall read the completion status of
+the previous request before asserting this field for the next request and
+shall keep the peer configuration stable while this field is asserted.</p>
 
 #### idle field
 
-<p>Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.</p>
+<p>Indicates whether this peer has no accepted DMA request in progress.
+Hardware deasserts this field when a request is accepted and asserts it
+after all fragments of the requested block have completed.</p>
 
 #### done field
 
-<p>Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.</p>
+<p>Sticky successful-completion flag for this peer. Hardware sets this
+field after all fragments of the accepted block transfer complete
+successfully and clears it when the next request is accepted.</p>
 
 #### error field
 
-<p>Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.</p>
+<p>Sticky error-completion flag for this peer. Hardware sets this field
+if the accepted block transfer terminates with an error and clears it when
+the next request is accepted.</p>
 
 #### error_code field
 
@@ -911,7 +1061,8 @@ Hardware clears this field when the next request is accepted.</p>
 - Base Offset: 0x9C
 - Size: 0x4
 
-<p>Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.</p>
+<p>Virtual memory region for all remote peers, with offsets and sizes defined in the
+peers regfile.</p>
 
 |Offset|Identifier|                            Name                            |
 |------|----------|------------------------------------------------------------|

@@ -4037,7 +4037,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length, address=2124, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.tx.transferred_length",
-                                                rdl_desc="Number of bytes transferred for the most recently accepted transmit request.",
+                                                rdl_desc="Number of bytes transferred for the most recently accepted transmit\nrequest.",
                                                 inst_name='transferred_length',
                                                 parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length, has_sw_readable=True, has_sw_writable=False,
@@ -4091,7 +4091,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.irq.event_enable, address=2148, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.event_enable",
-                                                rdl_desc="Enables generation of individual endpoint IRQ event classes. These fields control event capture; irq.control.global_enable only masks the physical IRQ output.",
+                                                rdl_desc="Enables generation of individual endpoint IRQ event classes. These fields\ncontrol event capture; irq.control.global_enable only masks the physical\nIRQ output.",
                                                 inst_name='event_enable',
                                                 parent_full_inst_name='csr.endpoint_interface.irq')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.event_enable, has_sw_readable=True, has_sw_writable=True,
@@ -4109,7 +4109,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.irq.claim'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.irq.claim, address=2156, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.claim",
-                                                rdl_desc="Read-only view of the event at the head of the IRQ event FIFO. Reading this register has no side effect, and all fields remain stable until a matching irq.complete request removes the claim.",
+                                                rdl_desc="Read-only view of the event at the head of the IRQ event FIFO. Reading this\nregister has no side effect, and all fields remain stable until a matching\nirq.complete request removes the claim.",
                                                 inst_name='claim',
                                                 parent_full_inst_name='csr.endpoint_interface.irq')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.claim, has_sw_readable=True, has_sw_writable=False,
@@ -4118,7 +4118,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.irq.complete'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.irq.complete, address=2160, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.complete",
-                                                rdl_desc="Completion request for the current IRQ claim. Software acknowledges an event by copying the complete 32-bit irq.claim value into this register.",
+                                                rdl_desc="Completion request for the current IRQ claim. Software acknowledges an event by\ncopying the complete 32-bit irq.claim value into this register.",
                                                 inst_name='complete',
                                                 parent_full_inst_name='csr.endpoint_interface.irq')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.complete, has_sw_readable=True, has_sw_writable=True,
@@ -4136,7 +4136,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].rmem_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].rmem_address, address=2184, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
-                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[0]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[0].rmem_address, has_sw_readable=True, has_sw_writable=True,
@@ -4190,7 +4190,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].rmem_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].rmem_address, address=2212, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
-                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[1]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[1].rmem_address, has_sw_readable=True, has_sw_writable=True,
@@ -4244,7 +4244,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].rmem_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].rmem_address, address=2240, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
-                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[2]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[2].rmem_address, has_sw_readable=True, has_sw_writable=True,
@@ -4298,7 +4298,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].rmem_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].rmem_address, address=2268, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
-                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote peer\u0027s memory.",
+                                                rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[3]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[3].rmem_address, has_sw_readable=True, has_sw_writable=True,
@@ -6932,35 +6932,35 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.info.rmem_total_depth'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.rmem_total_depth, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=256,
                                              rdl_name="csr.endpoint_interface.info.rmem_total_depth[31:0]",
-                                             rdl_desc="Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.",
+                                             rdl_desc="Total depth of the shared memory region for all remote peers. This field\nreflects the RMEM_TOTAL_DEPTH parameter value.",
                                              inst_name='rmem_total_depth',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.rmem_total_depth, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.info.num_of_peers'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.num_of_peers, lsb=32, msb=42, low=32, high=42, is_volatile=False, default=4,
                                              rdl_name="csr.endpoint_interface.info.num_of_peers[42:32]",
-                                             rdl_desc="Number of remote peers supported by this openENOC Endpoint Interface instance, from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.",
+                                             rdl_desc="Number of remote peers supported by this openENOC Endpoint Interface instance,\nfrom 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.",
                                              inst_name='num_of_peers',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.num_of_peers, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.info.peer_dma_supported'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.peer_dma_supported, lsb=43, msb=43, low=43, high=43, is_volatile=False, default=1,
                                              rdl_name="csr.endpoint_interface.info.peer_dma_supported",
-                                             rdl_desc="Indicates whether DMA transfers associated with configured remote peers are supported.",
+                                             rdl_desc="Indicates whether DMA transfers associated with configured remote peers are\nsupported.",
                                              inst_name='peer_dma_supported',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.peer_dma_supported, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.info.non_oetp_dma_supported'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.non_oetp_dma_supported, lsb=44, msb=44, low=44, high=44, is_volatile=False, default=1,
                                              rdl_name="csr.endpoint_interface.info.non_oetp_dma_supported",
-                                             rdl_desc="Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet frames are supported.",
+                                             rdl_desc="Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet\nframes are supported.",
                                              inst_name='non_oetp_dma_supported',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.non_oetp_dma_supported, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.info.direct_axis_supported'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.direct_axis_supported, lsb=45, msb=45, low=45, high=45, is_volatile=False, default=1,
                                              rdl_name="csr.endpoint_interface.info.direct_axis_supported",
-                                             rdl_desc="Indicates whether direct CSR-driven AXI4-Stream access is supported for non-oETP Ethernet frames.",
+                                             rdl_desc="Indicates whether direct CSR-driven AXI4-Stream access is supported for\nnon-oETP Ethernet frames.",
                                              inst_name='direct_axis_supported',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.direct_axis_supported, is_sw_readable=True, is_sw_writable=False)
@@ -6974,14 +6974,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.info.irq_supported'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.irq_supported, lsb=47, msb=47, low=47, high=47, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.info.irq_supported",
-                                             rdl_desc="Indicates whether the endpoint interrupt output and interrupt-control logic are implemented.",
+                                             rdl_desc="Indicates whether the endpoint interrupt output and interrupt-control logic\nare implemented.",
                                              inst_name='irq_supported',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.irq_supported, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.info.max_dma_frame_size_bytes'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.max_dma_frame_size_bytes, lsb=48, msb=63, low=48, high=63, is_volatile=False, default=8192,
                                              rdl_name="csr.endpoint_interface.info.max_dma_frame_size_bytes[63:48]",
-                                             rdl_desc="Maximum size in bytes of one AXI4-Stream frame generated or consumed by the DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value. A value of zero indicates that DMA is not supported.",
+                                             rdl_desc="Maximum size in bytes of one AXI4-Stream frame generated or consumed by the\nDMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value.\nA value of zero indicates that DMA is not supported.",
                                              inst_name='max_dma_frame_size_bytes',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.max_dma_frame_size_bytes, is_sw_readable=True, is_sw_writable=False)
@@ -7002,7 +7002,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.config.non_oetp_control.receive_mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.config.non_oetp_control.receive_mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=1,
                                              rdl_name="csr.endpoint_interface.config.non_oetp_control.receive_mode[1:0]",
-                                             rdl_desc="Receive mode for non-oETP Ethernet frames:\u003cul\u003e\n\u003cli\u003e0: Drop all non-oETP Ethernet frames.\u003c/li\u003e\n\u003cli\u003e1: Filtered mode. Accept frames addressed to the configured local MAC address and Ethernet broadcast frames.\u003c/li\u003e\n\u003cli\u003e2: Multicast mode. Accept the same frames as filtered mode, plus all multicast-addressed frames.\u003c/li\u003e\n\u003cli\u003e3: Promiscuous mode. Accept all non-oETP Ethernet frames.\u003c/li\u003e\n\u003c/ul\u003e\nAn accepted frame is directed to the non-oETP RX DMA channel when that channel is armed; otherwise it is directed to the CSR AXI4-Stream sink.",
+                                             rdl_desc="Receive mode for non-oETP Ethernet frames:\u003cul\u003e\n\u003cli\u003e0: Drop all non-oETP Ethernet frames.\u003c/li\u003e\n\u003cli\u003e1: Filtered mode. Accept frames addressed to the configured local MAC\naddress and Ethernet broadcast frames.\u003c/li\u003e\n\u003cli\u003e2: Multicast mode. Accept the same frames as filtered mode, plus all\nmulticast-addressed frames.\u003c/li\u003e\n\u003cli\u003e3: Promiscuous mode. Accept all non-oETP Ethernet frames.\u003c/li\u003e\n\u003c/ul\u003e\nAn accepted frame is directed to the non-oETP RX DMA channel when that channel\nis armed; otherwise it is directed to the CSR AXI4-Stream sink.",
                                              inst_name='receive_mode',
                                              parent_full_inst_name='csr.endpoint_interface.config.non_oetp_control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.non_oetp_control.receive_mode, is_sw_readable=True, is_sw_writable=True)
@@ -7016,28 +7016,28 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.control.tvalid'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.control.tvalid, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.control.tvalid",
-                                             rdl_desc="Indicates that the AXI4-Stream source interface has valid data to send. Once asserted by software, the field remains asserted until the transfer is accepted by the destination.",
+                                             rdl_desc="Indicates that the AXI4-Stream source interface has valid data to send.\nOnce asserted by software, the field remains asserted until the transfer is\naccepted by the destination.",
                                              inst_name='tvalid',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.source.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.source.control.tvalid, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.control.tlast'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.control.tlast, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.control.tlast",
-                                             rdl_desc="Indicates the last data word of a frame on the AXI4-Stream source interface.",
+                                             rdl_desc="Indicates the last data word of a frame on the AXI4-Stream source\ninterface.",
                                              inst_name='tlast',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.source.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.source.control.tlast, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.control.tkeep'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.control.tkeep, lsb=16, msb=19, low=16, high=19, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.control.tkeep[3:0]",
-                                             rdl_desc="Indicates which byte lanes contain valid data on the AXI4-Stream source interface.",
+                                             rdl_desc="Indicates which byte lanes contain valid data on the AXI4-Stream source\ninterface.",
                                              inst_name='tkeep',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.source.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.source.control.tkeep, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.status.tready'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.status.tready, lsb=0, msb=0, low=0, high=0, is_volatile=True, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.status.tready",
-                                             rdl_desc="Indicates that the destination AXI4-Stream interface is ready to receive data.",
+                                             rdl_desc="Indicates that the destination AXI4-Stream interface is ready to\nreceive data.",
                                              inst_name='tready',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.source.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.source.status.tready, is_sw_readable=True, is_sw_writable=False)
@@ -7051,28 +7051,28 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.sink.control.tready'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.sink.control.tready, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.sink.control.tready",
-                                             rdl_desc="Indicates that the AXI4-Stream sink interface is ready to accept a data transfer. Once asserted by software, the field remains asserted until a transfer occurs.",
+                                             rdl_desc="Indicates that the AXI4-Stream sink interface is ready to accept a\ndata transfer. Once asserted by software, the field remains asserted until\na transfer occurs.",
                                              inst_name='tready',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.sink.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.control.tready, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.sink.status.tvalid'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tvalid, lsb=0, msb=0, low=0, high=0, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.axis_if.sink.status.tvalid",
-                                             rdl_desc="Indicates that the AXI4-Stream sink interface has valid data to receive.",
+                                             rdl_desc="Indicates that the AXI4-Stream sink interface has valid data\nto receive.",
                                              inst_name='tvalid',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.sink.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tvalid, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.sink.status.tlast'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tlast, lsb=8, msb=8, low=8, high=8, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.axis_if.sink.status.tlast",
-                                             rdl_desc="Indicates the last data word of a frame on the AXI4-Stream sink interface.",
+                                             rdl_desc="Indicates the last data word of a frame on the AXI4-Stream\nsink interface.",
                                              inst_name='tlast',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.sink.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tlast, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.sink.status.tkeep'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tkeep, lsb=16, msb=19, low=16, high=19, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.axis_if.sink.status.tkeep[3:0]",
-                                             rdl_desc="Indicates which byte lanes contain valid data on the AXI4-Stream sink interface.",
+                                             rdl_desc="Indicates which byte lanes contain valid data on the AXI4-Stream\nsink interface.",
                                              inst_name='tkeep',
                                              parent_full_inst_name='csr.endpoint_interface.axis_if.sink.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.axis_if.sink.status.tkeep, is_sw_readable=True, is_sw_writable=False)
@@ -7086,35 +7086,35 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes[31:0]",
-                                             rdl_desc="Frame length in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.",
+                                             rdl_desc="Frame length in bytes. Valid non-zero values shall not exceed\ninfo.max_dma_frame_size_bytes.",
                                              inst_name='bytes',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.frame_length')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.bytes, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.request",
-                                             rdl_desc="Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and transferred length of the previous request before asserting this field for the next request.",
+                                             rdl_desc="Writing one requests transmission of the configured frame. The field\nremains asserted until the DMA engine accepts the request. Hardware clears\nit upon acceptance; while the channel is busy, a newly asserted request\nremains pending. Software or an RTL controller shall read the completion\nstatus and transferred length of the previous request before asserting this\nfield for the next request.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.idle",
-                                             rdl_desc="Indicates that the channel has no accepted transfer in progress. Hardware deasserts this field when a request is accepted and asserts it when the transfer completes.",
+                                             rdl_desc="Indicates that the channel has no accepted transfer in progress.\nHardware deasserts this field when a request is accepted and asserts it\nwhen the transfer completes.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.done",
-                                             rdl_desc="Sticky successful-completion flag. Hardware sets this field after the accepted transfer completes successfully and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky successful-completion flag. Hardware sets this field after the\naccepted transfer completes successfully and clears it when the next request\nis accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.error",
-                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted transfer terminates with an error and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted\ntransfer terminates with an error and clears it when the next request\nis accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error, is_sw_readable=True, is_sw_writable=False)
@@ -7128,7 +7128,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes[31:0]",
-                                             rdl_desc="Actual number of bytes transferred. Hardware clears this field when the next request is accepted.",
+                                             rdl_desc="Actual number of bytes transferred. Hardware clears this field when\nthe next request is accepted.",
                                              inst_name='bytes',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.transferred_length')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes, is_sw_readable=True, is_sw_writable=False)
@@ -7142,42 +7142,42 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes[31:0]",
-                                             rdl_desc="Receive-buffer capacity in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.",
+                                             rdl_desc="Receive-buffer capacity in bytes. Valid non-zero values shall not exceed\ninfo.max_dma_frame_size_bytes.",
                                              inst_name='bytes',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.request",
-                                             rdl_desc="Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and received length of the previous request before asserting this field for the next request.",
+                                             rdl_desc="Writing one arms reception into the configured buffer. The field remains\nasserted until the DMA engine accepts the request. Hardware clears it upon\nacceptance; while the channel is busy, a newly asserted request remains\npending. Software or an RTL controller shall read the completion status and\nreceived length of the previous request before asserting this field for the\nnext request.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.idle",
-                                             rdl_desc="Indicates that the channel has no accepted receive request in progress. After acceptance, the channel may be armed and waiting for an eligible non-oETP frame or may be writing a received frame to memory.",
+                                             rdl_desc="Indicates that the channel has no accepted receive request in progress.\nAfter acceptance, the channel may be armed and waiting for an eligible\nnon-oETP frame or may be writing a received frame to memory.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.armed'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.armed, lsb=17, msb=17, low=17, high=17, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.armed",
-                                             rdl_desc="Indicates that the accepted receive request is waiting for an eligible non-oETP Ethernet frame. Hardware sets this field when it accepts a request and clears it when the first beat of the selected frame is accepted by the RX DMA datapath. The frame-routing logic uses this field to select the RX DMA path; otherwise an accepted non-oETP frame is directed to the CSR AXI4-Stream sink.",
+                                             rdl_desc="Indicates that the accepted receive request is waiting for an eligible\nnon-oETP Ethernet frame. Hardware sets this field when it accepts a request\nand clears it when the first beat of the selected frame is accepted by the\nRX DMA datapath. The frame-routing logic uses this field to select the\nRX DMA path; otherwise an accepted non-oETP frame is directed to the\nCSR AXI4-Stream sink.",
                                              inst_name='armed',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.armed, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.done",
-                                             rdl_desc="Sticky successful-completion flag. Hardware sets this field after a received frame has been written successfully and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky successful-completion flag. Hardware sets this field after a\nreceived frame has been written successfully and clears it when the next\nrequest is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.error",
-                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted receive request terminates with an error and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted\nreceive request terminates with an error and clears it when the next request\nis accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error, is_sw_readable=True, is_sw_writable=False)
@@ -7191,56 +7191,56 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes[31:0]",
-                                             rdl_desc="Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted.",
+                                             rdl_desc="Actual number of frame bytes written to the receive buffer. Hardware\nclears this field when the next request is accepted.",
                                              inst_name='bytes',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.received_length')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.control.global_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.control.global_enable, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.control.global_enable",
-                                             rdl_desc="Enables the physical endpoint IRQ output. Clearing this field masks the output but does not prevent enabled events from being queued. Event capture is controlled by irq.event_enable and, for peer DMA, by the selected peer\u0027s dma.irq_enable field.",
+                                             rdl_desc="Enables the physical endpoint IRQ output. Clearing this field masks the\noutput but does not prevent enabled events from being queued. Event capture is\ncontrolled by irq.event_enable and, for peer DMA, by the selected peer\u0027s\ndma.irq_enable field.",
                                              inst_name='global_enable',
                                              parent_full_inst_name='csr.endpoint_interface.irq.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.control.global_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.irq.control.clear_errors'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.control.clear_errors, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.control.clear_errors",
-                                             rdl_desc="Writing one requests clearing of the sticky irq.status.overflow and irq.status.invalid_complete flags. The field remains asserted until hardware accepts the request and clears it.",
+                                             rdl_desc="Writing one requests clearing of the sticky irq.status.overflow and\nirq.status.invalid_complete flags. The field remains asserted until hardware\naccepts the request and clears it.",
                                              inst_name='clear_errors',
                                              parent_full_inst_name='csr.endpoint_interface.irq.control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.control.clear_errors, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.peer_dma_complete'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.peer_dma_complete, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.event_enable.peer_dma_complete",
-                                             rdl_desc="Enables PEER_DMA_COMPLETE events. A peer event is queued only when this field and the selected peer\u0027s dma.irq_enable field were both set when the DMA request was accepted.",
+                                             rdl_desc="Enables PEER_DMA_COMPLETE events. A peer event is queued only when this\nfield and the selected peer\u0027s dma.irq_enable field were both set when the DMA\nrequest was accepted.",
                                              inst_name='peer_dma_complete',
                                              parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.peer_dma_complete, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete, lsb=1, msb=1, low=1, high=1, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete",
-                                             rdl_desc="Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when it accepts a non-oETP transmit DMA request.",
+                                             rdl_desc="Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when\nit accepts a non-oETP transmit DMA request.",
                                              inst_name='non_oetp_dma_tx_complete',
                                              parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete",
-                                             rdl_desc="Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when it accepts a non-oETP receive DMA request.",
+                                             rdl_desc="Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when\nit accepts a non-oETP receive DMA request.",
                                              inst_name='non_oetp_dma_rx_complete',
                                              parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete, lsb=3, msb=3, low=3, high=3, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete",
-                                             rdl_desc="Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when the first beat of a direct transmit frame is accepted from the CSR-facing AXI4-Stream interface. When enabled, the frame start is accepted only after an IRQ FIFO credit has been reserved. The event is generated when the final beat is accepted by the oETP engine.",
+                                             rdl_desc="Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when\nthe first beat of a direct transmit frame is accepted from the CSR-facing\nAXI4-Stream interface. When enabled, the frame start is accepted only after an\nIRQ FIFO credit has been reserved. The event is generated when the final beat\nis accepted by the oETP engine.",
                                              inst_name='non_oetp_direct_tx_complete',
                                              parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available, lsb=4, msb=4, low=4, high=4, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available",
-                                             rdl_desc="Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when the first beat of a new direct receive frame becomes valid on the CSR-facing AXI4-Stream interface. When enabled, routing logic does not expose that first TVALID until an IRQ FIFO credit is available, so the event cannot be lost. The event does not depend on TLAST and therefore supports both cut-through and frame-FIFO operation.",
+                                             rdl_desc="Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when\nthe first beat of a new direct receive frame becomes valid on the CSR-facing\nAXI4-Stream interface. When enabled, routing logic does not expose that first\nTVALID until an IRQ FIFO credit is available, so the event cannot be lost.\nThe event does not depend on TLAST and therefore supports both cut-through and\nframe-FIFO operation.",
                                              inst_name='non_oetp_direct_rx_available',
                                              parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available, is_sw_readable=True, is_sw_writable=True)
@@ -7254,70 +7254,70 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.irq.status.credit_full'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.credit_full, lsb=1, msb=1, low=1, high=1, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.status.credit_full",
-                                             rdl_desc="Indicates that all event FIFO credits are occupied by queued claims or reserved for admitted operations. While no credit is available, new interrupt-enabled DMA requests are not accepted and the start of an interrupt-enabled direct AXI4-Stream frame is backpressured.",
+                                             rdl_desc="Indicates that all event FIFO credits are occupied by queued claims or\nreserved for admitted operations. While no credit is available, new\ninterrupt-enabled DMA requests are not accepted and the start of an\ninterrupt-enabled direct AXI4-Stream frame is backpressured.",
                                              inst_name='credit_full',
                                              parent_full_inst_name='csr.endpoint_interface.irq.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.credit_full, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.status.overflow'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.overflow, lsb=2, msb=2, low=2, high=2, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.status.overflow",
-                                             rdl_desc="Sticky internal-error flag indicating that an enabled event could not be retained. Correct credit reservation, admission control, and AXI4-Stream backpressure make this condition unreachable during normal operation. Clear with irq.control.clear_errors.",
+                                             rdl_desc="Sticky internal-error flag indicating that an enabled event could not be\nretained. Correct credit reservation, admission control, and AXI4-Stream\nbackpressure make this condition unreachable during normal operation. Clear with\nirq.control.clear_errors.",
                                              inst_name='overflow',
                                              parent_full_inst_name='csr.endpoint_interface.irq.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.overflow, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.status.invalid_complete'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.invalid_complete, lsb=3, msb=3, low=3, high=3, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.status.invalid_complete",
-                                             rdl_desc="Sticky protocol-error flag indicating that irq.complete.valid was accepted while no claim was pending or that the completion token did not match the current claim. No claim is removed on a mismatch. Clear with irq.control.clear_errors.",
+                                             rdl_desc="Sticky protocol-error flag indicating that irq.complete.valid was accepted\nwhile no claim was pending or that the completion token did not match the\ncurrent claim. No claim is removed on a mismatch. Clear with\nirq.control.clear_errors.",
                                              inst_name='invalid_complete',
                                              parent_full_inst_name='csr.endpoint_interface.irq.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.invalid_complete, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.status.irq_asserted'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.irq_asserted, lsb=4, msb=4, low=4, high=4, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.status.irq_asserted",
-                                             rdl_desc="Reflects the current value of the physical endpoint IRQ output after application of irq.control.global_enable.",
+                                             rdl_desc="Reflects the current value of the physical endpoint IRQ output after\napplication of irq.control.global_enable.",
                                              inst_name='irq_asserted',
                                              parent_full_inst_name='csr.endpoint_interface.irq.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.irq_asserted, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.status.fifo_level'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.fifo_level, lsb=8, msb=15, low=8, high=15, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.status.fifo_level[7:0]",
-                                             rdl_desc="Number of valid claims currently queued in the IRQ event FIFO. Values greater than 255 are reported as 255.",
+                                             rdl_desc="Number of valid claims currently queued in the IRQ event FIFO. Values\ngreater than 255 are reported as 255.",
                                              inst_name='fifo_level',
                                              parent_full_inst_name='csr.endpoint_interface.irq.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.fifo_level, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.status.reserved_count'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.reserved_count, lsb=16, msb=23, low=16, high=23, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.status.reserved_count[7:0]",
-                                             rdl_desc="Number of event FIFO credits reserved for admitted DMA operations or direct transmit frames whose events have not yet been queued. Values greater than 255 are reported as 255.",
+                                             rdl_desc="Number of event FIFO credits reserved for admitted DMA operations or direct\ntransmit frames whose events have not yet been queued. Values greater than 255\nare reported as 255.",
                                              inst_name='reserved_count',
                                              parent_full_inst_name='csr.endpoint_interface.irq.status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.reserved_count, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.claim.peer_idx'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.peer_idx, lsb=0, msb=10, low=0, high=10, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.claim.peer_idx[10:0]",
-                                             rdl_desc="Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven to zero for deterministic readback.",
+                                             rdl_desc="Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through\nNUM_OF_PEERS-1. The field is not applicable to other event sources and is driven\nto zero for deterministic readback.",
                                              inst_name='peer_idx',
                                              parent_full_inst_name='csr.endpoint_interface.irq.claim')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.peer_idx, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.claim.source'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.source, lsb=11, msb=14, low=11, high=14, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.claim.source[3:0]",
-                                             rdl_desc="IRQ event source:\u003cul\u003e\n\u003cli\u003e0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or error; peer_idx identifies the peer.\u003c/li\u003e\n\u003cli\u003e1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with either success or error.\u003c/li\u003e\n\u003cli\u003e2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with either success or error.\u003c/li\u003e\n\u003cli\u003e3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit frame was accepted by the oETP engine.\u003c/li\u003e\n\u003cli\u003e4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP receive frame is available on the CSR-facing AXI4-Stream interface.\u003c/li\u003e\n\u003cli\u003e5-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nThis field is meaningful only when valid is set.",
+                                             rdl_desc="IRQ event source:\u003cul\u003e\n\u003cli\u003e0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or\nerror; peer_idx identifies the peer.\u003c/li\u003e\n\u003cli\u003e1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with\neither success or error.\u003c/li\u003e\n\u003cli\u003e2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with\neither success or error.\u003c/li\u003e\n\u003cli\u003e3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit\nframe was accepted by the oETP engine.\u003c/li\u003e\n\u003cli\u003e4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP\nreceive frame is available on the CSR-facing AXI4-Stream interface.\u003c/li\u003e\n\u003cli\u003e5-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nThis field is meaningful only when valid is set.",
                                              inst_name='source',
                                              parent_full_inst_name='csr.endpoint_interface.irq.claim')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.source, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.claim.sequence'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.sequence, lsb=15, msb=30, low=15, high=30, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.claim.sequence[15:0]",
-                                             rdl_desc="Monotonically increasing event sequence number, modulo 65536. The sequence number distinguishes otherwise identical claims and protects against stale or repeated completion requests.",
+                                             rdl_desc="Monotonically increasing event sequence number, modulo 65536. The sequence\nnumber distinguishes otherwise identical claims and protects against stale or\nrepeated completion requests.",
                                              inst_name='sequence',
                                              parent_full_inst_name='csr.endpoint_interface.irq.claim')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.sequence, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.claim.valid'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.valid, lsb=31, msb=31, low=31, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.claim.valid",
-                                             rdl_desc="Indicates that this register contains the valid event at the head of the IRQ event FIFO. When clear, all other claim fields shall be ignored.",
+                                             rdl_desc="Indicates that this register contains the valid event at the head of the\nIRQ event FIFO. When clear, all other claim fields shall be ignored.",
                                              inst_name='valid',
                                              parent_full_inst_name='csr.endpoint_interface.irq.claim')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.valid, is_sw_readable=True, is_sw_writable=False)
@@ -7345,7 +7345,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.irq.complete.valid'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.complete.valid, lsb=31, msb=31, low=31, high=31, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.complete.valid",
-                                             rdl_desc="Writing one submits the completion token. The field remains asserted until hardware validates the token and clears it. A matching token removes the current claim and releases its FIFO credit; an invalid token leaves the claim unchanged and sets irq.status.invalid_complete.",
+                                             rdl_desc="Writing one submits the completion token. The field remains asserted until\nhardware validates the token and clears it. A matching token removes the current\nclaim and releases its FIFO credit; an invalid token leaves the claim unchanged\nand sets irq.status.invalid_complete.",
                                              inst_name='valid',
                                              parent_full_inst_name='csr.endpoint_interface.irq.complete')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.complete.valid, is_sw_readable=True, is_sw_writable=True)
@@ -7366,14 +7366,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the\nremote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].local_address.base'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
-                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for DMA transfers.",
+                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for\nDMA transfers.",
                                              inst_name='base',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].local_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].local_address.base, is_sw_readable=True, is_sw_writable=True)
@@ -7394,42 +7394,42 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode and responder access policy for the remote peer:\u003cul\u003e\n\n\u003cli\u003e0: Disabled. Locally initiated DMA and transparent RMEM\noperations are disabled, and incoming oETP memory requests from\nthis peer are rejected.\u003c/li\u003e\n\n\u003cli\u003e1: Transparent RMEM mode. Accesses to the virtual RMEM region\nare translated into individual remote memory accesses. Incoming\ntransparent RMEM read and write requests from this peer are\npermitted. Bulk DMA read and write requests are rejected.\u003c/li\u003e\n\n\u003cli\u003e2: Mirror-to-local mode. A locally initiated DMA request fetches\nthe remote memory region into the configured local memory region\nusing remote DMA reads. On the responder side, incoming bulk DMA\nwrite requests from this peer are permitted and target the\nconfigured local memory region. Incoming bulk DMA read requests\nare rejected.\u003c/li\u003e\n\n\u003cli\u003e3: Mirror-to-remote mode. A locally initiated DMA request sends\nthe configured local memory region to the remote memory region\nusing remote DMA writes. On the responder side, incoming bulk DMA\nread requests from this peer are permitted and source data from\nthe configured local memory region. Incoming bulk DMA write\nrequests are rejected.\u003c/li\u003e\n\n\u003c/ul\u003e\n\nConsequently, a mirror relationship uses complementary modes:\nan initiator operating in mirror-to-local mode communicates with\na responder entry configured as mirror-to-remote, while an\ninitiator operating in mirror-to-remote mode communicates with a\nresponder entry configured as mirror-to-local.",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.mode, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer,\naccording to dma.mode. The field remains asserted until the DMA engine\naccepts and snapshots the request. Hardware clears it upon acceptance;\nwhile a transfer for this peer is active, a newly asserted request remains\npending. Software or an RTL controller shall read the completion status of\nthe previous request before asserting this field for the next request and\nshall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress.\nHardware deasserts this field when a request is accepted and asserts it\nafter all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this\nfield after all fragments of the accepted block transfer complete\nsuccessfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error, is_sw_readable=True, is_sw_writable=False)
@@ -7457,14 +7457,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the\nremote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].local_address.base'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
-                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for DMA transfers.",
+                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for\nDMA transfers.",
                                              inst_name='base',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].local_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].local_address.base, is_sw_readable=True, is_sw_writable=True)
@@ -7485,42 +7485,42 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode and responder access policy for the remote peer:\u003cul\u003e\n\n\u003cli\u003e0: Disabled. Locally initiated DMA and transparent RMEM\noperations are disabled, and incoming oETP memory requests from\nthis peer are rejected.\u003c/li\u003e\n\n\u003cli\u003e1: Transparent RMEM mode. Accesses to the virtual RMEM region\nare translated into individual remote memory accesses. Incoming\ntransparent RMEM read and write requests from this peer are\npermitted. Bulk DMA read and write requests are rejected.\u003c/li\u003e\n\n\u003cli\u003e2: Mirror-to-local mode. A locally initiated DMA request fetches\nthe remote memory region into the configured local memory region\nusing remote DMA reads. On the responder side, incoming bulk DMA\nwrite requests from this peer are permitted and target the\nconfigured local memory region. Incoming bulk DMA read requests\nare rejected.\u003c/li\u003e\n\n\u003cli\u003e3: Mirror-to-remote mode. A locally initiated DMA request sends\nthe configured local memory region to the remote memory region\nusing remote DMA writes. On the responder side, incoming bulk DMA\nread requests from this peer are permitted and source data from\nthe configured local memory region. Incoming bulk DMA write\nrequests are rejected.\u003c/li\u003e\n\n\u003c/ul\u003e\n\nConsequently, a mirror relationship uses complementary modes:\nan initiator operating in mirror-to-local mode communicates with\na responder entry configured as mirror-to-remote, while an\ninitiator operating in mirror-to-remote mode communicates with a\nresponder entry configured as mirror-to-local.",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.mode, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer,\naccording to dma.mode. The field remains asserted until the DMA engine\naccepts and snapshots the request. Hardware clears it upon acceptance;\nwhile a transfer for this peer is active, a newly asserted request remains\npending. Software or an RTL controller shall read the completion status of\nthe previous request before asserting this field for the next request and\nshall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress.\nHardware deasserts this field when a request is accepted and asserts it\nafter all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this\nfield after all fragments of the accepted block transfer complete\nsuccessfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error, is_sw_readable=True, is_sw_writable=False)
@@ -7548,14 +7548,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the\nremote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].local_address.base'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
-                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for DMA transfers.",
+                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for\nDMA transfers.",
                                              inst_name='base',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].local_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].local_address.base, is_sw_readable=True, is_sw_writable=True)
@@ -7576,42 +7576,42 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode and responder access policy for the remote peer:\u003cul\u003e\n\n\u003cli\u003e0: Disabled. Locally initiated DMA and transparent RMEM\noperations are disabled, and incoming oETP memory requests from\nthis peer are rejected.\u003c/li\u003e\n\n\u003cli\u003e1: Transparent RMEM mode. Accesses to the virtual RMEM region\nare translated into individual remote memory accesses. Incoming\ntransparent RMEM read and write requests from this peer are\npermitted. Bulk DMA read and write requests are rejected.\u003c/li\u003e\n\n\u003cli\u003e2: Mirror-to-local mode. A locally initiated DMA request fetches\nthe remote memory region into the configured local memory region\nusing remote DMA reads. On the responder side, incoming bulk DMA\nwrite requests from this peer are permitted and target the\nconfigured local memory region. Incoming bulk DMA read requests\nare rejected.\u003c/li\u003e\n\n\u003cli\u003e3: Mirror-to-remote mode. A locally initiated DMA request sends\nthe configured local memory region to the remote memory region\nusing remote DMA writes. On the responder side, incoming bulk DMA\nread requests from this peer are permitted and source data from\nthe configured local memory region. Incoming bulk DMA write\nrequests are rejected.\u003c/li\u003e\n\n\u003c/ul\u003e\n\nConsequently, a mirror relationship uses complementary modes:\nan initiator operating in mirror-to-local mode communicates with\na responder entry configured as mirror-to-remote, while an\ninitiator operating in mirror-to-remote mode communicates with a\nresponder entry configured as mirror-to-local.",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.mode, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer,\naccording to dma.mode. The field remains asserted until the DMA engine\naccepts and snapshots the request. Hardware clears it upon acceptance;\nwhile a transfer for this peer is active, a newly asserted request remains\npending. Software or an RTL controller shall read the completion status of\nthe previous request before asserting this field for the next request and\nshall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress.\nHardware deasserts this field when a request is accepted and asserts it\nafter all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this\nfield after all fragments of the accepted block transfer complete\nsuccessfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error, is_sw_readable=True, is_sw_writable=False)
@@ -7639,14 +7639,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].rmem_address.offset'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].rmem_address.offset, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]",
-                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
+                                             rdl_desc="32-bit byte offset of the virtual memory region corresponding to the\nremote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary.",
                                              inst_name='offset',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].rmem_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].rmem_address.offset, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].local_address.base'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].local_address.base, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]",
-                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for DMA transfers.",
+                                             rdl_desc="Word-aligned 32-bit start address of the local memory region for\nDMA transfers.",
                                              inst_name='base',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].local_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].local_address.base, is_sw_readable=True, is_sw_writable=True)
@@ -7667,42 +7667,42 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode and responder access policy for the remote peer:\u003cul\u003e\n\n\u003cli\u003e0: Disabled. Locally initiated DMA and transparent RMEM\noperations are disabled, and incoming oETP memory requests from\nthis peer are rejected.\u003c/li\u003e\n\n\u003cli\u003e1: Transparent RMEM mode. Accesses to the virtual RMEM region\nare translated into individual remote memory accesses. Incoming\ntransparent RMEM read and write requests from this peer are\npermitted. Bulk DMA read and write requests are rejected.\u003c/li\u003e\n\n\u003cli\u003e2: Mirror-to-local mode. A locally initiated DMA request fetches\nthe remote memory region into the configured local memory region\nusing remote DMA reads. On the responder side, incoming bulk DMA\nwrite requests from this peer are permitted and target the\nconfigured local memory region. Incoming bulk DMA read requests\nare rejected.\u003c/li\u003e\n\n\u003cli\u003e3: Mirror-to-remote mode. A locally initiated DMA request sends\nthe configured local memory region to the remote memory region\nusing remote DMA writes. On the responder side, incoming bulk DMA\nread requests from this peer are permitted and source data from\nthe configured local memory region. Incoming bulk DMA write\nrequests are rejected.\u003c/li\u003e\n\n\u003c/ul\u003e\n\nConsequently, a mirror relationship uses complementary modes:\nan initiator operating in mirror-to-local mode communicates with\na responder entry configured as mirror-to-remote, while an\ninitiator operating in mirror-to-remote mode communicates with a\nresponder entry configured as mirror-to-local.",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.mode, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer,\naccording to dma.mode. The field remains asserted until the DMA engine\naccepts and snapshots the request. Hardware clears it upon acceptance;\nwhile a transfer for this peer is active, a newly asserted request remains\npending. Software or an RTL controller shall read the completion status of\nthe previous request before asserting this field for the next request and\nshall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.request, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
-                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.",
+                                             rdl_desc="Indicates whether this peer has no accepted DMA request in progress.\nHardware deasserts this field when a request is accepted and asserts it\nafter all fragments of the requested block have completed.",
                                              inst_name='idle',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.idle, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.done'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.done, lsb=24, msb=24, low=24, high=24, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]",
-                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky successful-completion flag for this peer. Hardware sets this\nfield after all fragments of the accepted block transfer complete\nsuccessfully and clears it when the next request is accepted.",
                                              inst_name='done',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.done, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.",
+                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error, is_sw_readable=True, is_sw_writable=False)
@@ -9861,7 +9861,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.non_oetp_dma,
                                                size=32,
                                                rdl_name="csr.endpoint_interface.non_oetp_dma",
-                                               rdl_desc="Endpoint-level DMA control and status for complete non-oETP Ethernet frames. Frame data includes the Ethernet header and payload, but excludes the preamble, Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).",
+                                               rdl_desc="Endpoint-level DMA control and status for complete non-oETP Ethernet frames.\nFrame data includes the Ethernet header and payload, but excludes the preamble,\nStart Frame Delimiter (SFD), and Frame Check Sequence (FCS).",
                                                inst_name='non_oetp_dma',
                                                parent_full_inst_name='csr.endpoint_interface')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.non_oetp_dma,
@@ -9894,7 +9894,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.irq,
                                                size=20,
                                                rdl_name="csr.endpoint_interface.irq",
-                                               rdl_desc="Endpoint-level interrupt control and claim interface. Interrupt events from peer DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared event FIFO.",
+                                               rdl_desc="Endpoint-level interrupt control and claim interface. Interrupt events from peer\nDMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared\nevent FIFO.",
                                                inst_name='irq',
                                                parent_full_inst_name='csr.endpoint_interface')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.irq,
@@ -9916,7 +9916,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.peers.entry[0],
                                                size=28,
                                                rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1]",
-                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region\ninformation.",
                                                inst_name='entry[0]',
                                                parent_full_inst_name='csr.endpoint_interface.peers')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.peers.entry[0],
@@ -9927,7 +9927,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.peers.entry[1],
                                                size=28,
                                                rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1]",
-                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region\ninformation.",
                                                inst_name='entry[1]',
                                                parent_full_inst_name='csr.endpoint_interface.peers')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.peers.entry[1],
@@ -9938,7 +9938,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.peers.entry[2],
                                                size=28,
                                                rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1]",
-                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region\ninformation.",
                                                inst_name='entry[2]',
                                                parent_full_inst_name='csr.endpoint_interface.peers')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.peers.entry[2],
@@ -9949,7 +9949,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.peers.entry[3],
                                                size=28,
                                                rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1]",
-                                               rdl_desc="Register file for a single remote peer configuration and memory region information.",
+                                               rdl_desc="Register file for a single remote peer configuration and memory region\ninformation.",
                                                inst_name='entry[3]',
                                                parent_full_inst_name='csr.endpoint_interface.peers')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.peers.entry[3],
@@ -9960,7 +9960,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.rmem,
                                                size=1024,
                                                rdl_name="csr.endpoint_interface.rmem",
-                                               rdl_desc="Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.",
+                                               rdl_desc="Virtual memory region for all remote peers, with offsets and sizes defined in the\npeers regfile.",
                                                inst_name='rmem',
                                                parent_full_inst_name='csr.endpoint_interface')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.rmem,

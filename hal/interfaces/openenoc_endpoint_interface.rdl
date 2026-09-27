@@ -9,7 +9,7 @@ regfile openenoc_endpoint_interface #(
     longint unsigned HAS_NON_OETP_DMA = 1,
     longint unsigned HAS_DIRECT_AXIS = 1,
     longint unsigned HAS_RMEM = 1,
-    longint unsigned HAS_IRQ = 0,
+    longint unsigned HAS_IRQ = 1,
     string INST_NAME = "openenoc_endpoint_interface"
 ) {
     name = INST_NAME;
@@ -27,7 +27,8 @@ regfile openenoc_endpoint_interface #(
 
         field {
             name = {INST_NAME, ".info.rmem_total_depth[31:0]"};
-            desc = "Total depth of the shared memory region for all remote peers. This field reflects the RMEM_TOTAL_DEPTH parameter value.";
+            desc = "Total depth of the shared memory region for all remote peers. This field
+                reflects the RMEM_TOTAL_DEPTH parameter value.";
 
             sw = r;
             hw = r;
@@ -35,7 +36,8 @@ regfile openenoc_endpoint_interface #(
 
         field {
             name = {INST_NAME, ".info.num_of_peers[42:32]"};
-            desc = "Number of remote peers supported by this openENOC Endpoint Interface instance, from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.";
+            desc = "Number of remote peers supported by this openENOC Endpoint Interface instance,
+                from 0 to 2047. This field reflects the NUM_OF_PEERS parameter value.";
 
             sw = r;
             hw = r;
@@ -43,7 +45,8 @@ regfile openenoc_endpoint_interface #(
 
         field {
             name = {INST_NAME, ".info.peer_dma_supported"};
-            desc = "Indicates whether DMA transfers associated with configured remote peers are supported.";
+            desc = "Indicates whether DMA transfers associated with configured remote peers are
+                supported.";
 
             sw = r;
             hw = r;
@@ -51,7 +54,8 @@ regfile openenoc_endpoint_interface #(
 
         field {
             name = {INST_NAME, ".info.non_oetp_dma_supported"};
-            desc = "Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet frames are supported.";
+            desc = "Indicates whether endpoint-level DMA transfers of complete non-oETP Ethernet
+                frames are supported.";
 
             sw = r;
             hw = r;
@@ -59,7 +63,8 @@ regfile openenoc_endpoint_interface #(
 
         field {
             name = {INST_NAME, ".info.direct_axis_supported"};
-            desc = "Indicates whether direct CSR-driven AXI4-Stream access is supported for non-oETP Ethernet frames.";
+            desc = "Indicates whether direct CSR-driven AXI4-Stream access is supported for
+                non-oETP Ethernet frames.";
 
             sw = r;
             hw = r;
@@ -75,7 +80,8 @@ regfile openenoc_endpoint_interface #(
 
         field {
             name = {INST_NAME, ".info.irq_supported"};
-            desc = "Indicates whether the endpoint interrupt output and interrupt-control logic are implemented.";
+            desc = "Indicates whether the endpoint interrupt output and interrupt-control logic
+                are implemented.";
 
             sw = r;
             hw = r;
@@ -83,7 +89,9 @@ regfile openenoc_endpoint_interface #(
 
         field {
             name = {INST_NAME, ".info.max_dma_frame_size_bytes[63:48]"};
-            desc = "Maximum size in bytes of one AXI4-Stream frame generated or consumed by the DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value. A value of zero indicates that DMA is not supported.";
+            desc = "Maximum size in bytes of one AXI4-Stream frame generated or consumed by the
+                DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value.
+                A value of zero indicates that DMA is not supported.";
 
             sw = r;
             hw = r;
@@ -126,11 +134,14 @@ regfile openenoc_endpoint_interface #(
                 desc = "
                     Receive mode for non-oETP Ethernet frames:<ul>
                     <li>0: Drop all non-oETP Ethernet frames.</li>
-                    <li>1: Filtered mode. Accept frames addressed to the configured local MAC address and Ethernet broadcast frames.</li>
-                    <li>2: Multicast mode. Accept the same frames as filtered mode, plus all multicast-addressed frames.</li>
+                    <li>1: Filtered mode. Accept frames addressed to the configured local MAC
+                    address and Ethernet broadcast frames.</li>
+                    <li>2: Multicast mode. Accept the same frames as filtered mode, plus all
+                    multicast-addressed frames.</li>
                     <li>3: Promiscuous mode. Accept all non-oETP Ethernet frames.</li>
                     </ul>
-                    An accepted frame is directed to the non-oETP RX DMA channel when that channel is armed; otherwise it is directed to the CSR AXI4-Stream sink.
+                    An accepted frame is directed to the non-oETP RX DMA channel when that channel
+                    is armed; otherwise it is directed to the CSR AXI4-Stream sink.
                 ";
 
                 sw = rw;
@@ -166,7 +177,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.source.control.tvalid"};
-                    desc = "Indicates that the AXI4-Stream source interface has valid data to send. Once asserted by software, the field remains asserted until the transfer is accepted by the destination.";
+                    desc = "Indicates that the AXI4-Stream source interface has valid data to send.
+                        Once asserted by software, the field remains asserted until the transfer is
+                        accepted by the destination.";
 
                     sw = rw;
                     hw = r;
@@ -175,7 +188,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.source.control.tlast"};
-                    desc = "Indicates the last data word of a frame on the AXI4-Stream source interface.";
+                    desc = "Indicates the last data word of a frame on the AXI4-Stream source
+                        interface.";
 
                     sw = rw;
                     hw = r;
@@ -183,7 +197,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.source.control.tkeep[3:0]"};
-                    desc = "Indicates which byte lanes contain valid data on the AXI4-Stream source interface.";
+                    desc = "Indicates which byte lanes contain valid data on the AXI4-Stream source
+                        interface.";
 
                     sw = rw;
                     hw = r;
@@ -196,7 +211,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.source.status.tready"};
-                    desc = "Indicates that the destination AXI4-Stream interface is ready to receive data.";
+                    desc = "Indicates that the destination AXI4-Stream interface is ready to
+                        receive data.";
 
                     sw = r;
                     hw = w;
@@ -227,7 +243,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.sink.control.tready"};
-                    desc = "Indicates that the AXI4-Stream sink interface is ready to accept a data transfer. Once asserted by software, the field remains asserted until a transfer occurs.";
+                    desc = "Indicates that the AXI4-Stream sink interface is ready to accept a
+                        data transfer. Once asserted by software, the field remains asserted until
+                        a transfer occurs.";
 
                     sw = rw;
                     hw = r;
@@ -241,7 +259,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.sink.status.tvalid"};
-                    desc = "Indicates that the AXI4-Stream sink interface has valid data to receive.";
+                    desc = "Indicates that the AXI4-Stream sink interface has valid data
+                        to receive.";
 
                     sw = r;
                     hw = w;
@@ -249,7 +268,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.sink.status.tlast"};
-                    desc = "Indicates the last data word of a frame on the AXI4-Stream sink interface.";
+                    desc = "Indicates the last data word of a frame on the AXI4-Stream
+                        sink interface.";
 
                     sw = r;
                     hw = w;
@@ -257,7 +277,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.sink.status.tkeep[3:0]"};
-                    desc = "Indicates which byte lanes contain valid data on the AXI4-Stream sink interface.";
+                    desc = "Indicates which byte lanes contain valid data on the AXI4-Stream
+                        sink interface.";
 
                     sw = r;
                     hw = w;
@@ -268,7 +289,9 @@ regfile openenoc_endpoint_interface #(
 
     regfile non_oetp_dma {
         name = {INST_NAME, ".non_oetp_dma"};
-        desc = "Endpoint-level DMA control and status for complete non-oETP Ethernet frames. Frame data includes the Ethernet header and payload, but excludes the preamble, Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).";
+        desc = "Endpoint-level DMA control and status for complete non-oETP Ethernet frames.
+            Frame data includes the Ethernet header and payload, but excludes the preamble,
+            Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).";
 
         regfile tx {
             name = {INST_NAME, ".non_oetp_dma.tx"};
@@ -293,7 +316,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.tx.frame_length.bytes[31:0]"};
-                    desc = "Frame length in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.";
+                    desc = "Frame length in bytes. Valid non-zero values shall not exceed
+                        info.max_dma_frame_size_bytes.";
 
                     sw = rw;
                     hw = r;
@@ -306,7 +330,12 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.tx.command_status.request"};
-                    desc = "Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and transferred length of the previous request before asserting this field for the next request.";
+                    desc = "Writing one requests transmission of the configured frame. The field
+                        remains asserted until the DMA engine accepts the request. Hardware clears
+                        it upon acceptance; while the channel is busy, a newly asserted request
+                        remains pending. Software or an RTL controller shall read the completion
+                        status and transferred length of the previous request before asserting this
+                        field for the next request.";
 
                     sw = rw;
                     hw = r;
@@ -315,7 +344,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.tx.command_status.idle"};
-                    desc = "Indicates that the channel has no accepted transfer in progress. Hardware deasserts this field when a request is accepted and asserts it when the transfer completes.";
+                    desc = "Indicates that the channel has no accepted transfer in progress.
+                        Hardware deasserts this field when a request is accepted and asserts it
+                        when the transfer completes.";
 
                     sw = r;
                     hw = w;
@@ -323,7 +354,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.tx.command_status.done"};
-                    desc = "Sticky successful-completion flag. Hardware sets this field after the accepted transfer completes successfully and clears it when the next request is accepted.";
+                    desc = "Sticky successful-completion flag. Hardware sets this field after the
+                        accepted transfer completes successfully and clears it when the next request
+                        is accepted.";
 
                     sw = r;
                     hw = w;
@@ -331,7 +364,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.tx.command_status.error"};
-                    desc = "Sticky error-completion flag. Hardware sets this field when the accepted transfer terminates with an error and clears it when the next request is accepted.";
+                    desc = "Sticky error-completion flag. Hardware sets this field when the accepted
+                        transfer terminates with an error and clears it when the next request
+                        is accepted.";
 
                     sw = r;
                     hw = w;
@@ -361,11 +396,13 @@ regfile openenoc_endpoint_interface #(
 
             reg transferred_length {
                 name = {INST_NAME, ".non_oetp_dma.tx.transferred_length"};
-                desc = "Number of bytes transferred for the most recently accepted transmit request.";
+                desc = "Number of bytes transferred for the most recently accepted transmit
+                    request.";
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.tx.transferred_length.bytes[31:0]"};
-                    desc = "Actual number of bytes transferred. Hardware clears this field when the next request is accepted.";
+                    desc = "Actual number of bytes transferred. Hardware clears this field when
+                        the next request is accepted.";
 
                     sw = r;
                     hw = w;
@@ -396,7 +433,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.buffer_capacity.bytes[31:0]"};
-                    desc = "Receive-buffer capacity in bytes. Valid non-zero values shall not exceed info.max_dma_frame_size_bytes.";
+                    desc = "Receive-buffer capacity in bytes. Valid non-zero values shall not exceed
+                        info.max_dma_frame_size_bytes.";
 
                     sw = rw;
                     hw = r;
@@ -409,7 +447,12 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.command_status.request"};
-                    desc = "Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and received length of the previous request before asserting this field for the next request.";
+                    desc = "Writing one arms reception into the configured buffer. The field remains
+                        asserted until the DMA engine accepts the request. Hardware clears it upon
+                        acceptance; while the channel is busy, a newly asserted request remains
+                        pending. Software or an RTL controller shall read the completion status and
+                        received length of the previous request before asserting this field for the
+                        next request.";
 
                     sw = rw;
                     hw = r;
@@ -418,7 +461,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.command_status.idle"};
-                    desc = "Indicates that the channel has no accepted receive request in progress. After acceptance, the channel may be armed and waiting for an eligible non-oETP frame or may be writing a received frame to memory.";
+                    desc = "Indicates that the channel has no accepted receive request in progress.
+                        After acceptance, the channel may be armed and waiting for an eligible
+                        non-oETP frame or may be writing a received frame to memory.";
 
                     sw = r;
                     hw = w;
@@ -426,7 +471,12 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.command_status.armed"};
-                    desc = "Indicates that the accepted receive request is waiting for an eligible non-oETP Ethernet frame. Hardware sets this field when it accepts a request and clears it when the first beat of the selected frame is accepted by the RX DMA datapath. The frame-routing logic uses this field to select the RX DMA path; otherwise an accepted non-oETP frame is directed to the CSR AXI4-Stream sink.";
+                    desc = "Indicates that the accepted receive request is waiting for an eligible
+                        non-oETP Ethernet frame. Hardware sets this field when it accepts a request
+                        and clears it when the first beat of the selected frame is accepted by the
+                        RX DMA datapath. The frame-routing logic uses this field to select the
+                        RX DMA path; otherwise an accepted non-oETP frame is directed to the
+                        CSR AXI4-Stream sink.";
 
                     sw = r;
                     hw = w;
@@ -434,7 +484,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.command_status.done"};
-                    desc = "Sticky successful-completion flag. Hardware sets this field after a received frame has been written successfully and clears it when the next request is accepted.";
+                    desc = "Sticky successful-completion flag. Hardware sets this field after a
+                        received frame has been written successfully and clears it when the next
+                        request is accepted.";
 
                     sw = r;
                     hw = w;
@@ -442,7 +494,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.command_status.error"};
-                    desc = "Sticky error-completion flag. Hardware sets this field when the accepted receive request terminates with an error and clears it when the next request is accepted.";
+                    desc = "Sticky error-completion flag. Hardware sets this field when the accepted
+                        receive request terminates with an error and clears it when the next request
+                        is accepted.";
 
                     sw = r;
                     hw = w;
@@ -476,7 +530,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.received_length.bytes[31:0]"};
-                    desc = "Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted.";
+                    desc = "Actual number of frame bytes written to the receive buffer. Hardware
+                        clears this field when the next request is accepted.";
 
                     sw = r;
                     hw = w;
@@ -487,7 +542,9 @@ regfile openenoc_endpoint_interface #(
 
     regfile irq {
         name = {INST_NAME, ".irq"};
-        desc = "Endpoint-level interrupt control and claim interface. Interrupt events from peer DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared event FIFO.";
+        desc = "Endpoint-level interrupt control and claim interface. Interrupt events from peer
+            DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared
+            event FIFO.";
 
         reg control {
             name = {INST_NAME, ".irq.control"};
@@ -495,7 +552,10 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.control.global_enable"};
-                desc = "Enables the physical endpoint IRQ output. Clearing this field masks the output but does not prevent enabled events from being queued. Event capture is controlled by irq.event_enable and, for peer DMA, by the selected peer's dma.irq_enable field.";
+                desc = "Enables the physical endpoint IRQ output. Clearing this field masks the
+                    output but does not prevent enabled events from being queued. Event capture is
+                    controlled by irq.event_enable and, for peer DMA, by the selected peer's
+                    dma.irq_enable field.";
 
                 sw = rw;
                 hw = r;
@@ -503,7 +563,9 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.control.clear_errors"};
-                desc = "Writing one requests clearing of the sticky irq.status.overflow and irq.status.invalid_complete flags. The field remains asserted until hardware accepts the request and clears it.";
+                desc = "Writing one requests clearing of the sticky irq.status.overflow and
+                    irq.status.invalid_complete flags. The field remains asserted until hardware
+                    accepts the request and clears it.";
 
                 sw = rw;
                 hw = r;
@@ -513,11 +575,15 @@ regfile openenoc_endpoint_interface #(
 
         reg event_enable {
             name = {INST_NAME, ".irq.event_enable"};
-            desc = "Enables generation of individual endpoint IRQ event classes. These fields control event capture; irq.control.global_enable only masks the physical IRQ output.";
+            desc = "Enables generation of individual endpoint IRQ event classes. These fields
+                control event capture; irq.control.global_enable only masks the physical
+                IRQ output.";
 
             field {
                 name = {INST_NAME, ".irq.event_enable.peer_dma_complete"};
-                desc = "Enables PEER_DMA_COMPLETE events. A peer event is queued only when this field and the selected peer's dma.irq_enable field were both set when the DMA request was accepted.";
+                desc = "Enables PEER_DMA_COMPLETE events. A peer event is queued only when this
+                    field and the selected peer's dma.irq_enable field were both set when the DMA
+                    request was accepted.";
 
                 sw = rw;
                 hw = r;
@@ -525,7 +591,8 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.event_enable.non_oetp_dma_tx_complete"};
-                desc = "Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when it accepts a non-oETP transmit DMA request.";
+                desc = "Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when
+                    it accepts a non-oETP transmit DMA request.";
 
                 sw = rw;
                 hw = r;
@@ -533,7 +600,8 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.event_enable.non_oetp_dma_rx_complete"};
-                desc = "Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when it accepts a non-oETP receive DMA request.";
+                desc = "Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when
+                    it accepts a non-oETP receive DMA request.";
 
                 sw = rw;
                 hw = r;
@@ -541,7 +609,11 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.event_enable.non_oetp_direct_tx_complete"};
-                desc = "Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when the first beat of a direct transmit frame is accepted from the CSR-facing AXI4-Stream interface. When enabled, the frame start is accepted only after an IRQ FIFO credit has been reserved. The event is generated when the final beat is accepted by the oETP engine.";
+                desc = "Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when
+                    the first beat of a direct transmit frame is accepted from the CSR-facing
+                    AXI4-Stream interface. When enabled, the frame start is accepted only after an
+                    IRQ FIFO credit has been reserved. The event is generated when the final beat
+                    is accepted by the oETP engine.";
 
                 sw = rw;
                 hw = r;
@@ -549,7 +621,12 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.event_enable.non_oetp_direct_rx_available"};
-                desc = "Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when the first beat of a new direct receive frame becomes valid on the CSR-facing AXI4-Stream interface. When enabled, routing logic does not expose that first TVALID until an IRQ FIFO credit is available, so the event cannot be lost. The event does not depend on TLAST and therefore supports both cut-through and frame-FIFO operation.";
+                desc = "Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when
+                    the first beat of a new direct receive frame becomes valid on the CSR-facing
+                    AXI4-Stream interface. When enabled, routing logic does not expose that first
+                    TVALID until an IRQ FIFO credit is available, so the event cannot be lost.
+                    The event does not depend on TLAST and therefore supports both cut-through and
+                    frame-FIFO operation.";
 
                 sw = rw;
                 hw = r;
@@ -570,7 +647,10 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.status.credit_full"};
-                desc = "Indicates that all event FIFO credits are occupied by queued claims or reserved for admitted operations. While no credit is available, new interrupt-enabled DMA requests are not accepted and the start of an interrupt-enabled direct AXI4-Stream frame is backpressured.";
+                desc = "Indicates that all event FIFO credits are occupied by queued claims or
+                    reserved for admitted operations. While no credit is available, new
+                    interrupt-enabled DMA requests are not accepted and the start of an
+                    interrupt-enabled direct AXI4-Stream frame is backpressured.";
 
                 sw = r;
                 hw = w;
@@ -578,7 +658,10 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.status.overflow"};
-                desc = "Sticky internal-error flag indicating that an enabled event could not be retained. Correct credit reservation, admission control, and AXI4-Stream backpressure make this condition unreachable during normal operation. Clear with irq.control.clear_errors.";
+                desc = "Sticky internal-error flag indicating that an enabled event could not be
+                    retained. Correct credit reservation, admission control, and AXI4-Stream
+                    backpressure make this condition unreachable during normal operation. Clear with
+                    irq.control.clear_errors.";
 
                 sw = r;
                 hw = w;
@@ -586,7 +669,10 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.status.invalid_complete"};
-                desc = "Sticky protocol-error flag indicating that irq.complete.valid was accepted while no claim was pending or that the completion token did not match the current claim. No claim is removed on a mismatch. Clear with irq.control.clear_errors.";
+                desc = "Sticky protocol-error flag indicating that irq.complete.valid was accepted
+                    while no claim was pending or that the completion token did not match the
+                    current claim. No claim is removed on a mismatch. Clear with
+                    irq.control.clear_errors.";
 
                 sw = r;
                 hw = w;
@@ -594,7 +680,8 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.status.irq_asserted"};
-                desc = "Reflects the current value of the physical endpoint IRQ output after application of irq.control.global_enable.";
+                desc = "Reflects the current value of the physical endpoint IRQ output after
+                    application of irq.control.global_enable.";
 
                 sw = r;
                 hw = w;
@@ -602,7 +689,8 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.status.fifo_level[7:0]"};
-                desc = "Number of valid claims currently queued in the IRQ event FIFO. Values greater than 255 are reported as 255.";
+                desc = "Number of valid claims currently queued in the IRQ event FIFO. Values
+                    greater than 255 are reported as 255.";
 
                 sw = r;
                 hw = w;
@@ -610,7 +698,9 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.status.reserved_count[7:0]"};
-                desc = "Number of event FIFO credits reserved for admitted DMA operations or direct transmit frames whose events have not yet been queued. Values greater than 255 are reported as 255.";
+                desc = "Number of event FIFO credits reserved for admitted DMA operations or direct
+                    transmit frames whose events have not yet been queued. Values greater than 255
+                    are reported as 255.";
 
                 sw = r;
                 hw = w;
@@ -619,11 +709,15 @@ regfile openenoc_endpoint_interface #(
 
         reg claim {
             name = {INST_NAME, ".irq.claim"};
-            desc = "Read-only view of the event at the head of the IRQ event FIFO. Reading this register has no side effect, and all fields remain stable until a matching irq.complete request removes the claim.";
+            desc = "Read-only view of the event at the head of the IRQ event FIFO. Reading this
+                register has no side effect, and all fields remain stable until a matching
+                irq.complete request removes the claim.";
 
             field {
                 name = {INST_NAME, ".irq.claim.peer_idx[10:0]"};
-                desc = "Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven to zero for deterministic readback.";
+                desc = "Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through
+                    NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven
+                    to zero for deterministic readback.";
 
                 sw = r;
                 hw = w;
@@ -633,11 +727,16 @@ regfile openenoc_endpoint_interface #(
                 name = {INST_NAME, ".irq.claim.source[3:0]"};
                 desc = "
                     IRQ event source:<ul>
-                    <li>0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or error; peer_idx identifies the peer.</li>
-                    <li>1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with either success or error.</li>
-                    <li>2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with either success or error.</li>
-                    <li>3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit frame was accepted by the oETP engine.</li>
-                    <li>4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP receive frame is available on the CSR-facing AXI4-Stream interface.</li>
+                    <li>0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or
+                    error; peer_idx identifies the peer.</li>
+                    <li>1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with
+                    either success or error.</li>
+                    <li>2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with
+                    either success or error.</li>
+                    <li>3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit
+                    frame was accepted by the oETP engine.</li>
+                    <li>4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP
+                    receive frame is available on the CSR-facing AXI4-Stream interface.</li>
                     <li>5-15: Reserved.</li>
                     </ul>
                     This field is meaningful only when valid is set.
@@ -649,7 +748,9 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.claim.sequence[15:0]"};
-                desc = "Monotonically increasing event sequence number, modulo 65536. The sequence number distinguishes otherwise identical claims and protects against stale or repeated completion requests.";
+                desc = "Monotonically increasing event sequence number, modulo 65536. The sequence
+                    number distinguishes otherwise identical claims and protects against stale or
+                    repeated completion requests.";
 
                 sw = r;
                 hw = w;
@@ -657,7 +758,8 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.claim.valid"};
-                desc = "Indicates that this register contains the valid event at the head of the IRQ event FIFO. When clear, all other claim fields shall be ignored.";
+                desc = "Indicates that this register contains the valid event at the head of the
+                    IRQ event FIFO. When clear, all other claim fields shall be ignored.";
 
                 sw = r;
                 hw = w;
@@ -666,7 +768,8 @@ regfile openenoc_endpoint_interface #(
 
         reg complete {
             name = {INST_NAME, ".irq.complete"};
-            desc = "Completion request for the current IRQ claim. Software acknowledges an event by copying the complete 32-bit irq.claim value into this register.";
+            desc = "Completion request for the current IRQ claim. Software acknowledges an event by
+                copying the complete 32-bit irq.claim value into this register.";
 
             field {
                 name = {INST_NAME, ".irq.complete.peer_idx[10:0]"};
@@ -694,7 +797,10 @@ regfile openenoc_endpoint_interface #(
 
             field {
                 name = {INST_NAME, ".irq.complete.valid"};
-                desc = "Writing one submits the completion token. The field remains asserted until hardware validates the token and clears it. A matching token removes the current claim and releases its FIFO credit; an invalid token leaves the claim unchanged and sets irq.status.invalid_complete.";
+                desc = "Writing one submits the completion token. The field remains asserted until
+                    hardware validates the token and clears it. A matching token removes the current
+                    claim and releases its FIFO credit; an invalid token leaves the claim unchanged
+                    and sets irq.status.invalid_complete.";
 
                 sw = rw;
                 hw = r;
@@ -709,7 +815,8 @@ regfile openenoc_endpoint_interface #(
 
         regfile entry {
             name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1]"};
-            desc = "Register file for a single remote peer configuration and memory region information.";
+            desc = "Register file for a single remote peer configuration and memory region
+                information.";
 
             reg mac_address {
                 name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].mac_address"};
@@ -736,11 +843,13 @@ regfile openenoc_endpoint_interface #(
 
             reg rmem_address {
                 name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].rmem_address"};
-                desc = "Address offset of the virtual memory region corresponding to the remote peer's memory.";
+                desc = "Address offset of the virtual memory region corresponding to the remote
+                    peer's memory.";
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]"};
-                    desc = "32-bit byte offset of the virtual memory region corresponding to the remote peer's memory. The value shall be aligned to a 32-bit word boundary.";
+                    desc = "32-bit byte offset of the virtual memory region corresponding to the
+                        remote peer's memory. The value shall be aligned to a 32-bit word boundary.";
 
                     sw = rw;
                     hw = r;
@@ -753,7 +862,8 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]"};
-                    desc = "Word-aligned 32-bit start address of the local memory region for DMA transfers.";
+                    desc = "Word-aligned 32-bit start address of the local memory region for
+                        DMA transfers.";
 
                     sw = rw;
                     hw = r;
@@ -793,12 +903,38 @@ regfile openenoc_endpoint_interface #(
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]"};
                     desc = "
-                        DMA mode for transfers to/from the remote peer:<ul>
-                        <li>0: DMA transfers to/from the remote peer are disabled.</li>
-                        <li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
-                        <li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand.</li>
-                        <li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand.</li>
+                        DMA mode and responder access policy for the remote peer:<ul>
+
+                        <li>0: Disabled. Locally initiated DMA and transparent RMEM
+                        operations are disabled, and incoming oETP memory requests from
+                        this peer are rejected.</li>
+
+                        <li>1: Transparent RMEM mode. Accesses to the virtual RMEM region
+                        are translated into individual remote memory accesses. Incoming
+                        transparent RMEM read and write requests from this peer are
+                        permitted. Bulk DMA read and write requests are rejected.</li>
+
+                        <li>2: Mirror-to-local mode. A locally initiated DMA request fetches
+                        the remote memory region into the configured local memory region
+                        using remote DMA reads. On the responder side, incoming bulk DMA
+                        write requests from this peer are permitted and target the
+                        configured local memory region. Incoming bulk DMA read requests
+                        are rejected.</li>
+
+                        <li>3: Mirror-to-remote mode. A locally initiated DMA request sends
+                        the configured local memory region to the remote memory region
+                        using remote DMA writes. On the responder side, incoming bulk DMA
+                        read requests from this peer are permitted and source data from
+                        the configured local memory region. Incoming bulk DMA write
+                        requests are rejected.</li>
+
                         </ul>
+
+                        Consequently, a mirror relationship uses complementary modes:
+                        an initiator operating in mirror-to-local mode communicates with
+                        a responder entry configured as mirror-to-remote, while an
+                        initiator operating in mirror-to-remote mode communicates with a
+                        responder entry configured as mirror-to-local.
                     ";
 
                     sw = rw;
@@ -807,7 +943,11 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable"};
-                    desc = "Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.";
+                    desc = "Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.
+                        Hardware samples this field together with irq.event_enable.peer_dma_complete
+                        when it accepts the peer DMA request. Changing the field while a transfer is
+                        active does not affect that transfer. Disabling the field does not affect
+                        DMA execution or the done, error, and error_code status fields.";
 
                     sw = rw;
                     hw = r;
@@ -815,7 +955,13 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]"};
-                    desc = "Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.";
+                    desc = "Writing one requests a DMA transfer to or from the remote peer,
+                        according to dma.mode. The field remains asserted until the DMA engine
+                        accepts and snapshots the request. Hardware clears it upon acceptance;
+                        while a transfer for this peer is active, a newly asserted request remains
+                        pending. Software or an RTL controller shall read the completion status of
+                        the previous request before asserting this field for the next request and
+                        shall keep the peer configuration stable while this field is asserted.";
 
                     sw = rw;
                     hw = r;
@@ -824,7 +970,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]"};
-                    desc = "Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed.";
+                    desc = "Indicates whether this peer has no accepted DMA request in progress.
+                        Hardware deasserts this field when a request is accepted and asserts it
+                        after all fragments of the requested block have completed.";
 
                     sw = r;
                     hw = w;
@@ -832,7 +980,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]"};
-                    desc = "Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted.";
+                    desc = "Sticky successful-completion flag for this peer. Hardware sets this
+                        field after all fragments of the accepted block transfer complete
+                        successfully and clears it when the next request is accepted.";
 
                     sw = r;
                     hw = w;
@@ -840,7 +990,9 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]"};
-                    desc = "Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted.";
+                    desc = "Sticky error-completion flag for this peer. Hardware sets this field
+                        if the accepted block transfer terminates with an error and clears it when
+                        the next request is accepted.";
 
                     sw = r;
                     hw = w;
@@ -872,7 +1024,8 @@ regfile openenoc_endpoint_interface #(
 
     external regfile rmem {
         name = {INST_NAME, ".rmem"};
-        desc = "Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.";
+        desc = "Virtual memory region for all remote peers, with offsets and sizes defined in the
+            peers regfile.";
 
         reg word {
             name = {INST_NAME, ".rmem.word[0..RMEM_TOTAL_DEPTH-1]"};
