@@ -14,9 +14,11 @@ accesses through a single request slot and waits while Python/cocotb services
 the corresponding AXI4-Lite transaction. The cocotb simulator thread remains
 free to advance RTL and service other endpoints.
 
-The current integration runs the existing, unchanged `csr_smoke` firmware on
-Spike while the endpoint crossbar, DMEM, generated CSR block, endpoint logic,
-and AXIS loopback remain RTL simulated by Verilator.
+The integration runs the existing, unchanged `csr_smoke` firmware on Spike
+while the endpoint crossbar, DMEM, generated CSR block, endpoint logic, and
+AXIS loopback remain RTL simulated by Verilator. A dedicated `iss_startup`
+firmware also qualifies the platform's data initialization, BSS clearing,
+read-only data, and stack behavior.
 
 ## Prerequisites
 
@@ -41,6 +43,7 @@ them in this order before running an RTL target:
 ```bash
 source /path/to/oss-cad-suite/environment
 source venv/bin/activate
+pip install -r dv/requirements.txt
 ```
 
 ## Build And Check
@@ -60,6 +63,7 @@ targets include:
 make -C dv/iss processor-smoke
 make -C dv/iss c-api-smoke
 make -C dv/iss python-smoke
+make -C dv/iss elf-smoke
 ```
 
 Run the short Spike-to-RTL DMEM test with:
@@ -73,6 +77,13 @@ endpoint with:
 
 ```bash
 make -C dv/iss rtl-firmware-smoke
+```
+
+Qualify the real bare-metal startup path with initialized data, dirty BSS, and
+stack traffic through RTL DMEM:
+
+```bash
+make -C dv/iss rtl-startup-smoke
 ```
 
 Run every native, Python, and RTL check with:
@@ -98,6 +109,21 @@ The supported upstream commit and initial CPU profile are recorded in
 `compatibility.json`. The build rejects a submodule checked out at a different
 commit.
 
+## ELF Loading
+
+The Python loader accepts only ELF32 little-endian RISC-V executables matching
+the RV32I soft-float profile and 16-byte stack ABI. It validates program-header
+bounds, address overflow, segment alignment and overlap, supported memory
+regions, and an executable entry point before exposing an immutable boot
+image.
+
+Only file-backed bytes from `PT_LOAD` segments are copied into private ISS
+IMEM, using each segment's physical/load address (`p_paddr`). Writable data
+keeps its DMEM runtime address (`p_vaddr`), so `boot.s` must copy `.data` from
+IMEM to RTL DMEM. The loader does not initialize the remaining `p_memsz`
+bytes, which leaves `.bss` clearing to `boot.s`. Completion addresses are read
+from ELF symbols rather than fixed testbench constants.
+
 ## Current Profile
 
 - RV32I, machine privilege mode, one hart per endpoint handle.
@@ -106,5 +132,4 @@ commit.
 - RTL CSR aperture at `0x20000000-0x20001fff`.
 - One pending 1-, 2-, or 4-byte data request per endpoint.
 - No interrupts and no external instruction fetches.
-- Raw firmware images are copied into private IMEM; ELF validation and symbol
-	extraction are the next loader milestone.
+- Validated ELF entry points, load segments, and symbols drive firmware tests.

@@ -4,5 +4,6 @@
 cocotb
 cocotb-test
 cocotbext-axi
+pyelftools
 pytest
 
