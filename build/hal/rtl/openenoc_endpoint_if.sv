@@ -177,6 +177,90 @@ interface openenoc_endpoint_if #
 
     typedef struct {
         logic hwclr;
+    } core_to_csr__irq__control__clear_errors_t;
+
+    typedef struct {
+        core_to_csr__irq__control__clear_errors_t clear_errors;
+    } core_to_csr__irq__control_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__irq__status__claim_pending_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__irq__status__credit_full_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__irq__status__overflow_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__irq__status__invalid_complete_t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__irq__status__irq_asserted_t;
+
+    typedef struct {
+        logic [7:0] next;
+    } core_to_csr__irq__status__fifo_level_t;
+
+    typedef struct {
+        logic [7:0] next;
+    } core_to_csr__irq__status__reserved_count_t;
+
+    typedef struct {
+        core_to_csr__irq__status__claim_pending_t claim_pending;
+        core_to_csr__irq__status__credit_full_t credit_full;
+        core_to_csr__irq__status__overflow_t overflow;
+        core_to_csr__irq__status__invalid_complete_t invalid_complete;
+        core_to_csr__irq__status__irq_asserted_t irq_asserted;
+        core_to_csr__irq__status__fifo_level_t fifo_level;
+        core_to_csr__irq__status__reserved_count_t reserved_count;
+    } core_to_csr__irq__status_t;
+
+    typedef struct {
+        logic [10:0] next;
+    } core_to_csr__irq__claim__peer_idx_t;
+
+    typedef struct {
+        logic [3:0] next;
+    } core_to_csr__irq__claim__source_t;
+
+    typedef struct {
+        logic [15:0] next;
+    } core_to_csr__irq__claim__sequence__t;
+
+    typedef struct {
+        logic next;
+    } core_to_csr__irq__claim__valid_t;
+
+    typedef struct {
+        core_to_csr__irq__claim__peer_idx_t peer_idx;
+        core_to_csr__irq__claim__source_t source;
+        core_to_csr__irq__claim__sequence__t sequence_;
+        core_to_csr__irq__claim__valid_t valid;
+    } core_to_csr__irq__claim_t;
+
+    typedef struct {
+        logic hwclr;
+    } core_to_csr__irq__complete__valid_t;
+
+    typedef struct {
+        core_to_csr__irq__complete__valid_t valid;
+    } core_to_csr__irq__complete_t;
+
+    typedef struct {
+        core_to_csr__irq__control_t control;
+        core_to_csr__irq__status_t status;
+        core_to_csr__irq__claim_t claim;
+        core_to_csr__irq__complete_t complete;
+    } core_to_csr__irq_t;
+
+    typedef struct {
+        logic hwclr;
     } core_to_csr__peers__entry__dma__request_t;
 
     typedef struct {
@@ -220,6 +304,7 @@ interface openenoc_endpoint_if #
     typedef struct {
         core_to_csr__axis_if_t axis_if;
         core_to_csr__non_oetp_dma_t non_oetp_dma;
+        core_to_csr__irq_t irq;
         core_to_csr__peers_t peers;
         core_to_csr__rmem_t rmem;
     } core_to_csr_t;
@@ -407,6 +492,76 @@ interface openenoc_endpoint_if #
     } csr_to_core__non_oetp_dma_t;
 
     typedef struct {
+        logic value;
+    } csr_to_core__irq__control__global_enable_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__irq__control__clear_errors_t;
+
+    typedef struct {
+        csr_to_core__irq__control__global_enable_t global_enable;
+        csr_to_core__irq__control__clear_errors_t clear_errors;
+    } csr_to_core__irq__control_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__irq__event_enable__peer_dma_complete_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__irq__event_enable__non_oetp_dma_tx_complete_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__irq__event_enable__non_oetp_dma_rx_complete_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__irq__event_enable__non_oetp_direct_tx_complete_t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__irq__event_enable__non_oetp_direct_rx_available_t;
+
+    typedef struct {
+        csr_to_core__irq__event_enable__peer_dma_complete_t peer_dma_complete;
+        csr_to_core__irq__event_enable__non_oetp_dma_tx_complete_t non_oetp_dma_tx_complete;
+        csr_to_core__irq__event_enable__non_oetp_dma_rx_complete_t non_oetp_dma_rx_complete;
+        csr_to_core__irq__event_enable__non_oetp_direct_tx_complete_t non_oetp_direct_tx_complete;
+        csr_to_core__irq__event_enable__non_oetp_direct_rx_available_t non_oetp_direct_rx_available;
+    } csr_to_core__irq__event_enable_t;
+
+    typedef struct {
+        logic [10:0] value;
+    } csr_to_core__irq__complete__peer_idx_t;
+
+    typedef struct {
+        logic [3:0] value;
+    } csr_to_core__irq__complete__source_t;
+
+    typedef struct {
+        logic [15:0] value;
+    } csr_to_core__irq__complete__sequence__t;
+
+    typedef struct {
+        logic value;
+    } csr_to_core__irq__complete__valid_t;
+
+    typedef struct {
+        csr_to_core__irq__complete__peer_idx_t peer_idx;
+        csr_to_core__irq__complete__source_t source;
+        csr_to_core__irq__complete__sequence__t sequence_;
+        csr_to_core__irq__complete__valid_t valid;
+    } csr_to_core__irq__complete_t;
+
+    typedef struct {
+        csr_to_core__irq__control_t control;
+        csr_to_core__irq__event_enable_t event_enable;
+        csr_to_core__irq__complete_t complete;
+    } csr_to_core__irq_t;
+
+    typedef struct {
         logic [31:0] value;
     } csr_to_core__peers__entry__mac_address__lo_word_t;
 
@@ -457,10 +612,15 @@ interface openenoc_endpoint_if #
 
     typedef struct {
         logic value;
+    } csr_to_core__peers__entry__dma__irq_enable_t;
+
+    typedef struct {
+        logic value;
     } csr_to_core__peers__entry__dma__request_t;
 
     typedef struct {
         csr_to_core__peers__entry__dma__mode_t mode;
+        csr_to_core__peers__entry__dma__irq_enable_t irq_enable;
         csr_to_core__peers__entry__dma__request_t request;
     } csr_to_core__peers__entry__dma_t;
 
@@ -490,6 +650,7 @@ interface openenoc_endpoint_if #
         csr_to_core__config__t config_;
         csr_to_core__axis_if_t axis_if;
         csr_to_core__non_oetp_dma_t non_oetp_dma;
+        csr_to_core__irq_t irq;
         csr_to_core__peers_t peers;
         csr_to_core__rmem_t rmem;
     } csr_to_core_t;

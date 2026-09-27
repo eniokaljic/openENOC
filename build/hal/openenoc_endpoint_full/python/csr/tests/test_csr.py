@@ -103,6 +103,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.irq'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers'):
             
             
@@ -277,6 +282,31 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             
             self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.control'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.control.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
             
@@ -2028,6 +2058,116 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.irq.control.global_enable'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.control.global_enable.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.control.clear_errors'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.control.clear_errors.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.peer_dma_complete'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.peer_dma_complete.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.claim_pending'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.claim_pending.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.credit_full'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.credit_full.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.overflow'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.overflow.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.invalid_complete'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.invalid_complete.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.irq_asserted'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.irq_asserted.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.fifo_level'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.fifo_level.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.reserved_count'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.reserved_count.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.peer_idx'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.peer_idx.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.source'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.source.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.sequence'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.sequence.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.valid'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.valid.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.peer_idx'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.peer_idx.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.source'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.source.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.sequence'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.sequence.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.valid'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.valid.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
             
             
@@ -2062,6 +2202,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.mode.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.irq_enable'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.irq_enable.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.request'):
             
@@ -2123,6 +2268,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.mode.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.irq_enable'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.irq_enable.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.request'):
             
             
@@ -2183,6 +2333,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.mode.udp,{})
             
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.irq_enable'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.irq_enable.udp,{})
+            
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.request'):
             
             
@@ -2242,6 +2397,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             
             
             self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.mode.udp,{})
+            
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.irq_enable'):
+            
+            
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.irq_enable.udp,{})
             
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.request'):
             
@@ -3919,6 +4079,51 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length, has_sw_readable=True, has_sw_writable=False,
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set([ ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.irq.control'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.control, address=2144, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.irq.control",
+                                                rdl_desc="Global interrupt-output control and interrupt-controller maintenance requests.",
+                                                inst_name='control',
+                                                parent_full_inst_name='csr.endpoint_interface.irq')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.control, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['global_enable','clear_errors', ]),
+                                                                                          writeable_fields=set(['global_enable','clear_errors', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.event_enable, address=2148, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.irq.event_enable",
+                                                rdl_desc="Enables generation of individual endpoint IRQ event classes. These fields control event capture; irq.control.global_enable only masks the physical IRQ output.",
+                                                inst_name='event_enable',
+                                                parent_full_inst_name='csr.endpoint_interface.irq')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.event_enable, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['peer_dma_complete','non_oetp_dma_tx_complete','non_oetp_dma_rx_complete','non_oetp_direct_tx_complete','non_oetp_direct_rx_available', ]),
+                                                                                          writeable_fields=set(['peer_dma_complete','non_oetp_dma_tx_complete','non_oetp_dma_rx_complete','non_oetp_direct_tx_complete','non_oetp_direct_rx_available', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.status, address=2152, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.irq.status",
+                                                rdl_desc="Status of the endpoint IRQ event FIFO and its reservation mechanism.",
+                                                inst_name='status',
+                                                parent_full_inst_name='csr.endpoint_interface.irq')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.status, has_sw_readable=True, has_sw_writable=False,
+                                                                                          readable_fields=set(['claim_pending','credit_full','overflow','invalid_complete','irq_asserted','fifo_level','reserved_count', ]),
+                                                                                          writeable_fields=set([ ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.claim, address=2156, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.irq.claim",
+                                                rdl_desc="Read-only view of the event at the head of the IRQ event FIFO. Reading this register has no side effect, and all fields remain stable until a matching irq.complete request removes the claim.",
+                                                inst_name='claim',
+                                                parent_full_inst_name='csr.endpoint_interface.irq')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.claim, has_sw_readable=True, has_sw_writable=False,
+                                                                                          readable_fields=set(['peer_idx','source','sequence','valid', ]),
+                                                                                          writeable_fields=set([ ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.complete, address=2160, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.irq.complete",
+                                                rdl_desc="Completion request for the current IRQ claim. Software acknowledges an event by copying the complete 32-bit irq.claim value into this register.",
+                                                inst_name='complete',
+                                                parent_full_inst_name='csr.endpoint_interface.irq')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.complete, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['peer_idx','source','sequence','valid', ]),
+                                                                                          writeable_fields=set(['peer_idx','source','sequence','valid', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].mac_address, address=2176, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
@@ -3971,8 +4176,8 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[0]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[0].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].mac_address, address=2204, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
@@ -4025,8 +4230,8 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[1]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[1].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].mac_address, address=2232, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
@@ -4079,8 +4284,8 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[2]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[2].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].mac_address, address=2260, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
@@ -4133,8 +4338,8 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[3]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[3].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0]'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.rmem.word[0], address=3072, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1]",
@@ -6888,7 +7093,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.request",
-                                             rdl_desc="Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.",
+                                             rdl_desc="Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and transferred length of the previous request before asserting this field for the next request.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request, is_sw_readable=True, is_sw_writable=True)
@@ -6944,7 +7149,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.request",
-                                             rdl_desc="Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.",
+                                             rdl_desc="Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and received length of the previous request before asserting this field for the next request.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request, is_sw_readable=True, is_sw_writable=True)
@@ -6990,6 +7195,160 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='bytes',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.received_length')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.control.global_enable'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.control.global_enable, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.control.global_enable",
+                                             rdl_desc="Enables the physical endpoint IRQ output. Clearing this field masks the output but does not prevent enabled events from being queued. Event capture is controlled by irq.event_enable and, for peer DMA, by the selected peer\u0027s dma.irq_enable field.",
+                                             inst_name='global_enable',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.control')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.control.global_enable, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.control.clear_errors'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.control.clear_errors, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.control.clear_errors",
+                                             rdl_desc="Writing one requests clearing of the sticky irq.status.overflow and irq.status.invalid_complete flags. The field remains asserted until hardware accepts the request and clears it.",
+                                             inst_name='clear_errors',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.control')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.control.clear_errors, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.peer_dma_complete'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.peer_dma_complete, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.event_enable.peer_dma_complete",
+                                             rdl_desc="Enables PEER_DMA_COMPLETE events. A peer event is queued only when this field and the selected peer\u0027s dma.irq_enable field were both set when the DMA request was accepted.",
+                                             inst_name='peer_dma_complete',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.peer_dma_complete, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete, lsb=1, msb=1, low=1, high=1, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete",
+                                             rdl_desc="Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when it accepts a non-oETP transmit DMA request.",
+                                             inst_name='non_oetp_dma_tx_complete',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete",
+                                             rdl_desc="Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when it accepts a non-oETP receive DMA request.",
+                                             inst_name='non_oetp_dma_rx_complete',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete, lsb=3, msb=3, low=3, high=3, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete",
+                                             rdl_desc="Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when the first beat of a direct transmit frame is accepted from the CSR-facing AXI4-Stream interface. When enabled, the frame start is accepted only after an IRQ FIFO credit has been reserved. The event is generated when the final beat is accepted by the oETP engine.",
+                                             inst_name='non_oetp_direct_tx_complete',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available, lsb=4, msb=4, low=4, high=4, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available",
+                                             rdl_desc="Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when the first beat of a new direct receive frame becomes valid on the CSR-facing AXI4-Stream interface. When enabled, routing logic does not expose that first TVALID until an IRQ FIFO credit is available, so the event cannot be lost. The event does not depend on TLAST and therefore supports both cut-through and frame-FIFO operation.",
+                                             inst_name='non_oetp_direct_rx_available',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.status.claim_pending'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.claim_pending, lsb=0, msb=0, low=0, high=0, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.status.claim_pending",
+                                             rdl_desc="Indicates that at least one valid event is available in irq.claim.",
+                                             inst_name='claim_pending',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.claim_pending, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.status.credit_full'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.credit_full, lsb=1, msb=1, low=1, high=1, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.status.credit_full",
+                                             rdl_desc="Indicates that all event FIFO credits are occupied by queued claims or reserved for admitted operations. While no credit is available, new interrupt-enabled DMA requests are not accepted and the start of an interrupt-enabled direct AXI4-Stream frame is backpressured.",
+                                             inst_name='credit_full',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.credit_full, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.status.overflow'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.overflow, lsb=2, msb=2, low=2, high=2, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.status.overflow",
+                                             rdl_desc="Sticky internal-error flag indicating that an enabled event could not be retained. Correct credit reservation, admission control, and AXI4-Stream backpressure make this condition unreachable during normal operation. Clear with irq.control.clear_errors.",
+                                             inst_name='overflow',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.overflow, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.status.invalid_complete'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.invalid_complete, lsb=3, msb=3, low=3, high=3, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.status.invalid_complete",
+                                             rdl_desc="Sticky protocol-error flag indicating that irq.complete.valid was accepted while no claim was pending or that the completion token did not match the current claim. No claim is removed on a mismatch. Clear with irq.control.clear_errors.",
+                                             inst_name='invalid_complete',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.invalid_complete, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.status.irq_asserted'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.irq_asserted, lsb=4, msb=4, low=4, high=4, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.status.irq_asserted",
+                                             rdl_desc="Reflects the current value of the physical endpoint IRQ output after application of irq.control.global_enable.",
+                                             inst_name='irq_asserted',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.irq_asserted, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.status.fifo_level'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.fifo_level, lsb=8, msb=15, low=8, high=15, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.status.fifo_level[7:0]",
+                                             rdl_desc="Number of valid claims currently queued in the IRQ event FIFO. Values greater than 255 are reported as 255.",
+                                             inst_name='fifo_level',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.fifo_level, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.status.reserved_count'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.reserved_count, lsb=16, msb=23, low=16, high=23, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.status.reserved_count[7:0]",
+                                             rdl_desc="Number of event FIFO credits reserved for admitted DMA operations or direct transmit frames whose events have not yet been queued. Values greater than 255 are reported as 255.",
+                                             inst_name='reserved_count',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.status.reserved_count, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.claim.peer_idx'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.peer_idx, lsb=0, msb=10, low=0, high=10, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.claim.peer_idx[10:0]",
+                                             rdl_desc="Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven to zero for deterministic readback.",
+                                             inst_name='peer_idx',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.claim')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.peer_idx, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.claim.source'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.source, lsb=11, msb=14, low=11, high=14, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.claim.source[3:0]",
+                                             rdl_desc="IRQ event source:\u003cul\u003e\n\u003cli\u003e0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or error; peer_idx identifies the peer.\u003c/li\u003e\n\u003cli\u003e1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with either success or error.\u003c/li\u003e\n\u003cli\u003e2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with either success or error.\u003c/li\u003e\n\u003cli\u003e3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit frame was accepted by the oETP engine.\u003c/li\u003e\n\u003cli\u003e4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP receive frame is available on the CSR-facing AXI4-Stream interface.\u003c/li\u003e\n\u003cli\u003e5-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nThis field is meaningful only when valid is set.",
+                                             inst_name='source',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.claim')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.source, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.claim.sequence'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.sequence, lsb=15, msb=30, low=15, high=30, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.claim.sequence[15:0]",
+                                             rdl_desc="Monotonically increasing event sequence number, modulo 65536. The sequence number distinguishes otherwise identical claims and protects against stale or repeated completion requests.",
+                                             inst_name='sequence',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.claim')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.sequence, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.claim.valid'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.valid, lsb=31, msb=31, low=31, high=31, is_volatile=True, default=None,
+                                             rdl_name="csr.endpoint_interface.irq.claim.valid",
+                                             rdl_desc="Indicates that this register contains the valid event at the head of the IRQ event FIFO. When clear, all other claim fields shall be ignored.",
+                                             inst_name='valid',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.claim')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.valid, is_sw_readable=True, is_sw_writable=False)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.complete.peer_idx'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.complete.peer_idx, lsb=0, msb=10, low=0, high=10, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.complete.peer_idx[10:0]",
+                                             rdl_desc="Peer-index portion of the claim token.",
+                                             inst_name='peer_idx',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.complete')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.complete.peer_idx, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.complete.source'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.complete.source, lsb=11, msb=14, low=11, high=14, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.complete.source[3:0]",
+                                             rdl_desc="Event-source portion of the claim token.",
+                                             inst_name='source',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.complete')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.complete.source, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.complete.sequence'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.complete.sequence, lsb=15, msb=30, low=15, high=30, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.complete.sequence[15:0]",
+                                             rdl_desc="Sequence-number portion of the claim token.",
+                                             inst_name='sequence',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.complete')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.complete.sequence, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.complete.valid'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.complete.valid, lsb=31, msb=31, low=31, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.complete.valid",
+                                             rdl_desc="Writing one submits the completion token. The field remains asserted until hardware validates the token and clears it. A matching token removes the current claim and releases its FIFO credit; an invalid token leaves the claim unchanged and sets irq.status.invalid_complete.",
+                                             inst_name='valid',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.complete')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.complete.valid, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].mac_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]",
@@ -7035,14 +7394,21 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.irq_enable'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             inst_name='irq_enable',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.request, is_sw_readable=True, is_sw_writable=True)
@@ -7119,14 +7485,21 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.irq_enable'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             inst_name='irq_enable',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.request, is_sw_readable=True, is_sw_writable=True)
@@ -7203,14 +7576,21 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.irq_enable'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             inst_name='irq_enable',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.request, is_sw_readable=True, is_sw_writable=True)
@@ -7287,14 +7667,21 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]",
-                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e",
+                                             rdl_desc="DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand.\u003c/li\u003e\n\u003c/ul\u003e",
                                              inst_name='mode',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.irq_enable'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.",
+                                             inst_name='irq_enable',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.request'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.request, lsb=8, msb=8, low=8, high=8, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]",
-                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.",
+                                             rdl_desc="Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.",
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.request, is_sw_readable=True, is_sw_writable=True)
@@ -9425,7 +9812,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._test_regfile_iterators(dut=self.dut.endpoint_interface,
                                          writeable_registers=NodeIterators(),
                                          readable_registers=NodeIterators('info',),
-                                         sections=NodeIterators('config','axis_if','non_oetp_dma','peers','rmem',))
+                                         sections=NodeIterators('config','axis_if','non_oetp_dma','irq','peers','rmem',))
         with self.subTest(msg='regfile: csr.endpoint_interface.config'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.config,
                                                size=12,
@@ -9502,6 +9889,17 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.non_oetp_dma.rx,
                                          writeable_registers=NodeIterators('buffer_address','buffer_capacity','command_status',),
                                          readable_registers=NodeIterators('buffer_address','buffer_capacity','command_status','received_length',),
+                                         sections=NodeIterators())
+        with self.subTest(msg='regfile: csr.endpoint_interface.irq'):
+            self._single_regfile_property_test(dut=self.dut.endpoint_interface.irq,
+                                               size=20,
+                                               rdl_name="csr.endpoint_interface.irq",
+                                               rdl_desc="Endpoint-level interrupt control and claim interface. Interrupt events from peer DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared event FIFO.",
+                                               inst_name='irq',
+                                               parent_full_inst_name='csr.endpoint_interface')
+            self._test_regfile_iterators(dut=self.dut.endpoint_interface.irq,
+                                         writeable_registers=NodeIterators('control','event_enable','complete',),
+                                         readable_registers=NodeIterators('control','event_enable','status','claim','complete',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: csr.endpoint_interface.peers'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.peers,

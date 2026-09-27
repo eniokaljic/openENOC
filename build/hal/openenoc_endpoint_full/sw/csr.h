@@ -11,16 +11,16 @@ extern "C" {
 #include <assert.h>
 
 // Parameters from the csr SystemRDL addrmap
-#define CSR__NUM_OF_PEERS             UINT64_C(4)
-#define CSR__RMEM_TOTAL_DEPTH         UINT64_C(256)
-#define CSR__MAX_DMA_FRAME_SIZE_BYTES UINT64_C(8192)
-#define CSR__HAS_PEER_DMA             UINT64_C(1)
-#define CSR__HAS_NON_OETP_DMA         UINT64_C(1)
-#define CSR__HAS_DIRECT_AXIS          UINT64_C(1)
-#define CSR__HAS_RMEM                 UINT64_C(1)
-#define CSR__HAS_IRQ                  UINT64_C(0)
-#define CSR__NUM_OF_INTERFACES        UINT64_C(4)
-#define CSR__TABLE_DEPTH              UINT64_C(8)
+#define CSR__NUM_OF_PEERS             UINT32_C(4)
+#define CSR__RMEM_TOTAL_DEPTH         UINT32_C(256)
+#define CSR__MAX_DMA_FRAME_SIZE_BYTES UINT32_C(8192)
+#define CSR__HAS_PEER_DMA             UINT32_C(1)
+#define CSR__HAS_NON_OETP_DMA         UINT32_C(1)
+#define CSR__HAS_DIRECT_AXIS          UINT32_C(1)
+#define CSR__HAS_RMEM                 UINT32_C(1)
+#define CSR__HAS_IRQ                  UINT32_C(0)
+#define CSR__NUM_OF_INTERFACES        UINT32_C(4)
+#define CSR__TABLE_DEPTH              UINT32_C(8)
 
 // reg - csr.test_reg
 #define CSR__TEST_REG__TEST_FIELD_bm 0xffffffff
@@ -422,6 +422,154 @@ typedef struct __attribute__ ((__packed__)) {
     csr__endpoint_interface__non_oetp_dma__rx_t rx;
 } csr__endpoint_interface__non_oetp_dma_t;
 
+// reg - csr.endpoint_interface.irq.control
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__GLOBAL_ENABLE_bm 0x1
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__GLOBAL_ENABLE_bp 0
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__GLOBAL_ENABLE_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__GLOBAL_ENABLE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__CLEAR_ERRORS_bm 0x100
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__CLEAR_ERRORS_bp 8
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__CLEAR_ERRORS_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__CONTROL__CLEAR_ERRORS_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t global_enable :1;
+        uint32_t :7;
+        uint32_t clear_errors :1;
+        uint32_t :23;
+    } f;
+    uint32_t w;
+} csr__endpoint_interface__irq__control_t;
+
+// reg - csr.endpoint_interface.irq.event_enable
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__PEER_DMA_COMPLETE_bm 0x1
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__PEER_DMA_COMPLETE_bp 0
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__PEER_DMA_COMPLETE_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__PEER_DMA_COMPLETE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_TX_COMPLETE_bm 0x2
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_TX_COMPLETE_bp 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_TX_COMPLETE_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_TX_COMPLETE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_RX_COMPLETE_bm 0x4
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_RX_COMPLETE_bp 2
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_RX_COMPLETE_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DMA_RX_COMPLETE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_TX_COMPLETE_bm 0x8
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_TX_COMPLETE_bp 3
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_TX_COMPLETE_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_TX_COMPLETE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_RX_AVAILABLE_bm 0x10
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_RX_AVAILABLE_bp 4
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_RX_AVAILABLE_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__EVENT_ENABLE__NON_OETP_DIRECT_RX_AVAILABLE_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t peer_dma_complete :1;
+        uint32_t non_oetp_dma_tx_complete :1;
+        uint32_t non_oetp_dma_rx_complete :1;
+        uint32_t non_oetp_direct_tx_complete :1;
+        uint32_t non_oetp_direct_rx_available :1;
+        uint32_t :27;
+    } f;
+    uint32_t w;
+} csr__endpoint_interface__irq__event_enable_t;
+
+// reg - csr.endpoint_interface.irq.status
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__CLAIM_PENDING_bm 0x1
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__CLAIM_PENDING_bp 0
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__CLAIM_PENDING_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__CREDIT_FULL_bm 0x2
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__CREDIT_FULL_bp 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__CREDIT_FULL_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__OVERFLOW_bm 0x4
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__OVERFLOW_bp 2
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__OVERFLOW_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__INVALID_COMPLETE_bm 0x8
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__INVALID_COMPLETE_bp 3
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__INVALID_COMPLETE_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__IRQ_ASSERTED_bm 0x10
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__IRQ_ASSERTED_bp 4
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__IRQ_ASSERTED_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__FIFO_LEVEL_bm 0xff00
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__FIFO_LEVEL_bp 8
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__FIFO_LEVEL_bw 8
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__RESERVED_COUNT_bm 0xff0000
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__RESERVED_COUNT_bp 16
+#define CSR__ENDPOINT_INTERFACE__IRQ__STATUS__RESERVED_COUNT_bw 8
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t claim_pending :1;
+        uint32_t credit_full :1;
+        uint32_t overflow :1;
+        uint32_t invalid_complete :1;
+        uint32_t irq_asserted :1;
+        uint32_t :3;
+        uint32_t fifo_level :8;
+        uint32_t reserved_count :8;
+        uint32_t :8;
+    } f;
+    uint32_t w;
+} csr__endpoint_interface__irq__status_t;
+
+// reg - csr.endpoint_interface.irq.claim
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__PEER_IDX_bm 0x7ff
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__PEER_IDX_bp 0
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__PEER_IDX_bw 11
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SOURCE_bm 0x7800
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SOURCE_bp 11
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SOURCE_bw 4
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQUENCE_bm 0x7fff8000
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQUENCE_bp 15
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQUENCE_bw 16
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__VALID_bm 0x80000000
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__VALID_bp 31
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__VALID_bw 1
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t peer_idx :11;
+        uint32_t source :4;
+        uint32_t sequence :16;
+        uint32_t valid :1;
+    } f;
+    uint32_t w;
+} csr__endpoint_interface__irq__claim_t;
+
+// reg - csr.endpoint_interface.irq.complete
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__PEER_IDX_bm 0x7ff
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__PEER_IDX_bp 0
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__PEER_IDX_bw 11
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__PEER_IDX_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SOURCE_bm 0x7800
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SOURCE_bp 11
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SOURCE_bw 4
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SOURCE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_bm 0x7fff8000
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_bp 15
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_bw 16
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__VALID_bm 0x80000000
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__VALID_bp 31
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__VALID_bw 1
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__VALID_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t peer_idx :11;
+        uint32_t source :4;
+        uint32_t sequence :16;
+        uint32_t valid :1;
+    } f;
+    uint32_t w;
+} csr__endpoint_interface__irq__complete_t;
+
+// regfile - csr.endpoint_interface.irq
+typedef struct __attribute__ ((__packed__)) {
+    csr__endpoint_interface__irq__control_t control;
+    csr__endpoint_interface__irq__event_enable_t event_enable;
+    csr__endpoint_interface__irq__status_t status;
+    csr__endpoint_interface__irq__claim_t claim;
+    csr__endpoint_interface__irq__complete_t complete;
+} csr__endpoint_interface__irq_t;
+
 // reg - csr.endpoint_interface.peers.entry[].mac_address
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__MAC_ADDRESS__LO_WORD_bm 0xffffffff
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__MAC_ADDRESS__LO_WORD_bp 0
@@ -486,6 +634,10 @@ typedef union {
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__MODE_bm 0x3
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__MODE_bp 0
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__MODE_bw 2
+#define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__IRQ_ENABLE_bm 0x4
+#define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__IRQ_ENABLE_bp 2
+#define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__IRQ_ENABLE_bw 1
+#define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__IRQ_ENABLE_reset 0x0
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__REQUEST_bm 0x100
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__REQUEST_bp 8
 #define CSR__ENDPOINT_INTERFACE__PEERS__ENTRYX__DMA__REQUEST_bw 1
@@ -505,7 +657,8 @@ typedef union {
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t mode :2;
-        uint32_t :6;
+        uint32_t irq_enable :1;
+        uint32_t :5;
         uint32_t request :1;
         uint32_t :7;
         uint32_t idle :1;
@@ -558,7 +711,8 @@ typedef struct __attribute__ ((__packed__)) {
     csr__endpoint_interface__axis_if_t axis_if;
     uint8_t RESERVED_3c_3f[0x4];
     csr__endpoint_interface__non_oetp_dma_t non_oetp_dma;
-    uint8_t RESERVED_60_7f[0x20];
+    csr__endpoint_interface__irq_t irq;
+    uint8_t RESERVED_74_7f[0xc];
     csr__endpoint_interface__peers_t peers;
     uint8_t RESERVED_f0_3ff[0x310];
     csr__endpoint_interface__rmem_t rmem;

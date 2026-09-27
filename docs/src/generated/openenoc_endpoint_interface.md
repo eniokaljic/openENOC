@@ -9,7 +9,7 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 
 - Absolute Address: 0x0
 - Base Offset: 0x0
-- Size: 0x80
+- Size: 0xA0
 
 <p>Control and status address map for an openENOC Endpoint Interface instance.</p>
 
@@ -21,7 +21,7 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 
 - Absolute Address: 0x0
 - Base Offset: 0x0
-- Size: 0x80
+- Size: 0xA0
 
 <p>Control and status register file for an openENOC Endpoint Interface instance.</p>
 
@@ -31,8 +31,9 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 | 0x10 |   config   |   openenoc_endpoint_interface.config   |
 | 0x20 |   axis_if  |   openenoc_endpoint_interface.axis_if  |
 | 0x40 |non_oetp_dma|openenoc_endpoint_interface.non_oetp_dma|
-| 0x60 |    peers   |    openenoc_endpoint_interface.peers   |
-| 0x7C |    rmem    |    openenoc_endpoint_interface.rmem    |
+| 0x60 |     irq    |     openenoc_endpoint_interface.irq    |
+| 0x80 |    peers   |    openenoc_endpoint_interface.peers   |
+| 0x9C |    rmem    |    openenoc_endpoint_interface.rmem    |
 
 ### info register
 
@@ -376,7 +377,7 @@ An accepted frame is directed to the non-oETP RX DMA channel when that channel i
 
 #### request field
 
-<p>Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.</p>
+<p>Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and transferred length of the previous request before asserting this field for the next request.</p>
 
 #### idle field
 
@@ -487,7 +488,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 #### request field
 
-<p>Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.</p>
+<p>Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and received length of the previous request before asserting this field for the next request.</p>
 
 #### idle field
 
@@ -536,10 +537,199 @@ Hardware clears this field when the next request is accepted.</p>
 
 <p>Actual number of frame bytes written to the receive buffer. Hardware clears this field when the next request is accepted.</p>
 
-## peers register file
+## irq register file
 
 - Absolute Address: 0x60
 - Base Offset: 0x60
+- Size: 0x14
+
+<p>Endpoint-level interrupt control and claim interface. Interrupt events from peer DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared event FIFO.</p>
+
+|Offset| Identifier |                    Name                    |
+|------|------------|--------------------------------------------|
+| 0x00 |   control  |   openenoc_endpoint_interface.irq.control  |
+| 0x04 |event_enable|openenoc_endpoint_interface.irq.event_enable|
+| 0x08 |   status   |   openenoc_endpoint_interface.irq.status   |
+| 0x0C |    claim   |    openenoc_endpoint_interface.irq.claim   |
+| 0x10 |  complete  |  openenoc_endpoint_interface.irq.complete  |
+
+### control register
+
+- Absolute Address: 0x60
+- Base Offset: 0x0
+- Size: 0x4
+
+<p>Global interrupt-output control and interrupt-controller maintenance requests.</p>
+
+|Bits|  Identifier |Access|Reset|                         Name                        |
+|----|-------------|------|-----|-----------------------------------------------------|
+|  0 |global_enable|  rw  | 0x0 |openenoc_endpoint_interface.irq.control.global_enable|
+|  8 | clear_errors|  rw  | 0x0 | openenoc_endpoint_interface.irq.control.clear_errors|
+
+#### global_enable field
+
+<p>Enables the physical endpoint IRQ output. Clearing this field masks the output but does not prevent enabled events from being queued. Event capture is controlled by irq.event_enable and, for peer DMA, by the selected peer's dma.irq_enable field.</p>
+
+#### clear_errors field
+
+<p>Writing one requests clearing of the sticky irq.status.overflow and irq.status.invalid_complete flags. The field remains asserted until hardware accepts the request and clears it.</p>
+
+### event_enable register
+
+- Absolute Address: 0x64
+- Base Offset: 0x4
+- Size: 0x4
+
+<p>Enables generation of individual endpoint IRQ event classes. These fields control event capture; irq.control.global_enable only masks the physical IRQ output.</p>
+
+|Bits|         Identifier         |Access|Reset|                                   Name                                  |
+|----|----------------------------|------|-----|-------------------------------------------------------------------------|
+|  0 |      peer_dma_complete     |  rw  | 0x0 |      openenoc_endpoint_interface.irq.event_enable.peer_dma_complete     |
+|  1 |  non_oetp_dma_tx_complete  |  rw  | 0x0 |  openenoc_endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete  |
+|  2 |  non_oetp_dma_rx_complete  |  rw  | 0x0 |  openenoc_endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete  |
+|  3 | non_oetp_direct_tx_complete|  rw  | 0x0 | openenoc_endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete|
+|  4 |non_oetp_direct_rx_available|  rw  | 0x0 |openenoc_endpoint_interface.irq.event_enable.non_oetp_direct_rx_available|
+
+#### peer_dma_complete field
+
+<p>Enables PEER_DMA_COMPLETE events. A peer event is queued only when this field and the selected peer's dma.irq_enable field were both set when the DMA request was accepted.</p>
+
+#### non_oetp_dma_tx_complete field
+
+<p>Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when it accepts a non-oETP transmit DMA request.</p>
+
+#### non_oetp_dma_rx_complete field
+
+<p>Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when it accepts a non-oETP receive DMA request.</p>
+
+#### non_oetp_direct_tx_complete field
+
+<p>Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when the first beat of a direct transmit frame is accepted from the CSR-facing AXI4-Stream interface. When enabled, the frame start is accepted only after an IRQ FIFO credit has been reserved. The event is generated when the final beat is accepted by the oETP engine.</p>
+
+#### non_oetp_direct_rx_available field
+
+<p>Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when the first beat of a new direct receive frame becomes valid on the CSR-facing AXI4-Stream interface. When enabled, routing logic does not expose that first TVALID until an IRQ FIFO credit is available, so the event cannot be lost. The event does not depend on TLAST and therefore supports both cut-through and frame-FIFO operation.</p>
+
+### status register
+
+- Absolute Address: 0x68
+- Base Offset: 0x8
+- Size: 0x4
+
+<p>Status of the endpoint IRQ event FIFO and its reservation mechanism.</p>
+
+| Bits|   Identifier   |Access|Reset|                           Name                           |
+|-----|----------------|------|-----|----------------------------------------------------------|
+|  0  |  claim_pending |   r  |  —  |   openenoc_endpoint_interface.irq.status.claim_pending   |
+|  1  |   credit_full  |   r  |  —  |    openenoc_endpoint_interface.irq.status.credit_full    |
+|  2  |    overflow    |   r  |  —  |      openenoc_endpoint_interface.irq.status.overflow     |
+|  3  |invalid_complete|   r  |  —  |  openenoc_endpoint_interface.irq.status.invalid_complete |
+|  4  |  irq_asserted  |   r  |  —  |    openenoc_endpoint_interface.irq.status.irq_asserted   |
+| 15:8|   fifo_level   |   r  |  —  |  openenoc_endpoint_interface.irq.status.fifo_level[7:0]  |
+|23:16| reserved_count |   r  |  —  |openenoc_endpoint_interface.irq.status.reserved_count[7:0]|
+
+#### claim_pending field
+
+<p>Indicates that at least one valid event is available in irq.claim.</p>
+
+#### credit_full field
+
+<p>Indicates that all event FIFO credits are occupied by queued claims or reserved for admitted operations. While no credit is available, new interrupt-enabled DMA requests are not accepted and the start of an interrupt-enabled direct AXI4-Stream frame is backpressured.</p>
+
+#### overflow field
+
+<p>Sticky internal-error flag indicating that an enabled event could not be retained. Correct credit reservation, admission control, and AXI4-Stream backpressure make this condition unreachable during normal operation. Clear with irq.control.clear_errors.</p>
+
+#### invalid_complete field
+
+<p>Sticky protocol-error flag indicating that irq.complete.valid was accepted while no claim was pending or that the completion token did not match the current claim. No claim is removed on a mismatch. Clear with irq.control.clear_errors.</p>
+
+#### irq_asserted field
+
+<p>Reflects the current value of the physical endpoint IRQ output after application of irq.control.global_enable.</p>
+
+#### fifo_level field
+
+<p>Number of valid claims currently queued in the IRQ event FIFO. Values greater than 255 are reported as 255.</p>
+
+#### reserved_count field
+
+<p>Number of event FIFO credits reserved for admitted DMA operations or direct transmit frames whose events have not yet been queued. Values greater than 255 are reported as 255.</p>
+
+### claim register
+
+- Absolute Address: 0x6C
+- Base Offset: 0xC
+- Size: 0x4
+
+<p>Read-only view of the event at the head of the IRQ event FIFO. Reading this register has no side effect, and all fields remain stable until a matching irq.complete request removes the claim.</p>
+
+| Bits|Identifier|Access|Reset|                        Name                        |
+|-----|----------|------|-----|----------------------------------------------------|
+| 10:0| peer_idx |   r  |  —  |openenoc_endpoint_interface.irq.claim.peer_idx[10:0]|
+|14:11|  source  |   r  |  —  |  openenoc_endpoint_interface.irq.claim.source[3:0] |
+|30:15| sequence |   r  |  —  |openenoc_endpoint_interface.irq.claim.sequence[15:0]|
+|  31 |   valid  |   r  |  —  |     openenoc_endpoint_interface.irq.claim.valid    |
+
+#### peer_idx field
+
+<p>Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven to zero for deterministic readback.</p>
+
+#### source field
+
+<p>IRQ event source:<ul></p>
+<li>0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or error; peer_idx identifies the peer.</li>
+<li>1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with either success or error.</li>
+<li>2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with either success or error.</li>
+<li>3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit frame was accepted by the oETP engine.</li>
+<li>4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP receive frame is available on the CSR-facing AXI4-Stream interface.</li>
+<li>5-15: Reserved.</li>
+<p></ul>
+This field is meaningful only when valid is set.</p>
+
+#### sequence field
+
+<p>Monotonically increasing event sequence number, modulo 65536. The sequence number distinguishes otherwise identical claims and protects against stale or repeated completion requests.</p>
+
+#### valid field
+
+<p>Indicates that this register contains the valid event at the head of the IRQ event FIFO. When clear, all other claim fields shall be ignored.</p>
+
+### complete register
+
+- Absolute Address: 0x70
+- Base Offset: 0x10
+- Size: 0x4
+
+<p>Completion request for the current IRQ claim. Software acknowledges an event by copying the complete 32-bit irq.claim value into this register.</p>
+
+| Bits|Identifier|Access|Reset|                          Name                         |
+|-----|----------|------|-----|-------------------------------------------------------|
+| 10:0| peer_idx |  rw  | 0x0 |openenoc_endpoint_interface.irq.complete.peer_idx[10:0]|
+|14:11|  source  |  rw  | 0x0 |  openenoc_endpoint_interface.irq.complete.source[3:0] |
+|30:15| sequence |  rw  | 0x0 |openenoc_endpoint_interface.irq.complete.sequence[15:0]|
+|  31 |   valid  |  rw  | 0x0 |     openenoc_endpoint_interface.irq.complete.valid    |
+
+#### peer_idx field
+
+<p>Peer-index portion of the claim token.</p>
+
+#### source field
+
+<p>Event-source portion of the claim token.</p>
+
+#### sequence field
+
+<p>Sequence-number portion of the claim token.</p>
+
+#### valid field
+
+<p>Writing one submits the completion token. The field remains asserted until hardware validates the token and clears it. A matching token removes the current claim and releases its FIFO credit; an invalid token leaves the claim unchanged and sets irq.status.invalid_complete.</p>
+
+## peers register file
+
+- Absolute Address: 0x80
+- Base Offset: 0x80
 - Size: 0x1C
 
 <p>Register file for remote peer configuration and memory region information.</p>
@@ -550,7 +740,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ## entry register file
 
-- Absolute Address: 0x60
+- Absolute Address: 0x80
 - Base Offset: 0x0
 - Size: 0x1C
 - Array Dimensions: [1]
@@ -570,7 +760,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ### mac_address register
 
-- Absolute Address: 0x60
+- Absolute Address: 0x80
 - Base Offset: 0x0
 - Size: 0x8
 
@@ -591,7 +781,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ### rmem_address register
 
-- Absolute Address: 0x68
+- Absolute Address: 0x88
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -607,7 +797,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ### local_address register
 
-- Absolute Address: 0x6C
+- Absolute Address: 0x8C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -623,7 +813,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ### remote_address register
 
-- Absolute Address: 0x70
+- Absolute Address: 0x90
 - Base Offset: 0x10
 - Size: 0x4
 
@@ -639,7 +829,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ### size register
 
-- Absolute Address: 0x74
+- Absolute Address: 0x94
 - Base Offset: 0x14
 - Size: 0x4
 
@@ -655,7 +845,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ### dma register
 
-- Absolute Address: 0x78
+- Absolute Address: 0x98
 - Base Offset: 0x18
 - Size: 0x4
 
@@ -664,6 +854,7 @@ Hardware clears this field when the next request is accepted.</p>
 | Bits|Identifier|Access|Reset|                                      Name                                      |
 |-----|----------|------|-----|--------------------------------------------------------------------------------|
 | 1:0 |   mode   |  rw  |  —  |    openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]    |
+|  2  |irq_enable|  rw  | 0x0 |    openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable   |
 |  8  |  request |  rw  | 0x0 |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]  |
 |  16 |   idle   |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]   |
 |  24 |   done   |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]   |
@@ -675,13 +866,17 @@ Hardware clears this field when the next request is accepted.</p>
 <p>DMA mode for transfers to/from the remote peer:<ul></p>
 <li>0: DMA transfers to/from the remote peer are disabled.</li>
 <li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
-<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
-<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+<li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand.</li>
+<li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand.</li>
 </ul>
+
+#### irq_enable field
+
+<p>Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.</p>
 
 #### request field
 
-<p>Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.</p>
+<p>Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.</p>
 
 #### idle field
 
@@ -712,8 +907,8 @@ Hardware clears this field when the next request is accepted.</p>
 
 ## rmem register file
 
-- Absolute Address: 0x7C
-- Base Offset: 0x7C
+- Absolute Address: 0x9C
+- Base Offset: 0x9C
 - Size: 0x4
 
 <p>Virtual memory region for all remote peers, with offsets and sizes defined in the peers regfile.</p>
@@ -724,7 +919,7 @@ Hardware clears this field when the next request is accepted.</p>
 
 ### word register
 
-- Absolute Address: 0x7C
+- Absolute Address: 0x9C
 - Base Offset: 0x0
 - Size: 0x4
 - Array Dimensions: [1]

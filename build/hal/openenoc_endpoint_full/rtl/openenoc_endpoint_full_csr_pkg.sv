@@ -177,6 +177,90 @@ package openenoc_endpoint_full_csr_pkg;
 
     typedef struct {
         logic hwclr;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__clear_errors__in_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__clear_errors__in_t clear_errors;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__claim_pending__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__credit_full__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__overflow__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__invalid_complete__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__irq_asserted__in_t;
+
+    typedef struct {
+        logic [7:0] next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__fifo_level__in_t;
+
+    typedef struct {
+        logic [7:0] next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__reserved_count__in_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__claim_pending__in_t claim_pending;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__credit_full__in_t credit_full;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__overflow__in_t overflow;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__invalid_complete__in_t invalid_complete;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__irq_asserted__in_t irq_asserted;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__fifo_level__in_t fifo_level;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__reserved_count__in_t reserved_count;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__in_t;
+
+    typedef struct {
+        logic [10:0] next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__peer_idx__in_t;
+
+    typedef struct {
+        logic [3:0] next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__source__in_t;
+
+    typedef struct {
+        logic [15:0] next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__sequence__in_t;
+
+    typedef struct {
+        logic next;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__valid__in_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__peer_idx__in_t peer_idx;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__source__in_t source;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__sequence__in_t sequence_;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__valid__in_t valid;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__in_t;
+
+    typedef struct {
+        logic hwclr;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__valid__in_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__valid__in_t valid;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__in_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__in_t control;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__status__in_t status;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__claim__in_t claim;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__in_t complete;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__in_t;
+
+    typedef struct {
+        logic hwclr;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__dma__request__in_t;
 
     typedef struct {
@@ -220,6 +304,7 @@ package openenoc_endpoint_full_csr_pkg;
     typedef struct {
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__in_t axis_if;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__non_oetp_dma__in_t non_oetp_dma;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__in_t irq;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__in_t peers;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__rmem__external__in_t rmem;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__in_t;
@@ -462,6 +547,76 @@ package openenoc_endpoint_full_csr_pkg;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__non_oetp_dma__out_t;
 
     typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__global_enable__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__clear_errors__out_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__global_enable__out_t global_enable;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__clear_errors__out_t clear_errors;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__peer_dma_complete__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_dma_tx_complete__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_dma_rx_complete__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_direct_tx_complete__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_direct_rx_available__out_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__peer_dma_complete__out_t peer_dma_complete;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_dma_tx_complete__out_t non_oetp_dma_tx_complete;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_dma_rx_complete__out_t non_oetp_dma_rx_complete;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_direct_tx_complete__out_t non_oetp_direct_tx_complete;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__non_oetp_direct_rx_available__out_t non_oetp_direct_rx_available;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__out_t;
+
+    typedef struct {
+        logic [10:0] value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__peer_idx__out_t;
+
+    typedef struct {
+        logic [3:0] value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__source__out_t;
+
+    typedef struct {
+        logic [15:0] value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__sequence__out_t;
+
+    typedef struct {
+        logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__valid__out_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__peer_idx__out_t peer_idx;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__source__out_t source;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__sequence__out_t sequence_;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__valid__out_t valid;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__out_t;
+
+    typedef struct {
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__control__out_t control;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__event_enable__out_t event_enable;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__complete__out_t complete;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__out_t;
+
+    typedef struct {
         logic [31:0] value;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__mac_address__lo_word__out_t;
 
@@ -512,10 +667,15 @@ package openenoc_endpoint_full_csr_pkg;
 
     typedef struct {
         logic value;
+    } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__dma__irq_enable__out_t;
+
+    typedef struct {
+        logic value;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__dma__request__out_t;
 
     typedef struct {
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__dma__mode__out_t mode;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__dma__irq_enable__out_t irq_enable;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__dma__request__out_t request;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__entry__dma__out_t;
 
@@ -545,6 +705,7 @@ package openenoc_endpoint_full_csr_pkg;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__config__out_t config_;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__axis_if__out_t axis_if;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__non_oetp_dma__out_t non_oetp_dma;
+        openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__irq__out_t irq;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__peers__out_t peers;
         openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__rmem__external__out_t rmem;
     } openenoc_endpoint_interface_NUM_OF_PEERS_4_INST_NAME_297ba874__out_t;

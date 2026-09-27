@@ -306,7 +306,7 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.tx.command_status.request"};
-                    desc = "Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.";
+                    desc = "Writing one requests transmission of the configured frame. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and transferred length of the previous request before asserting this field for the next request.";
 
                     sw = rw;
                     hw = r;
@@ -409,7 +409,7 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".non_oetp_dma.rx.command_status.request"};
-                    desc = "Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending.";
+                    desc = "Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and received length of the previous request before asserting this field for the next request.";
 
                     sw = rw;
                     hw = r;
@@ -484,6 +484,224 @@ regfile openenoc_endpoint_interface #(
             } received_length;
         } rx;
     } non_oetp_dma;
+
+    regfile irq {
+        name = {INST_NAME, ".irq"};
+        desc = "Endpoint-level interrupt control and claim interface. Interrupt events from peer DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared event FIFO.";
+
+        reg control {
+            name = {INST_NAME, ".irq.control"};
+            desc = "Global interrupt-output control and interrupt-controller maintenance requests.";
+
+            field {
+                name = {INST_NAME, ".irq.control.global_enable"};
+                desc = "Enables the physical endpoint IRQ output. Clearing this field masks the output but does not prevent enabled events from being queued. Event capture is controlled by irq.event_enable and, for peer DMA, by the selected peer's dma.irq_enable field.";
+
+                sw = rw;
+                hw = r;
+            } global_enable[0:0] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.control.clear_errors"};
+                desc = "Writing one requests clearing of the sticky irq.status.overflow and irq.status.invalid_complete flags. The field remains asserted until hardware accepts the request and clears it.";
+
+                sw = rw;
+                hw = r;
+                hwclr = true;
+            } clear_errors[8:8] = 0;
+        } control;
+
+        reg event_enable {
+            name = {INST_NAME, ".irq.event_enable"};
+            desc = "Enables generation of individual endpoint IRQ event classes. These fields control event capture; irq.control.global_enable only masks the physical IRQ output.";
+
+            field {
+                name = {INST_NAME, ".irq.event_enable.peer_dma_complete"};
+                desc = "Enables PEER_DMA_COMPLETE events. A peer event is queued only when this field and the selected peer's dma.irq_enable field were both set when the DMA request was accepted.";
+
+                sw = rw;
+                hw = r;
+            } peer_dma_complete[0:0] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.event_enable.non_oetp_dma_tx_complete"};
+                desc = "Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when it accepts a non-oETP transmit DMA request.";
+
+                sw = rw;
+                hw = r;
+            } non_oetp_dma_tx_complete[1:1] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.event_enable.non_oetp_dma_rx_complete"};
+                desc = "Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when it accepts a non-oETP receive DMA request.";
+
+                sw = rw;
+                hw = r;
+            } non_oetp_dma_rx_complete[2:2] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.event_enable.non_oetp_direct_tx_complete"};
+                desc = "Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when the first beat of a direct transmit frame is accepted from the CSR-facing AXI4-Stream interface. When enabled, the frame start is accepted only after an IRQ FIFO credit has been reserved. The event is generated when the final beat is accepted by the oETP engine.";
+
+                sw = rw;
+                hw = r;
+            } non_oetp_direct_tx_complete[3:3] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.event_enable.non_oetp_direct_rx_available"};
+                desc = "Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when the first beat of a new direct receive frame becomes valid on the CSR-facing AXI4-Stream interface. When enabled, routing logic does not expose that first TVALID until an IRQ FIFO credit is available, so the event cannot be lost. The event does not depend on TLAST and therefore supports both cut-through and frame-FIFO operation.";
+
+                sw = rw;
+                hw = r;
+            } non_oetp_direct_rx_available[4:4] = 0;
+        } event_enable;
+
+        reg status {
+            name = {INST_NAME, ".irq.status"};
+            desc = "Status of the endpoint IRQ event FIFO and its reservation mechanism.";
+
+            field {
+                name = {INST_NAME, ".irq.status.claim_pending"};
+                desc = "Indicates that at least one valid event is available in irq.claim.";
+
+                sw = r;
+                hw = w;
+            } claim_pending[0:0];
+
+            field {
+                name = {INST_NAME, ".irq.status.credit_full"};
+                desc = "Indicates that all event FIFO credits are occupied by queued claims or reserved for admitted operations. While no credit is available, new interrupt-enabled DMA requests are not accepted and the start of an interrupt-enabled direct AXI4-Stream frame is backpressured.";
+
+                sw = r;
+                hw = w;
+            } credit_full[1:1];
+
+            field {
+                name = {INST_NAME, ".irq.status.overflow"};
+                desc = "Sticky internal-error flag indicating that an enabled event could not be retained. Correct credit reservation, admission control, and AXI4-Stream backpressure make this condition unreachable during normal operation. Clear with irq.control.clear_errors.";
+
+                sw = r;
+                hw = w;
+            } overflow[2:2];
+
+            field {
+                name = {INST_NAME, ".irq.status.invalid_complete"};
+                desc = "Sticky protocol-error flag indicating that irq.complete.valid was accepted while no claim was pending or that the completion token did not match the current claim. No claim is removed on a mismatch. Clear with irq.control.clear_errors.";
+
+                sw = r;
+                hw = w;
+            } invalid_complete[3:3];
+
+            field {
+                name = {INST_NAME, ".irq.status.irq_asserted"};
+                desc = "Reflects the current value of the physical endpoint IRQ output after application of irq.control.global_enable.";
+
+                sw = r;
+                hw = w;
+            } irq_asserted[4:4];
+
+            field {
+                name = {INST_NAME, ".irq.status.fifo_level[7:0]"};
+                desc = "Number of valid claims currently queued in the IRQ event FIFO. Values greater than 255 are reported as 255.";
+
+                sw = r;
+                hw = w;
+            } fifo_level[15:8];
+
+            field {
+                name = {INST_NAME, ".irq.status.reserved_count[7:0]"};
+                desc = "Number of event FIFO credits reserved for admitted DMA operations or direct transmit frames whose events have not yet been queued. Values greater than 255 are reported as 255.";
+
+                sw = r;
+                hw = w;
+            } reserved_count[23:16];
+        } status;
+
+        reg claim {
+            name = {INST_NAME, ".irq.claim"};
+            desc = "Read-only view of the event at the head of the IRQ event FIFO. Reading this register has no side effect, and all fields remain stable until a matching irq.complete request removes the claim.";
+
+            field {
+                name = {INST_NAME, ".irq.claim.peer_idx[10:0]"};
+                desc = "Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven to zero for deterministic readback.";
+
+                sw = r;
+                hw = w;
+            } peer_idx[10:0];
+
+            field {
+                name = {INST_NAME, ".irq.claim.source[3:0]"};
+                desc = "
+                    IRQ event source:<ul>
+                    <li>0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or error; peer_idx identifies the peer.</li>
+                    <li>1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with either success or error.</li>
+                    <li>2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with either success or error.</li>
+                    <li>3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit frame was accepted by the oETP engine.</li>
+                    <li>4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP receive frame is available on the CSR-facing AXI4-Stream interface.</li>
+                    <li>5-15: Reserved.</li>
+                    </ul>
+                    This field is meaningful only when valid is set.
+                ";
+
+                sw = r;
+                hw = w;
+            } source[14:11];
+
+            field {
+                name = {INST_NAME, ".irq.claim.sequence[15:0]"};
+                desc = "Monotonically increasing event sequence number, modulo 65536. The sequence number distinguishes otherwise identical claims and protects against stale or repeated completion requests.";
+
+                sw = r;
+                hw = w;
+            } sequence[30:15];
+
+            field {
+                name = {INST_NAME, ".irq.claim.valid"};
+                desc = "Indicates that this register contains the valid event at the head of the IRQ event FIFO. When clear, all other claim fields shall be ignored.";
+
+                sw = r;
+                hw = w;
+            } valid[31:31];
+        } claim;
+
+        reg complete {
+            name = {INST_NAME, ".irq.complete"};
+            desc = "Completion request for the current IRQ claim. Software acknowledges an event by copying the complete 32-bit irq.claim value into this register.";
+
+            field {
+                name = {INST_NAME, ".irq.complete.peer_idx[10:0]"};
+                desc = "Peer-index portion of the claim token.";
+
+                sw = rw;
+                hw = r;
+            } peer_idx[10:0] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.complete.source[3:0]"};
+                desc = "Event-source portion of the claim token.";
+
+                sw = rw;
+                hw = r;
+            } source[14:11] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.complete.sequence[15:0]"};
+                desc = "Sequence-number portion of the claim token.";
+
+                sw = rw;
+                hw = r;
+            } sequence[30:15] = 0;
+
+            field {
+                name = {INST_NAME, ".irq.complete.valid"};
+                desc = "Writing one submits the completion token. The field remains asserted until hardware validates the token and clears it. A matching token removes the current claim and releases its FIFO credit; an invalid token leaves the claim unchanged and sets irq.status.invalid_complete.";
+
+                sw = rw;
+                hw = r;
+                hwclr = true;
+            } valid[31:31] = 0;
+        } complete;
+    } irq;
 
     regfile peers {
         name = {INST_NAME, ".peers"};
@@ -578,8 +796,8 @@ regfile openenoc_endpoint_interface #(
                         DMA mode for transfers to/from the remote peer:<ul>
                         <li>0: DMA transfers to/from the remote peer are disabled.</li>
                         <li>1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer's memory region (transactions are word-by-word, i.e., per virtual memory access).</li>
-                        <li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand or periodically.</li>
-                        <li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand or periodically.</li>
+                        <li>2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer's memory region (remote_address, size) is fetched from the remote peer on demand.</li>
+                        <li>3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer's memory region (local_address, size) is sent to the remote peer on demand.</li>
                         </ul>
                     ";
 
@@ -588,8 +806,16 @@ regfile openenoc_endpoint_interface #(
                 } mode[1:0];
 
                 field {
+                    name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable"};
+                    desc = "Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer. Hardware samples this field together with irq.event_enable.peer_dma_complete when it accepts the peer DMA request. Changing the field while a transfer is active does not affect that transfer. Disabling the field does not affect DMA execution or the done, error, and error_code status fields.";
+
+                    sw = rw;
+                    hw = r;
+                } irq_enable[2:2] = 0;
+
+                field {
                     name = {INST_NAME, ".peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]"};
-                    desc = "Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted.";
+                    desc = "Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall read the completion status of the previous request before asserting this field for the next request and shall keep the peer configuration stable while this field is asserted.";
 
                     sw = rw;
                     hw = r;

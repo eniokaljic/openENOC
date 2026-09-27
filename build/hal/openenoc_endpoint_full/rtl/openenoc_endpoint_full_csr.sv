@@ -262,6 +262,13 @@ module openenoc_endpoint_full_csr (
                 } rx;
             } non_oetp_dma;
             struct {
+                logic control;
+                logic event_enable;
+                logic status;
+                logic claim;
+                logic complete;
+            } irq;
+            struct {
                 struct {
                     logic [1:0] mac_address;
                     logic rmem_address;
@@ -318,6 +325,11 @@ module openenoc_endpoint_full_csr (
         decoded_reg_strb.endpoint_interface.non_oetp_dma.rx.buffer_capacity = cpuif_req_masked & (cpuif_addr == 13'h854);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.rx.command_status = cpuif_req_masked & (cpuif_addr == 13'h858);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.rx.received_length = cpuif_req_masked & (cpuif_addr == 13'h85c) & !cpuif_req_is_wr;
+        decoded_reg_strb.endpoint_interface.irq.control = cpuif_req_masked & (cpuif_addr == 13'h860);
+        decoded_reg_strb.endpoint_interface.irq.event_enable = cpuif_req_masked & (cpuif_addr == 13'h864);
+        decoded_reg_strb.endpoint_interface.irq.status = cpuif_req_masked & (cpuif_addr == 13'h868) & !cpuif_req_is_wr;
+        decoded_reg_strb.endpoint_interface.irq.claim = cpuif_req_masked & (cpuif_addr == 13'h86c) & !cpuif_req_is_wr;
+        decoded_reg_strb.endpoint_interface.irq.complete = cpuif_req_masked & (cpuif_addr == 13'h870);
         for(int i0=0; i0<4; i0++) begin
             decoded_reg_strb.endpoint_interface.peers.entry[i0].mac_address[0] = cpuif_req_masked & (cpuif_addr == 13'h880 + (13)'(i0) * 13'h1c);
             decoded_reg_strb.endpoint_interface.peers.entry[i0].mac_address[1] = cpuif_req_masked & (cpuif_addr == 13'h884 + (13)'(i0) * 13'h1c);
@@ -487,6 +499,58 @@ module openenoc_endpoint_full_csr (
             struct {
                 struct {
                     struct {
+                        logic next;
+                        logic load_next;
+                    } global_enable;
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } clear_errors;
+                } control;
+                struct {
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } peer_dma_complete;
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } non_oetp_dma_tx_complete;
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } non_oetp_dma_rx_complete;
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } non_oetp_direct_tx_complete;
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } non_oetp_direct_rx_available;
+                } event_enable;
+                struct {
+                    struct {
+                        logic [10:0] next;
+                        logic load_next;
+                    } peer_idx;
+                    struct {
+                        logic [3:0] next;
+                        logic load_next;
+                    } source;
+                    struct {
+                        logic [15:0] next;
+                        logic load_next;
+                    } sequence_;
+                    struct {
+                        logic next;
+                        logic load_next;
+                    } valid;
+                } complete;
+            } irq;
+            struct {
+                struct {
+                    struct {
                         struct {
                             logic [31:0] next;
                             logic load_next;
@@ -525,6 +589,10 @@ module openenoc_endpoint_full_csr (
                             logic [1:0] next;
                             logic load_next;
                         } mode;
+                        struct {
+                            logic next;
+                            logic load_next;
+                        } irq_enable;
                         struct {
                             logic next;
                             logic load_next;
@@ -656,6 +724,47 @@ module openenoc_endpoint_full_csr (
             struct {
                 struct {
                     struct {
+                        logic value;
+                    } global_enable;
+                    struct {
+                        logic value;
+                    } clear_errors;
+                } control;
+                struct {
+                    struct {
+                        logic value;
+                    } peer_dma_complete;
+                    struct {
+                        logic value;
+                    } non_oetp_dma_tx_complete;
+                    struct {
+                        logic value;
+                    } non_oetp_dma_rx_complete;
+                    struct {
+                        logic value;
+                    } non_oetp_direct_tx_complete;
+                    struct {
+                        logic value;
+                    } non_oetp_direct_rx_available;
+                } event_enable;
+                struct {
+                    struct {
+                        logic [10:0] value;
+                    } peer_idx;
+                    struct {
+                        logic [3:0] value;
+                    } source;
+                    struct {
+                        logic [15:0] value;
+                    } sequence_;
+                    struct {
+                        logic value;
+                    } valid;
+                } complete;
+            } irq;
+            struct {
+                struct {
+                    struct {
                         struct {
                             logic [31:0] value;
                         } lo_word;
@@ -687,6 +796,9 @@ module openenoc_endpoint_full_csr (
                         struct {
                             logic [1:0] value;
                         } mode;
+                        struct {
+                            logic value;
+                        } irq_enable;
                         struct {
                             logic value;
                         } request;
@@ -1169,6 +1281,265 @@ module openenoc_endpoint_full_csr (
         end
     end
     assign hwif_out.endpoint_interface.non_oetp_dma.rx.command_status.request.value = field_storage.endpoint_interface.non_oetp_dma.rx.command_status.request.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.control.global_enable
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.control.global_enable.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.control && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.control.global_enable.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.control.global_enable.next = next_c;
+        field_combo.endpoint_interface.irq.control.global_enable.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.control.global_enable.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.control.global_enable.load_next) begin
+                field_storage.endpoint_interface.irq.control.global_enable.value <= field_combo.endpoint_interface.irq.control.global_enable.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.control.global_enable.value = field_storage.endpoint_interface.irq.control.global_enable.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.control.clear_errors
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.control.clear_errors.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.control && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.control.clear_errors.value & ~decoded_wr_biten[8:8]) | (decoded_wr_data[8:8] & decoded_wr_biten[8:8]);
+            load_next_c = '1;
+        end else if(hwif_in.endpoint_interface.irq.control.clear_errors.hwclr) begin // HW Clear
+            next_c = '0;
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.control.clear_errors.next = next_c;
+        field_combo.endpoint_interface.irq.control.clear_errors.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.control.clear_errors.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.control.clear_errors.load_next) begin
+                field_storage.endpoint_interface.irq.control.clear_errors.value <= field_combo.endpoint_interface.irq.control.clear_errors.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.control.clear_errors.value = field_storage.endpoint_interface.irq.control.clear_errors.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.event_enable.peer_dma_complete
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.event_enable.peer_dma_complete.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.event_enable && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.event_enable.peer_dma_complete.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.event_enable.peer_dma_complete.next = next_c;
+        field_combo.endpoint_interface.irq.event_enable.peer_dma_complete.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.event_enable.peer_dma_complete.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.event_enable.peer_dma_complete.load_next) begin
+                field_storage.endpoint_interface.irq.event_enable.peer_dma_complete.value <= field_combo.endpoint_interface.irq.event_enable.peer_dma_complete.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.event_enable.peer_dma_complete.value = field_storage.endpoint_interface.irq.event_enable.peer_dma_complete.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.event_enable && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value & ~decoded_wr_biten[1:1]) | (decoded_wr_data[1:1] & decoded_wr_biten[1:1]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.next = next_c;
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.load_next) begin
+                field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value <= field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value = field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.event_enable && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value & ~decoded_wr_biten[2:2]) | (decoded_wr_data[2:2] & decoded_wr_biten[2:2]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.next = next_c;
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.load_next) begin
+                field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value <= field_combo.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value = field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.event_enable && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value & ~decoded_wr_biten[3:3]) | (decoded_wr_data[3:3] & decoded_wr_biten[3:3]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.next = next_c;
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.load_next) begin
+                field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value <= field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value = field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.event_enable && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value & ~decoded_wr_biten[4:4]) | (decoded_wr_data[4:4] & decoded_wr_biten[4:4]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.next = next_c;
+        field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.load_next) begin
+                field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value <= field_combo.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value = field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.complete.peer_idx
+    always_comb begin
+        automatic logic [10:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.complete.peer_idx.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.complete && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.complete.peer_idx.value & ~decoded_wr_biten[10:0]) | (decoded_wr_data[10:0] & decoded_wr_biten[10:0]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.complete.peer_idx.next = next_c;
+        field_combo.endpoint_interface.irq.complete.peer_idx.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.complete.peer_idx.value <= 11'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.complete.peer_idx.load_next) begin
+                field_storage.endpoint_interface.irq.complete.peer_idx.value <= field_combo.endpoint_interface.irq.complete.peer_idx.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.complete.peer_idx.value = field_storage.endpoint_interface.irq.complete.peer_idx.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.complete.source
+    always_comb begin
+        automatic logic [3:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.complete.source.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.complete && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.complete.source.value & ~decoded_wr_biten[14:11]) | (decoded_wr_data[14:11] & decoded_wr_biten[14:11]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.complete.source.next = next_c;
+        field_combo.endpoint_interface.irq.complete.source.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.complete.source.value <= 4'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.complete.source.load_next) begin
+                field_storage.endpoint_interface.irq.complete.source.value <= field_combo.endpoint_interface.irq.complete.source.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.complete.source.value = field_storage.endpoint_interface.irq.complete.source.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.complete.sequence
+    always_comb begin
+        automatic logic [15:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.complete.sequence_.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.complete && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.complete.sequence_.value & ~decoded_wr_biten[30:15]) | (decoded_wr_data[30:15] & decoded_wr_biten[30:15]);
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.complete.sequence_.next = next_c;
+        field_combo.endpoint_interface.irq.complete.sequence_.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.complete.sequence_.value <= 16'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.complete.sequence_.load_next) begin
+                field_storage.endpoint_interface.irq.complete.sequence_.value <= field_combo.endpoint_interface.irq.complete.sequence_.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.complete.sequence_.value = field_storage.endpoint_interface.irq.complete.sequence_.value;
+    // Field: openenoc_endpoint_full_csr.endpoint_interface.irq.complete.valid
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.endpoint_interface.irq.complete.valid.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.endpoint_interface.irq.complete && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.endpoint_interface.irq.complete.valid.value & ~decoded_wr_biten[31:31]) | (decoded_wr_data[31:31] & decoded_wr_biten[31:31]);
+            load_next_c = '1;
+        end else if(hwif_in.endpoint_interface.irq.complete.valid.hwclr) begin // HW Clear
+            next_c = '0;
+            load_next_c = '1;
+        end
+        field_combo.endpoint_interface.irq.complete.valid.next = next_c;
+        field_combo.endpoint_interface.irq.complete.valid.load_next = load_next_c;
+    end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            field_storage.endpoint_interface.irq.complete.valid.value <= 1'h0;
+        end else begin
+            if(field_combo.endpoint_interface.irq.complete.valid.load_next) begin
+                field_storage.endpoint_interface.irq.complete.valid.value <= field_combo.endpoint_interface.irq.complete.valid.next;
+            end
+        end
+    end
+    assign hwif_out.endpoint_interface.irq.complete.valid.value = field_storage.endpoint_interface.irq.complete.valid.value;
     for(genvar i0=0; i0<4; i0++) begin
         // Field: openenoc_endpoint_full_csr.endpoint_interface.peers.entry[].mac_address.lo_word
         always_comb begin
@@ -1303,6 +1674,29 @@ module openenoc_endpoint_full_csr (
             end
         end
         assign hwif_out.endpoint_interface.peers.entry[i0].dma.mode.value = field_storage.endpoint_interface.peers.entry[i0].dma.mode.value;
+        // Field: openenoc_endpoint_full_csr.endpoint_interface.peers.entry[].dma.irq_enable
+        always_comb begin
+            automatic logic [0:0] next_c;
+            automatic logic load_next_c;
+            next_c = field_storage.endpoint_interface.peers.entry[i0].dma.irq_enable.value;
+            load_next_c = '0;
+            if(decoded_reg_strb.endpoint_interface.peers.entry[i0].dma && decoded_req_is_wr) begin // SW write
+                next_c = (field_storage.endpoint_interface.peers.entry[i0].dma.irq_enable.value & ~decoded_wr_biten[2:2]) | (decoded_wr_data[2:2] & decoded_wr_biten[2:2]);
+                load_next_c = '1;
+            end
+            field_combo.endpoint_interface.peers.entry[i0].dma.irq_enable.next = next_c;
+            field_combo.endpoint_interface.peers.entry[i0].dma.irq_enable.load_next = load_next_c;
+        end
+        always_ff @(posedge clk) begin
+            if(rst) begin
+                field_storage.endpoint_interface.peers.entry[i0].dma.irq_enable.value <= 1'h0;
+            end else begin
+                if(field_combo.endpoint_interface.peers.entry[i0].dma.irq_enable.load_next) begin
+                    field_storage.endpoint_interface.peers.entry[i0].dma.irq_enable.value <= field_combo.endpoint_interface.peers.entry[i0].dma.irq_enable.next;
+                end
+            end
+        end
+        assign hwif_out.endpoint_interface.peers.entry[i0].dma.irq_enable.value = field_storage.endpoint_interface.peers.entry[i0].dma.irq_enable.value;
         // Field: openenoc_endpoint_full_csr.endpoint_interface.peers.entry[].dma.request
         always_comb begin
             automatic logic [0:0] next_c;
@@ -1547,6 +1941,38 @@ module openenoc_endpoint_full_csr (
         if(rd_mux_addr == 13'h85c) begin
             readback_data_var[31:0] = hwif_in.endpoint_interface.non_oetp_dma.rx.received_length.bytes.next;
         end
+        if(rd_mux_addr == 13'h860) begin
+            readback_data_var[0] = field_storage.endpoint_interface.irq.control.global_enable.value;
+            readback_data_var[8] = field_storage.endpoint_interface.irq.control.clear_errors.value;
+        end
+        if(rd_mux_addr == 13'h864) begin
+            readback_data_var[0] = field_storage.endpoint_interface.irq.event_enable.peer_dma_complete.value;
+            readback_data_var[1] = field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value;
+            readback_data_var[2] = field_storage.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value;
+            readback_data_var[3] = field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value;
+            readback_data_var[4] = field_storage.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value;
+        end
+        if(rd_mux_addr == 13'h868) begin
+            readback_data_var[0] = hwif_in.endpoint_interface.irq.status.claim_pending.next;
+            readback_data_var[1] = hwif_in.endpoint_interface.irq.status.credit_full.next;
+            readback_data_var[2] = hwif_in.endpoint_interface.irq.status.overflow.next;
+            readback_data_var[3] = hwif_in.endpoint_interface.irq.status.invalid_complete.next;
+            readback_data_var[4] = hwif_in.endpoint_interface.irq.status.irq_asserted.next;
+            readback_data_var[15:8] = hwif_in.endpoint_interface.irq.status.fifo_level.next;
+            readback_data_var[23:16] = hwif_in.endpoint_interface.irq.status.reserved_count.next;
+        end
+        if(rd_mux_addr == 13'h86c) begin
+            readback_data_var[10:0] = hwif_in.endpoint_interface.irq.claim.peer_idx.next;
+            readback_data_var[14:11] = hwif_in.endpoint_interface.irq.claim.source.next;
+            readback_data_var[30:15] = hwif_in.endpoint_interface.irq.claim.sequence_.next;
+            readback_data_var[31] = hwif_in.endpoint_interface.irq.claim.valid.next;
+        end
+        if(rd_mux_addr == 13'h870) begin
+            readback_data_var[10:0] = field_storage.endpoint_interface.irq.complete.peer_idx.value;
+            readback_data_var[14:11] = field_storage.endpoint_interface.irq.complete.source.value;
+            readback_data_var[30:15] = field_storage.endpoint_interface.irq.complete.sequence_.value;
+            readback_data_var[31] = field_storage.endpoint_interface.irq.complete.valid.value;
+        end
         for(int i0=0; i0<4; i0++) begin
             if(rd_mux_addr == 13'h880 + (13)'(i0) * 13'h1c) begin
                 readback_data_var[31:0] = field_storage.endpoint_interface.peers.entry[i0].mac_address.lo_word.value;
@@ -1568,6 +1994,7 @@ module openenoc_endpoint_full_csr (
             end
             if(rd_mux_addr == 13'h898 + (13)'(i0) * 13'h1c) begin
                 readback_data_var[1:0] = field_storage.endpoint_interface.peers.entry[i0].dma.mode.value;
+                readback_data_var[2] = field_storage.endpoint_interface.peers.entry[i0].dma.irq_enable.value;
                 readback_data_var[8] = field_storage.endpoint_interface.peers.entry[i0].dma.request.value;
                 readback_data_var[16] = hwif_in.endpoint_interface.peers.entry[i0].dma.idle.next;
                 readback_data_var[24] = hwif_in.endpoint_interface.peers.entry[i0].dma.done.next;

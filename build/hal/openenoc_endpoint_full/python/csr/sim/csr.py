@@ -101,6 +101,26 @@ class csr_simulator_cls(Simulator):
     Register(width=32, full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.received_length', readable=True, writable=False,
                                          fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='bytes', field_type=FieldType.READONLY),
                                                 ]),
+            2144 : 
+    Register(width=32, full_inst_name='csr.endpoint_interface.irq.control', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='global_enable', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='clear_errors', field_type=FieldType.READWRITE),
+                                                ]),
+            2148 : 
+    Register(width=32, full_inst_name='csr.endpoint_interface.irq.event_enable', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='peer_dma_complete', field_type=FieldType.READWRITE),FieldDefinition(high=1, low=1, msb=1, lsb=1, inst_name='non_oetp_dma_tx_complete', field_type=FieldType.READWRITE),FieldDefinition(high=2, low=2, msb=2, lsb=2, inst_name='non_oetp_dma_rx_complete', field_type=FieldType.READWRITE),FieldDefinition(high=3, low=3, msb=3, lsb=3, inst_name='non_oetp_direct_tx_complete', field_type=FieldType.READWRITE),FieldDefinition(high=4, low=4, msb=4, lsb=4, inst_name='non_oetp_direct_rx_available', field_type=FieldType.READWRITE),
+                                                ]),
+            2152 : 
+    Register(width=32, full_inst_name='csr.endpoint_interface.irq.status', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=0, low=0, msb=0, lsb=0, inst_name='claim_pending', field_type=FieldType.READONLY),FieldDefinition(high=1, low=1, msb=1, lsb=1, inst_name='credit_full', field_type=FieldType.READONLY),FieldDefinition(high=2, low=2, msb=2, lsb=2, inst_name='overflow', field_type=FieldType.READONLY),FieldDefinition(high=3, low=3, msb=3, lsb=3, inst_name='invalid_complete', field_type=FieldType.READONLY),FieldDefinition(high=4, low=4, msb=4, lsb=4, inst_name='irq_asserted', field_type=FieldType.READONLY),FieldDefinition(high=15, low=8, msb=15, lsb=8, inst_name='fifo_level', field_type=FieldType.READONLY),FieldDefinition(high=23, low=16, msb=23, lsb=16, inst_name='reserved_count', field_type=FieldType.READONLY),
+                                                ]),
+            2156 : 
+    Register(width=32, full_inst_name='csr.endpoint_interface.irq.claim', readable=True, writable=False,
+                                         fields=[FieldDefinition(high=10, low=0, msb=10, lsb=0, inst_name='peer_idx', field_type=FieldType.READONLY),FieldDefinition(high=14, low=11, msb=14, lsb=11, inst_name='source', field_type=FieldType.READONLY),FieldDefinition(high=30, low=15, msb=30, lsb=15, inst_name='sequence', field_type=FieldType.READONLY),FieldDefinition(high=31, low=31, msb=31, lsb=31, inst_name='valid', field_type=FieldType.READONLY),
+                                                ]),
+            2160 : 
+    Register(width=32, full_inst_name='csr.endpoint_interface.irq.complete', readable=True, writable=True,
+                                         fields=[FieldDefinition(high=10, low=0, msb=10, lsb=0, inst_name='peer_idx', field_type=FieldType.READWRITE),FieldDefinition(high=14, low=11, msb=14, lsb=11, inst_name='source', field_type=FieldType.READWRITE),FieldDefinition(high=30, low=15, msb=30, lsb=15, inst_name='sequence', field_type=FieldType.READWRITE),FieldDefinition(high=31, low=31, msb=31, lsb=31, inst_name='valid', field_type=FieldType.READWRITE),
+                                                ]),
             2176 : 
     Register(width=64, full_inst_name='csr.endpoint_interface.peers.entry[0].mac_address', readable=True, writable=True,
                                          fields=[FieldDefinition(high=31, low=0, msb=31, lsb=0, inst_name='lo_word', field_type=FieldType.READWRITE),FieldDefinition(high=47, low=32, msb=47, lsb=32, inst_name='hi_word', field_type=FieldType.READWRITE),
@@ -123,7 +143,7 @@ class csr_simulator_cls(Simulator):
                                                 ]),
             2200 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.peers.entry[0].dma', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=2, low=2, msb=2, lsb=2, inst_name='irq_enable', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
                                                 ]),
             2204 : 
     Register(width=64, full_inst_name='csr.endpoint_interface.peers.entry[1].mac_address', readable=True, writable=True,
@@ -147,7 +167,7 @@ class csr_simulator_cls(Simulator):
                                                 ]),
             2228 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.peers.entry[1].dma', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=2, low=2, msb=2, lsb=2, inst_name='irq_enable', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
                                                 ]),
             2232 : 
     Register(width=64, full_inst_name='csr.endpoint_interface.peers.entry[2].mac_address', readable=True, writable=True,
@@ -171,7 +191,7 @@ class csr_simulator_cls(Simulator):
                                                 ]),
             2256 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.peers.entry[2].dma', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=2, low=2, msb=2, lsb=2, inst_name='irq_enable', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
                                                 ]),
             2260 : 
     Register(width=64, full_inst_name='csr.endpoint_interface.peers.entry[3].mac_address', readable=True, writable=True,
@@ -195,7 +215,7 @@ class csr_simulator_cls(Simulator):
                                                 ]),
             2284 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.peers.entry[3].dma', readable=True, writable=True,
-                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
+                                         fields=[FieldDefinition(high=1, low=0, msb=1, lsb=0, inst_name='mode', field_type=FieldType.READWRITE),FieldDefinition(high=2, low=2, msb=2, lsb=2, inst_name='irq_enable', field_type=FieldType.READWRITE),FieldDefinition(high=8, low=8, msb=8, lsb=8, inst_name='request', field_type=FieldType.READWRITE),FieldDefinition(high=16, low=16, msb=16, lsb=16, inst_name='idle', field_type=FieldType.READONLY),FieldDefinition(high=24, low=24, msb=24, lsb=24, inst_name='done', field_type=FieldType.READONLY),FieldDefinition(high=25, low=25, msb=25, lsb=25, inst_name='error', field_type=FieldType.READONLY),FieldDefinition(high=31, low=28, msb=31, lsb=28, inst_name='error_code', field_type=FieldType.READONLY),
                                                 ]),
             3072 : 
     Register(width=32, full_inst_name='csr.endpoint_interface.rmem.word[0]', readable=True, writable=True,

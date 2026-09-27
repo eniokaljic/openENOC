@@ -22,7 +22,7 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_0x72b4856ac66af50_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x223927e2d96aff16_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -60,7 +60,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_0x72b4856a
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x519f56e8a0233ea6_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x780213abba381d24_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -98,7 +98,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x519f56e8
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0xe63eb479a27f4f6_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x15bdbdff58f5244c_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -136,7 +136,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0xe63eb47
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_neg_0x489d93e4d02761a5_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x54c88d2524dab629_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -181,7 +181,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_neg_
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x62ee4e3be8653128_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_0x6011c6b2c4027cbb_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -219,7 +219,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0x2283e3fb6196a0f8_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0x4b049983800a82b5_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -256,7 +256,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0x2283e3fb
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x36693b0f4a2d659d_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x3226eb994c96e439_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -293,7 +293,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x36693b
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x1251ddd46cc1dfc2_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x79217829535696c9_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -310,7 +310,10 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x1
     |              |      <p>Writing one arms reception into the configured buffer. The      |
     |              |      field remains asserted until the DMA engine accepts the request.   |
     |              |      Hardware clears it upon acceptance; while the channel is busy, a   |
-    |              |      newly asserted request remains pending.</p>                        |
+    |              |      newly asserted request remains pending. Software or an RTL         |
+    |              |      controller shall read the completion status and received length of |
+    |              |      the previous request before asserting this field for the next      |
+    |              |      request.</p>                                                       |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -325,14 +328,14 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x1
         return "csr.endpoint_interface.non_oetp_dma.rx.command_status.request"
     @property
     def rdl_desc(self) -> str:
-        return "Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending."
+        return "Writing one arms reception into the configured buffer. The field remains asserted until the DMA engine accepts the request. Hardware clears it upon acceptance; while the channel is busy, a newly asserted request remains pending. Software or an RTL controller shall read the completion status and received length of the previous request before asserting this field for the next request."
     
     
     
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_0x657ae60eb40c0f1b_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x4184c84c87ce6cdd_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -371,7 +374,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_0x657ae60e
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_0x7e58c34b2118db23_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_0x1a87caa43a3de7df_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -413,7 +416,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_0x7e58c34
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x596c1aea30c2f259_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x5334356033768f67_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -451,7 +454,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x596c
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x2f7a59597cc5abfa_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x193389db79e8d2e9_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -489,7 +492,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x2f7
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x258a5b25a5e6c22f_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_neg_0x4583faaa78ddd6c8_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -534,7 +537,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x25
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_neg_0xe17e8b2164761aa_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x5ae06ab162cc43a5_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -571,7 +574,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_neg_0xe1
 
     
     
-class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_neg_0xbb558e0a6b80bb7_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_control_global_enable_0x441dcc3b5baaaaea_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -581,12 +584,14 @@ class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_neg_0xbb558e0a
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].mac_address.lo_word[31:0]                                       |
+    |              |      csr.endpoint_interface.irq.control.global_enable                   |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Lower 32 bits [31:0] of the 48-bit MAC address.</p>             |
+    |              |      <p>Enables the physical endpoint IRQ output. Clearing this field   |
+    |              |      masks the output but does not prevent enabled events from being    |
+    |              |      queued. Event capture is controlled by irq.event_enable and, for   |
+    |              |      peer DMA, by the selected peer's dma.irq_enable field.</p>         |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -598,17 +603,17 @@ class openenoc_endpoint_interface_peers_entry_mac_address_lo_word_neg_0xbb558e0a
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.lo_word[31:0]"
+        return "csr.endpoint_interface.irq.control.global_enable"
     @property
     def rdl_desc(self) -> str:
-        return "Lower 32 bits [31:0] of the 48-bit MAC address."
+        return "Enables the physical endpoint IRQ output. Clearing this field masks the output but does not prevent enabled events from being queued. Event capture is controlled by irq.event_enable and, for peer DMA, by the selected peer\u0027s dma.irq_enable field."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_neg_0x458571c5dca6dd0d_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_control_clear_errors_0x21a712e3663fbd3_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -618,12 +623,13 @@ class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_neg_0x458571c5
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].mac_address.hi_word[47:32]                                      |
+    |              |      csr.endpoint_interface.irq.control.clear_errors                    |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>            |
+    |              |      <p>Writing one requests clearing of the sticky irq.status.overflow |
+    |              |      and irq.status.invalid_complete flags. The field remains asserted  |
+    |              |      until hardware accepts the request and clears it.</p>              |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -635,17 +641,17 @@ class openenoc_endpoint_interface_peers_entry_mac_address_hi_word_neg_0x458571c5
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address.hi_word[47:32]"
+        return "csr.endpoint_interface.irq.control.clear_errors"
     @property
     def rdl_desc(self) -> str:
-        return "Upper 16 bits [47:32] of the 48-bit MAC address."
+        return "Writing one requests clearing of the sticky irq.status.overflow and irq.status.invalid_complete flags. The field remains asserted until hardware accepts the request and clears it."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x49d468b3f3666cb2_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_0x2a72bfffce536a0a_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -655,14 +661,13 @@ class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x49d468b3
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].rmem_address.offset[31:0]                                       |
+    |              |      csr.endpoint_interface.irq.event_enable.peer_dma_complete          |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>32-bit byte offset of the virtual memory region corresponding   |
-    |              |      to the remote peer's memory. The value shall be aligned to a       |
-    |              |      32-bit word boundary.</p>                                          |
+    |              |      <p>Enables PEER_DMA_COMPLETE events. A peer event is queued only   |
+    |              |      when this field and the selected peer's dma.irq_enable field were  |
+    |              |      both set when the DMA request was accepted.</p>                    |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -674,17 +679,17 @@ class openenoc_endpoint_interface_peers_entry_rmem_address_offset_neg_0x49d468b3
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address.offset[31:0]"
+        return "csr.endpoint_interface.irq.event_enable.peer_dma_complete"
     @property
     def rdl_desc(self) -> str:
-        return "32-bit byte offset of the virtual memory region corresponding to the remote peer\u0027s memory. The value shall be aligned to a 32-bit word boundary."
+        return "Enables PEER_DMA_COMPLETE events. A peer event is queued only when this field and the selected peer\u0027s dma.irq_enable field were both set when the DMA request was accepted."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_local_address_base_0x5c03c1c6be9def0f_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x46760acbaaae9327_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -694,13 +699,12 @@ class openenoc_endpoint_interface_peers_entry_local_address_base_0x5c03c1c6be9de
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].local_address.base[31:0]                                        |
+    |              |      csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete   |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Word-aligned 32-bit start address of the local memory region    |
-    |              |      for DMA transfers.</p>                                             |
+    |              |      <p>Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this  |
+    |              |      field when it accepts a non-oETP transmit DMA request.</p>         |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -712,17 +716,17 @@ class openenoc_endpoint_interface_peers_entry_local_address_base_0x5c03c1c6be9de
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address.base[31:0]"
+        return "csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete"
     @property
     def rdl_desc(self) -> str:
-        return "Word-aligned 32-bit start address of the local memory region for DMA transfers."
+        return "Enables NON_OETP_DMA_TX_COMPLETE events. Hardware samples this field when it accepts a non-oETP transmit DMA request."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0x5120d823fa2a9f79_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_0x10d4a3a072e37d55_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -732,13 +736,12 @@ class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0x5120d823
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].remote_address.base[31:0]                                       |
+    |              |      csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete   |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Word-aligned 32-bit start address of the remote peer's memory   |
-    |              |      region.</p>                                                        |
+    |              |      <p>Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this  |
+    |              |      field when it accepts a non-oETP receive DMA request.</p>          |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -750,17 +753,17 @@ class openenoc_endpoint_interface_peers_entry_remote_address_base_neg_0x5120d823
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].remote_address.base[31:0]"
+        return "csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete"
     @property
     def rdl_desc(self) -> str:
-        return "Word-aligned 32-bit start address of the remote peer\u0027s memory region."
+        return "Enables NON_OETP_DMA_RX_COMPLETE events. Hardware samples this field when it accepts a non-oETP receive DMA request."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_size_bytes_0x4d6cce94763ebe25_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x37856f25c1a9769a_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -770,12 +773,17 @@ class openenoc_endpoint_interface_peers_entry_size_bytes_0x4d6cce94763ebe25_cls(
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].size.bytes[31:0]                                                |
+    |              |      csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complet |
+    |              |      e                                                                  |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>32-bit size of the remote peer's memory region in bytes.</p>    |
+    |              |      <p>Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples    |
+    |              |      this field when the first beat of a direct transmit frame is       |
+    |              |      accepted from the CSR-facing AXI4-Stream interface. When enabled,  |
+    |              |      the frame start is accepted only after an IRQ FIFO credit has been |
+    |              |      reserved. The event is generated when the final beat is accepted   |
+    |              |      by the oETP engine.</p>                                            |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -787,17 +795,17 @@ class openenoc_endpoint_interface_peers_entry_size_bytes_0x4d6cce94763ebe25_cls(
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].size.bytes[31:0]"
+        return "csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete"
     @property
     def rdl_desc(self) -> str:
-        return "32-bit size of the remote peer\u0027s memory region in bytes."
+        return "Enables NON_OETP_DIRECT_TX_COMPLETE events. Hardware samples this field when the first beat of a direct transmit frame is accepted from the CSR-facing AXI4-Stream interface. When enabled, the frame start is accepted only after an IRQ FIFO credit has been reserved. The event is generated when the final beat is accepted by the oETP engine."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_mode_neg_0x327014553474984e_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_neg_0x71e06c7570bd9286_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -807,27 +815,18 @@ class openenoc_endpoint_interface_peers_entry_dma_mode_neg_0x327014553474984e_cl
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].dma.mode[1:0]                                                   |
+    |              |      csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_availab |
+    |              |      le                                                                 |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>DMA mode for transfers to/from the remote peer:<ul></p> <li>0:  |
-    |              |      DMA transfers to/from the remote peer are disabled.</li> <li>1:    |
-    |              |      DMA transfers to/from the remote peer are enabled in transparent   |
-    |              |      mode, where accesses to the virtual memory region are directly     |
-    |              |      translated to corresponding accesses to the remote peer's memory   |
-    |              |      region (transactions are word-by-word, i.e., per virtual memory    |
-    |              |      access).</li> <li>2: DMA transfers to/from the remote peer are     |
-    |              |      enabled in mirror-to-local mode, where the local memory region is  |
-    |              |      used instead of the virtual memory region. The state of the remote |
-    |              |      peer's memory region (remote_address, size) is fetched from the    |
-    |              |      remote peer on demand or periodically.</li> <li>3: DMA transfers   |
-    |              |      to/from the remote peer are enabled in mirror-to-remote mode,      |
-    |              |      where the remote memory region is used instead of the virtual      |
-    |              |      memory region. The state of the local peer's memory region         |
-    |              |      (local_address, size) is sent to the remote peer on demand or      |
-    |              |      periodically.</li> </ul>                                           |
+    |              |      <p>Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is       |
+    |              |      generated when the first beat of a new direct receive frame        |
+    |              |      becomes valid on the CSR-facing AXI4-Stream interface. When        |
+    |              |      enabled, routing logic does not expose that first TVALID until an  |
+    |              |      IRQ FIFO credit is available, so the event cannot be lost. The     |
+    |              |      event does not depend on TLAST and therefore supports both cut-    |
+    |              |      through and frame-FIFO operation.</p>                              |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -839,17 +838,17 @@ class openenoc_endpoint_interface_peers_entry_dma_mode_neg_0x327014553474984e_cl
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]"
+        return "csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available"
     @property
     def rdl_desc(self) -> str:
-        return "DMA mode for transfers to/from the remote peer:\u003cul\u003e\n\u003cli\u003e0: DMA transfers to/from the remote peer are disabled.\u003c/li\u003e\n\u003cli\u003e1: DMA transfers to/from the remote peer are enabled in transparent mode, where accesses to the virtual memory region are directly translated to corresponding accesses to the remote peer\u0027s memory region (transactions are word-by-word, i.e., per virtual memory access).\u003c/li\u003e\n\u003cli\u003e2: DMA transfers to/from the remote peer are enabled in mirror-to-local mode, where the local memory region is used instead of the virtual memory region. The state of the remote peer\u0027s memory region (remote_address, size) is fetched from the remote peer on demand or periodically.\u003c/li\u003e\n\u003cli\u003e3: DMA transfers to/from the remote peer are enabled in mirror-to-remote mode, where the remote memory region is used instead of the virtual memory region. The state of the local peer\u0027s memory region (local_address, size) is sent to the remote peer on demand or periodically.\u003c/li\u003e\n\u003c/ul\u003e"
+        return "Enables NON_OETP_DIRECT_RX_AVAILABLE events. One event is generated when the first beat of a new direct receive frame becomes valid on the CSR-facing AXI4-Stream interface. When enabled, routing logic does not expose that first TVALID until an IRQ FIFO credit is available, so the event cannot be lost. The event does not depend on TLAST and therefore supports both cut-through and frame-FIFO operation."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_request_0x66f0e24c90dc1bec_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_status_claim_pending_neg_0x2eca88cd2a3b6458_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -859,18 +858,12 @@ class openenoc_endpoint_interface_peers_entry_dma_request_0x66f0e24c90dc1bec_cls
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].dma.request[8:8]                                                |
+    |              |      csr.endpoint_interface.irq.status.claim_pending                    |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Writing one requests a DMA transfer to or from the remote peer, |
-    |              |      according to dma.mode. The field remains asserted until the DMA    |
-    |              |      engine accepts and snapshots the request. Hardware clears it upon  |
-    |              |      acceptance; while a transfer for this peer is active, a newly      |
-    |              |      asserted request remains pending. Software or an RTL controller    |
-    |              |      shall keep the peer configuration stable while this field is       |
-    |              |      asserted.</p>                                                      |
+    |              |      <p>Indicates that at least one valid event is available in         |
+    |              |      irq.claim.</p>                                                     |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -882,17 +875,17 @@ class openenoc_endpoint_interface_peers_entry_dma_request_0x66f0e24c90dc1bec_cls
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]"
+        return "csr.endpoint_interface.irq.status.claim_pending"
     @property
     def rdl_desc(self) -> str:
-        return "Writing one requests a DMA transfer to or from the remote peer, according to dma.mode. The field remains asserted until the DMA engine accepts and snapshots the request. Hardware clears it upon acceptance; while a transfer for this peer is active, a newly asserted request remains pending. Software or an RTL controller shall keep the peer configuration stable while this field is asserted."
+        return "Indicates that at least one valid event is available in irq.claim."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_idle_0x5557dc44a5cba24_cls(FieldReadOnly):
+class openenoc_endpoint_interface_irq_status_credit_full_neg_0x64b5031cb05e1c19_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -902,15 +895,15 @@ class openenoc_endpoint_interface_peers_entry_dma_idle_0x5557dc44a5cba24_cls(Fie
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].dma.idle[16:16]                                                 |
+    |              |      csr.endpoint_interface.irq.status.credit_full                      |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Indicates whether this peer has no accepted DMA request in      |
-    |              |      progress. Hardware deasserts this field when a request is accepted |
-    |              |      and asserts it after all fragments of the requested block have     |
-    |              |      completed.</p>                                                     |
+    |              |      <p>Indicates that all event FIFO credits are occupied by queued    |
+    |              |      claims or reserved for admitted operations. While no credit is     |
+    |              |      available, new interrupt-enabled DMA requests are not accepted and |
+    |              |      the start of an interrupt-enabled direct AXI4-Stream frame is      |
+    |              |      backpressured.</p>                                                 |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -922,17 +915,17 @@ class openenoc_endpoint_interface_peers_entry_dma_idle_0x5557dc44a5cba24_cls(Fie
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]"
+        return "csr.endpoint_interface.irq.status.credit_full"
     @property
     def rdl_desc(self) -> str:
-        return "Indicates whether this peer has no accepted DMA request in progress. Hardware deasserts this field when a request is accepted and asserts it after all fragments of the requested block have completed."
+        return "Indicates that all event FIFO credits are occupied by queued claims or reserved for admitted operations. While no credit is available, new interrupt-enabled DMA requests are not accepted and the start of an interrupt-enabled direct AXI4-Stream frame is backpressured."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_done_0x62d3d0804e3eb4fa_cls(FieldReadOnly):
+class openenoc_endpoint_interface_irq_status_overflow_neg_0xcedb4bf66bd788c_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -942,15 +935,15 @@ class openenoc_endpoint_interface_peers_entry_dma_done_0x62d3d0804e3eb4fa_cls(Fi
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].dma.done[24:24]                                                 |
+    |              |      csr.endpoint_interface.irq.status.overflow                         |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Sticky successful-completion flag for this peer. Hardware sets  |
-    |              |      this field after all fragments of the accepted block transfer      |
-    |              |      complete successfully and clears it when the next request is       |
-    |              |      accepted.</p>                                                      |
+    |              |      <p>Sticky internal-error flag indicating that an enabled event     |
+    |              |      could not be retained. Correct credit reservation, admission       |
+    |              |      control, and AXI4-Stream backpressure make this condition          |
+    |              |      unreachable during normal operation. Clear with                    |
+    |              |      irq.control.clear_errors.</p>                                      |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -962,17 +955,17 @@ class openenoc_endpoint_interface_peers_entry_dma_done_0x62d3d0804e3eb4fa_cls(Fi
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]"
+        return "csr.endpoint_interface.irq.status.overflow"
     @property
     def rdl_desc(self) -> str:
-        return "Sticky successful-completion flag for this peer. Hardware sets this field after all fragments of the accepted block transfer complete successfully and clears it when the next request is accepted."
+        return "Sticky internal-error flag indicating that an enabled event could not be retained. Correct credit reservation, admission control, and AXI4-Stream backpressure make this condition unreachable during normal operation. Clear with irq.control.clear_errors."
     
     
     
 
     
     
-class openenoc_endpoint_interface_peers_entry_dma_error_0x600dcca39501014c_cls(FieldReadOnly):
+class openenoc_endpoint_interface_irq_status_invalid_complete_neg_0x3eaab69b4729ed9a_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -982,14 +975,14 @@ class openenoc_endpoint_interface_peers_entry_dma_error_0x600dcca39501014c_cls(F
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-                |
-    |              |      1].dma.error[25:25]                                                |
+    |              |      csr.endpoint_interface.irq.status.invalid_complete                 |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      <p>Sticky error-completion flag for this peer. Hardware sets this  |
-    |              |      field if the accepted block transfer terminates with an error and  |
-    |              |      clears it when the next request is accepted.</p>                   |
+    |              |      <p>Sticky protocol-error flag indicating that irq.complete.valid   |
+    |              |      was accepted while no claim was pending or that the completion     |
+    |              |      token did not match the current claim. No claim is removed on a    |
+    |              |      mismatch. Clear with irq.control.clear_errors.</p>                 |
     +--------------+-------------------------------------------------------------------------+
     """
     __slots__ : list[str] = []
@@ -1001,10 +994,10 @@ class openenoc_endpoint_interface_peers_entry_dma_error_0x600dcca39501014c_cls(F
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]"
+        return "csr.endpoint_interface.irq.status.invalid_complete"
     @property
     def rdl_desc(self) -> str:
-        return "Sticky error-completion flag for this peer. Hardware sets this field if the accepted block transfer terminates with an error and clears it when the next request is accepted."
+        return "Sticky protocol-error flag indicating that irq.complete.valid was accepted while no claim was pending or that the completion token did not match the current claim. No claim is removed on a mismatch. Clear with irq.control.clear_errors."
     
     
     
