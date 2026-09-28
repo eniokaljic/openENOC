@@ -91,6 +91,21 @@ make -C dv/iss rtl-lanes-smoke
 make -C dv/iss rtl-bridge-smoke
 ```
 
+Qualify coordinated stop and whole-top reset while AW/W, B, or R is blocked:
+
+```bash
+make -C dv/iss rtl-lifecycle-smoke
+```
+
+The cocotb harness resets the RTL and BFM together. For an accepted write
+waiting on B, it first stops the worker and cancels the AXI service. For
+blocked AW/W or R, a reset-flushed BFM operation explicitly stops the worker
+instead of completing its MMIO request. A write accepted before reset remains
+in RTL DMEM; an incomplete write does not. Each test restarts Spike in a new
+epoch, rejecting late responses. These tests do not provide a standalone
+reset API or safe replay of an in-flight transaction without coordinated bus
+reset.
+
 The bridge rejects malformed or out-of-range requests before issuing AXI.
 AW, W, B, AR, and R backpressure is exercised against the real RTL endpoint;
 Spike remains blocked until the final bus response. Within the supported ISS
