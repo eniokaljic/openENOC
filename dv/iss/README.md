@@ -66,6 +66,16 @@ make -C dv/iss python-smoke
 make -C dv/iss elf-smoke
 ```
 
+Qualify the native worker and pinned Spike library for data races with a
+separate ThreadSanitizer build:
+
+```bash
+make -C dv/iss tsan-smoke JOBS=4
+```
+
+The sanitizer target is intentionally not part of `check-all`: it rebuilds
+Spike with instrumentation and requires a compiler-provided `libtsan` runtime.
+
 Run the short Spike-to-RTL DMEM test with:
 
 ```bash

@@ -14,9 +14,14 @@ SPIKE_SRC := $(ROOT_DIR)/libs/riscv-isa-sim
 BUILD_DIR := $(ROOT_DIR)/build/dv/iss
 SPIKE_BUILD_DIR := $(BUILD_DIR)/spike-build
 SPIKE_INSTALL_DIR := $(BUILD_DIR)/spike-install
+SPIKE_TSAN_BUILD_DIR := $(BUILD_DIR)/spike-tsan-build
+SPIKE_TSAN_INSTALL_DIR := $(BUILD_DIR)/spike-tsan-install
 NATIVE_BUILD_DIR := $(BUILD_DIR)/native
 ISS_LIB_DIR := $(BUILD_DIR)/lib
 ISS_LIBRARY := $(ISS_LIB_DIR)/libopenenoc_iss.so
+TSAN_ISS_LIB_DIR := $(BUILD_DIR)/tsan-lib
+TSAN_ISS_LIBRARY := $(TSAN_ISS_LIB_DIR)/libopenenoc_iss.so
+TSAN_FLAGS := -O1 -g -fsanitize=thread -fno-omit-frame-pointer
 PYTHON_PACKAGE_DIR := $(ISS_DIR)/python
 FIRMWARE_BIN := $(ROOT_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.bin
 FIRMWARE_ELF := $(ROOT_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.elf
@@ -24,7 +29,7 @@ STARTUP_FIRMWARE_BUILD_ROOT := $(BUILD_DIR)/firmware
 STARTUP_FIRMWARE_ELF := $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_startup.elf
 SPIKE_COMMIT := $(shell $(PYTHON) -c 'import json; print(json.load(open("$(ISS_DIR)/compatibility.json"))["spike"]["commit"])')
 
-.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-smoke processor-smoke python-smoke rtl-firmware-smoke rtl-smoke rtl-startup-smoke spike startup-firmware test-native
+.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-smoke processor-smoke python-smoke rtl-firmware-smoke rtl-smoke rtl-startup-smoke spike startup-firmware test-native tsan-smoke
 
 check: test-native python-smoke elf-smoke
 
@@ -52,6 +57,19 @@ $(SPIKE_INSTALL_DIR)/bin/spike: $(SPIKE_BUILD_DIR)/Makefile
 
 spike install: check-submodule $(SPIKE_INSTALL_DIR)/bin/spike
 	@$(SPIKE_INSTALL_DIR)/bin/spike --help >/dev/null 2>&1
+
+$(SPIKE_TSAN_BUILD_DIR)/Makefile: | check-submodule
+	@mkdir -p $(SPIKE_TSAN_BUILD_DIR) $(SPIKE_TSAN_INSTALL_DIR)
+	@cd $(SPIKE_TSAN_BUILD_DIR) && \
+		$(SPIKE_SRC)/configure --prefix=$(SPIKE_TSAN_INSTALL_DIR)
+
+$(SPIKE_TSAN_INSTALL_DIR)/bin/spike: $(SPIKE_TSAN_BUILD_DIR)/Makefile
+	@$(MAKE) -C $(SPIKE_TSAN_BUILD_DIR) -j$(JOBS) \
+		CFLAGS="$(TSAN_FLAGS)" CXXFLAGS="$(TSAN_FLAGS)" \
+		LDFLAGS="-fsanitize=thread"
+	@$(MAKE) -C $(SPIKE_TSAN_BUILD_DIR) install \
+		CFLAGS="$(TSAN_FLAGS)" CXXFLAGS="$(TSAN_FLAGS)" \
+		LDFLAGS="-fsanitize=thread"
 
 $(NATIVE_BUILD_DIR)/openenoc_iss_link_smoke: tests/native/link_smoke.cpp $(SPIKE_INSTALL_DIR)/bin/spike
 	@mkdir -p $(NATIVE_BUILD_DIR)
@@ -87,6 +105,14 @@ $(ISS_LIBRARY): src/openenoc_iss.cpp include/openenoc_iss.h $(SPIKE_INSTALL_DIR)
 
 iss-library: check-submodule $(ISS_LIBRARY)
 
+$(TSAN_ISS_LIBRARY): src/openenoc_iss.cpp include/openenoc_iss.h $(SPIKE_TSAN_INSTALL_DIR)/bin/spike
+	@mkdir -p $(TSAN_ISS_LIB_DIR)
+	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TSAN_FLAGS) -std=c++20 -Wall -Wextra \
+		-fPIC -shared -pthread -Iinclude -I$(SPIKE_TSAN_INSTALL_DIR)/include $< \
+		$(LDFLAGS) -L$(SPIKE_TSAN_INSTALL_DIR)/lib \
+		-Wl,-rpath,$(SPIKE_TSAN_INSTALL_DIR)/lib \
+		$(LDLIBS) -fsanitize=thread -lriscv -o $@
+
 $(NATIVE_BUILD_DIR)/openenoc_iss_c_api_smoke: tests/native/c_api_smoke.c include/openenoc_iss.h $(ISS_LIBRARY)
 	@mkdir -p $(NATIVE_BUILD_DIR)
 	@$(CC) $(CPPFLAGS) $(CFLAGS) -std=c11 -Wall -Wextra \
@@ -101,6 +127,15 @@ test-native: link-smoke processor-smoke c-api-smoke
 python-smoke: iss-library
 	@PYTHONPATH=$(PYTHON_PACKAGE_DIR) \
 		OPENENOC_ISS_LIBRARY=$(ISS_LIBRARY) \
+		$(PYTHON) -m unittest discover -s tests/python -p 'test_native.py'
+
+tsan-smoke: check-submodule $(TSAN_ISS_LIBRARY)
+	@runtime=$$($(CXX) -print-file-name=libtsan.so); \
+		test -f "$$runtime" || { echo "ThreadSanitizer runtime not found" >&2; exit 1; }; \
+		LD_PRELOAD="$$runtime" \
+		TSAN_OPTIONS="halt_on_error=1" \
+		PYTHONPATH=$(PYTHON_PACKAGE_DIR) \
+		OPENENOC_ISS_LIBRARY=$(TSAN_ISS_LIBRARY) \
 		$(PYTHON) -m unittest discover -s tests/python -p 'test_native.py'
 
 elf-smoke: firmware startup-firmware

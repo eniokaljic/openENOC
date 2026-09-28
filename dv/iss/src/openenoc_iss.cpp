@@ -43,6 +43,24 @@ bool valid_header(uint32_t abi_version, uint32_t struct_size, size_t expected)
     return abi_version == OPENENOC_ISS_ABI_VERSION && struct_size >= expected;
 }
 
+bool valid_response_status(uint32_t status, uint32_t axi_resp)
+{
+    if (axi_resp > 3) {
+        return false;
+    }
+
+    switch (status) {
+    case OPENENOC_ISS_RESPONSE_OK:
+        return axi_resp == 0;
+    case OPENENOC_ISS_RESPONSE_BUS_ERROR:
+        return axi_resp != 0;
+    case OPENENOC_ISS_RESPONSE_CANCELLED:
+        return axi_resp == 0;
+    default:
+        return false;
+    }
+}
+
 class Endpoint final : public simif_t
 {
 public:
@@ -104,6 +122,7 @@ public:
             return OPENENOC_ISS_OUT_OF_RANGE;
         }
 
+        std::lock_guard lifecycle_lock(lifecycle_mutex_);
         {
             std::lock_guard lock(mutex_);
             if (run_state_ == OPENENOC_ISS_STATE_RUNNING ||
@@ -141,6 +160,7 @@ public:
 
     int32_t request_stop()
     {
+        std::lock_guard lifecycle_lock(lifecycle_mutex_);
         std::lock_guard lock(mutex_);
         stop_requested_ = true;
         if (run_state_ == OPENENOC_ISS_STATE_READY) {
@@ -170,7 +190,8 @@ public:
     int32_t complete(const openenoc_iss_response_t &response)
     {
         if (!valid_header(response.abi_version, response.struct_size,
-                          sizeof(response))) {
+                          sizeof(response)) ||
+                !valid_response_status(response.status, response.axi_resp)) {
             return OPENENOC_ISS_INVALID_ARGUMENT;
         }
 
@@ -386,6 +407,7 @@ private:
     std::map<size_t, processor_t *> harts_;
     std::unique_ptr<processor_t> processor_;
 
+    std::mutex lifecycle_mutex_;
     std::mutex mutex_;
     std::condition_variable response_cv_;
     std::thread worker_;
