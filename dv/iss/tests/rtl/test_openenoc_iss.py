@@ -13,7 +13,7 @@ from cocotb.triggers import RisingEdge, SimTimeoutError, Timer, with_timeout
 from cocotb.utils import get_sim_time
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 
-from openenoc_iss import IssLibrary, RequestKind, ResponseStatus, RunState
+from openenoc_iss import IssError, IssLibrary, RequestKind, ResponseStatus, RunState
 from openenoc_iss import load_elf
 
 EXECUTION_TIMEOUT_CYCLES = 1000
@@ -105,13 +105,14 @@ async def service_request(endpoint, axi_master, request):
                 axi_master.read(request.address, request.size_bytes, prot=0),
                 AXI_SERVICE_TIMEOUT_NS, "ns",
             )
-            data = bytes(result.data)
         else:
             result = await with_timeout(
                 axi_master.write(request.address, request.data, prot=0),
                 AXI_SERVICE_TIMEOUT_NS, "ns",
             )
-            data = b""
+        if result is None:
+            raise RuntimeError("AXI service was flushed by reset")
+        data = bytes(result.data) if request.kind == RequestKind.DATA_READ else b""
     except BaseException:
         endpoint.request_stop()
         raise
@@ -469,6 +470,185 @@ async def test_spike_bridge_times_out_blocked_write(dut):
         assert axi_master.writes == 1
         assert endpoint.state().pending_request_id == 0
         assert endpoint.poll() is None
+
+
+@cocotb.test()
+async def test_spike_resets_blocked_axi_write(dut):
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
+    axi_master = AxiLiteMaster(
+        AxiLiteBus.from_prefix(dut, "iss_axil"), dut.clk, dut.rst
+    )
+    dut.rst.value = 1
+    for _ in range(5):
+        await RisingEdge(dut.clk)
+    dut.rst.value = 0
+
+    image = struct.pack("<3I", 0x100000B7, 0x02A00113, 0x0020A023)
+    with IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"]).create_endpoint(0) as endpoint:
+        endpoint.load_image(image)
+        previous_epoch = 0
+        for blocked_channel in ("aw", "w"):
+            endpoint.start(entry_pc=0, max_steps=3)
+            for _ in range(EXECUTION_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                request = endpoint.poll()
+                if request is not None:
+                    break
+            else:
+                raise AssertionError("Spike did not issue its write")
+            assert request.epoch == previous_epoch + 1
+            previous_epoch = request.epoch
+
+            axi_master.write_if.w_channel.pause = True
+            axi_master.write_if.aw_channel.pause = blocked_channel == "aw"
+            service = cocotb.start_soon(service_request(endpoint, axi_master, request))
+            if blocked_channel == "w":
+                for _ in range(EXECUTION_TIMEOUT_CYCLES):
+                    await RisingEdge(dut.clk)
+                    if int(dut.iss_axil_awvalid.value) and int(dut.iss_axil_awready.value):
+                        break
+                else:
+                    raise AssertionError("AW did not handshake before reset")
+            await Timer(100, unit="ns")
+            assert endpoint.state().run_state == RunState.WAITING_MMIO
+            dut.rst.value = 1
+            try:
+                await service
+            except RuntimeError as error:
+                assert str(error) == "AXI service was flushed by reset"
+            else:
+                raise AssertionError("Reset-flushed AXI service was accepted")
+            await wait_for_stop(endpoint, dut)
+            for _ in range(5):
+                await RisingEdge(dut.clk)
+            axi_master.write_if.aw_channel.pause = False
+            axi_master.write_if.w_channel.pause = False
+            dut.rst.value = 0
+            assert await read_word(axi_master, DMEM_BASE) == 0
+
+        endpoint.start(entry_pc=0, max_steps=3)
+        for _ in range(EXECUTION_TIMEOUT_CYCLES):
+            await RisingEdge(dut.clk)
+            next_request = endpoint.poll()
+            if next_request is not None:
+                break
+        else:
+            raise AssertionError("Spike did not restart after reset")
+        assert next_request.epoch == previous_epoch + 1
+        try:
+            endpoint.complete(request)
+        except IssError:
+            pass
+        else:
+            raise AssertionError("Late response from the old epoch was accepted")
+        assert endpoint.state().run_state == RunState.WAITING_MMIO
+        assert endpoint.state().pending_request_id == next_request.request_id
+        await service_request(endpoint, axi_master, next_request)
+        for _ in range(EXECUTION_TIMEOUT_CYCLES):
+            if endpoint.state().run_state == RunState.COMPLETED:
+                break
+            await RisingEdge(dut.clk)
+        else:
+            raise AssertionError("Spike did not complete after reset")
+
+    assert await read_word(axi_master, DMEM_BASE) == 42
+    assert int(dut.imem_active.value) == 0
+
+
+@cocotb.test()
+async def test_spike_resets_pending_axi_responses(dut):
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
+    axi_master = AxiLiteMaster(
+        AxiLiteBus.from_prefix(dut, "iss_axil"), dut.clk, dut.rst
+    )
+    dut.rst.value = 1
+    for _ in range(5):
+        await RisingEdge(dut.clk)
+    dut.rst.value = 0
+
+    image = struct.pack(
+        "<5I", 0x100000B7, 0x02A00113, 0x0020A023, 0x0000A183, 0x00118213,
+    )
+    with IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"]).create_endpoint(0) as endpoint:
+        endpoint.load_image(image)
+        previous_epoch = 0
+        for blocked_response in ("b", "r"):
+            endpoint.start(entry_pc=0, max_steps=5)
+            for _ in range(EXECUTION_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                request = endpoint.poll()
+                if request is not None:
+                    break
+            else:
+                raise AssertionError("Spike did not issue a write")
+            assert request.kind == RequestKind.DATA_WRITE
+            assert request.epoch == previous_epoch + 1
+            previous_epoch = request.epoch
+
+            if blocked_response == "r":
+                await service_request(endpoint, axi_master, request)
+                for _ in range(EXECUTION_TIMEOUT_CYCLES):
+                    await RisingEdge(dut.clk)
+                    request = endpoint.poll()
+                    if request is not None:
+                        break
+                else:
+                    raise AssertionError("Spike did not issue a read")
+                assert request.kind == RequestKind.DATA_READ
+                axi_master.read_if.r_channel.pause = True
+                handshake_valid = dut.iss_axil_arvalid
+                handshake_ready = dut.iss_axil_arready
+            else:
+                axi_master.write_if.b_channel.pause = True
+                handshake_valid = dut.iss_axil_wvalid
+                handshake_ready = dut.iss_axil_wready
+
+            service = cocotb.start_soon(service_request(endpoint, axi_master, request))
+            for _ in range(EXECUTION_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                if int(handshake_valid.value) and int(handshake_ready.value):
+                    break
+            else:
+                raise AssertionError("AXI request did not handshake before reset")
+            await Timer(100, unit="ns")
+            assert endpoint.state().run_state == RunState.WAITING_MMIO
+            if blocked_response == "r":
+                dut.rst.value = 1
+                try:
+                    await service
+                except RuntimeError as error:
+                    assert str(error) == "AXI service was flushed by reset"
+                else:
+                    raise AssertionError("Reset-flushed AXI read was accepted")
+                await wait_for_stop(endpoint, dut)
+            else:
+                endpoint.request_stop()
+                await wait_for_stop(endpoint, dut)
+                service.cancel()
+                dut.rst.value = 1
+            for _ in range(5):
+                await RisingEdge(dut.clk)
+            axi_master.write_if.b_channel.pause = False
+            axi_master.read_if.r_channel.pause = False
+            dut.rst.value = 0
+            assert await read_word(axi_master, DMEM_BASE) == 42
+
+        endpoint.start(entry_pc=0, max_steps=5)
+        for _ in range(EXECUTION_TIMEOUT_CYCLES):
+            await RisingEdge(dut.clk)
+            request = endpoint.poll()
+            if request is not None:
+                assert request.epoch == previous_epoch + 1
+                await service_request(endpoint, axi_master, request)
+            if endpoint.state().run_state == RunState.COMPLETED:
+                break
+        else:
+            raise AssertionError("Spike did not complete after response resets")
+        assert endpoint.read_register(3) == 42
+        assert endpoint.read_register(4) == 43
+
+    assert await read_word(axi_master, DMEM_BASE) == 42
+    assert int(dut.imem_active.value) == 0
 
 
 @cocotb.test()
