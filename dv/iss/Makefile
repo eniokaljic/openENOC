@@ -29,7 +29,7 @@ STARTUP_FIRMWARE_BUILD_ROOT := $(BUILD_DIR)/firmware
 STARTUP_FIRMWARE_ELF := $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_startup.elf
 SPIKE_COMMIT := $(shell $(PYTHON) -c 'import json; print(json.load(open("$(ISS_DIR)/compatibility.json"))["spike"]["commit"])')
 
-.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-smoke processor-smoke python-smoke rtl-firmware-smoke rtl-smoke rtl-startup-smoke spike startup-firmware test-native tsan-smoke
+.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-smoke processor-smoke python-smoke rtl-bridge-smoke rtl-firmware-smoke rtl-lanes-smoke rtl-smoke rtl-startup-smoke spike startup-firmware test-native tsan-smoke
 
 check: test-native python-smoke elf-smoke
 
@@ -147,6 +147,12 @@ elf-smoke: firmware startup-firmware
 rtl-smoke: iss-library
 	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_accesses_rtl_dmem
 
+rtl-lanes-smoke: iss-library
+	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_subword_lanes_in_rtl_dmem
+
+rtl-bridge-smoke: iss-library
+	@$(MAKE) -C tests/rtl COCOTB_TESTCASE='test_spike_bridge_waits_for_rtl_axi_handshakes,test_spike_bridge_rejects_invalid_request_before_axi,test_spike_bridge_reports_axi_error,test_spike_bridge_times_out_blocked_write'
+
 firmware:
 	@$(MAKE) -C $(ROOT_DIR)/sw APP=csr_smoke EP=openenoc_endpoint_full
 	@test -f $(FIRMWARE_BIN) -a -f $(FIRMWARE_ELF)
@@ -162,7 +168,7 @@ rtl-firmware-smoke: iss-library firmware
 rtl-startup-smoke: iss-library startup-firmware
 	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_qualifies_elf_startup
 
-check-all: check rtl-smoke rtl-firmware-smoke rtl-startup-smoke
+check-all: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-firmware-smoke rtl-startup-smoke
 
 clean:
 	@$(MAKE) -C tests/rtl clean >/dev/null 2>&1 || true

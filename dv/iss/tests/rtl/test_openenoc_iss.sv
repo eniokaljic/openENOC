@@ -98,6 +98,22 @@ module test_openenoc_iss ();
     wire logic [3:0] switch_default_forwarding =
         switch_if.csr_to_core.default_forwarding.bitmap.value;
 
+    wire logic endpoint_tx_valid = eth_if.a2b_axis_if.tvalid;
+    wire logic endpoint_tx_ready = eth_if.a2b_axis_if.tready;
+    wire logic [31:0] endpoint_tx_data = eth_if.a2b_axis_if.tdata;
+    wire logic [3:0] endpoint_tx_keep = eth_if.a2b_axis_if.tkeep;
+    wire logic endpoint_tx_last = eth_if.a2b_axis_if.tlast;
+    wire logic endpoint_csr_sink_valid =
+        u_endpoint.u_endpoint_interface.csr_sink_axis_if.tvalid;
+    wire logic endpoint_csr_sink_ready =
+        u_endpoint.u_endpoint_interface.csr_sink_axis_if.tready;
+    wire logic [31:0] endpoint_csr_sink_data =
+        u_endpoint.u_endpoint_interface.csr_sink_axis_if.tdata;
+    wire logic [3:0] endpoint_csr_sink_keep =
+        u_endpoint.u_endpoint_interface.csr_sink_axis_if.tkeep;
+    wire logic endpoint_csr_sink_last =
+        u_endpoint.u_endpoint_interface.csr_sink_axis_if.tlast;
+
 endmodule
 
 `resetall

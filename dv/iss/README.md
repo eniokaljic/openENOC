@@ -82,12 +82,41 @@ Run the short Spike-to-RTL DMEM test with:
 make -C dv/iss rtl-smoke
 ```
 
+Exercise byte/halfword lanes and signed loads against RTL DMEM, and qualify
+invalid requests, AXI errors, and blocked transactions with a deterministic
+AXI responder:
+
+```bash
+make -C dv/iss rtl-lanes-smoke
+make -C dv/iss rtl-bridge-smoke
+```
+
+The bridge rejects malformed or out-of-range requests before issuing AXI.
+AW, W, B, AR, and R backpressure is exercised against the real RTL endpoint;
+Spike remains blocked until the final bus response. Within the supported ISS
+address map the generated CSR and RAM blocks return `OKAY`, so an RTL-generated
+`SLVERR`/`DECERR` cannot be triggered without changing that hardware profile.
+An AXI error is returned to the ISS only after the bus operation completes;
+a stalled operation times out after 10 us of simulation time and stops the
+waiting worker. The error/timeout tests use a controlled responder, not an
+RTL-generated `SLVERR`/`DECERR`. They do not claim CPU trap equivalence or
+safe replay of an in-flight AXI write after a timeout. Reset/drain handling
+for such writes belongs to the coordinated lifecycle tests.
+The current `accepted_sim_tick` records submission to the AXI BFM, not the
+exact AW/AR handshake; `completed_sim_tick` is recorded after its R/B response.
+
 Build and run the unchanged `csr_smoke` firmware through Spike and the RTL
 endpoint with:
 
 ```bash
 make -C dv/iss rtl-firmware-smoke
 ```
+
+This one-endpoint check confirms that the ELF loaded by Spike contains the
+same IMEM bytes used by the PicoRV32 baseline. It checks both Ethernet TX and
+CSR sink handshakes against the baseline's 17-beat frame (66 valid bytes),
+including the final `TKEEP` and `TLAST`, and verifies the completion status
+remains stable. It does not qualify multi-endpoint traffic.
 
 Qualify the real bare-metal startup path with initialized data, dirty BSS, and
 stack traffic through RTL DMEM:
