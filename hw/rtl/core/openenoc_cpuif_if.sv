@@ -6,10 +6,10 @@
 `default_nettype none
 
 /*
- * Native openENOC CPU interface
+ * Native openENOC CPUIF interface
  *
  * This interface follows the request/completion convention used by the
- * PeakRDL-regblock native CPU interface. req is a request strobe; the master
+ * PeakRDL-regblock native CPUIF interface. req is a request strobe; the master
  * presents the complete request with it and does not issue another request
  * until the matching read or write acknowledgement is received. A slave
  * must therefore capture any request state it needs beyond the req cycle.
@@ -19,7 +19,7 @@
  * meaningful in cycles in which the corresponding acknowledgement is set.
  * Clock and reset are intentionally not part of the interface.
  */
-interface openenoc_cpu_if #(
+interface openenoc_cpuif_if #(
     parameter int unsigned ADDR_W = 32,
     parameter int unsigned DATA_W = 32
 );
