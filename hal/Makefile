@@ -43,7 +43,7 @@ ENDPOINT_MARKDOWN    := $(foreach endpoint,$(ENDPOINTS),$(BUILDDIR)/$(endpoint)/
 INTERFACE_MARKDOWN   := $(patsubst $(INTERFACES_DIR)/%.rdl,$(DOCSDIR)/%.md,$(INTERFACE_SPECS))
 PROJECT_INTERFACES   := $(patsubst $(INTERFACES_DIR)/openenoc_%_interface.rdl,$(BUILDDIR)/rtl/openenoc_%_if.sv,$(INTERFACE_SPECS))
 
-.PHONY: all interfaces bridges unittest clean help awk-tool-check
+.PHONY: all interfaces bridges unittest unittest-tools clean help awk-tool-check
 
 all: $(PROJECT_INTERFACES) $(ENDPOINT_HEADERS) $(ENDPOINT_MEMORY_MAPS) $(ENDPOINT_RTL) $(ENDPOINT_CSR_PKGS) $(ENDPOINT_CSR_BRIDGES) $(ENDPOINT_CONFIG_PKGS) $(ENDPOINT_PYTHON) $(ENDPOINT_MARKDOWN) $(INTERFACE_MARKDOWN)
 
@@ -162,14 +162,18 @@ $(DOCSDIR)/%.md: $(INTERFACES_DIR)/%.rdl
 	$(Q)mkdir -p $(DOCSDIR)
 	$(Q)peakrdl markdown $< -o $@ --top $*_top
 
-unittest: $(addprefix unittest-,$(ENDPOINTS))
+unittest-tools:
+	$(LOG) 'Running HAL generator unit tests in:' '$(HAL_DIR)/tools'
+	$(Q)$(PYTHON) -B -m unittest discover -s $(HAL_DIR)/tools -p 'test_*.py' -v
+
+unittest: unittest-tools $(addprefix unittest-,$(ENDPOINTS))
 
 help:
 	$(Q)echo "Usage: make [target] [variables...]"
 	$(Q)echo
 	$(Q)echo "Targets:"
 	$(Q)echo "  all       Generate HAL RTL, C API, Python models, interfaces, bridges and documentation"
-	$(Q)echo "  unittest  Run generated CSR model unit tests"
+	$(Q)echo "  unittest  Run HAL generator and generated CSR model unit tests"
 	$(Q)echo "  clean     Remove generated HAL and interface documentation outputs"
 	$(Q)echo "  help      Show this message"
 	$(Q)echo

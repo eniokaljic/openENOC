@@ -17,6 +17,12 @@ from systemrdl import RDLCompileError
 from openenoc_hwif import ExportError, compile_rdl, write_if_changed
 
 
+UINT32_MAX = (1 << 32) - 1
+UINT64_MAX = (1 << 64) - 1
+INT32_MIN = -(1 << 31)
+INT64_MIN = -(1 << 63)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("rdl_file", type=Path, help="input SystemRDL file")
@@ -39,8 +45,18 @@ def c_value(value: Any) -> str:
     if isinstance(value, bool):
         return "1" if value else "0"
     if isinstance(value, int):
-        macro = "UINT64_C" if value >= 0 else "INT64_C"
-        return f"{macro}({value})"
+        if 0 <= value <= UINT32_MAX:
+            return f"UINT32_C({value})"
+        if 0 <= value <= UINT64_MAX:
+            return f"UINT64_C({value})"
+        if INT32_MIN <= value < 0:
+            return f"INT32_C({value})"
+        if INT64_MIN <= value < INT32_MIN:
+            return f"INT64_C({value})"
+        raise ExportError(
+            f"integer C-header parameter value is outside the 64-bit range: "
+            f"{value}"
+        )
     if isinstance(value, str):
         escaped = value.replace("\\", "\\\\").replace('"', '\\"')
         return f'"{escaped}"'

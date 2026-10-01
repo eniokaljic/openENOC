@@ -17,6 +17,12 @@ module openenoc_endpoint_full_csr_bridge (
     // endpoint_if parameters:
     //   RMEM_TOTAL_DEPTH = openenoc_endpoint_full_csr_pkg::RMEM_TOTAL_DEPTH
     //   NUM_OF_PEERS = openenoc_endpoint_full_csr_pkg::NUM_OF_PEERS
+    //   MAX_DMA_FRAME_SIZE_BYTES = openenoc_endpoint_full_csr_pkg::MAX_DMA_FRAME_SIZE_BYTES
+    //   HAS_PEER_DMA = openenoc_endpoint_full_csr_pkg::HAS_PEER_DMA
+    //   HAS_NON_OETP_DMA = openenoc_endpoint_full_csr_pkg::HAS_NON_OETP_DMA
+    //   HAS_DIRECT_AXIS = openenoc_endpoint_full_csr_pkg::HAS_DIRECT_AXIS
+    //   HAS_RMEM = openenoc_endpoint_full_csr_pkg::HAS_RMEM
+    //   HAS_IRQ = openenoc_endpoint_full_csr_pkg::HAS_IRQ
     // switch_if parameters:
     //   NUM_OF_INTERFACES = openenoc_endpoint_full_csr_pkg::NUM_OF_INTERFACES
     //   TABLE_DEPTH = openenoc_endpoint_full_csr_pkg::TABLE_DEPTH
@@ -24,8 +30,6 @@ module openenoc_endpoint_full_csr_bridge (
         csr_hwif_in = '{default: '0};
         endpoint_if.csr_to_core = '{default: '0};
         switch_if.csr_to_core = '{default: '0};
-        csr_hwif_in.endpoint_interface.config_.mac_address.lo_word.next = endpoint_if.core_to_csr.config_.mac_address.lo_word.next;
-        csr_hwif_in.endpoint_interface.config_.mac_address.hi_word.next = endpoint_if.core_to_csr.config_.mac_address.hi_word.next;
         csr_hwif_in.endpoint_interface.axis_if.source.control.tvalid.hwclr = endpoint_if.core_to_csr.axis_if.source.control.tvalid.hwclr;
         csr_hwif_in.endpoint_interface.axis_if.source.status.tready.next = endpoint_if.core_to_csr.axis_if.source.status.tready.next;
         csr_hwif_in.endpoint_interface.axis_if.sink.data.tdata.next = endpoint_if.core_to_csr.axis_if.sink.data.tdata.next;
@@ -33,56 +37,109 @@ module openenoc_endpoint_full_csr_bridge (
         csr_hwif_in.endpoint_interface.axis_if.sink.status.tvalid.next = endpoint_if.core_to_csr.axis_if.sink.status.tvalid.next;
         csr_hwif_in.endpoint_interface.axis_if.sink.status.tlast.next = endpoint_if.core_to_csr.axis_if.sink.status.tlast.next;
         csr_hwif_in.endpoint_interface.axis_if.sink.status.tkeep.next = endpoint_if.core_to_csr.axis_if.sink.status.tkeep.next;
-        for (int unsigned i9_0 = 0; i9_0 < 4; i9_0++) begin
-            csr_hwif_in.endpoint_interface.peers.entry[i9_0].mac_address.lo_word.next = endpoint_if.core_to_csr.peers.entry[i9_0].mac_address.lo_word.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.tx.command_status.request.hwclr = endpoint_if.core_to_csr.non_oetp_dma.tx.command_status.request.hwclr;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.tx.command_status.idle.next = endpoint_if.core_to_csr.non_oetp_dma.tx.command_status.idle.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.tx.command_status.done.next = endpoint_if.core_to_csr.non_oetp_dma.tx.command_status.done.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.tx.command_status.error.next = endpoint_if.core_to_csr.non_oetp_dma.tx.command_status.error.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.tx.command_status.error_code.next = endpoint_if.core_to_csr.non_oetp_dma.tx.command_status.error_code.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes.next = endpoint_if.core_to_csr.non_oetp_dma.tx.transferred_length.bytes.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.rx.command_status.request.hwclr = endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.request.hwclr;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.rx.command_status.idle.next = endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.idle.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.rx.command_status.armed.next = endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.armed.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.rx.command_status.done.next = endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.done.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.rx.command_status.error.next = endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.error.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.rx.command_status.error_code.next = endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.error_code.next;
+        csr_hwif_in.endpoint_interface.non_oetp_dma.rx.received_length.bytes.next = endpoint_if.core_to_csr.non_oetp_dma.rx.received_length.bytes.next;
+        csr_hwif_in.endpoint_interface.irq.control.clear_errors.hwclr = endpoint_if.core_to_csr.irq.control.clear_errors.hwclr;
+        csr_hwif_in.endpoint_interface.irq.status.claim_pending.next = endpoint_if.core_to_csr.irq.status.claim_pending.next;
+        csr_hwif_in.endpoint_interface.irq.status.credit_full.next = endpoint_if.core_to_csr.irq.status.credit_full.next;
+        csr_hwif_in.endpoint_interface.irq.status.overflow.next = endpoint_if.core_to_csr.irq.status.overflow.next;
+        csr_hwif_in.endpoint_interface.irq.status.invalid_complete.next = endpoint_if.core_to_csr.irq.status.invalid_complete.next;
+        csr_hwif_in.endpoint_interface.irq.status.irq_asserted.next = endpoint_if.core_to_csr.irq.status.irq_asserted.next;
+        csr_hwif_in.endpoint_interface.irq.status.fifo_level.next = endpoint_if.core_to_csr.irq.status.fifo_level.next;
+        csr_hwif_in.endpoint_interface.irq.status.reserved_count.next = endpoint_if.core_to_csr.irq.status.reserved_count.next;
+        csr_hwif_in.endpoint_interface.irq.claim.peer_idx.next = endpoint_if.core_to_csr.irq.claim.peer_idx.next;
+        csr_hwif_in.endpoint_interface.irq.claim.source.next = endpoint_if.core_to_csr.irq.claim.source.next;
+        csr_hwif_in.endpoint_interface.irq.claim.sequence_.next = endpoint_if.core_to_csr.irq.claim.sequence_.next;
+        csr_hwif_in.endpoint_interface.irq.claim.valid.next = endpoint_if.core_to_csr.irq.claim.valid.next;
+        csr_hwif_in.endpoint_interface.irq.complete.valid.hwclr = endpoint_if.core_to_csr.irq.complete.valid.hwclr;
+        for (int unsigned i33_0 = 0; i33_0 < 4; i33_0++) begin
+            csr_hwif_in.endpoint_interface.peers.entry[i33_0].dma.request.hwclr = endpoint_if.core_to_csr.peers.entry[i33_0].dma.request.hwclr;
         end
-        for (int unsigned i10_0 = 0; i10_0 < 4; i10_0++) begin
-            csr_hwif_in.endpoint_interface.peers.entry[i10_0].mac_address.hi_word.next = endpoint_if.core_to_csr.peers.entry[i10_0].mac_address.hi_word.next;
+        for (int unsigned i34_0 = 0; i34_0 < 4; i34_0++) begin
+            csr_hwif_in.endpoint_interface.peers.entry[i34_0].dma.idle.next = endpoint_if.core_to_csr.peers.entry[i34_0].dma.idle.next;
         end
-        for (int unsigned i11_0 = 0; i11_0 < 4; i11_0++) begin
-            csr_hwif_in.endpoint_interface.peers.entry[i11_0].dma.idle.next = endpoint_if.core_to_csr.peers.entry[i11_0].dma.idle.next;
+        for (int unsigned i35_0 = 0; i35_0 < 4; i35_0++) begin
+            csr_hwif_in.endpoint_interface.peers.entry[i35_0].dma.done.next = endpoint_if.core_to_csr.peers.entry[i35_0].dma.done.next;
         end
-        for (int unsigned i12_0 = 0; i12_0 < 4; i12_0++) begin
-            csr_hwif_in.endpoint_interface.peers.entry[i12_0].dma.done.next = endpoint_if.core_to_csr.peers.entry[i12_0].dma.done.next;
+        for (int unsigned i36_0 = 0; i36_0 < 4; i36_0++) begin
+            csr_hwif_in.endpoint_interface.peers.entry[i36_0].dma.error.next = endpoint_if.core_to_csr.peers.entry[i36_0].dma.error.next;
         end
-        for (int unsigned i13_0 = 0; i13_0 < 4; i13_0++) begin
-            csr_hwif_in.endpoint_interface.peers.entry[i13_0].dma.error.next = endpoint_if.core_to_csr.peers.entry[i13_0].dma.error.next;
+        for (int unsigned i37_0 = 0; i37_0 < 4; i37_0++) begin
+            csr_hwif_in.endpoint_interface.peers.entry[i37_0].dma.error_code.next = endpoint_if.core_to_csr.peers.entry[i37_0].dma.error_code.next;
         end
         csr_hwif_in.endpoint_interface.rmem.wr_ack = endpoint_if.core_to_csr.rmem.wr_ack;
         csr_hwif_in.endpoint_interface.rmem.rd_ack = endpoint_if.core_to_csr.rmem.rd_ack;
         csr_hwif_in.endpoint_interface.rmem.rd_data = endpoint_if.core_to_csr.rmem.rd_data;
         endpoint_if.csr_to_core.info.rmem_total_depth.value = csr_hwif_out.endpoint_interface.info.rmem_total_depth.value;
         endpoint_if.csr_to_core.info.num_of_peers.value = csr_hwif_out.endpoint_interface.info.num_of_peers.value;
+        endpoint_if.csr_to_core.info.peer_dma_supported.value = csr_hwif_out.endpoint_interface.info.peer_dma_supported.value;
+        endpoint_if.csr_to_core.info.non_oetp_dma_supported.value = csr_hwif_out.endpoint_interface.info.non_oetp_dma_supported.value;
+        endpoint_if.csr_to_core.info.direct_axis_supported.value = csr_hwif_out.endpoint_interface.info.direct_axis_supported.value;
+        endpoint_if.csr_to_core.info.rmem_supported.value = csr_hwif_out.endpoint_interface.info.rmem_supported.value;
+        endpoint_if.csr_to_core.info.irq_supported.value = csr_hwif_out.endpoint_interface.info.irq_supported.value;
+        endpoint_if.csr_to_core.info.max_dma_frame_size_bytes.value = csr_hwif_out.endpoint_interface.info.max_dma_frame_size_bytes.value;
         endpoint_if.csr_to_core.config_.mac_address.lo_word.value = csr_hwif_out.endpoint_interface.config_.mac_address.lo_word.value;
         endpoint_if.csr_to_core.config_.mac_address.hi_word.value = csr_hwif_out.endpoint_interface.config_.mac_address.hi_word.value;
+        endpoint_if.csr_to_core.config_.non_oetp_control.receive_mode.value = csr_hwif_out.endpoint_interface.config_.non_oetp_control.receive_mode.value;
         endpoint_if.csr_to_core.axis_if.source.data.tdata.value = csr_hwif_out.endpoint_interface.axis_if.source.data.tdata.value;
         endpoint_if.csr_to_core.axis_if.source.control.tvalid.value = csr_hwif_out.endpoint_interface.axis_if.source.control.tvalid.value;
         endpoint_if.csr_to_core.axis_if.source.control.tlast.value = csr_hwif_out.endpoint_interface.axis_if.source.control.tlast.value;
         endpoint_if.csr_to_core.axis_if.source.control.tkeep.value = csr_hwif_out.endpoint_interface.axis_if.source.control.tkeep.value;
         endpoint_if.csr_to_core.axis_if.sink.control.tready.value = csr_hwif_out.endpoint_interface.axis_if.sink.control.tready.value;
-        for (int unsigned i26_0 = 0; i26_0 < 4; i26_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i26_0].mac_address.lo_word.value = csr_hwif_out.endpoint_interface.peers.entry[i26_0].mac_address.lo_word.value;
+        endpoint_if.csr_to_core.non_oetp_dma.tx.buffer_address.base.value = csr_hwif_out.endpoint_interface.non_oetp_dma.tx.buffer_address.base.value;
+        endpoint_if.csr_to_core.non_oetp_dma.tx.frame_length.bytes.value = csr_hwif_out.endpoint_interface.non_oetp_dma.tx.frame_length.bytes.value;
+        endpoint_if.csr_to_core.non_oetp_dma.tx.command_status.request.value = csr_hwif_out.endpoint_interface.non_oetp_dma.tx.command_status.request.value;
+        endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_address.base.value = csr_hwif_out.endpoint_interface.non_oetp_dma.rx.buffer_address.base.value;
+        endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_capacity.bytes.value = csr_hwif_out.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes.value;
+        endpoint_if.csr_to_core.non_oetp_dma.rx.command_status.request.value = csr_hwif_out.endpoint_interface.non_oetp_dma.rx.command_status.request.value;
+        endpoint_if.csr_to_core.irq.control.global_enable.value = csr_hwif_out.endpoint_interface.irq.control.global_enable.value;
+        endpoint_if.csr_to_core.irq.control.clear_errors.value = csr_hwif_out.endpoint_interface.irq.control.clear_errors.value;
+        endpoint_if.csr_to_core.irq.event_enable.peer_dma_complete.value = csr_hwif_out.endpoint_interface.irq.event_enable.peer_dma_complete.value;
+        endpoint_if.csr_to_core.irq.event_enable.non_oetp_dma_tx_complete.value = csr_hwif_out.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.value;
+        endpoint_if.csr_to_core.irq.event_enable.non_oetp_dma_rx_complete.value = csr_hwif_out.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.value;
+        endpoint_if.csr_to_core.irq.event_enable.non_oetp_direct_tx_complete.value = csr_hwif_out.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.value;
+        endpoint_if.csr_to_core.irq.event_enable.non_oetp_direct_rx_available.value = csr_hwif_out.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.value;
+        endpoint_if.csr_to_core.irq.complete.peer_idx.value = csr_hwif_out.endpoint_interface.irq.complete.peer_idx.value;
+        endpoint_if.csr_to_core.irq.complete.source.value = csr_hwif_out.endpoint_interface.irq.complete.source.value;
+        endpoint_if.csr_to_core.irq.complete.sequence_.value = csr_hwif_out.endpoint_interface.irq.complete.sequence_.value;
+        endpoint_if.csr_to_core.irq.complete.valid.value = csr_hwif_out.endpoint_interface.irq.complete.valid.value;
+        for (int unsigned i74_0 = 0; i74_0 < 4; i74_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i74_0].mac_address.lo_word.value = csr_hwif_out.endpoint_interface.peers.entry[i74_0].mac_address.lo_word.value;
         end
-        for (int unsigned i27_0 = 0; i27_0 < 4; i27_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i27_0].mac_address.hi_word.value = csr_hwif_out.endpoint_interface.peers.entry[i27_0].mac_address.hi_word.value;
+        for (int unsigned i75_0 = 0; i75_0 < 4; i75_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i75_0].mac_address.hi_word.value = csr_hwif_out.endpoint_interface.peers.entry[i75_0].mac_address.hi_word.value;
         end
-        for (int unsigned i28_0 = 0; i28_0 < 4; i28_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i28_0].rmem_address.offset.value = csr_hwif_out.endpoint_interface.peers.entry[i28_0].rmem_address.offset.value;
+        for (int unsigned i76_0 = 0; i76_0 < 4; i76_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i76_0].rmem_address.offset.value = csr_hwif_out.endpoint_interface.peers.entry[i76_0].rmem_address.offset.value;
         end
-        for (int unsigned i29_0 = 0; i29_0 < 4; i29_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i29_0].local_address.base.value = csr_hwif_out.endpoint_interface.peers.entry[i29_0].local_address.base.value;
+        for (int unsigned i77_0 = 0; i77_0 < 4; i77_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i77_0].local_address.base.value = csr_hwif_out.endpoint_interface.peers.entry[i77_0].local_address.base.value;
         end
-        for (int unsigned i30_0 = 0; i30_0 < 4; i30_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i30_0].remote_address.base.value = csr_hwif_out.endpoint_interface.peers.entry[i30_0].remote_address.base.value;
+        for (int unsigned i78_0 = 0; i78_0 < 4; i78_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i78_0].remote_address.base.value = csr_hwif_out.endpoint_interface.peers.entry[i78_0].remote_address.base.value;
         end
-        for (int unsigned i31_0 = 0; i31_0 < 4; i31_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i31_0].size.bytes.value = csr_hwif_out.endpoint_interface.peers.entry[i31_0].size.bytes.value;
+        for (int unsigned i79_0 = 0; i79_0 < 4; i79_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i79_0].size.bytes.value = csr_hwif_out.endpoint_interface.peers.entry[i79_0].size.bytes.value;
         end
-        for (int unsigned i32_0 = 0; i32_0 < 4; i32_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i32_0].dma.mode.value = csr_hwif_out.endpoint_interface.peers.entry[i32_0].dma.mode.value;
+        for (int unsigned i80_0 = 0; i80_0 < 4; i80_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i80_0].dma.mode.value = csr_hwif_out.endpoint_interface.peers.entry[i80_0].dma.mode.value;
         end
-        for (int unsigned i33_0 = 0; i33_0 < 4; i33_0++) begin
-            endpoint_if.csr_to_core.peers.entry[i33_0].dma.request.value = csr_hwif_out.endpoint_interface.peers.entry[i33_0].dma.request.value;
+        for (int unsigned i81_0 = 0; i81_0 < 4; i81_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i81_0].dma.irq_enable.value = csr_hwif_out.endpoint_interface.peers.entry[i81_0].dma.irq_enable.value;
+        end
+        for (int unsigned i82_0 = 0; i82_0 < 4; i82_0++) begin
+            endpoint_if.csr_to_core.peers.entry[i82_0].dma.request.value = csr_hwif_out.endpoint_interface.peers.entry[i82_0].dma.request.value;
         end
         endpoint_if.csr_to_core.rmem.req = csr_hwif_out.endpoint_interface.rmem.req;
         endpoint_if.csr_to_core.rmem.addr = csr_hwif_out.endpoint_interface.rmem.addr;
