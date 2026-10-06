@@ -55,9 +55,13 @@ VERILOG_SOURCES += test_openenoc_iss.sv
 export PYTHONPATH := $(abspath $(ISS_DIR)/python):$(PYTHONPATH)
 export OPENENOC_ISS_LIBRARY := $(abspath $(REPO_DIR)/build/dv/iss/lib/libopenenoc_iss.so)
 export OPENENOC_FIRMWARE_ELF := $(abspath $(REPO_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.elf)
+export OPENENOC_LINK_FIRMWARE_ELF := $(abspath $(REPO_DIR)/build/dv/iss/firmware/openenoc_endpoint_full/iss_link.elf)
 export OPENENOC_STARTUP_FIRMWARE_ELF := $(abspath $(REPO_DIR)/build/dv/iss/firmware/openenoc_endpoint_full/iss_startup.elf)
 
 ifeq ($(SIM), verilator)
+	ifneq ($(TWO_ENDPOINTS),)
+		COMPILE_ARGS += -GTWO_ENDPOINTS=$(TWO_ENDPOINTS)
+	endif
 	EXTRA_ARGS += -Wall -Wno-TIMESCALEMOD -Wno-SYNCASYNCNET -Wno-MULTIDRIVEN $(REPO_DIR)/dv/common/config.vlt
 	ifeq ($(WAVES), 1)
 		EXTRA_ARGS += --trace

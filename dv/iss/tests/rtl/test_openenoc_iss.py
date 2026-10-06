@@ -3,6 +3,7 @@
 
 import os
 import struct
+from contextlib import ExitStack
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -38,14 +39,14 @@ AXIS_LOOPBACK_WORDS = (
 )
 
 
-async def collect_axis_transfers(dut, prefix, transfers):
+async def collect_axis_transfers(dut, prefix, transfers, clock=None):
     valid = getattr(dut, f"{prefix}_valid")
     ready = getattr(dut, f"{prefix}_ready")
     data = getattr(dut, f"{prefix}_data")
     keep = getattr(dut, f"{prefix}_keep")
     last = getattr(dut, f"{prefix}_last")
     while True:
-        await RisingEdge(dut.clk)
+        await RisingEdge(clock if clock is not None else dut.clk)
         if int(valid.value) and int(ready.value):
             transfers.append((int(data.value), int(keep.value), bool(int(last.value))))
 
@@ -751,6 +752,161 @@ async def test_spike_runs_csr_smoke_firmware(dut):
     assert int(dut.switch_pause_request.value) == 1
     assert int(dut.switch_default_forwarding.value) == 0xA
     assert int(dut.imem_active.value) == 0
+
+
+@cocotb.test()
+async def test_spike_endpoints_exchange_request_reply(dut):
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
+    masters = [
+        AxiLiteMaster(AxiLiteBus.from_prefix(entity, prefix), dut.clk, dut.rst)
+        for entity, prefix in ((dut, "iss_axil"), (dut.g_dual, "iss1_axil"))
+    ]
+    dut.rst.value = 1
+    for _ in range(5):
+        await RisingEdge(dut.clk)
+    dut.rst.value = 0
+
+    boot_image = load_elf(os.environ["OPENENOC_LINK_FIRMWARE_ELF"])
+    status_address = boot_image.symbol_address("iss_link_status")
+    received_address = boot_image.symbol_address("iss_link_received")
+    for index, master in enumerate(masters):
+        await write_word(master, DMEM_BASE + 0x4000, 0x12340000 + index)
+        await write_word(master, CSR_BASE, index + 1)
+        assert await read_word(master, status_address) == 0
+
+    transfers = [[[], []] for _ in masters]
+    monitors = [
+        cocotb.start_soon(collect_axis_transfers(entity, prefix, stream, dut.clk))
+        for index, entity in enumerate((dut, dut.g_dual))
+        for prefix, stream in (
+            (("endpoint_tx" if index == 0 else "endpoint1_tx"), transfers[index][0]),
+            (("endpoint_csr_sink" if index == 0 else "endpoint1_csr_sink"),
+             transfers[index][1]),
+        )
+    ]
+    request_counts = [0, 0]
+
+    async def run_firmware(index, endpoint):
+        for _ in range(FIRMWARE_TIMEOUT_CYCLES):
+            await RisingEdge(dut.clk)
+            request = endpoint.poll()
+            if request is not None:
+                request_counts[index] += 1
+                status_write = (
+                    request.kind == RequestKind.DATA_WRITE
+                    and request.address == status_address
+                    and request.size_bytes == 4
+                )
+                status = request_value(request) if status_write else None
+                await service_request(endpoint, masters[index], request)
+                assert status != CSR_SMOKE_FAILED, f"endpoint {index} firmware failed"
+                if status == 0x600D0001 + index:
+                    endpoint.request_stop()
+                    await wait_for_stop(endpoint, dut)
+                    return
+            state = endpoint.state()
+            assert state.run_state not in (RunState.ERROR, RunState.COMPLETED)
+        raise AssertionError(f"endpoint {index} firmware timed out")
+
+    runners = []
+    try:
+        with ExitStack() as stack:
+            library = IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"])
+            endpoints = [
+                stack.enter_context(library.create_endpoint(index))
+                for index in range(len(masters))
+            ]
+            masters[0].read_if.ar_channel.pause = True
+            for endpoint in endpoints:
+                load_boot_image(endpoint, boot_image)
+                endpoint.start(entry_pc=boot_image.entry_pc, max_steps=1_000_000)
+            runners = [
+                cocotb.start_soon(run_firmware(index, endpoint))
+                for index, endpoint in enumerate(endpoints)
+            ]
+            await Timer(1000, unit="ns")
+            assert endpoints[0].state().run_state == RunState.WAITING_MMIO
+            assert request_counts[1] > request_counts[0]
+            masters[0].read_if.ar_channel.pause = False
+            for runner in runners:
+                await with_timeout(runner, 1_000_000, "ns")
+    finally:
+        masters[0].read_if.ar_channel.pause = False
+        for runner in runners:
+            if not runner.done():
+                runner.cancel()
+        for monitor in monitors:
+            monitor.cancel()
+
+    request_word = (0x13579BDF, 0xF, True)
+    reply_word = (0x2468ACE0, 0xF, True)
+    for index, master in enumerate(masters):
+        assert transfers[index] == (
+            [[request_word], [reply_word]] if index == 0
+            else [[reply_word], [request_word]]
+        )
+        assert await read_word(master, status_address) == 0x600D0001 + index
+        assert await read_word(master, received_address) == (
+            reply_word[0] if index == 0 else request_word[0]
+        )
+        assert await read_word(master, DMEM_BASE + 0x4000) == 0x12340000 + index
+    assert int(dut.imem_active.value) == 0
+    assert int(dut.g_dual.endpoint1_imem_active.value) == 0
+
+
+@cocotb.test()
+async def test_spike_stops_one_endpoint_without_stopping_other(dut):
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
+    master = AxiLiteMaster(
+        AxiLiteBus.from_prefix(dut.g_dual, "iss1_axil"), dut.clk, dut.rst
+    )
+    dut.rst.value = 1
+    for _ in range(5):
+        await RisingEdge(dut.clk)
+    dut.rst.value = 0
+
+    image = struct.pack(
+        "<5I", 0x100000B7, 0x02A00113, 0x0020A023, 0x0000A183, 0x00118213,
+    )
+    library = IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"])
+    with ExitStack() as stack:
+        local_endpoint = stack.enter_context(library.create_endpoint(0))
+        active_endpoint = stack.enter_context(library.create_endpoint(1))
+        local_endpoint.load_image(struct.pack("<I", 0x0000006F))
+        active_endpoint.load_image(image)
+        local_endpoint.start(entry_pc=0, max_steps=1_000_000)
+        active_endpoint.start(entry_pc=0, max_steps=5)
+
+        for _ in range(EXECUTION_TIMEOUT_CYCLES):
+            await RisingEdge(dut.clk)
+            request = active_endpoint.poll()
+            if request is not None:
+                break
+        else:
+            raise AssertionError("Endpoint 1 did not issue its write")
+        assert request.endpoint_id == 1
+        assert request.kind == RequestKind.DATA_WRITE
+        assert local_endpoint.state().run_state == RunState.RUNNING
+        local_endpoint.request_stop()
+        await wait_for_stop(local_endpoint, dut)
+        assert active_endpoint.state().run_state == RunState.WAITING_MMIO
+
+        await service_request(active_endpoint, master, request)
+        for _ in range(EXECUTION_TIMEOUT_CYCLES):
+            await RisingEdge(dut.clk)
+            request = active_endpoint.poll()
+            if request is not None:
+                await service_request(active_endpoint, master, request)
+            if active_endpoint.state().run_state == RunState.COMPLETED:
+                break
+        else:
+            raise AssertionError("Endpoint 1 stopped with endpoint 0")
+        assert active_endpoint.read_register(3) == 42
+        assert active_endpoint.read_register(4) == 43
+
+    assert await read_word(master, DMEM_BASE) == 42
+    assert int(dut.imem_active.value) == 0
+    assert int(dut.g_dual.endpoint1_imem_active.value) == 0
 
 
 @cocotb.test()
