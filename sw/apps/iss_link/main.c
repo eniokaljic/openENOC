@@ -11,6 +11,7 @@
 #define INITIATOR_ROLE UINT32_C(1)
 #define RESPONDER_ROLE UINT32_C(2)
 #define REQUEST_WORD UINT32_C(0x13579bdf)
+#define REQUEST_LAST_WORD UINT32_C(0x89abcdef)
 #define REPLY_WORD UINT32_C(0x2468ace0)
 #define STATUS_FAILED UINT32_C(0xbad0bad0)
 #define STATUS_INITIATOR_PASSED UINT32_C(0x600d0001)
@@ -18,6 +19,7 @@
 
 volatile uint32_t iss_link_status;
 volatile uint32_t iss_link_received;
+volatile uint32_t iss_link_release;
 
 int main(void) {
     volatile csr_t *const csr = (volatile csr_t *)(uintptr_t)CSR_BASE_ADDR;
@@ -41,7 +43,13 @@ int main(void) {
 
     if (role == INITIATOR_ROLE) {
         while (openenoc_endpoint_axis_send(
-            &csr->endpoint_interface.axis_if, outgoing, 0xf, true) ==
+            &csr->endpoint_interface.axis_if, outgoing, 0xf, false) ==
+            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+        }
+        while (iss_link_release == 0) {
+        }
+        while (openenoc_endpoint_axis_send(
+            &csr->endpoint_interface.axis_if, REQUEST_LAST_WORD, 0xf, true) ==
             OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
         }
     }
@@ -51,12 +59,21 @@ int main(void) {
         OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
     }
     iss_link_received = received;
-    if (received != expected || keep != 0xf || !last) {
+    if (received != expected || keep != 0xf ||
+        last == (role == RESPONDER_ROLE)) {
         iss_link_status = STATUS_FAILED;
         return 1;
     }
 
     if (role == RESPONDER_ROLE) {
+        while (openenoc_endpoint_axis_receive(
+            &csr->endpoint_interface.axis_if, &received, &keep, &last) ==
+            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+        }
+        if (received != REQUEST_LAST_WORD || keep != 0xf || !last) {
+            iss_link_status = STATUS_FAILED;
+            return 1;
+        }
         while (openenoc_endpoint_axis_send(
             &csr->endpoint_interface.axis_if, outgoing, 0xf, true) ==
             OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {

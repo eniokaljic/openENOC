@@ -29,7 +29,7 @@ STARTUP_FIRMWARE_BUILD_ROOT := $(BUILD_DIR)/firmware
 STARTUP_FIRMWARE_ELF := $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_startup.elf
 SPIKE_COMMIT := $(shell $(PYTHON) -c 'import json; print(json.load(open("$(ISS_DIR)/compatibility.json"))["spike"]["commit"])')
 
-.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-firmware link-smoke processor-smoke python-smoke rtl-bridge-smoke rtl-firmware-smoke rtl-lanes-smoke rtl-lifecycle-smoke rtl-smoke rtl-startup-smoke rtl-system-smoke spike startup-firmware test-native tsan-smoke
+.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-firmware link-smoke processor-smoke python-smoke report rtl-bridge-smoke rtl-firmware-smoke rtl-lanes-smoke rtl-lifecycle-smoke rtl-smoke rtl-startup-smoke rtl-system-smoke spike startup-firmware test-native tsan-smoke
 
 check: test-native python-smoke elf-smoke
 
@@ -122,12 +122,18 @@ $(NATIVE_BUILD_DIR)/openenoc_iss_c_api_smoke: tests/native/c_api_smoke.c include
 c-api-smoke: check-submodule $(NATIVE_BUILD_DIR)/openenoc_iss_c_api_smoke
 	@$(NATIVE_BUILD_DIR)/openenoc_iss_c_api_smoke
 
-test-native: link-smoke processor-smoke c-api-smoke
+test-native: check-submodule $(NATIVE_BUILD_DIR)/openenoc_iss_link_smoke $(NATIVE_BUILD_DIR)/openenoc_iss_processor_smoke $(NATIVE_BUILD_DIR)/openenoc_iss_c_api_smoke
+	@$(PYTHON) native_report.py \
+		$(NATIVE_BUILD_DIR)/openenoc_iss_link_smoke \
+		$(NATIVE_BUILD_DIR)/openenoc_iss_processor_smoke \
+		$(NATIVE_BUILD_DIR)/openenoc_iss_c_api_smoke
 
 python-smoke: iss-library
+	@mkdir -p $(BUILD_DIR)/reports
 	@PYTHONPATH=$(PYTHON_PACKAGE_DIR) \
 		OPENENOC_ISS_LIBRARY=$(ISS_LIBRARY) \
-		$(PYTHON) -m unittest discover -s tests/python -p 'test_native.py'
+		$(PYTHON) -m pytest -q tests/python/test_native.py \
+		--junitxml=$(BUILD_DIR)/reports/python-smoke.xml
 
 tsan-smoke: check-submodule $(TSAN_ISS_LIBRARY)
 	@runtime=$$($(CXX) -print-file-name=libtsan.so); \
@@ -139,22 +145,32 @@ tsan-smoke: check-submodule $(TSAN_ISS_LIBRARY)
 		$(PYTHON) -m unittest discover -s tests/python -p 'test_native.py'
 
 elf-smoke: firmware startup-firmware
+	@mkdir -p $(BUILD_DIR)/reports
 	@PYTHONPATH=$(PYTHON_PACKAGE_DIR) \
 		OPENENOC_FIRMWARE_ELF=$(FIRMWARE_ELF) \
 		OPENENOC_STARTUP_FIRMWARE_ELF=$(STARTUP_FIRMWARE_ELF) \
-		$(PYTHON) -m unittest discover -s tests/python -p 'test_elf.py'
+		$(PYTHON) -m pytest -q tests/python/test_elf.py \
+		--junitxml=$(BUILD_DIR)/reports/elf-smoke.xml
 
 rtl-smoke: iss-library
-	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_accesses_rtl_dmem
+	@mkdir -p $(BUILD_DIR)/reports
+	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-smoke.xml \
+		COCOTB_TESTCASE=test_spike_accesses_rtl_dmem
 
 rtl-lanes-smoke: iss-library
-	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_subword_lanes_in_rtl_dmem
+	@mkdir -p $(BUILD_DIR)/reports
+	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-lanes-smoke.xml \
+		COCOTB_TESTCASE=test_spike_subword_lanes_in_rtl_dmem
 
 rtl-bridge-smoke: iss-library
-	@$(MAKE) -C tests/rtl COCOTB_TESTCASE='test_spike_bridge_waits_for_rtl_axi_handshakes,test_spike_bridge_rejects_invalid_request_before_axi,test_spike_bridge_reports_axi_error,test_spike_bridge_times_out_blocked_write'
+	@mkdir -p $(BUILD_DIR)/reports
+	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-bridge-smoke.xml \
+		COCOTB_TESTCASE='test_spike_bridge_waits_for_rtl_axi_handshakes,test_spike_bridge_rejects_invalid_request_before_axi,test_spike_bridge_reports_axi_error,test_spike_bridge_times_out_blocked_write'
 
 rtl-lifecycle-smoke: iss-library
-	@$(MAKE) -C tests/rtl COCOTB_TESTCASE='test_spike_resets_blocked_axi_write,test_spike_resets_pending_axi_responses'
+	@mkdir -p $(BUILD_DIR)/reports
+	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-lifecycle-smoke.xml \
+		COCOTB_TESTCASE='test_spike_resets_blocked_axi_write,test_spike_resets_pending_axi_responses'
 
 firmware:
 	@$(MAKE) -C $(ROOT_DIR)/sw APP=csr_smoke EP=openenoc_endpoint_full
@@ -171,16 +187,27 @@ link-firmware:
 	@test -f $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_link.elf
 
 rtl-firmware-smoke: iss-library firmware
-	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_runs_csr_smoke_firmware
+	@mkdir -p $(BUILD_DIR)/reports
+	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-firmware-smoke.xml \
+		COCOTB_TESTCASE=test_spike_runs_csr_smoke_firmware
 
 rtl-startup-smoke: iss-library startup-firmware
-	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_qualifies_elf_startup
+	@mkdir -p $(BUILD_DIR)/reports
+	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-startup-smoke.xml \
+		COCOTB_TESTCASE=test_spike_qualifies_elf_startup
 
 rtl-system-smoke: iss-library link-firmware
+	@mkdir -p $(BUILD_DIR)/reports
 	@$(MAKE) -C tests/rtl TWO_ENDPOINTS=1 SIM_BUILD=$(BUILD_DIR)/rtl-system-sim \
-		COCOTB_TESTCASE='test_spike_endpoints_exchange_request_reply,test_spike_stops_one_endpoint_without_stopping_other'
+		COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-system-smoke.xml \
+		COCOTB_TESTCASE='test_spike_endpoints_exchange_request_reply,test_spike_recovers_after_mid_frame_stop,test_spike_stops_one_endpoint_without_stopping_other'
 
-check-all: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-lifecycle-smoke rtl-firmware-smoke rtl-startup-smoke rtl-system-smoke
+report: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-lifecycle-smoke rtl-firmware-smoke rtl-startup-smoke rtl-system-smoke
+	@$(PYTHON) report.py
+
+check-all:
+	@$(RM) $(BUILD_DIR)/reports/manifest.json
+	@$(MAKE) report
 
 clean:
 	@$(MAKE) -C tests/rtl clean >/dev/null 2>&1 || true
