@@ -119,6 +119,9 @@ async def service_request(endpoint, axi_master, request):
         raise
 
     completed_tick = int(get_sim_time(unit="ns"))
+    state = endpoint.state()
+    if state.run_state == RunState.STOPPED or state.epoch != request.epoch:
+        return
     axi_resp = int(result.resp)
     endpoint.complete(
         request,
@@ -769,6 +772,7 @@ async def test_spike_endpoints_exchange_request_reply(dut):
     boot_image = load_elf(os.environ["OPENENOC_LINK_FIRMWARE_ELF"])
     status_address = boot_image.symbol_address("iss_link_status")
     received_address = boot_image.symbol_address("iss_link_received")
+    release_address = boot_image.symbol_address("iss_link_release")
     for index, master in enumerate(masters):
         await write_word(master, DMEM_BASE + 0x4000, 0x12340000 + index)
         await write_word(master, CSR_BASE, index + 1)
@@ -828,6 +832,15 @@ async def test_spike_endpoints_exchange_request_reply(dut):
             assert endpoints[0].state().run_state == RunState.WAITING_MMIO
             assert request_counts[1] > request_counts[0]
             masters[0].read_if.ar_channel.pause = False
+            for _ in range(FIRMWARE_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                if transfers[0][0]:
+                    break
+            else:
+                raise AssertionError("Initiator did not send the first request beat")
+            assert transfers[0][0] == [(0x13579BDF, 0xF, False)]
+            assert await read_word(masters[0], release_address) == 0
+            await write_word(masters[0], release_address, 1)
             for runner in runners:
                 await with_timeout(runner, 1_000_000, "ns")
     finally:
@@ -838,20 +851,149 @@ async def test_spike_endpoints_exchange_request_reply(dut):
         for monitor in monitors:
             monitor.cancel()
 
-    request_word = (0x13579BDF, 0xF, True)
+    request_words = [(0x13579BDF, 0xF, False), (0x89ABCDEF, 0xF, True)]
     reply_word = (0x2468ACE0, 0xF, True)
     for index, master in enumerate(masters):
         assert transfers[index] == (
-            [[request_word], [reply_word]] if index == 0
-            else [[reply_word], [request_word]]
+            [request_words, [reply_word]] if index == 0
+            else [[reply_word], request_words]
         )
         assert await read_word(master, status_address) == 0x600D0001 + index
         assert await read_word(master, received_address) == (
-            reply_word[0] if index == 0 else request_word[0]
+            reply_word[0] if index == 0 else request_words[0][0]
         )
         assert await read_word(master, DMEM_BASE + 0x4000) == 0x12340000 + index
     assert int(dut.imem_active.value) == 0
     assert int(dut.g_dual.endpoint1_imem_active.value) == 0
+
+
+@cocotb.test()
+async def test_spike_recovers_after_mid_frame_stop(dut):
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
+    masters = [
+        AxiLiteMaster(AxiLiteBus.from_prefix(entity, prefix), dut.clk, dut.rst)
+        for entity, prefix in ((dut, "iss_axil"), (dut.g_dual, "iss1_axil"))
+    ]
+    dut.rst.value = 1
+    for _ in range(5):
+        await RisingEdge(dut.clk)
+    dut.rst.value = 0
+
+    image = load_elf(os.environ["OPENENOC_LINK_FIRMWARE_ELF"])
+    status_address = image.symbol_address("iss_link_status")
+    release_address = image.symbol_address("iss_link_release")
+    tx_transfers = []
+    sink_transfers = []
+    monitors = [
+        cocotb.start_soon(collect_axis_transfers(dut, "endpoint_tx", tx_transfers)),
+        cocotb.start_soon(collect_axis_transfers(
+            dut.g_dual, "endpoint1_csr_sink", sink_transfers, dut.clk,
+        )),
+    ]
+    runners = []
+
+    async def pump(index, endpoint):
+        for _ in range(FIRMWARE_TIMEOUT_CYCLES):
+            await RisingEdge(dut.clk)
+            request = endpoint.poll()
+            if request is not None:
+                status_write = (
+                    request.kind == RequestKind.DATA_WRITE
+                    and request.address == status_address
+                    and request.size_bytes == 4
+                )
+                status = request_value(request) if status_write else None
+                await service_request(endpoint, masters[index], request)
+                assert status != CSR_SMOKE_FAILED
+                if status == 0x600D0001 + index:
+                    endpoint.request_stop()
+            state = endpoint.state()
+            assert state.run_state != RunState.ERROR
+            if state.run_state == RunState.STOPPED:
+                return
+        raise AssertionError(f"endpoint {index} did not stop")
+
+    try:
+        with ExitStack() as stack:
+            library = IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"])
+            endpoints = [
+                stack.enter_context(library.create_endpoint(index))
+                for index in range(2)
+            ]
+            for endpoint in endpoints:
+                load_boot_image(endpoint, image)
+
+            for index, master in enumerate(masters):
+                await write_word(master, CSR_BASE, index + 1)
+            for endpoint in endpoints:
+                endpoint.start(entry_pc=image.entry_pc, max_steps=1_000_000)
+            runners = [
+                cocotb.start_soon(pump(index, endpoint))
+                for index, endpoint in enumerate(endpoints)
+            ]
+
+            for _ in range(FIRMWARE_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                if sink_transfers:
+                    break
+            else:
+                raise AssertionError("First request beat did not reach endpoint 1")
+            first_beat = (0x13579BDF, 0xF, False)
+            assert tx_transfers == [first_beat]
+            assert sink_transfers == [first_beat]
+            assert await read_word(masters[0], release_address) == 0
+            endpoints[0].request_stop()
+            await wait_for_stop(endpoints[0], dut)
+            assert endpoints[1].state().run_state != RunState.STOPPED
+            for _ in range(100):
+                await RisingEdge(dut.clk)
+            assert tx_transfers == [first_beat]
+            assert sink_transfers == [first_beat]
+            assert await read_word(masters[1], status_address) == 0
+            endpoints[1].request_stop()
+            await wait_for_stop(endpoints[1], dut)
+            for runner in runners:
+                await with_timeout(runner, AXI_SERVICE_TIMEOUT_NS, "ns")
+            runners = []
+
+            dut.rst.value = 1
+            for _ in range(5):
+                await RisingEdge(dut.clk)
+            dut.rst.value = 0
+            for _ in range(20):
+                await RisingEdge(dut.clk)
+            assert tx_transfers == [first_beat]
+            assert sink_transfers == [first_beat]
+
+            for index, master in enumerate(masters):
+                await write_word(master, CSR_BASE, index + 1)
+            for endpoint in endpoints:
+                endpoint.start(entry_pc=image.entry_pc, max_steps=1_000_000)
+            runners = [
+                cocotb.start_soon(pump(index, endpoint))
+                for index, endpoint in enumerate(endpoints)
+            ]
+            for _ in range(FIRMWARE_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                if len(tx_transfers) == 2:
+                    break
+            else:
+                raise AssertionError("Restarted initiator did not send a request")
+            assert tx_transfers[1] == first_beat
+            await write_word(masters[0], release_address, 1)
+            for runner in runners:
+                await with_timeout(runner, 1_000_000, "ns")
+
+            assert tx_transfers == [first_beat, first_beat, (0x89ABCDEF, 0xF, True)]
+            assert sink_transfers == tx_transfers
+            for index, master in enumerate(masters):
+                assert await read_word(master, status_address) == 0x600D0001 + index
+    finally:
+        for runner in runners:
+            if not runner.done():
+                runner.cancel()
+        for monitor in monitors:
+            monitor.cancel()
 
 
 @cocotb.test()

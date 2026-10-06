@@ -148,8 +148,13 @@ checks both physical stream directions, status words, received payloads and
 isolated DMEM markers. No instruction-by-instruction host barrier is used.
 The test uses a shared reset and a separate Verilator build directory from
 one-endpoint tests. A separate case stops one worker in a local loop while
-the other completes pending RTL MMIO without a shared reset. Stopping a worker
-in the middle of a frame exchange is not yet qualified.
+the other completes pending RTL MMIO without a shared reset. A two-beat request
+also tests stopping its initiator after the first AXIS handshake: the responder
+remains active until coordinated stop, then a shared RTL/BFM reset discards the
+partial frame before both workers restart and complete a fresh exchange.
+An AXI response that arrives after the worker stops is not applied to Spike.
+Continuing an interrupted frame without resetting both endpoints is not
+supported.
 
 Qualify the real bare-metal startup path with initialized data, dirty BSS, and
 stack traffic through RTL DMEM:
@@ -163,6 +168,21 @@ Run every native, Python, and RTL check with:
 ```bash
 make -C dv/iss check-all
 ```
+
+Each successful run writes per-target JUnit XML and a validated JSON manifest
+under `build/dv/iss/reports`. The manifest records the repository and pinned
+Spike commits, whether tracked source files are modified, the ISS library and
+firmware SHA-256 hashes, CPU/memory profile, tool versions, and test counts.
+Missing or failing XML prevents manifest generation. `check-all` removes the
+previous manifest before starting, so it cannot report a stale success.
+Standalone `rtl-*` and `test-native` targets write their own JUnit files but
+do not update the aggregate manifest.
+
+To verify from a clean clone after committing, initialize the Spike submodule,
+activate OSS CAD Suite and the DV Python environment as above, then run
+`make -C dv/iss check-all JOBS=1`. A successful clean-clone run should have
+`tracked_worktree_dirty: false` in its manifest. This workspace run does not
+replace that post-commit check.
 
 `JOBS` defaults to one to limit memory use under WSL and can be overridden
 explicitly:
