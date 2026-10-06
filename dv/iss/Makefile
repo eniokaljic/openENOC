@@ -29,7 +29,7 @@ STARTUP_FIRMWARE_BUILD_ROOT := $(BUILD_DIR)/firmware
 STARTUP_FIRMWARE_ELF := $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_startup.elf
 SPIKE_COMMIT := $(shell $(PYTHON) -c 'import json; print(json.load(open("$(ISS_DIR)/compatibility.json"))["spike"]["commit"])')
 
-.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-smoke processor-smoke python-smoke rtl-bridge-smoke rtl-firmware-smoke rtl-lanes-smoke rtl-lifecycle-smoke rtl-smoke rtl-startup-smoke spike startup-firmware test-native tsan-smoke
+.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-firmware link-smoke processor-smoke python-smoke rtl-bridge-smoke rtl-firmware-smoke rtl-lanes-smoke rtl-lifecycle-smoke rtl-smoke rtl-startup-smoke rtl-system-smoke spike startup-firmware test-native tsan-smoke
 
 check: test-native python-smoke elf-smoke
 
@@ -165,13 +165,22 @@ startup-firmware:
 		BUILD_ROOT=$(STARTUP_FIRMWARE_BUILD_ROOT)
 	@test -f $(STARTUP_FIRMWARE_ELF)
 
+link-firmware:
+	@$(MAKE) -C $(ROOT_DIR)/sw APP=iss_link EP=openenoc_endpoint_full \
+		BUILD_ROOT=$(STARTUP_FIRMWARE_BUILD_ROOT)
+	@test -f $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_link.elf
+
 rtl-firmware-smoke: iss-library firmware
 	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_runs_csr_smoke_firmware
 
 rtl-startup-smoke: iss-library startup-firmware
 	@$(MAKE) -C tests/rtl COCOTB_TESTCASE=test_spike_qualifies_elf_startup
 
-check-all: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-lifecycle-smoke rtl-firmware-smoke rtl-startup-smoke
+rtl-system-smoke: iss-library link-firmware
+	@$(MAKE) -C tests/rtl TWO_ENDPOINTS=1 SIM_BUILD=$(BUILD_DIR)/rtl-system-sim \
+		COCOTB_TESTCASE='test_spike_endpoints_exchange_request_reply,test_spike_stops_one_endpoint_without_stopping_other'
+
+check-all: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-lifecycle-smoke rtl-firmware-smoke rtl-startup-smoke rtl-system-smoke
 
 clean:
 	@$(MAKE) -C tests/rtl clean >/dev/null 2>&1 || true

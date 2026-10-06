@@ -133,6 +133,24 @@ CSR sink handshakes against the baseline's 17-beat frame (66 valid bytes),
 including the final `TKEEP` and `TLAST`, and verifies the completion status
 remains stable. It does not qualify multi-endpoint traffic.
 
+Run two Spike contexts against separate RTL endpoints with directly crossed
+Ethernet streams:
+
+```bash
+make -C dv/iss rtl-system-smoke
+```
+
+Both contexts execute the `iss_link` ELF independently, with roles selected
+through their private RTL CSR blocks. The initiator sends a request; the
+responder receives it before sending a distinct reply. The test holds
+endpoint 0's AXI read address channel while endpoint 1 progresses, then
+checks both physical stream directions, status words, received payloads and
+isolated DMEM markers. No instruction-by-instruction host barrier is used.
+The test uses a shared reset and a separate Verilator build directory from
+one-endpoint tests. A separate case stops one worker in a local loop while
+the other completes pending RTL MMIO without a shared reset. Stopping a worker
+in the middle of a frame exchange is not yet qualified.
+
 Qualify the real bare-metal startup path with initialized data, dirty BSS, and
 stack traffic through RTL DMEM:
 
