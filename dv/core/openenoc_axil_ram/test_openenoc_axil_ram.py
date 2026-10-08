@@ -13,7 +13,9 @@ from cocotb.clock import Clock
 from cocotb.triggers import FallingEdge, ReadOnly, RisingEdge, Timer
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 from cocotb.regression import TestFactory
+
 TestFactory.__test__ = False
+
 
 def parameter_int(name):
     return int(os.environ[f"PARAM_{name}"])
@@ -64,36 +66,18 @@ class TB:
 
     def set_stress_pause_generators(self):
         # Different request patterns exercise independent AW, W, and AR channels.
-        self.axil_master.write_if.aw_channel.set_pause_generator(
-            cycle_pause((1, 0, 0, 0))
-        )
-        self.axil_master.write_if.w_channel.set_pause_generator(
-            cycle_pause((0, 1, 0, 0))
-        )
-        self.axil_master.read_if.ar_channel.set_pause_generator(
-            cycle_pause((1, 0, 1, 0, 0))
-        )
+        self.axil_master.write_if.aw_channel.set_pause_generator(cycle_pause((1, 0, 0, 0)))
+        self.axil_master.write_if.w_channel.set_pause_generator(cycle_pause((0, 1, 0, 0)))
+        self.axil_master.read_if.ar_channel.set_pause_generator(cycle_pause((1, 0, 1, 0, 0)))
         self.axil_master.write_if.b_channel.set_pause_generator(cycle_pause())
-        self.axil_master.read_if.r_channel.set_pause_generator(
-            cycle_pause((1, 0, 1, 1, 0))
-        )
+        self.axil_master.read_if.r_channel.set_pause_generator(cycle_pause((1, 0, 1, 1, 0)))
 
     def set_random_pause_generators(self):
-        self.axil_master.write_if.aw_channel.set_pause_generator(
-            random_pause(0xA001)
-        )
-        self.axil_master.write_if.w_channel.set_pause_generator(
-            random_pause(0xA002)
-        )
-        self.axil_master.read_if.ar_channel.set_pause_generator(
-            random_pause(0xA003)
-        )
-        self.axil_master.write_if.b_channel.set_pause_generator(
-            random_pause(0xB001)
-        )
-        self.axil_master.read_if.r_channel.set_pause_generator(
-            random_pause(0xB002)
-        )
+        self.axil_master.write_if.aw_channel.set_pause_generator(random_pause(0xA001))
+        self.axil_master.write_if.w_channel.set_pause_generator(random_pause(0xA002))
+        self.axil_master.read_if.ar_channel.set_pause_generator(random_pause(0xA003))
+        self.axil_master.write_if.b_channel.set_pause_generator(random_pause(0xB001))
+        self.axil_master.read_if.r_channel.set_pause_generator(random_pause(0xB002))
 
     def drive_axil_idle(self):
         self.dut.s_axil_if.awaddr.value = 0
@@ -162,10 +146,7 @@ async def test_002_unaligned_and_partial_writes(dut):
     for length in range(1, byte_lanes * 2):
         for offset in range(byte_lanes):
             address = base + offset
-            test_data = bytes(
-                (0x31 + length + offset + index) & 0xff
-                for index in range(length)
-            )
+            test_data = bytes((0x31 + length + offset + index) & 0xFF for index in range(length))
 
             guard = await tb.axil_master.write(address - 1, b"\xaa" * (length + 2))
             assert_okay(guard)
@@ -184,7 +165,7 @@ async def test_003_address_boundaries_and_upper_bits(dut):
     await tb.reset()
 
     byte_lanes = tb.byte_lanes
-    boundary_data = bytes((0x80 + index) & 0xff for index in range(2 * byte_lanes))
+    boundary_data = bytes((0x80 + index) & 0xFF for index in range(2 * byte_lanes))
     boundary_address = tb.aperture - len(boundary_data)
 
     write = await tb.axil_master.write(boundary_address, boundary_data)
@@ -197,7 +178,7 @@ async def test_003_address_boundaries_and_upper_bits(dut):
     # pass a full system address without first subtracting the target base.
     local_address = 3 * byte_lanes
     upper_address = (1 << (parameter_int("ADDR_W") + 2)) | local_address
-    alias_data = bytes((0xd0 + index) & 0xff for index in range(byte_lanes))
+    alias_data = bytes((0xD0 + index) & 0xFF for index in range(byte_lanes))
 
     write = await tb.axil_master.write(upper_address, alias_data)
     assert_okay(write)
@@ -212,7 +193,7 @@ async def test_004_reset_preserves_memory(dut):
     await tb.reset()
 
     address = tb.aperture - 4 * tb.byte_lanes
-    test_data = bytes((0x55 ^ index) & 0xff for index in range(2 * tb.byte_lanes))
+    test_data = bytes((0x55 ^ index) & 0xFF for index in range(2 * tb.byte_lanes))
 
     write = await tb.axil_master.write(address, test_data)
     assert_okay(write)
@@ -235,12 +216,10 @@ async def test_005_concurrent_read_and_write_channels(dut):
 
     byte_lanes = tb.byte_lanes
     stable_address = tb.aperture // 4
-    stable_data = bytes((0x20 + index) & 0xff for index in range(8 * byte_lanes))
+    stable_data = bytes((0x20 + index) & 0xFF for index in range(8 * byte_lanes))
     writer_address = 5 * tb.aperture // 8
     writer_words = 12
-    writer_data = bytes(
-        (0xa0 + index) & 0xff for index in range(writer_words * byte_lanes)
-    )
+    writer_data = bytes((0xA0 + index) & 0xFF for index in range(writer_words * byte_lanes))
 
     response = await tb.axil_master.write(stable_address, stable_data)
     assert_okay(response)
@@ -250,7 +229,7 @@ async def test_005_concurrent_read_and_write_channels(dut):
             start = index * byte_lanes
             response = await tb.axil_master.write(
                 writer_address + start,
-                writer_data[start:start + byte_lanes],
+                writer_data[start : start + byte_lanes],
             )
             assert_okay(response)
 
@@ -279,7 +258,7 @@ async def test_006_randomized_access_with_backpressure(dut):
     rng = random.Random(0x0E10C)
     region_address = tb.aperture // 4
     region_size = tb.aperture // 4
-    model = bytearray([0x5a] * region_size)
+    model = bytearray([0x5A] * region_size)
 
     response = await tb.axil_master.write(region_address, model)
     assert_okay(response)
@@ -291,13 +270,13 @@ async def test_006_randomized_access_with_backpressure(dut):
 
         response = await tb.axil_master.write(region_address + offset, test_data)
         assert_okay(response)
-        model[offset:offset + length] = test_data
+        model[offset : offset + length] = test_data
 
         if operation % 3 == 0:
             read_offset = rng.randint(0, region_size - length)
             response = await tb.axil_master.read(region_address + read_offset, length)
             assert_okay(response)
-            assert response.data == model[read_offset:read_offset + length]
+            assert response.data == model[read_offset : read_offset + length]
 
     response = await tb.axil_master.read(region_address, region_size)
     assert_okay(response)
@@ -322,18 +301,15 @@ async def manual_read_words(tb, addresses):
 
         await Timer(1, unit="ns")
 
-        ar_fire = (
-            int(dut.s_axil_if.arvalid.value) and
-            int(dut.s_axil_if.arready.value)
-        )
+        ar_fire = int(dut.s_axil_if.arvalid.value) and int(dut.s_axil_if.arready.value)
         if int(dut.s_axil_if.rvalid.value):
             assert int(dut.s_axil_if.rresp.value) == 0
             responses.append(int(dut.s_axil_if.rdata.value))
 
         if request_index < len(addresses):
-            assert int(dut.s_axil_if.arready.value) == 1, (
-                "ARREADY inserted a bubble with no read-response backpressure"
-            )
+            assert (
+                int(dut.s_axil_if.arready.value) == 1
+            ), "ARREADY inserted a bubble with no read-response backpressure"
 
         await RisingEdge(dut.clk)
         await ReadOnly()
@@ -357,10 +333,7 @@ async def test_007_bubble_free_read_and_write_throughput(dut):
     data_mask = (1 << parameter_int("DATA_W")) - 1
     base_address = tb.aperture // 2
     addresses = [base_address + index * byte_lanes for index in range(word_count)]
-    values = [
-        (0x31_4159_26 ^ (index * 0x0101_0101)) & data_mask
-        for index in range(word_count)
-    ]
+    values = [(0x31_4159_26 ^ (index * 0x0101_0101)) & data_mask for index in range(word_count)]
 
     dut.s_axil_if.bready.value = 1
     response_count = 0
@@ -374,12 +347,12 @@ async def test_007_bubble_free_read_and_write_throughput(dut):
         dut.s_axil_if.wvalid.value = 1
         await Timer(1, unit="ns")
 
-        assert int(dut.s_axil_if.awready.value) == 1, (
-            "AWREADY inserted a bubble with no write-response backpressure"
-        )
-        assert int(dut.s_axil_if.wready.value) == 1, (
-            "WREADY inserted a bubble with no write-response backpressure"
-        )
+        assert (
+            int(dut.s_axil_if.awready.value) == 1
+        ), "AWREADY inserted a bubble with no write-response backpressure"
+        assert (
+            int(dut.s_axil_if.wready.value) == 1
+        ), "WREADY inserted a bubble with no write-response backpressure"
         if int(dut.s_axil_if.bvalid.value):
             assert int(dut.s_axil_if.bresp.value) == 0
             response_count += 1
@@ -554,13 +527,8 @@ common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
 
 
 CONFIGURATIONS = [
-    (data_w, pipeline_output, False)
-    for data_w in (8, 16, 32, 64)
-    for pipeline_output in (0, 1)
-] + [
-    (32, pipeline_output, True)
-    for pipeline_output in (0, 1)
-]
+    (data_w, pipeline_output, False) for data_w in (8, 16, 32, 64) for pipeline_output in (0, 1)
+] + [(32, pipeline_output, True) for pipeline_output in (0, 1)]
 
 
 @pytest.mark.parametrize(
@@ -593,10 +561,7 @@ def test_openenoc_axil_ram(request, data_w, pipeline_output, use_init_file):
         "INIT_FILE": f'"{init_file}"',
     }
 
-    extra_env = {
-        f"PARAM_{key}": str(value).strip('"')
-        for key, value in parameters.items()
-    }
+    extra_env = {f"PARAM_{key}": str(value).strip('"') for key, value in parameters.items()}
 
     sim_build = os.path.join(
         tests_dir,
@@ -611,7 +576,8 @@ def test_openenoc_axil_ram(request, data_w, pipeline_output, use_init_file):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
-        extra_args=[os.path.join(common_dir, "config.vlt")],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

@@ -13,9 +13,11 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 from cocotb.regression import TestFactory
+
 TestFactory.__test__ = False
 
 from cocotbext.axi import AxiStreamBus, AxiStreamFrame, AxiStreamSource, AxiStreamSink
+
 
 class TB(object):
     def __init__(self, dut):
@@ -34,30 +36,22 @@ class TB(object):
         #   A drives a_eth_if.a2b_axis_if
         #   B receives b_eth_if.a2b_axis_if
         self.source_a2b = AxiStreamSource(
-            AxiStreamBus.from_entity(dut.a_eth_if.a2b_axis_if),
-            dut.clk_a,
-            dut.rst_a
+            AxiStreamBus.from_entity(dut.a_eth_if.a2b_axis_if), dut.clk_a, dut.rst_a
         )
 
         self.sink_a2b = AxiStreamSink(
-            AxiStreamBus.from_entity(dut.b_eth_if.a2b_axis_if),
-            dut.clk_b,
-            dut.rst_b
+            AxiStreamBus.from_entity(dut.b_eth_if.a2b_axis_if), dut.clk_b, dut.rst_b
         )
 
         # B -> A direction:
         #   B drives b_eth_if.b2a_axis_if
         #   A receives a_eth_if.b2a_axis_if
         self.source_b2a = AxiStreamSource(
-            AxiStreamBus.from_entity(dut.b_eth_if.b2a_axis_if),
-            dut.clk_b,
-            dut.rst_b
+            AxiStreamBus.from_entity(dut.b_eth_if.b2a_axis_if), dut.clk_b, dut.rst_b
         )
 
         self.sink_b2a = AxiStreamSink(
-            AxiStreamBus.from_entity(dut.a_eth_if.b2a_axis_if),
-            dut.clk_a,
-            dut.rst_a
+            AxiStreamBus.from_entity(dut.a_eth_if.b2a_axis_if), dut.clk_a, dut.rst_a
         )
 
     def set_idle_generator_a2b(self, generator=None):
@@ -127,17 +121,19 @@ class TB(object):
         for _ in range(10):
             await RisingEdge(self.dut.clk_b)
 
+
 # Common single-direction transfer test helper.
 # Sends a sequence of AXI4-Stream frames through one selected source/sink path
 # and checks that payload, TID, TDEST, and TUSER are preserved.
 async def run_direction_test(
-        dut,
-        source,
-        sink,
-        payload_lengths=None,
-        payload_data=None,
-        idle_inserter=None,
-        backpressure_inserter=None):
+    dut,
+    source,
+    sink,
+    payload_lengths=None,
+    payload_data=None,
+    idle_inserter=None,
+    backpressure_inserter=None,
+):
 
     if idle_inserter:
         source.set_pause_generator(idle_inserter())
@@ -145,7 +141,7 @@ async def run_direction_test(
     if backpressure_inserter:
         sink.set_pause_generator(backpressure_inserter())
 
-    id_count = 2**len(source.bus.tid) if hasattr(source.bus, "tid") else 1
+    id_count = 2 ** len(source.bus.tid) if hasattr(source.bus, "tid") else 1
     cur_id = 1
 
     test_frames = []
@@ -179,15 +175,13 @@ async def run_direction_test(
 
     assert sink.empty()
 
+
 # A-to-B unidirectional data path test.
 # Verifies that frames transmitted on a_eth_if.a2b_axis_if are received correctly on
 # b_eth_if.a2b_axis_if, with optional source idle insertion and sink backpressure.
 async def run_test_a2b(
-        dut,
-        payload_lengths=None,
-        payload_data=None,
-        idle_inserter=None,
-        backpressure_inserter=None):
+    dut, payload_lengths=None, payload_data=None, idle_inserter=None, backpressure_inserter=None
+):
 
     tb = TB(dut)
 
@@ -200,21 +194,19 @@ async def run_test_a2b(
         payload_lengths=payload_lengths,
         payload_data=payload_data,
         idle_inserter=idle_inserter,
-        backpressure_inserter=backpressure_inserter
+        backpressure_inserter=backpressure_inserter,
     )
 
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_a)
 
+
 # B-to-A unidirectional data path test.
 # Verifies that frames transmitted on b_eth_if.b2a_axis_if are received correctly on
 # a_eth_if.b2a_axis_if, with optional source idle insertion and sink backpressure.
 async def run_test_b2a(
-        dut,
-        payload_lengths=None,
-        payload_data=None,
-        idle_inserter=None,
-        backpressure_inserter=None):
+    dut, payload_lengths=None, payload_data=None, idle_inserter=None, backpressure_inserter=None
+):
 
     tb = TB(dut)
 
@@ -227,21 +219,19 @@ async def run_test_b2a(
         payload_lengths=payload_lengths,
         payload_data=payload_data,
         idle_inserter=idle_inserter,
-        backpressure_inserter=backpressure_inserter
+        backpressure_inserter=backpressure_inserter,
     )
 
     await RisingEdge(dut.clk_b)
     await RisingEdge(dut.clk_b)
 
+
 # Bidirectional transfer test.
 # Sends frames in both directions through the adapter and verifies that the two
 # independent AXI4-Stream paths operate correctly at the same time.
 async def run_test_bidirectional(
-        dut,
-        payload_lengths=None,
-        payload_data=None,
-        idle_inserter=None,
-        backpressure_inserter=None):
+    dut, payload_lengths=None, payload_data=None, idle_inserter=None, backpressure_inserter=None
+):
 
     tb = TB(dut)
 
@@ -252,8 +242,8 @@ async def run_test_bidirectional(
     tb.set_idle_generator_b2a(idle_inserter)
     tb.set_backpressure_generator_b2a(backpressure_inserter)
 
-    id_count_a2b = 2**len(tb.source_a2b.bus.tid) if hasattr(tb.source_a2b.bus, "tid") else 1
-    id_count_b2a = 2**len(tb.source_b2a.bus.tid) if hasattr(tb.source_b2a.bus, "tid") else 1
+    id_count_a2b = 2 ** len(tb.source_a2b.bus.tid) if hasattr(tb.source_a2b.bus, "tid") else 1
+    id_count_b2a = 2 ** len(tb.source_b2a.bus.tid) if hasattr(tb.source_b2a.bus, "tid") else 1
 
     cur_id_a2b = 1
     cur_id_b2a = 1
@@ -322,6 +312,7 @@ async def run_test_bidirectional(
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_b)
 
+
 # Initial sink backpressure test for the A-to-B path.
 # Holds the B-side sink paused before sending a frame, then releases it and
 # checks that the buffered frame is delivered without corruption.
@@ -352,6 +343,7 @@ async def run_test_init_sink_pause_a2b(dut):
 
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_a)
+
 
 # Initial sink backpressure test for the B-to-A path.
 # Holds the A-side sink paused before sending a frame, then releases it and
@@ -384,18 +376,16 @@ async def run_test_init_sink_pause_b2a(dut):
     await RisingEdge(dut.clk_b)
     await RisingEdge(dut.clk_b)
 
+
 # Bidirectional stress test with mixed frame sizes.
 # Sends multiple random-size frames and one jumbo frame in both
 # directions to exercise CDC, width adaptation, buffering, and backpressure.
-async def run_stress_test_bidirectional(
-        dut,
-        idle_inserter=None,
-        backpressure_inserter=None):
+async def run_stress_test_bidirectional(dut, idle_inserter=None, backpressure_inserter=None):
 
     tb = TB(dut)
 
-    id_count_a2b = 2**len(tb.source_a2b.bus.tid) if hasattr(tb.source_a2b.bus, "tid") else 1
-    id_count_b2a = 2**len(tb.source_b2a.bus.tid) if hasattr(tb.source_b2a.bus, "tid") else 1
+    id_count_a2b = 2 ** len(tb.source_a2b.bus.tid) if hasattr(tb.source_a2b.bus, "tid") else 1
+    id_count_b2a = 2 ** len(tb.source_b2a.bus.tid) if hasattr(tb.source_b2a.bus, "tid") else 1
 
     cur_id_a2b = 1
     cur_id_b2a = 1
@@ -473,15 +463,17 @@ async def run_stress_test_bidirectional(
     await RisingEdge(dut.clk_a)
     await RisingEdge(dut.clk_b)
 
+
 def max_byte_lanes():
     data_width = max(
         len(cocotb.top.a_eth_if.a2b_axis_if.tdata),
         len(cocotb.top.b_eth_if.a2b_axis_if.tdata),
         len(cocotb.top.b_eth_if.b2a_axis_if.tdata),
-        len(cocotb.top.a_eth_if.b2a_axis_if.tdata)
+        len(cocotb.top.a_eth_if.b2a_axis_if.tdata),
     )
 
     return data_width // 8
+
 
 # Pause generator used to insert deterministic idle cycles or backpressure
 # into cocotbext-axi source and sink drivers.
@@ -497,6 +489,7 @@ def cycle_pause():
 
     return itertools.cycle([1, 1, 1, 0])
 
+
 # Generates a fixed set of 16 frame lengths used by directed transfer tests.
 # The list is independent of the AXI4-Stream data width and covers the minimum
 # Ethernet payload size used in this testbench, boundary lengths around common
@@ -504,12 +497,14 @@ def cycle_pause():
 def size_list():
     return [20, 21, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 511, 512]
 
+
 # Generates an incrementing byte pattern of the requested length.
 # This makes payload mismatches easy to detect and debug.
 def incrementing_payload(length):
     return bytearray(itertools.islice(itertools.cycle(range(256)), length))
 
-if getattr(cocotb, 'top', None) is not None:
+
+if getattr(cocotb, "top", None) is not None:
 
     factory = TestFactory(run_test_a2b)
     factory.add_option("payload_lengths", [size_list])
@@ -549,19 +544,20 @@ if getattr(cocotb, 'top', None) is not None:
 # ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
-repo_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..'))
-hw_dir = os.path.join(repo_dir, 'hw')
-libs_dir = os.path.join(repo_dir, 'libs')
-core_dir = os.path.join(hw_dir, 'rtl', 'core')
-taxi_axis_dir = os.path.join(libs_dir, 'taxi', 'src', 'axis', 'rtl')
-taxi_sync_dir = os.path.join(libs_dir, 'taxi', 'src', 'sync', 'rtl')
+repo_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", ".."))
+hw_dir = os.path.join(repo_dir, "hw")
+libs_dir = os.path.join(repo_dir, "libs")
+core_dir = os.path.join(hw_dir, "rtl", "core")
+taxi_axis_dir = os.path.join(libs_dir, "taxi", "src", "axis", "rtl")
+taxi_sync_dir = os.path.join(libs_dir, "taxi", "src", "sync", "rtl")
+
 
 def process_f_files(files):
     lst = {}
 
     for f in files:
-        if f[-2:].lower() == '.f':
-            with open(f, 'r') as fp:
+        if f[-2:].lower() == ".f":
+            with open(f, "r") as fp:
                 l = fp.read().split()
 
             for f in process_f_files([os.path.join(os.path.dirname(f), x) for x in l]):
@@ -571,9 +567,9 @@ def process_f_files(files):
 
     return list(lst.values())
 
+
 @pytest.mark.parametrize(
-    ("a_data_w", "b_data_w"),
-    itertools.combinations([8, 16, 32, 64, 128, 256, 512], 2)
+    ("a_data_w", "b_data_w"), itertools.combinations([8, 16, 32, 64, 128, 256, 512], 2)
 )
 def test_openenoc_eth_adapter(request, a_data_w, b_data_w):
     dut = "openenoc_eth_adapter"
@@ -596,46 +592,47 @@ def test_openenoc_eth_adapter(request, a_data_w, b_data_w):
 
     parameters = {}
 
-    parameters['A_DATA_W'] = a_data_w
-    parameters['A_KEEP_EN'] = int(parameters['A_DATA_W'] > 8)
-    parameters['A_KEEP_W'] = (parameters['A_DATA_W'] + 7) // 8
-    parameters['A_STRB_EN'] = 0
-    parameters['A_LAST_EN'] = 1
-    parameters['A_ID_EN'] = 1
-    parameters['A_ID_W'] = 8
-    parameters['A_DEST_EN'] = 1
-    parameters['A_DEST_W'] = 8
-    parameters['A_USER_EN'] = 1
-    parameters['A_USER_W'] = 1
+    parameters["A_DATA_W"] = a_data_w
+    parameters["A_KEEP_EN"] = int(parameters["A_DATA_W"] > 8)
+    parameters["A_KEEP_W"] = (parameters["A_DATA_W"] + 7) // 8
+    parameters["A_STRB_EN"] = 0
+    parameters["A_LAST_EN"] = 1
+    parameters["A_ID_EN"] = 1
+    parameters["A_ID_W"] = 8
+    parameters["A_DEST_EN"] = 1
+    parameters["A_DEST_W"] = 8
+    parameters["A_USER_EN"] = 1
+    parameters["A_USER_W"] = 1
 
-    parameters['B_DATA_W'] = b_data_w
-    parameters['B_KEEP_EN'] = int(parameters['B_DATA_W'] > 8)
-    parameters['B_KEEP_W'] = (parameters['B_DATA_W'] + 7) // 8
-    parameters['B_STRB_EN'] = 0
-    parameters['B_LAST_EN'] = 1
-    parameters['B_ID_EN'] = 1
-    parameters['B_ID_W'] = 8
-    parameters['B_DEST_EN'] = 1
-    parameters['B_DEST_W'] = 8
-    parameters['B_USER_EN'] = 1
-    parameters['B_USER_W'] = 1
+    parameters["B_DATA_W"] = b_data_w
+    parameters["B_KEEP_EN"] = int(parameters["B_DATA_W"] > 8)
+    parameters["B_KEEP_W"] = (parameters["B_DATA_W"] + 7) // 8
+    parameters["B_STRB_EN"] = 0
+    parameters["B_LAST_EN"] = 1
+    parameters["B_ID_EN"] = 1
+    parameters["B_ID_W"] = 8
+    parameters["B_DEST_EN"] = 1
+    parameters["B_DEST_W"] = 8
+    parameters["B_USER_EN"] = 1
+    parameters["B_USER_W"] = 1
 
-    parameters['DEPTH'] = 2 * max(parameters['A_KEEP_W'], parameters['B_KEEP_W'])
-    parameters['RAM_PIPELINE'] = 1
-    parameters['OUTPUT_FIFO_EN'] = 0
-    parameters['FRAME_FIFO'] = 0
-    parameters['USER_BAD_FRAME_VALUE'] = 1
-    parameters['USER_BAD_FRAME_MASK'] = 1
-    parameters['DROP_OVERSIZE_FRAME'] = 0
-    parameters['DROP_BAD_FRAME'] = 0
-    parameters['DROP_WHEN_FULL'] = 0
-    parameters['MARK_WHEN_FULL'] = 0
-    parameters['FRAME_PAUSE'] = 1
+    parameters["DEPTH"] = 2 * max(parameters["A_KEEP_W"], parameters["B_KEEP_W"])
+    parameters["RAM_PIPELINE"] = 1
+    parameters["OUTPUT_FIFO_EN"] = 0
+    parameters["FRAME_FIFO"] = 0
+    parameters["USER_BAD_FRAME_VALUE"] = 1
+    parameters["USER_BAD_FRAME_MASK"] = 1
+    parameters["DROP_OVERSIZE_FRAME"] = 0
+    parameters["DROP_BAD_FRAME"] = 0
+    parameters["DROP_WHEN_FULL"] = 0
+    parameters["MARK_WHEN_FULL"] = 0
+    parameters["FRAME_PAUSE"] = 1
 
-    extra_env = {f'PARAM_{k}': str(v) for k, v in parameters.items()}
+    extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(tests_dir, "sim_build",
-        request.node.name.replace('[', '-').replace(']', ''))
+    sim_build = os.path.join(
+        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
+    )
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -644,6 +641,8 @@ def test_openenoc_eth_adapter(request, a_data_w, b_data_w):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(repo_dir, "dv", "common", "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

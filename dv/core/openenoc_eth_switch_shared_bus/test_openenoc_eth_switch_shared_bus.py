@@ -27,20 +27,25 @@ ALL_BITS = 0xFFFFFFFF
 # Helper functions for test frame generation
 # ----------------------------------------------------------------------
 
+
 def ethernet_frame(da, sa, payload, ether_type=None):
     header = da.to_bytes(6, "big") + sa.to_bytes(6, "big")
     if ether_type is not None:
         header += ether_type.to_bytes(2, "big")
     return header + bytes(payload)
 
+
 def cycle_pause(pattern=(1, 1, 0, 0, 0)):
     return itertools.cycle(pattern)
+
 
 def factory_payload_lengths():
     return [0, 1, 3, 16, 47, 128]
 
+
 def incrementing_payload(length):
     return bytes(itertools.islice(itertools.cycle(range(256)), length))
+
 
 class TB:
     def __init__(self, dut):
@@ -246,22 +251,19 @@ class TB:
 
             if expect_next_frame:
                 assert int(axis.tvalid.value), (
-                    f"ingress port {port} inserted an idle cycle after frame "
-                    f"{completed_frames}"
+                    f"ingress port {port} inserted an idle cycle after frame " f"{completed_frames}"
                 )
                 expect_next_frame = False
 
-            if (
-                int(axis.tvalid.value)
-                and int(axis.tready.value)
-                and int(axis.tlast.value)
-            ):
+            if int(axis.tvalid.value) and int(axis.tready.value) and int(axis.tlast.value):
                 completed_frames += 1
                 expect_next_frame = completed_frames < frame_count
+
 
 # ----------------------------------------------------------------------
 # Standalone cocotb test cases: simple routing and forwarding scenarios
 # ----------------------------------------------------------------------
+
 
 @cocotb.test()
 async def test_default_forwarding(dut):
@@ -389,12 +391,10 @@ async def test_round_robin_between_active_ingresses(dut):
     await tb.cpu_write_entry(1, destination_1, bitmap=0b1000)
 
     frames_0 = [
-        ethernet_frame(destination_0, 0x400000000001, bytes([index]) * 40)
-        for index in range(2)
+        ethernet_frame(destination_0, 0x400000000001, bytes([index]) * 40) for index in range(2)
     ]
     frames_1 = [
-        ethernet_frame(destination_1, 0x400000000002, bytes([index + 2]) * 40)
-        for index in range(2)
+        ethernet_frame(destination_1, 0x400000000002, bytes([index + 2]) * 40) for index in range(2)
     ]
 
     async def send_all(port, frames, source_tid):
@@ -558,9 +558,7 @@ async def test_no_idle_cycle_between_back_to_back_frames(dut):
         for index in range(4)
     ]
 
-    boundary_task = cocotb.start_soon(
-        tb.assert_no_ingress_idle_between_frames(0, len(frames))
-    )
+    boundary_task = cocotb.start_soon(tb.assert_no_ingress_idle_between_frames(0, len(frames)))
     await tb.send_all(0, frames, tdest=0x46, tid=3)
     await with_timeout(boundary_task, 200, "us")
 
@@ -651,7 +649,7 @@ async def test_all_ingress_ports_simultaneously(dut):
 
     # With all four FIFOs preloaded, each round must serve every ingress once.
     for offset in range(0, frame_count, tb.num_ports):
-        assert set(order[offset:offset + tb.num_ports]) == set(range(tb.num_ports)), order
+        assert set(order[offset : offset + tb.num_ports]) == set(range(tb.num_ports)), order
 
     for ingress_port, output_port in enumerate(output_ports):
         for expected in frames_by_port[ingress_port]:
@@ -795,6 +793,7 @@ async def test_pause_completes_current_frame_and_blocks_next(dut):
 # TestFactory logic: idle and backpressure combinations
 # ----------------------------------------------------------------------
 
+
 async def run_factory_routing(
     dut,
     route_case=None,
@@ -809,9 +808,7 @@ async def run_factory_routing(
 
     ingress_port, programmed_bitmap, destination = route_case
     expected_bitmap = programmed_bitmap & ~(1 << ingress_port)
-    expected_ports = [
-        port for port in range(tb.num_ports) if expected_bitmap & (1 << port)
-    ]
+    expected_ports = [port for port in range(tb.num_ports) if expected_bitmap & (1 << port)]
     assert expected_ports
 
     await tb.set_pause(True)
@@ -849,17 +846,21 @@ async def run_factory_routing(
     await tb.cycle(10)
     assert all(sink.empty() for sink in tb.sinks)
 
+
 # ----------------------------------------------------------------------
 # Dispatch: select test cases to run based on Makefile configuration
 # ----------------------------------------------------------------------
 
 if getattr(cocotb, "top", None) is not None:
     factory = TestFactory(run_factory_routing)
-    factory.add_option("route_case", [
-        (0, 0b0010, 0x600000000001),  # unicast: port 0 -> port 1
-        (3, 0b0011, 0x600000000002),  # multicast: port 3 -> ports 0 and 1
-        (2, 0b1111, 0x600000000003),  # multicast with ingress suppression
-    ])
+    factory.add_option(
+        "route_case",
+        [
+            (0, 0b0010, 0x600000000001),  # unicast: port 0 -> port 1
+            (3, 0b0011, 0x600000000002),  # multicast: port 3 -> ports 0 and 1
+            (2, 0b1111, 0x600000000003),  # multicast with ingress suppression
+        ],
+    )
     factory.add_option("payload_lengths", [factory_payload_lengths])
     factory.add_option("payload_data", [incrementing_payload])
     factory.add_option("idle_inserter", [None, cycle_pause])
@@ -959,9 +960,6 @@ def test_openenoc_eth_switch_shared_bus(
         parameters=parameters,
         sim_build=sim_build,
         extra_env=extra_env,
-        extra_args=[
-            "-Wall",
-            "-Wno-DECLFILENAME",
-            os.path.join(repo_dir, "dv", "common", "config.vlt"),
-        ],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(repo_dir, "dv", "common", "config.vlt")],
     )

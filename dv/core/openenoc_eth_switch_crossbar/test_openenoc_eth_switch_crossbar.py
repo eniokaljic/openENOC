@@ -21,17 +21,21 @@ ALL_BITS = 0xFFFFFFFF
 # Helper functions for test frame generation
 # ----------------------------------------------------------------------
 
+
 def ethernet_frame(da, sa, payload, ether_type=None):
     header = da.to_bytes(6, "big") + sa.to_bytes(6, "big")
     if ether_type is not None:
         header += ether_type.to_bytes(2, "big")
     return header + bytes(payload)
 
+
 def cycle_pause(pattern=(1, 1, 0, 0, 0)):
     return itertools.cycle(pattern)
 
+
 def factory_payload_lengths():
     return [0, 1, 3, 16, 47, 128]
+
 
 def incrementing_payload(length):
     return bytes(itertools.islice(itertools.cycle(range(256)), length))
@@ -39,6 +43,7 @@ def incrementing_payload(length):
 
 def field(value, index, width):
     return (int(value) >> (index * width)) & ((1 << width) - 1)
+
 
 class TB:
     def __init__(self, dut):
@@ -146,7 +151,9 @@ class TB:
                     assert owner is not None, "unsolicited table response"
                     assert acks == 1 << owner, "response routed to wrong source"
                     if channel == 0:
-                        assert field(d.lookup_bitmap.value, owner, n) == int(d.table_lookup_bitmap.value)
+                        assert field(d.lookup_bitmap.value, owner, n) == int(
+                            d.table_lookup_bitmap.value
+                        )
                     del self.outstanding[channel][owner]
                     self.responses[channel][owner] += 1
                     self.active[channel] = None
@@ -186,8 +193,14 @@ class TB:
         d.rst.value = 0
         d.operation_mode.value = operation_mode
         d.default_forwarding.value = default_forwarding
-        for name in ("pause_request", "cpuif_req", "cpuif_addr", "cpuif_req_is_wr",
-                     "cpuif_wr_data", "cpuif_wr_biten"):
+        for name in (
+            "pause_request",
+            "cpuif_req",
+            "cpuif_addr",
+            "cpuif_req_is_wr",
+            "cpuif_wr_data",
+            "cpuif_wr_biten",
+        ):
             getattr(d, name).value = 0
         await self.cycle(3)
         d.rst.value = 1
@@ -241,7 +254,7 @@ class TB:
         d.cpuif_addr.value = 0
 
         await self.wait_asserted(d.cpuif_rd_ack, "cpuif_rd_ack")
-        
+
         assert not int(d.cpuif_wr_ack.value)
         data = int(d.cpuif_rd_data.value)
         await self.cycle()
@@ -277,10 +290,15 @@ class TB:
         except SimTimeoutError:
             self.dut._log.error(
                 "port %d timeout: ingress=%s/%s forwarding=%s/%s egress=%s/%s pending=%s busy=%s",
-                port, self.dut.ingress_tvalid.value, self.dut.ingress_tready.value,
-                self.dut.forwarding_tvalid.value, self.dut.forwarding_tready.value,
-                self.dut.egress_tvalid.value, self.dut.egress_tready.value,
-                self.dut.arb_pending.value, self.dut.arb_busy.value,
+                port,
+                self.dut.ingress_tvalid.value,
+                self.dut.ingress_tready.value,
+                self.dut.forwarding_tvalid.value,
+                self.dut.forwarding_tready.value,
+                self.dut.egress_tvalid.value,
+                self.dut.egress_tready.value,
+                self.dut.arb_pending.value,
+                self.dut.arb_busy.value,
             )
             raise
 
@@ -314,9 +332,11 @@ class TB:
                 completed += 1
                 expect_next = completed < frame_count
 
+
 # ----------------------------------------------------------------------
 # Standalone cocotb test cases: simple routing and forwarding scenarios
 # ----------------------------------------------------------------------
+
 
 @cocotb.test()
 async def test_default_forwarding(dut):
@@ -383,15 +403,20 @@ async def test_round_robin_between_active_ingresses(dut):
     await tb.set_pause(True)
     for port, da in enumerate(destinations):
         await tb.cpu_write_entry(port, da, 1 << (port + 2))
-    frames = [[ethernet_frame(destinations[p], 0x400000000001 + p, bytes([i+p*2])*40)
-               for i in range(2)] for p in range(2)]
+    frames = [
+        [
+            ethernet_frame(destinations[p], 0x400000000001 + p, bytes([i + p * 2]) * 40)
+            for i in range(2)
+        ]
+        for p in range(2)
+    ]
     for port in range(2):
         await tb.send_all(port, frames[port], tid=3)
     await tb.cycle(12)
     await tb.set_pause(False)
     for port in range(2):
         for data in frames[port]:
-            await tb.check_frame(port+2, data, port)
+            await tb.check_frame(port + 2, data, port)
     await tb.check_empty()
     # The monitor checks every grant against its pending set and RR pointer.
     for channel in range(2):
@@ -437,7 +462,9 @@ async def test_header_only_and_unaligned_frames(dut):
     await tb.reset()
     da = 0x510000000001
     await tb.program([(da, 0b0010)])
-    frames = [ethernet_frame(da, 0x510000000002, range(length)) for length in (0, 1, 2, 3, 5, 17, 65)]
+    frames = [
+        ethernet_frame(da, 0x510000000002, range(length)) for length in (0, 1, 2, 3, 5, 17, 65)
+    ]
     await tb.send_all(0, frames)
     for data in frames:
         await tb.check_frame(1, data, 0)
@@ -450,7 +477,7 @@ async def test_back_to_back_frame_burst(dut):
     await tb.reset()
     da = 0x520000000001
     await tb.program([(da, 0b0100)])
-    frames = [ethernet_frame(da, 0x520000000100+i, bytes([i])*(20+i*7)) for i in range(12)]
+    frames = [ethernet_frame(da, 0x520000000100 + i, bytes([i]) * (20 + i * 7)) for i in range(12)]
     await tb.send_all(1, frames, tdest=0x44, tid=3)
     for data in frames:
         await tb.check_frame(2, data, 1, 0x44)
@@ -461,8 +488,10 @@ async def test_back_to_back_frame_burst(dut):
 async def test_no_idle_cycle_between_back_to_back_frames(dut):
     tb = TB(dut)
     await tb.reset(default_forwarding=0b0010)
-    frames = [ethernet_frame(0x521000000001, 0x521000000100+i, bytes([0xA0+i])*(65+i*7))
-              for i in range(4)]
+    frames = [
+        ethernet_frame(0x521000000001, 0x521000000100 + i, bytes([0xA0 + i]) * (65 + i * 7))
+        for i in range(4)
+    ]
     task = cocotb.start_soon(tb.assert_no_ingress_idle_between_frames(0, len(frames)))
     await tb.send_all(0, frames, tdest=0x46, tid=3)
     await with_timeout(task, 200, "us")
@@ -477,8 +506,10 @@ async def test_standard_and_jumbo_payloads(dut):
     await tb.reset()
     da = 0x525400000001
     await tb.program([(da, 0b0100)])
-    frames = [ethernet_frame(da, 0x525400000100+i, incrementing_payload(length), 0x88B5)
-              for i, length in enumerate((1500, 9000))]
+    frames = [
+        ethernet_frame(da, 0x525400000100 + i, incrementing_payload(length), 0x88B5)
+        for i, length in enumerate((1500, 9000))
+    ]
     assert [len(data) for data in frames] == [1514, 9014]
     await tb.send_all(0, frames, tdest=0x45, tid=3)
     for data in frames:
@@ -494,17 +525,21 @@ async def test_all_ingress_ports_simultaneously(dut):
     frames = []
     for port in range(tb.num_ports):
         da = 0x530000000000 + port
-        await tb.cpu_write_entry(port, da, 1 << ((port+1) % tb.num_ports))
-        frames.append([ethernet_frame(da, 0x540000000000+port, bytes([port, seq])*(20+seq))
-                       for seq in range(3)])
-        await tb.send_all(port, frames[-1], tid=(port+2) % tb.num_ports)
+        await tb.cpu_write_entry(port, da, 1 << ((port + 1) % tb.num_ports))
+        frames.append(
+            [
+                ethernet_frame(da, 0x540000000000 + port, bytes([port, seq]) * (20 + seq))
+                for seq in range(3)
+            ]
+        )
+        await tb.send_all(port, frames[-1], tid=(port + 2) % tb.num_ports)
     await tb.cycle(20)
     await tb.set_pause(False)
     for port in range(tb.num_ports):
         for data in frames[port]:
-            await tb.check_frame((port+1) % tb.num_ports, data, port)
+            await tb.check_frame((port + 1) % tb.num_ports, data, port)
     await tb.check_empty()
-    assert tb.requests == [[3]*tb.num_ports, [3]*tb.num_ports]
+    assert tb.requests == [[3] * tb.num_ports, [3] * tb.num_ports]
     assert tb.max_simultaneous_requests[0] == tb.num_ports
     assert tb.concurrent_channels
 
@@ -531,7 +566,7 @@ async def test_multicast_with_output_backpressure(dut):
     await tb.program([(da, 0b1100)])
     tb.sinks[2].set_pause_generator(cycle_pause((1, 0, 0, 0)))
     tb.sinks[3].set_pause_generator(cycle_pause((1, 1, 1, 0, 0)))
-    frames = [ethernet_frame(da, 0x560000000100+i, bytes([i])*(80+i*13)) for i in range(8)]
+    frames = [ethernet_frame(da, 0x560000000100 + i, bytes([i]) * (80 + i * 13)) for i in range(8)]
     await tb.send_all(0, frames, tdest=0x66)
     for data in frames:
         for port in (2, 3):
@@ -543,7 +578,7 @@ async def test_multicast_with_output_backpressure(dut):
 async def test_managed_table_cpu_readback(dut):
     tb = TB(dut)
     await tb.reset()
-    index, mac, bitmap = tb.table_depth-1, 0x570000000001, (1 << (tb.num_ports-1)) | 1
+    index, mac, bitmap = tb.table_depth - 1, 0x570000000001, (1 << (tb.num_ports - 1)) | 1
     await tb.set_pause(True)
     await tb.cpu_write_entry(index, mac, bitmap)
     assert await tb.cpu_read_entry(index) == (mac, bitmap, 1)
@@ -556,12 +591,17 @@ async def test_pause_completes_current_frame_and_blocks_next(dut):
     await tb.reset()
     da = 0x580000000001
     await tb.program([(da, 0b0010)])
-    first = ethernet_frame(da, 0x580000000002, bytes(range(256))*2)
-    second = ethernet_frame(da, 0x580000000003, b"held-until-resume"*4)
+    first = ethernet_frame(da, 0x580000000002, bytes(range(256)) * 2)
+    second = ethernet_frame(da, 0x580000000003, b"held-until-resume" * 4)
     await tb.send_all(0, [first, second])
     for _ in range(10000):
         await RisingEdge(dut.clk)
-        if int(dut.ingress_tvalid.value) & int(dut.ingress_tready.value) & ~int(dut.ingress_tlast.value) & 1:
+        if (
+            int(dut.ingress_tvalid.value)
+            & int(dut.ingress_tready.value)
+            & ~int(dut.ingress_tlast.value)
+            & 1
+        ):
             break
     else:
         raise AssertionError("timeout waiting for first frame at engine input")
@@ -574,9 +614,11 @@ async def test_pause_completes_current_frame_and_blocks_next(dut):
     await tb.check_frame(1, second, 0)
     await tb.check_empty()
 
+
 # ------------------------------------------------------------------------------
 # Crossbar-specific cocotb test cases: simple routing and forwarding scenarios
 # ------------------------------------------------------------------------------
+
 
 @cocotb.test()
 async def test_parallel_disjoint_paths(dut):
@@ -586,13 +628,13 @@ async def test_parallel_disjoint_paths(dut):
     frames = []
     for port in (0, 1):
         da = 0x700000000000 + port
-        await tb.cpu_write_entry(port, da, 1 << (port+2))
-        frames.append(ethernet_frame(da, 0x710000000000+port, bytes([port])*4096))
+        await tb.cpu_write_entry(port, da, 1 << (port + 2))
+        frames.append(ethernet_frame(da, 0x710000000000 + port, bytes([port]) * 4096))
         await tb.send(port, frames[-1])
     await tb.cycle(20)
     await tb.set_pause(False)
     for port in (0, 1):
-        await tb.check_frame(port+2, frames[port], port)
+        await tb.check_frame(port + 2, frames[port], port)
     await tb.check_empty()
     assert tb.parallel_transfers > 0, "independent paths never transferred concurrently"
 
@@ -602,8 +644,13 @@ async def test_contending_ingresses(dut):
     tb = TB(dut)
     await tb.reset(default_forwarding=0b1000)
     tb.sinks[3].set_pause_generator(cycle_pause())
-    frames = {p: [ethernet_frame(0x720000000001, 0x720000000010+p,
-                                bytes([p, seq])*150) for seq in range(3)] for p in (0, 1, 2)}
+    frames = {
+        p: [
+            ethernet_frame(0x720000000001, 0x720000000010 + p, bytes([p, seq]) * 150)
+            for seq in range(3)
+        ]
+        for p in (0, 1, 2)
+    }
     for port in frames:
         await tb.send_all(port, frames[port])
     indices = dict.fromkeys(frames, 0)
@@ -625,13 +672,13 @@ async def test_concurrent_learning_and_cpu_reads(dut):
     tb = TB(dut)
     await tb.reset(UNMANAGED, 0b1000)
     await tb.set_pause(True)
-    frames = [ethernet_frame(0x730000000001, 0x730000000010+p, bytes([p])*80) for p in range(3)]
+    frames = [ethernet_frame(0x730000000001, 0x730000000010 + p, bytes([p]) * 80) for p in range(3)]
     for port, frame in enumerate(frames):
         await tb.send(port, frame)
     await tb.cycle(20)
     await tb.set_pause(False)
     for _ in range(12):
-        await tb.cpu_read(tb.table_depth-1, WORD_CONFIG)
+        await tb.cpu_read(tb.table_depth - 1, WORD_CONFIG)
     received = set()
     for _ in range(3):
         frame = await tb.recv(3)
@@ -644,10 +691,10 @@ async def test_concurrent_learning_and_cpu_reads(dut):
     await tb.set_pause(True)
     entries = [await tb.cpu_read_entry(i) for i in range(tb.table_depth)]
     for port in range(3):
-        assert (0x730000000010+port, 1 << port, 1) in entries
+        assert (0x730000000010 + port, 1 << port, 1) in entries
     await tb.set_pause(False)
     for port in range(3):
-        data = ethernet_frame(0x730000000010+port, 0x730000000020, b"learned-route")
+        data = ethernet_frame(0x730000000010 + port, 0x730000000020, b"learned-route")
         await tb.send(3, data)
         await tb.assert_only_ports_received({port}, data, expected_tid=3)
 
@@ -660,9 +707,13 @@ async def test_pause_multiple_active_engines(dut):
     frames = []
     for port in (0, 1):
         da = 0x740000000000 + port
-        await tb.cpu_write_entry(port, da, 1 << (port+2))
-        frames.append([ethernet_frame(da, 0x740000000010+port, bytes([port])*2048),
-                       ethernet_frame(da, 0x740000000010+port, b"after-resume")])
+        await tb.cpu_write_entry(port, da, 1 << (port + 2))
+        frames.append(
+            [
+                ethernet_frame(da, 0x740000000010 + port, bytes([port]) * 2048),
+                ethernet_frame(da, 0x740000000010 + port, b"after-resume"),
+            ]
+        )
         await tb.send_all(port, frames[-1])
     await tb.cycle(20)
     await tb.set_pause(False)
@@ -677,11 +728,11 @@ async def test_pause_multiple_active_engines(dut):
     dut.pause_request.value = 1
     await tb.wait_asserted(dut.pause_done, "all engines paused")
     for port in (0, 1):
-        await tb.check_frame(port+2, frames[port][0], port)
+        await tb.check_frame(port + 2, frames[port][0], port)
     await tb.check_empty()
     await tb.set_pause(False)
     for port in (0, 1):
-        await tb.check_frame(port+2, frames[port][1], port)
+        await tb.check_frame(port + 2, frames[port][1], port)
     await tb.check_empty()
 
 
@@ -691,7 +742,9 @@ async def test_reset_pending_transactions(dut):
     await tb.reset(default_forwarding=0b1000)
     await tb.set_pause(True)
     for port in range(3):
-        await tb.send(port, ethernet_frame(0x750000000001, 0x750000000010+port, bytes([port])*256))
+        await tb.send(
+            port, ethernet_frame(0x750000000001, 0x750000000010 + port, bytes([port]) * 256)
+        )
     await tb.cycle(20)
     await tb.set_pause(False)
     await tb.wait_asserted(dut.arb_pending, "queued table requests")
@@ -708,7 +761,7 @@ async def test_reset_pending_transactions(dut):
     data = ethernet_frame(0x750000000002, 0x750000000020, b"fresh-after-reset")
     await tb.send(1, data)
     await tb.assert_only_ports_received({3}, data, expected_tid=1)
-    assert tb.responses == [[0, 1] + [0]*(tb.num_ports-2)] * 2
+    assert tb.responses == [[0, 1] + [0] * (tb.num_ports - 2)] * 2
 
 
 @cocotb.test()
@@ -720,8 +773,10 @@ async def test_overlapping_multicast_routes(dut):
     await tb.program(list(zip(destinations, (0b1100, 0b1001))))
     tb.sinks[2].set_pause_generator(cycle_pause((1, 0, 0)))
     tb.sinks[3].set_pause_generator(cycle_pause((1, 1, 0, 0, 0)))
-    frames = [[ethernet_frame(destinations[p], 0x760000000010+p, bytes([p, i])*120)
-               for i in range(3)] for p in (0, 1)]
+    frames = [
+        [ethernet_frame(destinations[p], 0x760000000010 + p, bytes([p, i]) * 120) for i in range(3)]
+        for p in (0, 1)
+    ]
     for port in (0, 1):
         await tb.send_all(port, frames[port])
     for src, dst in ((0, 2), (1, 0)):
@@ -737,9 +792,11 @@ async def test_overlapping_multicast_routes(dut):
     assert indices == [3, 3]
     await tb.check_empty()
 
+
 # ----------------------------------------------------------------------
 # TestFactory logic: idle and backpressure combinations
 # ----------------------------------------------------------------------
+
 
 async def run_factory_routing(
     dut,
@@ -756,13 +813,16 @@ async def run_factory_routing(
     await tb.program([(da, bitmap)])
     tb.set_idle_generator(idle_inserter)
     tb.set_backpressure_generator(backpressure_inserter)
-    frames = [ethernet_frame(da, 0x600000000000+ingress, payload_data(length))
-              for length in payload_lengths()]
-    await tb.send_all(ingress, frames, tdest=0x70+ingress, tid=3)
+    frames = [
+        ethernet_frame(da, 0x600000000000 + ingress, payload_data(length))
+        for length in payload_lengths()
+    ]
+    await tb.send_all(ingress, frames, tdest=0x70 + ingress, tid=3)
     for port in ports:
         for data in frames:
-            await tb.check_frame(port, data, ingress, 0x70+ingress)
+            await tb.check_frame(port, data, ingress, 0x70 + ingress)
     await tb.check_empty()
+
 
 # ----------------------------------------------------------------------
 # Dispatch: select test cases to run based on Makefile configuration
@@ -863,9 +923,6 @@ def test_openenoc_eth_switch_crossbar(
             request.node.name.replace("[", "-").replace("]", ""),
         ),
         extra_env={f"PARAM_{key}": str(value) for key, value in parameters.items()},
-        extra_args=[
-            "-Wall",
-            "-Wno-DECLFILENAME",
-            os.path.join(repo_dir, "dv", "common", "config.vlt"),
-        ],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(repo_dir, "dv", "common", "config.vlt")],
     )

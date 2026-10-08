@@ -264,6 +264,7 @@ def test_openenoc_cpuif_axil_adapter(request):
         ],
         toplevel=module,
         module=module,
+        timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
     )

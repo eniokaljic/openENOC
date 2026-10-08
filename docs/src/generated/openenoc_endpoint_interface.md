@@ -9,7 +9,7 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 
 - Absolute Address: 0x0
 - Base Offset: 0x0
-- Size: 0xA0
+- Size: 0xC0
 
 <p>Control and status address map for an openENOC Endpoint Interface instance.</p>
 
@@ -21,19 +21,19 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 
 - Absolute Address: 0x0
 - Base Offset: 0x0
-- Size: 0xA0
+- Size: 0xC0
 
 <p>Control and status register file for an openENOC Endpoint Interface instance.</p>
 
 |Offset| Identifier |                  Name                  |
 |------|------------|----------------------------------------|
 | 0x00 |    info    |    openenoc_endpoint_interface.info    |
-| 0x10 |   config   |   openenoc_endpoint_interface.config   |
-| 0x20 |   axis_if  |   openenoc_endpoint_interface.axis_if  |
-| 0x40 |non_oetp_dma|openenoc_endpoint_interface.non_oetp_dma|
-| 0x60 |     irq    |     openenoc_endpoint_interface.irq    |
-| 0x80 |    peers   |    openenoc_endpoint_interface.peers   |
-| 0x9C |    rmem    |    openenoc_endpoint_interface.rmem    |
+| 0x20 |   config   |   openenoc_endpoint_interface.config   |
+| 0x40 |   axis_if  |   openenoc_endpoint_interface.axis_if  |
+| 0x60 |non_oetp_dma|openenoc_endpoint_interface.non_oetp_dma|
+| 0x80 |     irq    |     openenoc_endpoint_interface.irq    |
+| 0xA0 |    peers   |    openenoc_endpoint_interface.peers   |
+| 0xBC |    rmem    |    openenoc_endpoint_interface.rmem    |
 
 ### info register
 
@@ -51,7 +51,7 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 |  44 | non_oetp_dma_supported |   r  |  0x1 |     openenoc_endpoint_interface.info.non_oetp_dma_supported    |
 |  45 |  direct_axis_supported |   r  |  0x1 |     openenoc_endpoint_interface.info.direct_axis_supported     |
 |  46 |     rmem_supported     |   r  |  0x1 |         openenoc_endpoint_interface.info.rmem_supported        |
-|  47 |      irq_supported     |   r  |  0x0 |         openenoc_endpoint_interface.info.irq_supported         |
+|  47 |      irq_supported     |   r  |  0x1 |         openenoc_endpoint_interface.info.irq_supported         |
 |63:48|max_dma_frame_size_bytes|   r  |0x2000|openenoc_endpoint_interface.info.max_dma_frame_size_bytes[63:48]|
 
 #### rmem_total_depth field
@@ -90,30 +90,41 @@ are implemented.</p>
 
 #### max_dma_frame_size_bytes field
 
-<p>Maximum size in bytes of one AXI4-Stream frame generated or consumed by the
-DMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value.
-A value of zero indicates that DMA is not supported.</p>
+<p>Synthesis-time maximum Ethernet frame size in bytes, excluding FCS. This
+field reflects the MAX_RAW_FRAME_SIZE parameter value and bounds raw
+non-oETP DMA frames. The peer DMA memory-fragment ceiling is
+4 * floor((MAX_RAW_FRAME_SIZE - 32) / 4), accounting for the Ethernet
+header, oETP write metadata, data-word padding and EndOfData. An 8192-byte
+frame limit permits 8160-byte memory fragments. A value of zero indicates
+that DMA is not supported.</p>
 
 ## config register file
 
-- Absolute Address: 0x10
-- Base Offset: 0x10
-- Size: 0xC
+- Absolute Address: 0x20
+- Base Offset: 0x20
+- Size: 0x20
 
 <p>Configuration register file for this openENOC Endpoint Interface instance.</p>
 
-|Offset|   Identifier   |                        Name                       |
-|------|----------------|---------------------------------------------------|
-|  0x0 |   mac_address  |   openenoc_endpoint_interface.config.mac_address  |
-|  0x8 |non_oetp_control|openenoc_endpoint_interface.config.non_oetp_control|
+|Offset|      Identifier     |                          Name                          |
+|------|---------------------|--------------------------------------------------------|
+| 0x00 |     mac_address     |     openenoc_endpoint_interface.config.mac_address     |
+| 0x08 |  multicast_address  |  openenoc_endpoint_interface.config.multicast_address  |
+| 0x10 |   non_oetp_control  |   openenoc_endpoint_interface.config.non_oetp_control  |
+| 0x14 |     rmem_timeout    |     openenoc_endpoint_interface.config.rmem_timeout    |
+| 0x18 |     dma_timeout     |     openenoc_endpoint_interface.config.dma_timeout     |
+| 0x1C |dma_max_fragment_size|openenoc_endpoint_interface.config.dma_max_fragment_size|
 
 ### mac_address register
 
-- Absolute Address: 0x10
+- Absolute Address: 0x20
 - Base Offset: 0x0
 - Size: 0x8
 
-<p>Local site 48-bit destination MAC address.</p>
+<p>Local endpoint 48-bit unicast MAC address. The oETP engine uses this address
+as its source MAC and compares individual-addressed incoming oETP frames against
+it. The I/G bit in the first MAC octet must be zero. Group-addressed oETP frames
+are compared against config.multicast_address instead.</p>
 
 | Bits|Identifier|Access|Reset|                             Name                            |
 |-----|----------|------|-----|-------------------------------------------------------------|
@@ -128,10 +139,37 @@ A value of zero indicates that DMA is not supported.</p>
 
 <p>Upper 16 bits [47:32] of the 48-bit MAC address.</p>
 
+### multicast_address register
+
+- Absolute Address: 0x28
+- Base Offset: 0x8
+- Size: 0x8
+
+<p>Local endpoint 48-bit multicast destination MAC address. For an incoming
+oETP frame whose destination I/G bit is one, the engine accepts the destination
+only when it exactly matches this address. All slave endpoints in a replication
+group use the same value. This address is not used as a source MAC. Zero is the
+reset value and matches no group-addressed destination, disabling oETP group
+reception. Broadcast is accepted only when this address is all ones. This field
+does not change the separate non-oETP receive-mode policy.</p>
+
+| Bits|Identifier|Access|Reset|                                Name                               |
+|-----|----------|------|-----|-------------------------------------------------------------------|
+| 31:0|  lo_word |  rw  | 0x0 | openenoc_endpoint_interface.config.multicast_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  | 0x0 |openenoc_endpoint_interface.config.multicast_address.hi_word[47:32]|
+
+#### lo_word field
+
+<p>Lower 32 bits [31:0] of the 48-bit multicast MAC address.</p>
+
+#### hi_word field
+
+<p>Upper 16 bits [47:32] of the 48-bit multicast MAC address.</p>
+
 ### non_oetp_control register
 
-- Absolute Address: 0x18
-- Base Offset: 0x8
+- Absolute Address: 0x30
+- Base Offset: 0x10
 - Size: 0x4
 
 <p>Receive policy for Ethernet frames that do not carry oETP traffic.</p>
@@ -153,10 +191,102 @@ multicast-addressed frames.</li>
 An accepted frame is directed to the non-oETP RX DMA channel when that channel
 is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
+### rmem_timeout register
+
+- Absolute Address: 0x34
+- Base Offset: 0x14
+- Size: 0x4
+
+<p>Timeout configuration for transparent RMEM operations.</p>
+
+|Bits|Identifier|Access|Reset|                            Name                            |
+|----|----------|------|-----|------------------------------------------------------------|
+|31:0|  cycles  |  rw  | 0x0 |openenoc_endpoint_interface.config.rmem_timeout.cycles[31:0]|
+
+#### cycles field
+
+<p>Maximum wait for an RMEM response in endpoint clock cycles. Zero disables
+the timeout and permits an indefinite response wait. Hardware samples this
+value when it accepts an RMEM operation; subsequent writes apply to later
+operations. The response timer starts after the complete request frame has
+been accepted by the Ethernet-facing transmit stream and runs until the
+complete matching response is received and validated through Ethernet TLAST.
+RX backpressure counts toward the timeout; remaining local memory completion
+does not. A valid response completing on the expiry edge takes priority,
+including a valid ERROR_RSP with its reported cause. Hardware does not
+retry; timeout handling and retry policy belong to software. Multicast
+writes do not wait for a response and do not use this response timeout.
+An RMEM read timeout terminates the access with all-ones read data and read
+ACK; a write timeout terminates with write ACK. The external-RMEM boundary
+uses no ERR signals. Failures set error and error_code in the associated
+peers.entry[].dma register and may generate a separate RMEM_ERROR IRQ event.</p>
+
+### dma_timeout register
+
+- Absolute Address: 0x38
+- Base Offset: 0x18
+- Size: 0x4
+
+<p>Common response timeout for locally initiated unicast peer DMA fragments.</p>
+
+|Bits|Identifier|Access|Reset|                            Name                           |
+|----|----------|------|-----|-----------------------------------------------------------|
+|31:0|  cycles  |  rw  | 0x0 |openenoc_endpoint_interface.config.dma_timeout.cycles[31:0]|
+
+#### cycles field
+
+<p>Maximum wait for a response to one peer DMA fragment, in endpoint clock
+cycles. This value is shared by all peers. Zero disables the timeout and
+permits an indefinite response wait. Hardware samples this value when the
+oETP engine accepts the fragment request; later writes apply to later
+fragments. The response timer starts after the complete request frame has
+been accepted by the Ethernet-facing transmit stream and runs until the
+complete matching response is received and validated through Ethernet TLAST,
+including EndOfData where present. RX backpressure counts toward the timeout;
+remaining local memory completion does not. A valid response completing on
+the expiry edge takes priority, including a valid ERROR_RSP with its reported
+cause. On expiry, hardware
+aborts the remaining fragments of that DMA transfer and reports error code
+8 (timeout) in the peer DMA status. Hardware does not retry; software decides
+whether to start another transfer. This timeout does not apply to multicast
+writes, non-oETP DMA, or transparent RMEM operations.</p>
+
+### dma_max_fragment_size register
+
+- Absolute Address: 0x3C
+- Base Offset: 0x1C
+- Size: 0x4
+
+<p>Common software-selected maximum memory fragment size for locally
+initiated peer DMA transfers. The synthesis-time frame limit remains fixed.</p>
+
+|Bits|Identifier|Access| Reset|                                Name                                |
+|----|----------|------|------|--------------------------------------------------------------------|
+|31:0|   bytes  |  rw  |0x1FE0|openenoc_endpoint_interface.config.dma_max_fragment_size.bytes[31:0]|
+
+#### bytes field
+
+<p>Maximum meaningful memory bytes in one locally initiated DMA fragment,
+excluding Ethernet/oETP headers, word padding, EndOfData and FCS. The
+hardware rounds the written value down to a multiple of four before
+validating it. The effective MFS must be at least four bytes and at most
+4 * floor((MAX_RAW_FRAME_SIZE - 32) / 4). With an 8192-byte frame ceiling,
+the effective range is 4 through 8160 bytes in steps of four, with reset
+value 8160. For example, 31 selects 28, 7 selects 4, and 8161 through 8163
+select 8160. Hardware snapshots the effective value when it accepts the
+whole peer DMA transfer; later writes apply only to subsequent transfers.
+The final fragment uses the exact remaining byte length and may be shorter
+than four bytes. A written value of 0 through 3, or a rounded value above
+the synthesized ceiling, rejects a new transfer with local error code 1
+before issuing any memory or protocol operation. The CSR retains the
+unrounded written value. This setting does not
+restrict received peer requests, which use the synthesized fragment
+ceiling, and does not affect RMEM, direct CSR streams or non-oETP DMA.</p>
+
 ## axis_if register file
 
-- Absolute Address: 0x20
-- Base Offset: 0x20
+- Absolute Address: 0x40
+- Base Offset: 0x40
 - Size: 0x1C
 
 <p>Register file for the AXI4-Stream source and sink interfaces.</p>
@@ -168,7 +298,7 @@ is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
 ## source register file
 
-- Absolute Address: 0x20
+- Absolute Address: 0x40
 - Base Offset: 0x0
 - Size: 0xC
 
@@ -182,7 +312,7 @@ is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
 ### data register
 
-- Absolute Address: 0x20
+- Absolute Address: 0x40
 - Base Offset: 0x0
 - Size: 0x4
 
@@ -198,7 +328,7 @@ is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
 ### control register
 
-- Absolute Address: 0x24
+- Absolute Address: 0x44
 - Base Offset: 0x4
 - Size: 0x4
 
@@ -228,7 +358,7 @@ interface.</p>
 
 ### status register
 
-- Absolute Address: 0x28
+- Absolute Address: 0x48
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -245,7 +375,7 @@ receive data.</p>
 
 ## sink register file
 
-- Absolute Address: 0x30
+- Absolute Address: 0x50
 - Base Offset: 0x10
 - Size: 0xC
 
@@ -259,7 +389,7 @@ receive data.</p>
 
 ### data register
 
-- Absolute Address: 0x30
+- Absolute Address: 0x50
 - Base Offset: 0x0
 - Size: 0x4
 
@@ -275,7 +405,7 @@ receive data.</p>
 
 ### control register
 
-- Absolute Address: 0x34
+- Absolute Address: 0x54
 - Base Offset: 0x4
 - Size: 0x4
 
@@ -293,7 +423,7 @@ a transfer occurs.</p>
 
 ### status register
 
-- Absolute Address: 0x38
+- Absolute Address: 0x58
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -322,8 +452,8 @@ sink interface.</p>
 
 ## non_oetp_dma register file
 
-- Absolute Address: 0x40
-- Base Offset: 0x40
+- Absolute Address: 0x60
+- Base Offset: 0x60
 - Size: 0x20
 
 <p>Endpoint-level DMA control and status for complete non-oETP Ethernet frames.
@@ -337,7 +467,7 @@ Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).</p>
 
 ## tx register file
 
-- Absolute Address: 0x40
+- Absolute Address: 0x60
 - Base Offset: 0x0
 - Size: 0x10
 
@@ -352,7 +482,7 @@ Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).</p>
 
 ### buffer_address register
 
-- Absolute Address: 0x40
+- Absolute Address: 0x60
 - Base Offset: 0x0
 - Size: 0x4
 
@@ -368,7 +498,7 @@ Start Frame Delimiter (SFD), and Frame Check Sequence (FCS).</p>
 
 ### frame_length register
 
-- Absolute Address: 0x44
+- Absolute Address: 0x64
 - Base Offset: 0x4
 - Size: 0x4
 
@@ -385,19 +515,20 @@ info.max_dma_frame_size_bytes.</p>
 
 ### command_status register
 
-- Absolute Address: 0x48
+- Absolute Address: 0x68
 - Base Offset: 0x8
 - Size: 0x4
 
 <p>Command and completion status for the non-oETP transmit DMA channel.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                    |
-|-----|----------|------|-----|----------------------------------------------------------------------------|
-|  8  |  request |  rw  | 0x0 |     openenoc_endpoint_interface.non_oetp_dma.tx.command_status.request     |
-|  16 |   idle   |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.tx.command_status.idle      |
-|  24 |   done   |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.tx.command_status.done      |
-|  25 |   error  |   r  |  —  |      openenoc_endpoint_interface.non_oetp_dma.tx.command_status.error      |
-|31:28|error_code|   r  |  —  |openenoc_endpoint_interface.non_oetp_dma.tx.command_status.error_code[31:28]|
+| Bits| Identifier |Access|Reset|                                    Name                                    |
+|-----|------------|------|-----|----------------------------------------------------------------------------|
+|  8  |   request  |  rw  | 0x0 |     openenoc_endpoint_interface.non_oetp_dma.tx.command_status.request     |
+|  9  |clear_errors|  rw  | 0x0 |   openenoc_endpoint_interface.non_oetp_dma.tx.command_status.clear_errors  |
+|  16 |    idle    |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.tx.command_status.idle      |
+|  24 |    done    |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.tx.command_status.done      |
+|  25 |    error   |   r  |  —  |      openenoc_endpoint_interface.non_oetp_dma.tx.command_status.error      |
+|31:28| error_code |   r  |  —  |openenoc_endpoint_interface.non_oetp_dma.tx.command_status.error_code[31:28]|
 
 #### request field
 
@@ -407,6 +538,14 @@ it upon acceptance; while the channel is busy, a newly asserted request
 remains pending. Software or an RTL controller shall read the completion
 status and transferred length of the previous request before asserting this
 field for the next request.</p>
+
+#### clear_errors field
+
+<p>Writing one clears this channel's error flag and error code.
+Hardware clears the command after accepting it. The command does not
+abort an active transfer, clear done or transferred length, or complete
+an IRQ claim. A new failure takes precedence over a simultaneous clear.
+Starting or successfully completing a transfer preserves a recorded error.</p>
 
 #### idle field
 
@@ -422,13 +561,14 @@ is accepted.</p>
 
 #### error field
 
-<p>Sticky error-completion flag. Hardware sets this field when the accepted
-transfer terminates with an error and clears it when the next request
-is accepted.</p>
+<p>Sticky error-completion flag. Hardware sets this field when an
+accepted transfer fails. Only command_status.clear_errors or endpoint
+reset clears it; starting or successfully completing another transfer
+preserves a recorded error.</p>
 
 #### error_code field
 
-<p>Sticky error code for the most recently completed transfer:<ul></p>
+<p>Sticky error code for the most recent transmit failure:<ul></p>
 <li>0: No error.</li>
 <li>1: Invalid DMA configuration or descriptor.</li>
 <li>2: AXI4-Stream length or TLAST error.</li>
@@ -439,11 +579,14 @@ is accepted.</p>
 <li>7: AXI write DECERR response.</li>
 <li>8-15: Reserved.</li>
 <p></ul>
-Hardware clears this field when the next request is accepted.</p>
+These errors describe local non-oETP DMA work. Only
+command_status.clear_errors or endpoint reset clears this field.
+A new failure replaces the code and takes precedence over a simultaneous
+clear; successful transfers preserve the previous failure.</p>
 
 ### transferred_length register
 
-- Absolute Address: 0x4C
+- Absolute Address: 0x6C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -461,7 +604,7 @@ the next request is accepted.</p>
 
 ## rx register file
 
-- Absolute Address: 0x50
+- Absolute Address: 0x70
 - Base Offset: 0x10
 - Size: 0x10
 
@@ -476,7 +619,7 @@ the next request is accepted.</p>
 
 ### buffer_address register
 
-- Absolute Address: 0x50
+- Absolute Address: 0x70
 - Base Offset: 0x0
 - Size: 0x4
 
@@ -492,7 +635,7 @@ the next request is accepted.</p>
 
 ### buffer_capacity register
 
-- Absolute Address: 0x54
+- Absolute Address: 0x74
 - Base Offset: 0x4
 - Size: 0x4
 
@@ -509,20 +652,21 @@ info.max_dma_frame_size_bytes.</p>
 
 ### command_status register
 
-- Absolute Address: 0x58
+- Absolute Address: 0x78
 - Base Offset: 0x8
 - Size: 0x4
 
 <p>Command and completion status for the non-oETP receive DMA channel.</p>
 
-| Bits|Identifier|Access|Reset|                                    Name                                    |
-|-----|----------|------|-----|----------------------------------------------------------------------------|
-|  8  |  request |  rw  | 0x0 |     openenoc_endpoint_interface.non_oetp_dma.rx.command_status.request     |
-|  16 |   idle   |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.rx.command_status.idle      |
-|  17 |   armed  |   r  |  —  |      openenoc_endpoint_interface.non_oetp_dma.rx.command_status.armed      |
-|  24 |   done   |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.rx.command_status.done      |
-|  25 |   error  |   r  |  —  |      openenoc_endpoint_interface.non_oetp_dma.rx.command_status.error      |
-|31:28|error_code|   r  |  —  |openenoc_endpoint_interface.non_oetp_dma.rx.command_status.error_code[31:28]|
+| Bits| Identifier |Access|Reset|                                    Name                                    |
+|-----|------------|------|-----|----------------------------------------------------------------------------|
+|  8  |   request  |  rw  | 0x0 |     openenoc_endpoint_interface.non_oetp_dma.rx.command_status.request     |
+|  9  |clear_errors|  rw  | 0x0 |   openenoc_endpoint_interface.non_oetp_dma.rx.command_status.clear_errors  |
+|  16 |    idle    |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.rx.command_status.idle      |
+|  17 |    armed   |   r  |  —  |      openenoc_endpoint_interface.non_oetp_dma.rx.command_status.armed      |
+|  24 |    done    |   r  |  —  |       openenoc_endpoint_interface.non_oetp_dma.rx.command_status.done      |
+|  25 |    error   |   r  |  —  |      openenoc_endpoint_interface.non_oetp_dma.rx.command_status.error      |
+|31:28| error_code |   r  |  —  |openenoc_endpoint_interface.non_oetp_dma.rx.command_status.error_code[31:28]|
 
 #### request field
 
@@ -532,6 +676,15 @@ acceptance; while the channel is busy, a newly asserted request remains
 pending. Software or an RTL controller shall read the completion status and
 received length of the previous request before asserting this field for the
 next request.</p>
+
+#### clear_errors field
+
+<p>Writing one clears this channel's error flag and error code.
+Hardware clears the command after accepting it. The command does not
+abort an active or armed receive, clear done or received length, or
+complete an IRQ claim. A new failure takes precedence over a simultaneous
+clear. Starting or successfully completing a transfer preserves a
+recorded error.</p>
 
 #### idle field
 
@@ -556,13 +709,14 @@ request is accepted.</p>
 
 #### error field
 
-<p>Sticky error-completion flag. Hardware sets this field when the accepted
-receive request terminates with an error and clears it when the next request
-is accepted.</p>
+<p>Sticky error-completion flag. Hardware sets this field when an
+accepted receive fails. Only command_status.clear_errors or endpoint
+reset clears it; starting or successfully completing another receive
+preserves a recorded error.</p>
 
 #### error_code field
 
-<p>Sticky error code for the most recently completed receive transfer:<ul></p>
+<p>Sticky error code for the most recent receive failure:<ul></p>
 <li>0: No error.</li>
 <li>1: Invalid DMA configuration or descriptor.</li>
 <li>2: AXI4-Stream length or TLAST error.</li>
@@ -573,11 +727,13 @@ is accepted.</p>
 <li>7: AXI write DECERR response.</li>
 <li>8-15: Reserved.</li>
 <p></ul>
-Hardware clears this field when the next request is accepted.</p>
+Only command_status.clear_errors or endpoint reset clears this field.
+A new failure replaces the code and takes precedence over a simultaneous
+clear; successful transfers preserve the previous failure.</p>
 
 ### received_length register
 
-- Absolute Address: 0x5C
+- Absolute Address: 0x7C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -594,13 +750,13 @@ clears this field when the next request is accepted.</p>
 
 ## irq register file
 
-- Absolute Address: 0x60
-- Base Offset: 0x60
+- Absolute Address: 0x80
+- Base Offset: 0x80
 - Size: 0x14
 
 <p>Endpoint-level interrupt control and claim interface. Interrupt events from peer
-DMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared
-event FIFO.</p>
+DMA, non-oETP DMA, direct AXI4-Stream transfers, and RMEM failures are serialized
+through a shared event FIFO.</p>
 
 |Offset| Identifier |                    Name                    |
 |------|------------|--------------------------------------------|
@@ -612,7 +768,7 @@ event FIFO.</p>
 
 ### control register
 
-- Absolute Address: 0x60
+- Absolute Address: 0x80
 - Base Offset: 0x0
 - Size: 0x4
 
@@ -638,7 +794,7 @@ accepts the request and clears it.</p>
 
 ### event_enable register
 
-- Absolute Address: 0x64
+- Absolute Address: 0x84
 - Base Offset: 0x4
 - Size: 0x4
 
@@ -653,12 +809,17 @@ IRQ output.</p>
 |  2 |  non_oetp_dma_rx_complete  |  rw  | 0x0 |  openenoc_endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete  |
 |  3 | non_oetp_direct_tx_complete|  rw  | 0x0 | openenoc_endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete|
 |  4 |non_oetp_direct_rx_available|  rw  | 0x0 |openenoc_endpoint_interface.irq.event_enable.non_oetp_direct_rx_available|
+|  5 |         rmem_error         |  rw  | 0x0 |         openenoc_endpoint_interface.irq.event_enable.rmem_error         |
 
 #### peer_dma_complete field
 
 <p>Enables PEER_DMA_COMPLETE events. A peer event is queued only when this
 field and the selected peer's dma.irq_enable field were both set when the DMA
-request was accepted.</p>
+request was accepted. A failed incoming bulk DMA request also generates this
+event for the peer resolved from the source MAC. For incoming failures,
+hardware captures the per-peer enable when recording the failure and samples
+this field at IRQ admission. Successful incoming requests generate no event.
+CSR error recording and the error response do not wait for IRQ FIFO capacity.</p>
 
 #### non_oetp_dma_tx_complete field
 
@@ -687,9 +848,21 @@ TVALID until an IRQ FIFO credit is available, so the event cannot be lost.
 The event does not depend on TLAST and therefore supports both cut-through and
 frame-FIFO operation.</p>
 
+#### rmem_error field
+
+<p>Enables RMEM_ERROR events for locally initiated RMEM failures, including
+timeout and an accepted ERROR_RSP, and failed incoming RMEM requests from a
+resolved peer. Hardware records the associated peer's
+dma.error and dma.error_code before
+exposing the event and terminates the failed RMEM access without waiting
+for IRQ FIFO capacity. For locally initiated failures the enable is sampled
+when the failure is recorded; incoming failures sample it at IRQ admission.
+The bulk DMA per-peer irq_enable does not gate RMEM_ERROR.
+Successful RMEM accesses generate no event.</p>
+
 ### status register
 
-- Absolute Address: 0x68
+- Absolute Address: 0x88
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -748,7 +921,7 @@ are reported as 255.</p>
 
 ### claim register
 
-- Absolute Address: 0x6C
+- Absolute Address: 0x8C
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -765,7 +938,7 @@ irq.complete request removes the claim.</p>
 
 #### peer_idx field
 
-<p>Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through
+<p>Zero-based peer index for a PEER_DMA_COMPLETE or RMEM_ERROR event, in the range 0 through
 NUM_OF_PEERS-1. The field is not applicable to other event sources and is driven
 to zero for deterministic readback.</p>
 
@@ -782,7 +955,9 @@ either success or error.</li>
 frame was accepted by the oETP engine.</li>
 <li>4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP
 receive frame is available on the CSR-facing AXI4-Stream interface.</li>
-<li>5-15: Reserved.</li>
+<li>5: RMEM_ERROR. A locally initiated RMEM operation failed. The cause is
+recorded in peers.entry[peer_idx].dma; peer_idx identifies the associated peer.</li>
+<li>6-15: Reserved.</li>
 <p></ul>
 This field is meaningful only when valid is set.</p>
 
@@ -799,7 +974,7 @@ IRQ event FIFO. When clear, all other claim fields shall be ignored.</p>
 
 ### complete register
 
-- Absolute Address: 0x70
+- Absolute Address: 0x90
 - Base Offset: 0x10
 - Size: 0x4
 
@@ -834,8 +1009,8 @@ and sets irq.status.invalid_complete.</p>
 
 ## peers register file
 
-- Absolute Address: 0x80
-- Base Offset: 0x80
+- Absolute Address: 0xA0
+- Base Offset: 0xA0
 - Size: 0x1C
 
 <p>Register file for remote peer configuration and memory region information.</p>
@@ -846,7 +1021,7 @@ and sets irq.status.invalid_complete.</p>
 
 ## entry register file
 
-- Absolute Address: 0x80
+- Absolute Address: 0xA0
 - Base Offset: 0x0
 - Size: 0x1C
 - Array Dimensions: [1]
@@ -867,7 +1042,7 @@ information.</p>
 
 ### mac_address register
 
-- Absolute Address: 0x80
+- Absolute Address: 0xA0
 - Base Offset: 0x0
 - Size: 0x8
 
@@ -888,7 +1063,7 @@ information.</p>
 
 ### rmem_address register
 
-- Absolute Address: 0x88
+- Absolute Address: 0xA8
 - Base Offset: 0x8
 - Size: 0x4
 
@@ -906,7 +1081,7 @@ remote peer's memory. The value shall be aligned to a 32-bit word boundary.</p>
 
 ### local_address register
 
-- Absolute Address: 0x8C
+- Absolute Address: 0xAC
 - Base Offset: 0xC
 - Size: 0x4
 
@@ -923,7 +1098,7 @@ DMA transfers.</p>
 
 ### remote_address register
 
-- Absolute Address: 0x90
+- Absolute Address: 0xB0
 - Base Offset: 0x10
 - Size: 0x4
 
@@ -939,7 +1114,7 @@ DMA transfers.</p>
 
 ### size register
 
-- Absolute Address: 0x94
+- Absolute Address: 0xB4
 - Base Offset: 0x14
 - Size: 0x4
 
@@ -955,21 +1130,23 @@ DMA transfers.</p>
 
 ### dma register
 
-- Absolute Address: 0x98
+- Absolute Address: 0xB8
 - Base Offset: 0x18
 - Size: 0x4
 
-<p>DMA configuration and control for the remote peer.</p>
+<p>DMA/RMEM configuration and control for the remote peer, with shared
+sticky error reporting. RMEM and bulk DMA retain separate IRQ event classes.</p>
 
-| Bits|Identifier|Access|Reset|                                      Name                                      |
-|-----|----------|------|-----|--------------------------------------------------------------------------------|
-| 1:0 |   mode   |  rw  |  —  |    openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]    |
-|  2  |irq_enable|  rw  | 0x0 |    openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable   |
-|  8  |  request |  rw  | 0x0 |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]  |
-|  16 |   idle   |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]   |
-|  24 |   done   |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]   |
-|  25 |   error  |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]  |
-|31:28|error_code|   r  |  —  |openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]|
+| Bits| Identifier|Access|Reset|                                      Name                                      |
+|-----|-----------|------|-----|--------------------------------------------------------------------------------|
+| 1:0 |    mode   |  rw  |  —  |    openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.mode[1:0]    |
+|  2  | irq_enable|  rw  | 0x0 |    openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable   |
+|  8  |  request  |  rw  | 0x0 |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.request[8:8]  |
+|  9  |clear_error|  rw  | 0x0 |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.clear_error   |
+|  16 |    idle   |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]   |
+|  24 |    done   |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.done[24:24]   |
+|  25 |   error   |   r  |  —  |   openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]  |
+|31:28| error_code|   r  |  —  |openenoc_endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]|
 
 #### mode field
 
@@ -1010,7 +1187,12 @@ responder entry configured as mirror-to-local.</p>
 Hardware samples this field together with irq.event_enable.peer_dma_complete
 when it accepts the peer DMA request. Changing the field while a transfer is
 active does not affect that transfer. Disabling the field does not affect
-DMA execution or the done, error, and error_code status fields.</p>
+DMA execution or the done, error, and error_code status fields. For a
+failed incoming bulk DMA request, this field is captured when recording
+the failure and irq.event_enable.peer_dma_complete is sampled at IRQ
+admission. The event identifies this peer by the received source MAC.
+Successful incoming requests generate no event. RMEM errors use their
+separate irq.event_enable.rmem_error path.</p>
 
 #### request field
 
@@ -1021,6 +1203,15 @@ while a transfer for this peer is active, a newly asserted request remains
 pending. Software or an RTL controller shall read the completion status of
 the previous request before asserting this field for the next request and
 shall keep the peer configuration stable while this field is asserted.</p>
+
+#### clear_error field
+
+<p>Writing one clears this peer's shared RMEM/DMA error flag and error
+code. The field remains asserted until hardware accepts and clears the
+command. It does not abort an active operation, clear done, or complete
+an IRQ claim. A new failure takes precedence over a simultaneous clear.
+Starting or successfully completing an operation does not clear a
+previously recorded error.</p>
 
 #### idle field
 
@@ -1036,29 +1227,72 @@ successfully and clears it when the next request is accepted.</p>
 
 #### error field
 
-<p>Sticky error-completion flag for this peer. Hardware sets this field
-if the accepted block transfer terminates with an error and clears it when
-the next request is accepted.</p>
+<p>Shared sticky RMEM/DMA error flag for this peer. Hardware sets this
+field when a locally initiated RMEM access or bulk DMA transfer fails,
+or when servicing an incoming RMEM or bulk DMA request from this peer
+fails. Received requests are associated by source MAC. An incoming failure
+records its code before exposing its error response, independently of
+IRQ enable; it does not change the locally initiated dma.request, idle,
+or done state. An incomplete incoming DMA data frame records remote
+stream code 10. Multicast response suppression does not suppress this
+local error record or an enabled event.
+Only dma.clear_error or endpoint reset clears a latched error; starting
+or successfully completing another operation does not clear it. The
+flag is independent of the IRQ event-enable fields.</p>
 
 #### error_code field
 
-<p>Sticky error code for the most recently completed peer DMA transfer:<ul></p>
+<p>Shared sticky code for the most recent RMEM or bulk DMA failure for this peer:<ul></p>
 <li>0: No error.</li>
-<li>1: Invalid DMA configuration or descriptor.</li>
-<li>2: AXI4-Stream length or TLAST error.</li>
-<li>3: Frame exceeds the supported size or configured buffer capacity.</li>
-<li>4: AXI read SLVERR response.</li>
-<li>5: AXI read DECERR response.</li>
-<li>6: AXI write SLVERR response.</li>
-<li>7: AXI write DECERR response.</li>
-<li>8-15: Reserved.</li>
+<li>1: Local invalid request, configuration, descriptor, or parameters.</li>
+<li>2: Local stream/PDU length or TLAST error.</li>
+<li>3: Local supported-size or buffer-capacity overflow.</li>
+<li>4: Local AXI read SLVERR response.</li>
+<li>5: Local AXI read DECERR response.</li>
+<li>6: Local AXI write SLVERR response.</li>
+<li>7: Local AXI write DECERR response.</li>
+<li>8: Local peer response timeout or Request ID wrap collision. An RMEM access
+    terminates through its ACK-only boundary; a bulk DMA timeout aborts
+    the remaining fragments. Hardware does not retry.</li>
+<li>9: Remote invalid request, configuration, descriptor, or parameters.</li>
+<li>10: Remote stream/PDU length or TLAST error. Also used directly by
+    the receiver of an incomplete DMA_WRITE_REQ or DMA_READ_RSP,
+    including missing or incorrect EndOfData.</li>
+<li>11: Remote supported-size or buffer-capacity overflow.</li>
+<li>12: Remote AXI read SLVERR response.</li>
+<li>13: Remote AXI read DECERR response.</li>
+<li>14: Remote AXI write SLVERR response.</li>
+<li>15: Remote AXI write DECERR response.</li>
 <p></ul>
-Hardware clears this field when the next request is accepted.</p>
+Codes 1-8 describe errors detected by this endpoint, including
+malformed responses, local memory failures, and failures while servicing
+received requests. Codes 9-15 describe
+failures reported by the responding peer through a valid ERROR_RSP.
+Code 10 additionally reports an incomplete incoming DMA data frame
+detected at this endpoint, without requiring an ERROR_RSP first.
+A missing or incorrect EndOfData uses this same code even when
+Ethernet padding masks the short data length. A receiver of an
+incomplete unicast DMA_WRITE_REQ records CSR code 10 but sends
+ERROR_RSP wire cause 2; multicast writes generate no response.
+ERROR_RSP carries a 32-bit cause in the range 1-7, which the initiating
+oETP engine validates and maps to CSR code = 8 + wire code. Values
+outside 1-7 are invalid response parameters and record local code 1;
+they must not be truncated or mistaken for local TIMEOUT = 8.
+The oETP initiator completion channel carries this final CSR encoding
+for both RMEM and bulk DMA. The responder completion channel reports
+its cause 1-7 for serialization as ERROR_RSP; cause 2 on an incomplete
+received bulk write corresponds to receiver CSR code 10. Hardware
+clears this field only on dma.clear_error or endpoint reset. Successful
+operations preserve a recorded failure. A new failure replaces the code
+and takes precedence over a simultaneous clear. A failed streaming
+transfer may have partially modified memory; error reporting does not
+provide rollback or an exact count of modified bytes. Software manages
+buffer synchronization and recovery.</p>
 
 ## rmem register file
 
-- Absolute Address: 0x9C
-- Base Offset: 0x9C
+- Absolute Address: 0xBC
+- Base Offset: 0xBC
 - Size: 0x4
 
 <p>Virtual memory region for all remote peers, with offsets and sizes defined in the
@@ -1070,7 +1304,7 @@ peers regfile.</p>
 
 ### word register
 
-- Absolute Address: 0x9C
+- Absolute Address: 0xBC
 - Base Offset: 0x0
 - Size: 0x4
 - Array Dimensions: [1]

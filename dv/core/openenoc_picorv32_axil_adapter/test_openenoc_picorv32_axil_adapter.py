@@ -438,6 +438,7 @@ def test_openenoc_picorv32_axil_adapter(request):
         verilog_sources=verilog_sources,
         toplevel=toplevel,
         module=module,
-        extra_args=[os.path.join(common_dir, "config.vlt")],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
     )

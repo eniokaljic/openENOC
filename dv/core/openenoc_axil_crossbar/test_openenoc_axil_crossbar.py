@@ -82,38 +82,18 @@ class TB:
 
     def set_random_backpressure(self):
         for index, master in enumerate(self.masters):
-            master.write_if.aw_channel.set_pause_generator(
-                random_pause(0xA100 + index)
-            )
-            master.write_if.w_channel.set_pause_generator(
-                random_pause(0xA200 + index)
-            )
-            master.read_if.ar_channel.set_pause_generator(
-                random_pause(0xA300 + index)
-            )
-            master.write_if.b_channel.set_pause_generator(
-                random_pause(0xB100 + index)
-            )
-            master.read_if.r_channel.set_pause_generator(
-                random_pause(0xB200 + index)
-            )
+            master.write_if.aw_channel.set_pause_generator(random_pause(0xA100 + index))
+            master.write_if.w_channel.set_pause_generator(random_pause(0xA200 + index))
+            master.read_if.ar_channel.set_pause_generator(random_pause(0xA300 + index))
+            master.write_if.b_channel.set_pause_generator(random_pause(0xB100 + index))
+            master.read_if.r_channel.set_pause_generator(random_pause(0xB200 + index))
 
         for index, ram in enumerate(self.rams):
-            ram.write_if.aw_channel.set_pause_generator(
-                random_pause(0xC100 + index)
-            )
-            ram.write_if.w_channel.set_pause_generator(
-                random_pause(0xC200 + index)
-            )
-            ram.write_if.b_channel.set_pause_generator(
-                random_pause(0xC300 + index)
-            )
-            ram.read_if.ar_channel.set_pause_generator(
-                random_pause(0xD100 + index)
-            )
-            ram.read_if.r_channel.set_pause_generator(
-                random_pause(0xD200 + index)
-            )
+            ram.write_if.aw_channel.set_pause_generator(random_pause(0xC100 + index))
+            ram.write_if.w_channel.set_pause_generator(random_pause(0xC200 + index))
+            ram.write_if.b_channel.set_pause_generator(random_pause(0xC300 + index))
+            ram.read_if.ar_channel.set_pause_generator(random_pause(0xD100 + index))
+            ram.read_if.r_channel.set_pause_generator(random_pause(0xD200 + index))
 
 
 async def collect_handshake_cycles(clock, channel, valid_name, ready_name, count):
@@ -123,9 +103,7 @@ async def collect_handshake_cycles(clock, channel, valid_name, ready_name, count
     while len(cycles) < count:
         await RisingEdge(clock)
         cycle += 1
-        if int(getattr(channel, valid_name).value) and int(
-            getattr(channel, ready_name).value
-        ):
+        if int(getattr(channel, valid_name).value) and int(getattr(channel, ready_name).value):
             cycles.append(cycle)
 
     return cycles
@@ -135,18 +113,16 @@ async def wait_for_stall(clock, channel, valid_name, ready_name, timeout=32):
     for _ in range(timeout):
         await RisingEdge(clock)
         await ReadOnly()
-        if int(getattr(channel, valid_name).value) and not int(
-            getattr(channel, ready_name).value
-        ):
+        if int(getattr(channel, valid_name).value) and not int(getattr(channel, ready_name).value):
             return
     raise AssertionError(f"{valid_name} did not enter a stalled state")
 
 
 def assert_consecutive(cycles, channel_name):
     gaps = [right - left for left, right in zip(cycles, cycles[1:])]
-    assert all(gap == 1 for gap in gaps), (
-        f"{channel_name} inserted bubbles; handshake cycles were {cycles}"
-    )
+    assert all(
+        gap == 1 for gap in gaps
+    ), f"{channel_name} inserted bubbles; handshake cycles were {cycles}"
 
 
 @cocotb.test()
@@ -160,7 +136,7 @@ async def test_001_routing_partial_writes_and_decode_errors(dut):
         for target_index, ram in enumerate(tb.rams):
             local_address = 0x1000 + source_index * 0x100 + target_index * 0x20 + 1
             data = bytes(
-                (0x20 + source_index * 0x30 + target_index * 7 + offset) & 0xff
+                (0x20 + source_index * 0x30 + target_index * 7 + offset) & 0xFF
                 for offset in range(2 * byte_lanes + 1)
             )
 
@@ -189,7 +165,7 @@ async def test_002_bubble_free_single_target_throughput(dut):
     target_index = min(1, len(tb.rams) - 1)
     local_address = 0x2000
     address = target_base(target_index) + local_address
-    read_data = bytes((0x40 + index) & 0xff for index in range(word_count * byte_lanes))
+    read_data = bytes((0x40 + index) & 0xFF for index in range(word_count * byte_lanes))
     tb.rams[target_index].write(local_address, read_data)
 
     ar_monitor = cocotb.start_soon(
@@ -203,9 +179,7 @@ async def test_002_bubble_free_single_target_throughput(dut):
     assert read.data == read_data
     assert_consecutive(ar_cycles, "AR")
 
-    write_data = bytes(
-        (0xA0 ^ (index * 13)) & 0xff for index in range(word_count * byte_lanes)
-    )
+    write_data = bytes((0xA0 ^ (index * 13)) & 0xFF for index in range(word_count * byte_lanes))
     aw_monitor = cocotb.start_soon(
         collect_handshake_cycles(
             dut.clk, dut.m_axil_if[target_index], "awvalid", "awready", word_count
@@ -243,16 +217,12 @@ async def test_003_concurrent_sources_and_response_ordering(dut):
         for operation in range(18):
             target_index = (operation + source_index) % len(tb.rams)
             local_address = 0x3000 + source_index * 0x800 + operation * 4
-            value = (
-                0x5100_0000 | source_index << 16 | operation
-            ).to_bytes(4, "little")
+            value = (0x5100_0000 | source_index << 16 | operation).to_bytes(4, "little")
             write = await master.write(target_base(target_index) + local_address, value)
             assert_okay(write)
             expected.append(value)
             read_tasks.append(
-                cocotb.start_soon(
-                    master.read(target_base(target_index) + local_address, 4)
-                )
+                cocotb.start_soon(master.read(target_base(target_index) + local_address, 4))
             )
 
         for task, value in zip(read_tasks, expected):
@@ -260,10 +230,7 @@ async def test_003_concurrent_sources_and_response_ordering(dut):
             assert_okay(response)
             assert response.data == value
 
-    workers = [
-        cocotb.start_soon(worker(source_index))
-        for source_index in range(len(tb.masters))
-    ]
+    workers = [cocotb.start_soon(worker(source_index)) for source_index in range(len(tb.masters))]
     for worker_task in workers:
         await worker_task
 
@@ -291,10 +258,7 @@ async def test_004_randomized_independent_backpressure(dut):
             assert_okay(read)
             assert read.data == data
 
-    workers = [
-        cocotb.start_soon(worker(source_index))
-        for source_index in range(len(tb.masters))
-    ]
+    workers = [cocotb.start_soon(worker(source_index)) for source_index in range(len(tb.masters))]
     for worker_task in workers:
         await worker_task
 
@@ -308,15 +272,9 @@ async def test_005_stalled_payload_stability(dut):
     address = target_base(target_index) + 0x4200
     data = bytes.fromhex("78563412")
 
-    tb.rams[target_index].read_if.ar_channel.set_pause_generator(
-        itertools.repeat(True)
-    )
-    tb.rams[target_index].write_if.aw_channel.set_pause_generator(
-        itertools.repeat(True)
-    )
-    tb.rams[target_index].write_if.w_channel.set_pause_generator(
-        itertools.repeat(True)
-    )
+    tb.rams[target_index].read_if.ar_channel.set_pause_generator(itertools.repeat(True))
+    tb.rams[target_index].write_if.aw_channel.set_pause_generator(itertools.repeat(True))
+    tb.rams[target_index].write_if.w_channel.set_pause_generator(itertools.repeat(True))
 
     read_task = cocotb.start_soon(tb.masters[0].read(address, len(data)))
     await wait_for_stall(dut.clk, dut.m_axil_if[target_index], "arvalid", "arready")
@@ -442,6 +400,7 @@ def test_openenoc_axil_crossbar(request, s_count, m_count):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
+        timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,

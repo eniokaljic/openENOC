@@ -5,76 +5,50 @@
 
 ## Overview
 
-This test suite verifies the `openenoc_endpoint_full` SoC wrapper with the
-`csr_smoke` PicoRV32 firmware from
-`build/sw/openenoc_endpoint_full/imem.mem`.
+This cocotb suite boots the full endpoint with the existing `csr_smoke`
+PicoRV32 firmware and loops Ethernet TX back to RX. It runs continuous and
+periodically stalled loopback. Firmware/HAL behavior is described in the
+[csr_smoke README](../../../sw/apps/csr_smoke/README.md). Build the firmware
+from the repository root before running the suite:
 
-The endpoint contains a 3-by-3 pipelined `openenoc_axil_crossbar`. System
-initiators are ordered as PicoRV32, the reserved endpoint-interface master,
-and the reserved debug/program master. Targets are ordered as DMEM, IMEM, and
-CSR. The two reserved initiators are tied inactive, while the crossbar keeps
-all target connections enabled for the later integration steps.
+```bash
+make -C sw APP=csr_smoke EP=openenoc_endpoint_full
+```
 
-The generated CSR `hwif` is internal to the endpoint. An
-`openenoc_endpoint_if` instance connects the generated CSR bridge to
-`openenoc_endpoint_interface`, while the module exposes the bridge's
-`openenoc_switch_if` side.
+The testbench loads `build/sw/openenoc_endpoint_full/imem.mem` and observes
+the final firmware status in DMEM.
 
-The endpoint interface converts the CSR AXI4-Stream source and sink registers
-to the Ethernet-like link through two `taxi_axis_async_fifo_adapter`
-instances. The testbench loops the transmit direction back into the receive
-direction.
-
-The crossbar arrays are connected through individually named internal Taxi
-interfaces: `cpu_axil_if`, `endpoint_axil_if`, `debug_axil_if`, `dmem_axil_if`,
-`imem_axil_if`, and `csr_axil_if`.
-
-The CPU initiator uses the `openenoc_picorv32` drop-in wrapper around the
-original PicoRV32 core and the project AXI4-Lite adapter. Consequently this
-suite is also the integration acceptance test for the wrapper and adapter;
-they do not have a separate wrapper-only testbench.
-
-## Address Map
-
-| Target | Base address | Decode aperture |
-| --- | ---: | ---: |
-| IMEM | `0x0000_0000` | 32 KiB |
-| DMEM | `0x1000_0000` | 32 KiB |
-| CSR | `0x2000_0000` | 8 KiB |
-
-IMEM and DMEM sizes are derived from `openenoc_endpoint_full_pkg`. The CSR
-aperture uses `OPENENOC_ENDPOINT_FULL_CSR_MIN_ADDR_WIDTH` from the generated
-CSR package.
+Component architecture and operation are described in the
+[RTL Reference](../../../docs/src/rtl/openenoc_endpoint_full.rst).
 
 ## Test Coverage
 
-The cocotb test verifies that:
+The suite covers:
 
-- IMEM is initialized from the generated `csr_smoke` image;
-- PicoRV32 fetches and executes the firmware without entering its trap state;
-- execution reaches IMEM, DMEM, and CSR through the crossbar;
-- the CSR write/read test stores `0xa5a55a5a` in `csr.test_reg`;
-- the bridge presents generated switch parameters and software-written switch
-  configuration on `openenoc_switch_if`, and propagates `pause_done` back into
-  the CSR `hwif` and firmware readback;
-- firmware sends and receives 66 bytes in 17 AXI4-Stream transfers through the
-  CSR HAL;
-- the Ethernet loopback and CSR sink each transfer the expected words in
-  order, with `TKEEP=0xf` on the first 16 words, `TKEEP=0x3` on the final
-  partially used word, and `TLAST` asserted only on that final word;
-- firmware reports success by storing `0x600d600d` in DMEM;
-- both reserved AXI4-Lite initiators remain inactive.
+- firmware initialization, instruction execution without traps, and
+  IMEM/DMEM/CSR access;
+- CSR test-register readback of `0xa5a55a5a`;
+- switch configuration, capability fields, pause status, and generated bridge
+  wiring;
+- 66-byte direct frame loopback in 17 beats with exact byte masks and final
+  TLAST;
+- RX IRQ availability before the last Ethernet beat and CSR payload reads
+  inside the IRQ handler;
+- IRQ entry/return and ordered RX-available/TX-complete token completion
+  without accounting errors;
+- complete frame preservation with continuous and stalled transport;
+- firmware success status `0x600d600d` and inactive DMA, debug, and local RMEM
+  masters.
 
 ## Running Tests
 
-Activate the project virtual environment, change to this directory, and run:
+Run the full pytest parameter sweep:
 
 ```bash
-make -C ../../../sw APP=csr_smoke EP=openenoc_endpoint_full
 ./run_tests.sh pytest
 ```
 
-Run the same test with FST waveforms:
+Run the default configuration and generate an FST waveform:
 
 ```bash
 ./run_tests.sh waves

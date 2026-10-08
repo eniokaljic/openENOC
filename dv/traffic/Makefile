@@ -3,7 +3,7 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
@@ -15,7 +15,9 @@ LIBS_DIR = $(REPO_DIR)/libs
 TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
 
 COCOTB_TEST_MODULES = test_traffic
-TOPLEVEL = test_traffic
+COCOTB_TOPLEVEL = test_traffic
+MODULE = $(COCOTB_TEST_MODULES)
+TOPLEVEL = $(COCOTB_TOPLEVEL)
 
 VERILOG_SOURCES += $(TOPLEVEL).sv
 VERILOG_SOURCES += pcapreader.sv
@@ -35,17 +37,18 @@ export PARAM_CLOCK_PERIOD := 10000
 export PARAM_PCAP_IN_FILENAME := \"test1.pcap\"
 export PARAM_PCAP_OUT_FILENAME := \"output.pcap\"
 
-ifeq ($(SIM), icarus)
-	PLUSARGS += -fst
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-P $(COCOTB_TOPLEVEL).$(subst PARAM_,,$(v))=$($(v)))
-else ifeq ($(SIM), verilator)
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-G$(subst PARAM_,,$(v))=$($(v)))
-	EXTRA_ARGS += -Wall ../../common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-	endif
+COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
+	-G$(subst PARAM_,,$(v))=$($(v)))
+EXTRA_ARGS += -Wall ../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
 
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc

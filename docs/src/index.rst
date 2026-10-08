@@ -17,6 +17,7 @@ Scalable Ethernet-based Network-on-Chip
    architecture
    hal
    verification
+   rtl_reference
 
 
 Future Sections
@@ -24,7 +25,6 @@ Future Sections
 
 The documentation will evolve alongside the project and gradually expand into a complete set of architectural, implementation, software, verification, and deployment resources:
 
-* ``RTL Reference`` — Detailed documentation of RTL modules, datapaths, interfaces, and integration patterns (DOC2)
 * ``Runtime API Reference`` — Software APIs, runtime services, DMA operations, and application-facing interfaces (SW3)
 * ``Developer Guide`` — Tutorials, software usage, simulation workflows, FPGA deployment procedures, and reference applications (DOC3, SW2, SW4)
 * ``Reproducibility Guide`` — Build environments, synthesis and place-and-route flows, automated testing, CI infrastructure, and reproducible implementation workflows (DOC4, PNR1, PNR2)

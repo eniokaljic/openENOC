@@ -52,6 +52,35 @@ The generated CSR models also provide a common software interface that can be co
 
 As a result, software-driven verification can be performed early in the development process using simulated hardware models and later reused for validation on FPGA-based platforms without significant modifications.
 
+Full-endpoint CSR test backend
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``dv/hal/openenoc_endpoint_full/`` exercises the generated CSR block through
+AXI4-Lite. ``testbench.py`` starts a 10 ns clock, applies reset, and constructs
+a cocotb ``AxiLiteMaster`` and the generated PeakRDL register model.
+``rtl_simulator.py`` implements the model's synchronous read/write callbacks
+with cocotb ``resume`` wrappers around asynchronous bus transactions. Cocotb
+``bridge`` runs the normal Python register tests from ``tests.py`` without
+blocking the simulation event loop.
+
+The RTL wrapper ``test_openenoc_endpoint_full_csr.sv`` injects hardware status
+and command acknowledgements. The tests use generated register locations,
+including configuration adjacency checks and independent peer/raw-DMA error
+clear commands. The CSR block, its package, and the Python model come from
+``build/hal/openenoc_endpoint_full/``; regenerate them with ``make -C hal all``.
+The simulation build goes to ``build/dv/hal/openenoc_endpoint_full/``.
+
+This suite uses the cocotb Makefile flow directly. Verilator FST tracing is
+enabled on each simulation run, and ``make wave`` in the suite directory opens
+``dump.fst`` with GTKWave. It has no pytest parameter sweep. The component
+suites use their ``run_tests.sh pytest``, ``waves``, and ``clean`` entry points.
+
+``hardware_test.py`` reuses the same register tests and callback API through
+``HardwareInterface``. The current backend is a placeholder based on the
+generated simulator model, rather than board access. ``make hwtest`` selects
+that backend. A board transport can replace its read/write implementation
+without changing the register tests.
+
 Traffic-Based Verification
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -108,4 +137,3 @@ This document presented the initial verification infrastructure for the openENOC
 The infrastructure introduces a layered verification strategy spanning component-level, HAL-level, subsystem-level, and system-level verification. It also defines a reusable methodology for register-level verification, software-driven testing, multi-clock validation, and Ethernet traffic verification using PCAP-based workflows inspired by previous networking hardware verification research.
 
 Together, these foundations provide a scalable and extensible verification infrastructure that will support the continued development of the openENOC hardware and software stack while maintaining reproducibility, portability, and long-term maintainability.
-

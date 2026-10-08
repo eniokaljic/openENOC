@@ -3,7 +3,7 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
@@ -17,10 +17,8 @@ TAXI_AXIS_DIR = $(LIBS_DIR)/taxi/src/axis/rtl
 TAXI_SYNC_DIR = $(LIBS_DIR)/taxi/src/sync/rtl
 
 DUT = openenoc_eth_adapter
-
 COCOTB_TEST_MODULES = test_$(DUT)
 COCOTB_TOPLEVEL = test_$(DUT)
-
 MODULE = $(COCOTB_TEST_MODULES)
 TOPLEVEL = $(COCOTB_TOPLEVEL)
 
@@ -37,7 +35,8 @@ VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 # handle file list files
 process_f_file = $(call process_f_files,$(addprefix $(dir $1),$(shell cat $1)))
 process_f_files = $(foreach f,$1,$(if $(filter %.f,$f),$(call process_f_file,$f),$f))
-uniq_base = $(if $1,$(call uniq_base,$(foreach f,$1,$(if $(filter-out $(notdir $(lastword $1)),$(notdir $f)),$f,))) $(lastword $1))
+uniq_base = $(if $1,$(call uniq_base,$(foreach f,$1,$(if $(filter-out \
+	$(notdir $(lastword $1)),$(notdir $f)),$f,))) $(lastword $1))
 
 VERILOG_SOURCES := $(call uniq_base,$(call process_f_files,$(VERILOG_SOURCES)))
 
@@ -45,9 +44,7 @@ VERILOG_SOURCES := $(call uniq_base,$(call process_f_files,$(VERILOG_SOURCES)))
 export CLK_A_PERIOD := 10
 export CLK_B_PERIOD := 40
 
-# ----------------------------------------------------------------------
 # Side A interface parameters
-# ----------------------------------------------------------------------
 
 export PARAM_A_DATA_W := 8
 export PARAM_A_KEEP_EN := $(shell expr $(PARAM_A_DATA_W) \> 8)
@@ -61,9 +58,7 @@ export PARAM_A_DEST_W := 8
 export PARAM_A_USER_EN := 1
 export PARAM_A_USER_W := 1
 
-# ----------------------------------------------------------------------
 # Side B interface parameters
-# ----------------------------------------------------------------------
 
 export PARAM_B_DATA_W := 32
 export PARAM_B_KEEP_EN := $(shell expr $(PARAM_B_DATA_W) \> 8)
@@ -77,9 +72,7 @@ export PARAM_B_DEST_W := 8
 export PARAM_B_USER_EN := 1
 export PARAM_B_USER_W := 1
 
-# ----------------------------------------------------------------------
 # FIFO parameters
-# ----------------------------------------------------------------------
 
 export PARAM_DEPTH := $(shell python -c "print(2 * max($(PARAM_A_KEEP_W), $(PARAM_B_KEEP_W)))")
 export PARAM_RAM_PIPELINE := 1
@@ -93,16 +86,18 @@ export PARAM_DROP_WHEN_FULL := 0
 export PARAM_MARK_WHEN_FULL := 0
 export PARAM_FRAME_PAUSE := 1
 
-ifeq ($(SIM), icarus)
-	PLUSARGS += -fst
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-P $(COCOTB_TOPLEVEL).$(subst PARAM_,,$(v))=$($(v)))
-else ifeq ($(SIM), verilator)
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-G$(subst PARAM_,,$(v))=$($(v)))
-	EXTRA_ARGS += -Wall ../../common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-	endif
+COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
+	-G$(subst PARAM_,,$(v))=$($(v)))
+EXTRA_ARGS += -Wall ../../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc

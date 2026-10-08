@@ -76,7 +76,7 @@ class TB:
         assert int(d.irq.value) == 0
 
     async def cycle(self, admits=None, commits=None, complete=None, clear_errors=False):
-        """Drive one complete cycle and return the pre-edge handshake values."""
+        """Present stable inputs, then consume the registered ready/ack offer."""
         admits = admits or {}
         commits = commits or {}
         d = self.dut
@@ -115,6 +115,7 @@ class TB:
             d.complete_sequence.value = sequence
 
         d.clear_errors.value = int(clear_errors)
+        await RisingEdge(d.clk)
         await Timer(1, unit="ns")
 
         handshake = {
@@ -125,6 +126,10 @@ class TB:
             "clear_hwclr": int(d.clear_errors_hwclr.value),
         }
 
+        await RisingEdge(d.clk)
+        await ReadOnly()
+        await FallingEdge(d.clk)
+        self._drive_transient_idle()
         await RisingEdge(d.clk)
         await ReadOnly()
         return handshake
@@ -172,10 +177,7 @@ async def test_disabled_admission_and_error_maintenance(dut):
     tb = TB(dut)
     await tb.reset()
 
-    admits = {
-        port: (port % 5, True)
-        for port in range(tb.ports)
-    }
+    admits = {port: (port % 6, True) for port in range(tb.ports)}
     handshake = await tb.cycle(admits=admits)
     assert handshake["admit_ready"] == tb.port_mask
     assert handshake["admit_reserved"] == 0
@@ -191,17 +193,17 @@ async def test_disabled_admission_and_error_maintenance(dut):
     assert handshake["admit_reserved"] == 0
 
     # Each event class is controlled by its corresponding enable bit.
-    for source in range(5):
+    for source in range(6):
         tb.enables = 1 << source
         await tb.admit(0, source=source)
         await tb.commit(0, source=source, peer_idx=tb.peer_mask)
         await tb.wait_claim()
         assert int(dut.claim_source.value) == source
-        expected_peer = tb.peer_mask if source == 0 else 0
+        expected_peer = tb.peer_mask if source in (0, 5) else 0
         assert int(dut.claim_peer_idx.value) == expected_peer
         await tb.complete_claim()
 
-        disabled_source = (source + 1) % 5
+        disabled_source = (source + 1) % 6
         await tb.admit(0, source=disabled_source, reserved=False)
 
     # A commit without a reservation is consumed and reported as overflow.
@@ -230,7 +232,7 @@ async def test_claim_completion_and_irq_mask(dut):
     """A reservation becomes a stable claim and only an exact token removes it."""
     tb = TB(dut)
     await tb.reset()
-    tb.enables = 0x1F
+    tb.enables = 0x3F
 
     port = min(1, tb.ports - 1)
     peer = min(0x15, tb.peer_mask)
@@ -273,13 +275,28 @@ async def test_claim_completion_and_irq_mask(dut):
     assert tb.claim() == original_claim
 
     wrong_sequence = (original_claim[2] + 1) & tb.sequence_mask
-    handshake = await tb.cycle(
-        complete=(original_claim[0], original_claim[1], wrong_sequence)
-    )
-    assert handshake["complete_hwclr"] == 1
-    assert int(dut.invalid_complete.value) == 1
-    assert tb.claim() == original_claim
-    assert int(dut.fifo_level.value) == 1
+    invalid_tokens = [
+        (original_claim[0] ^ 1, original_claim[1], original_claim[2]),
+        (original_claim[0], original_claim[1] ^ 1, original_claim[2]),
+        (original_claim[0], original_claim[1], wrong_sequence),
+    ]
+    # The native CSR token keeps its full width even when the event/FIFO
+    # payload is narrower. Upper bits must not alias the current claim.
+    if tb.peer_w < len(dut.complete_peer_idx):
+        invalid_tokens.append(
+            (original_claim[0] | (1 << tb.peer_w), original_claim[1], original_claim[2])
+        )
+    if tb.sequence_w < len(dut.complete_sequence):
+        invalid_tokens.append(
+            (original_claim[0], original_claim[1], original_claim[2] | (1 << tb.sequence_w))
+        )
+    for token in invalid_tokens:
+        handshake = await tb.cycle(complete=token)
+        assert handshake["complete_hwclr"] == 1
+        assert int(dut.invalid_complete.value) == 1
+        assert int(dut.claim_valid.value) == 1
+        assert tb.claim() == original_claim
+        assert int(dut.fifo_level.value) == 1
 
     await tb.complete_claim()
     assert int(dut.claim_valid.value) == 0
@@ -338,10 +355,7 @@ async def test_credit_full_and_completion_edge_reuse(dut):
     assert int(dut.reserved_count.value) == 0
 
     expected_peers = list(range(1, tb.depth)) + [replacement_peer]
-    expected_sequences = [
-        sequence & tb.sequence_mask
-        for sequence in range(1, tb.depth + 1)
-    ]
+    expected_sequences = [sequence & tb.sequence_mask for sequence in range(1, tb.depth + 1)]
     for peer, sequence in zip(expected_peers, expected_sequences):
         await tb.wait_claim()
         assert tb.claim() == (peer & tb.peer_mask, 0, sequence)
@@ -367,10 +381,7 @@ async def test_independent_round_robin_arbitration(dut):
 
     assert int(dut.reserved_count.value) == rounds
 
-    all_commits = {
-        port: (0, port + 1)
-        for port in range(tb.ports)
-    }
+    all_commits = {port: (0, port + 1) for port in range(tb.ports)}
     for winner in range(rounds):
         handshake = await tb.cycle(commits=all_commits)
         assert handshake["commit_ready"] == 1 << winner
@@ -455,11 +466,124 @@ async def test_sequence_wrap_and_reset(dut):
     assert tb.claim() == (0, 0, 0)
 
 
+@cocotb.test()
+async def test_registered_outputs_and_held_completion(dut):
+    tb = TB(dut)
+    tb.enables = 0x3F
+    tb.global_enable = 1
+    await tb.reset()
+    await tb.admit(0, 0)
+    await tb.commit(0, 0, 3)
+    await tb.wait_claim()
+    claim = tb.claim()
+    names = [
+        "clear_errors_hwclr",
+        "complete_valid_hwclr",
+        "claim_valid",
+        "claim_peer_idx",
+        "claim_source",
+        "claim_sequence",
+        "claim_pending",
+        "credit_full",
+        "overflow",
+        "invalid_complete",
+        "irq_asserted",
+        "fifo_level",
+        "reserved_count",
+        "irq",
+        "admit_ready",
+        "admit_reserved",
+        "commit_ready",
+    ]
+    outputs = [getattr(dut, name) for name in names]
+    for _ in range(8):
+        await FallingEdge(dut.clk)
+        await Timer(1, unit="ns")
+        before = [int(signal.value) for signal in outputs]
+        dut.global_enable.value = 0
+        dut.event_enable.value = 0
+        dut.admit_valid.value = tb.port_mask
+        dut.admit_enable.value = tb.port_mask
+        dut.commit_valid.value = tb.port_mask
+        dut.complete_valid.value = 1
+        dut.clear_errors.value = 1
+        await Timer(1, unit="ns")
+        assert [int(signal.value) for signal in outputs] == before
+        tb._drive_transient_idle()
+        tb._drive_config()
+        await Timer(1, unit="ns")
+        assert [int(signal.value) for signal in outputs] == before
+    assert tb.claim() == claim and int(dut.irq.value)
+    await FallingEdge(dut.clk)
+    dut.complete_peer_idx.value, dut.complete_source.value, dut.complete_sequence.value = claim
+    dut.complete_valid.value = 1
+    for _ in range(3):
+        await RisingEdge(dut.clk)
+        await Timer(1, unit="ns")
+        assert not int(dut.claim_valid.value)
+        assert not int(dut.invalid_complete.value), "A held completion was applied more than once"
+        assert int(dut.complete_valid_hwclr.value)
+    await FallingEdge(dut.clk)
+    dut.complete_valid.value = 0
+    await RisingEdge(dut.clk)
+    await Timer(1, unit="ns")
+    assert not int(dut.complete_valid_hwclr.value)
+
+    if tb.depth > 1:
+        await tb.admit(0, 0)
+        await tb.admit(0, 0)
+        await tb.commit(0, 0, 1)
+        old_claim = tb.claim()
+        await FallingEdge(dut.clk)
+        dut.commit_valid.value = 1
+        dut.commit_source.value = 0
+        dut.commit_peer_idx.value = tb.peer_mask
+        await RisingEdge(dut.clk)
+        await Timer(1, unit="ns")
+        assert int(dut.commit_ready.value) == 1
+        dut.complete_peer_idx.value, dut.complete_source.value, dut.complete_sequence.value = (
+            old_claim
+        )
+        dut.complete_valid.value = 1
+        await RisingEdge(dut.clk)
+        await Timer(1, unit="ns")
+        assert int(dut.claim_valid.value) and int(dut.fifo_level.value) == 1
+        assert tb.claim()[0] == tb.peer_mask and tb.claim()[2] != old_claim[2]
+        assert not int(dut.overflow.value) and not int(dut.invalid_complete.value)
+        await FallingEdge(dut.clk)
+        tb._drive_transient_idle()
+
+
 tests_dir = os.path.dirname(__file__)
 repo_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", ".."))
 core_dir = os.path.join(repo_dir, "hw", "rtl", "core")
 taxi_axis_dir = os.path.join(repo_dir, "libs", "taxi", "src", "axis", "rtl")
 common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
+
+
+@cocotb.test()
+async def test_initiator_and_responder_share_peer_event_source(dut):
+    """Producer identities differ even when both events name source 0 and one peer."""
+    tb = TB(dut)
+    if tb.ports < 7:
+        return
+    await tb.reset()
+    tb.enables = 1
+    await tb.admit(0, source=0)
+    await tb.admit(6, source=0)
+    assert int(dut.reserved_count.value) == 2
+    # Responder error can commit before the independently initiated operation.
+    await tb.commit(6, source=0, peer_idx=2)
+    await tb.commit(0, source=0, peer_idx=2)
+    await tb.wait_claim()
+    first_claim = await tb.complete_claim()
+    await tb.wait_claim()
+    second_claim = await tb.complete_claim()
+    assert first_claim[:2] == second_claim[:2] == (2, 0)
+    assert first_claim[2] != second_claim[2]
+    assert int(dut.reserved_count.value) == 0
+    assert int(dut.overflow.value) == 0
+    assert int(dut.invalid_complete.value) == 0
 
 
 @pytest.mark.parametrize(
@@ -470,6 +594,9 @@ common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
         (4, 4, 5, 4),
         (5, 7, 11, 5),
         (4, 260, 11, 8),
+        (5, 16, 11, 16),
+        (6, 8, 11, 5),
+        (7, 8, 11, 5),
     ],
 )
 def test_openenoc_endpoint_irq_controller(
@@ -497,6 +624,7 @@ def test_openenoc_endpoint_irq_controller(
         simulator="verilator",
         python_search=[tests_dir],
         verilog_sources=[
+            os.path.join(repo_dir, "build", "hal", "rtl", "openenoc_endpoint_if.sv"),
             os.path.join(taxi_axis_dir, "taxi_axis_if.sv"),
             os.path.join(taxi_axis_dir, "taxi_axis_fifo.sv"),
             os.path.join(tests_dir, f"{module}.sv"),
@@ -507,7 +635,8 @@ def test_openenoc_endpoint_irq_controller(
         toplevel=module,
         module=module,
         parameters=parameters,
-        extra_args=[os.path.join(common_dir, "config.vlt")],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

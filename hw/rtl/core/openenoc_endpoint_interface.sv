@@ -5,215 +5,331 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-/*
- * CSR-facing endpoint interface with clock-domain crossing to the Ethernet link
- */
-module openenoc_endpoint_interface #
-(
-    // FIFO depth in bytes
-    parameter FIFO_DEPTH = 4096,
-    // Number of RAM pipeline registers in each FIFO
-    parameter FIFO_RAM_PIPELINE = 1
-)
-(
+/* Single-clock endpoint integration, with field ownership in each submodule. */
+module openenoc_endpoint_interface #(
+    parameter int FIFO_DEPTH = 16384,
+    parameter int FIFO_RAM_PIPELINE = 1,
+    parameter int IRQ_FIFO_DEPTH = 16,
+    parameter int MAX_RAW_FRAME_SIZE = 8192,
+    parameter int FRAGMENT_SLOTS = 16
+) (
     input wire logic clk,
     input wire logic rst,
-
     openenoc_endpoint_if.core endpoint_if,
     openenoc_eth_if eth_if,
-
-    taxi_axil_if.wr_mst m_axil_wr,
-    taxi_axil_if.rd_mst m_axil_rd
+    taxi_axi_if.wr_mst m_axi_wr,
+    taxi_axi_if.rd_mst m_axi_rd,
+    openenoc_cpuif_if.mst m_rmem_cpuif,
+    output wire logic irq
 );
+    localparam int NUM_OF_PEERS = endpoint_if.NUM_OF_PEERS;
+    localparam int PEER_IDX_W = NUM_OF_PEERS > 1 ? $clog2(NUM_OF_PEERS) : 1;
+    localparam int AXIS_DEST_W = PEER_IDX_W + 2;
+    localparam int DATA_W = m_axi_rd.DATA_W;
+    localparam int SEQUENCE_W = 32;
+    localparam int IRQ_PEER_IDX_W = 11;
 
-    localparam CSR_AXIS_DATA_W = 32;
-    localparam CSR_AXIS_KEEP_W = CSR_AXIS_DATA_W/8;
+    if (FIFO_DEPTH < MAX_RAW_FRAME_SIZE) begin : g_fifo_depth_error
+        $fatal(0, {"Error: endpoint FIFO must hold the largest DMA ", "frame (instance %m)"});
+    end
+    if (NUM_OF_PEERS > 2047) begin : g_peer_count_error
+        $fatal(0, {"Error: peer count exceeds the CSR index width ", "(instance %m)"});
+    end
 
-    /*
-     * Local AXI4-Stream interfaces provide explicit bridges between the
-     * generated CSR interface, the asynchronous FIFOs, and the nested
-     * Ethernet AXI4-Stream interfaces.
-     */
+    openenoc_peer_lookup_if #(
+        .NUM_OF_PEERS(NUM_OF_PEERS),
+        .PEER_IDX_W(PEER_IDX_W),
+        .ADDR_W(32)
+    ) peer_lookup_if[2]();
+
+    openenoc_dma_transfer_if #(
+        .ADDR_W(32),
+        .LEN_W(32),
+        .PEER_IDX_W(PEER_IDX_W),
+        .SEQUENCE_W(SEQUENCE_W)
+    ) initiator_if(), responder_if();
+
+    localparam int AXIS_USER_W = initiator_if.AXIS_USER_W;
+
+    openenoc_irq_event_if #(
+        .PEER_IDX_W(IRQ_PEER_IDX_W)
+    ) irq_event_if[7]();
+
     taxi_axis_if #(
-        .DATA_W  (CSR_AXIS_DATA_W),
-        .KEEP_W  (CSR_AXIS_KEEP_W),
-        .KEEP_EN (1'b1),
-        .STRB_EN (1'b0),
-        .LAST_EN (1'b1)
+        .DATA_W(32),
+        .KEEP_EN(1'b1),
+        .LAST_EN(1'b1),
+        .ID_EN(1'b1),
+        .ID_W(SEQUENCE_W),
+        .DEST_EN(1'b1),
+        .DEST_W(AXIS_DEST_W),
+        .USER_EN(1'b1),
+        .USER_W(AXIS_USER_W)
     ) csr_source_axis_if();
 
     taxi_axis_if #(
-        .DATA_W  (eth_if.DATA_W),
-        .KEEP_W  (eth_if.KEEP_W),
-        .KEEP_EN (eth_if.KEEP_EN),
-        .STRB_EN (eth_if.STRB_EN),
-        .LAST_EN (eth_if.LAST_EN),
-        .ID_EN   (eth_if.ID_EN),
-        .ID_W    (eth_if.ID_W),
-        .DEST_EN (eth_if.DEST_EN),
-        .DEST_W  (eth_if.DEST_W),
-        .USER_EN (eth_if.USER_EN),
-        .USER_W  (eth_if.USER_W)
-    ) eth_source_axis_if();
-
-    taxi_axis_if #(
-        .DATA_W  (eth_if.DATA_W),
-        .KEEP_W  (eth_if.KEEP_W),
-        .KEEP_EN (eth_if.KEEP_EN),
-        .STRB_EN (eth_if.STRB_EN),
-        .LAST_EN (eth_if.LAST_EN),
-        .ID_EN   (eth_if.ID_EN),
-        .ID_W    (eth_if.ID_W),
-        .DEST_EN (eth_if.DEST_EN),
-        .DEST_W  (eth_if.DEST_W),
-        .USER_EN (eth_if.USER_EN),
-        .USER_W  (eth_if.USER_W)
-    ) eth_sink_axis_if();
-
-    taxi_axis_if #(
-        .DATA_W  (CSR_AXIS_DATA_W),
-        .KEEP_W  (CSR_AXIS_KEEP_W),
-        .KEEP_EN (1'b1),
-        .STRB_EN (1'b0),
-        .LAST_EN (1'b1)
+        .DATA_W(32),
+        .KEEP_EN(1'b1),
+        .LAST_EN(1'b1),
+        .ID_EN(1'b1),
+        .ID_W(SEQUENCE_W),
+        .DEST_EN(1'b1),
+        .DEST_W(AXIS_DEST_W),
+        .USER_EN(1'b1),
+        .USER_W(AXIS_USER_W)
     ) csr_sink_axis_if();
 
-    // CSR source -> FIFO input
-    assign csr_source_axis_if.tdata =
-        endpoint_if.csr_to_core.axis_if.source.data.tdata.value;
-    assign csr_source_axis_if.tkeep =
-        endpoint_if.csr_to_core.axis_if.source.control.tkeep.value;
-    assign csr_source_axis_if.tstrb  = csr_source_axis_if.tkeep;
-    assign csr_source_axis_if.tid    = '0;
-    assign csr_source_axis_if.tdest  = '0;
-    assign csr_source_axis_if.tuser  = '0;
-    assign csr_source_axis_if.tlast =
-        endpoint_if.csr_to_core.axis_if.source.control.tlast.value;
-    assign csr_source_axis_if.tvalid =
-        endpoint_if.csr_to_core.axis_if.source.control.tvalid.value;
+    taxi_axis_if #(
+        .DATA_W(DATA_W),
+        .KEEP_EN(1'b1),
+        .LAST_EN(1'b1),
+        .ID_EN(1'b1),
+        .ID_W(SEQUENCE_W),
+        .DEST_EN(1'b1),
+        .DEST_W(AXIS_DEST_W),
+        .USER_EN(1'b1),
+        .USER_W(AXIS_USER_W)
+    ) dma_tx_axis_if(), dma_rx_axis_if(), oetp_tx_axis_if(), oetp_rx_axis_if();
 
-    // Source FIFO output -> Ethernet transmit direction
-    assign eth_if.a2b_axis_if.tdata       = eth_source_axis_if.tdata;
-    assign eth_if.a2b_axis_if.tkeep       = eth_source_axis_if.tkeep;
-    assign eth_if.a2b_axis_if.tstrb       = eth_source_axis_if.tstrb;
-    assign eth_if.a2b_axis_if.tid         = eth_source_axis_if.tid;
-    assign eth_if.a2b_axis_if.tdest       = eth_source_axis_if.tdest;
-    assign eth_if.a2b_axis_if.tuser       = eth_source_axis_if.tuser;
-    assign eth_if.a2b_axis_if.tlast       = eth_source_axis_if.tlast;
-    assign eth_if.a2b_axis_if.tvalid      = eth_source_axis_if.tvalid;
+    taxi_axis_if #(
+        .DATA_W(DATA_W),
+        .KEEP_EN(1'b1),
+        .LAST_EN(1'b1),
+        .ID_EN(1'b1),
+        .ID_W(SEQUENCE_W),
+        .DEST_EN(1'b1),
+        .DEST_W(AXIS_DEST_W),
+        .USER_EN(1'b1),
+        .USER_W(AXIS_USER_W)
+    ) tx_axis_if[2]();
+
+    taxi_axis_if #(
+        .DATA_W(DATA_W),
+        .KEEP_EN(1'b1),
+        .LAST_EN(1'b1),
+        .ID_EN(1'b1),
+        .ID_W(SEQUENCE_W),
+        .DEST_EN(1'b1),
+        .DEST_W(AXIS_DEST_W),
+        .USER_EN(1'b1),
+        .USER_W(AXIS_USER_W)
+    ) rx_axis_if[2]();
+
+    taxi_axis_if #(
+        .DATA_W(eth_if.DATA_W),
+        .KEEP_W(eth_if.KEEP_W),
+        .KEEP_EN(eth_if.KEEP_EN),
+        .LAST_EN(1'b1)
+    ) eth_source_axis_if(), eth_sink_axis_if();
+
+    assign eth_if.a2b_axis_if.tdata = eth_source_axis_if.tdata;
+    assign eth_if.a2b_axis_if.tkeep = eth_source_axis_if.tkeep;
+    assign eth_if.a2b_axis_if.tstrb = eth_source_axis_if.tstrb;
+    assign eth_if.a2b_axis_if.tlast = eth_source_axis_if.tlast;
+    assign eth_if.a2b_axis_if.tvalid = eth_source_axis_if.tvalid;
+    assign eth_if.a2b_axis_if.tid = '0;
+    assign eth_if.a2b_axis_if.tdest = '0;
+    assign eth_if.a2b_axis_if.tuser = '0;
     assign eth_source_axis_if.tready = eth_if.a2b_axis_if.tready;
-
-    // Ethernet receive direction -> sink FIFO input
-    assign eth_sink_axis_if.tdata  = eth_if.b2a_axis_if.tdata;
-    assign eth_sink_axis_if.tkeep  = eth_if.b2a_axis_if.tkeep;
-    assign eth_sink_axis_if.tstrb  = eth_if.b2a_axis_if.tstrb;
-    assign eth_sink_axis_if.tid    = eth_if.b2a_axis_if.tid;
-    assign eth_sink_axis_if.tdest  = eth_if.b2a_axis_if.tdest;
-    assign eth_sink_axis_if.tuser  = eth_if.b2a_axis_if.tuser;
-    assign eth_sink_axis_if.tlast  = eth_if.b2a_axis_if.tlast;
+    assign eth_sink_axis_if.tdata = eth_if.b2a_axis_if.tdata;
+    assign eth_sink_axis_if.tkeep = eth_if.b2a_axis_if.tkeep;
+    assign eth_sink_axis_if.tstrb = eth_if.b2a_axis_if.tstrb;
+    assign eth_sink_axis_if.tlast = eth_if.b2a_axis_if.tlast;
     assign eth_sink_axis_if.tvalid = eth_if.b2a_axis_if.tvalid;
-    assign eth_if.b2a_axis_if.tready    = eth_sink_axis_if.tready;
+    assign eth_sink_axis_if.tid = '0;
+    assign eth_sink_axis_if.tdest = '0;
+    assign eth_sink_axis_if.tuser = '0;
+    assign eth_if.b2a_axis_if.tready = eth_sink_axis_if.tready;
 
-    // Sink FIFO output -> CSR sink
-    assign csr_sink_axis_if.tready =
-        endpoint_if.csr_to_core.axis_if.sink.control.tready.value;
-
-    always_comb begin
-        endpoint_if.core_to_csr = '{default: '0};
-
-        endpoint_if.core_to_csr.axis_if.source.control.tvalid.hwclr =
-            csr_source_axis_if.tvalid && csr_source_axis_if.tready;
-        endpoint_if.core_to_csr.axis_if.source.status.tready.next =
-            csr_source_axis_if.tready;
-
-        endpoint_if.core_to_csr.axis_if.sink.data.tdata.next =
-            csr_sink_axis_if.tdata;
-        endpoint_if.core_to_csr.axis_if.sink.control.tready.hwclr =
-            csr_sink_axis_if.tvalid && csr_sink_axis_if.tready;
-        endpoint_if.core_to_csr.axis_if.sink.status.tvalid.next =
-            csr_sink_axis_if.tvalid;
-        endpoint_if.core_to_csr.axis_if.sink.status.tlast.next =
-            csr_sink_axis_if.tlast;
-        endpoint_if.core_to_csr.axis_if.sink.status.tkeep.next =
-            csr_sink_axis_if.tkeep;
-    end
-
-    taxi_axis_async_fifo_adapter #(
-        .DEPTH        (FIFO_DEPTH),
-        .RAM_PIPELINE (FIFO_RAM_PIPELINE)
-    )
-    u_source_fifo (
-        .s_clk  (clk),
-        .s_rst  (rst),
-        .s_axis (csr_source_axis_if),
-
-        .m_clk  (eth_if.clk),
-        .m_rst  (eth_if.rst),
-        .m_axis (eth_source_axis_if),
-
-        .s_pause_req (1'b0),
-        .s_pause_ack (),
-        .m_pause_req (1'b0),
-        .m_pause_ack (),
-
-        .s_status_depth        (),
-        .s_status_depth_commit (),
-        .s_status_overflow     (),
-        .s_status_bad_frame    (),
-        .s_status_good_frame   (),
-        .m_status_depth        (),
-        .m_status_depth_commit (),
-        .m_status_overflow     (),
-        .m_status_bad_frame    (),
-        .m_status_good_frame   ()
+    openenoc_endpoint_peer_lookup #(
+        .LOOKUP_PORTS(2),
+        .NUM_OF_PEERS(NUM_OF_PEERS),
+        .PEER_IDX_W(PEER_IDX_W)
+    ) u_peer_lookup (
+        .clk(clk),
+        .rst(rst),
+        .endpoint_if(endpoint_if),
+        .lookup_if(peer_lookup_if)
     );
 
-    taxi_axis_async_fifo_adapter #(
-        .DEPTH        (FIFO_DEPTH),
-        .RAM_PIPELINE (FIFO_RAM_PIPELINE)
-    )
-    u_sink_fifo (
-        .s_clk  (eth_if.clk),
-        .s_rst  (eth_if.rst),
-        .s_axis (eth_sink_axis_if),
-
-        .m_clk  (clk),
-        .m_rst  (rst),
-        .m_axis (csr_sink_axis_if),
-
-        .s_pause_req (1'b0),
-        .s_pause_ack (),
-        .m_pause_req (1'b0),
-        .m_pause_ack (),
-
-        .s_status_depth        (),
-        .s_status_depth_commit (),
-        .s_status_overflow     (),
-        .s_status_bad_frame    (),
-        .s_status_good_frame   (),
-        .m_status_depth        (),
-        .m_status_depth_commit (),
-        .m_status_overflow     (),
-        .m_status_bad_frame    (),
-        .m_status_good_frame   ()
+    openenoc_endpoint_dma_engine #(
+        .NUM_OF_PEERS(NUM_OF_PEERS),
+        .PEER_IDX_W(PEER_IDX_W),
+        .MAX_RAW_FRAME_SIZE(MAX_RAW_FRAME_SIZE),
+        .FRAGMENT_SLOTS(FRAGMENT_SLOTS)
+    ) u_dma_engine (
+        .clk(clk),
+        .rst(rst),
+        .endpoint_if(endpoint_if),
+        .peer_lookup_if(peer_lookup_if[0]),
+        .initiator_if(initiator_if),
+        .responder_if(responder_if),
+        .m_axis_oetp(dma_tx_axis_if),
+        .s_axis_oetp(dma_rx_axis_if),
+        .m_axi_wr(m_axi_wr),
+        .m_axi_rd(m_axi_rd),
+        .m_local_cpuif(m_rmem_cpuif),
+        .irq_event_if(irq_event_if[0:2]),
+        .rmem_irq_event_if(irq_event_if[5]),
+        .responder_irq_event_if(irq_event_if[6])
     );
 
-    // The endpoint AXI4-Lite initiator is reserved for future use.
-    assign m_axil_wr.awaddr  = '0;
-    assign m_axil_wr.awprot  = '0;
-    assign m_axil_wr.awuser  = '0;
-    assign m_axil_wr.awvalid = 1'b0;
-    assign m_axil_wr.wdata   = '0;
-    assign m_axil_wr.wstrb   = '0;
-    assign m_axil_wr.wuser   = '0;
-    assign m_axil_wr.wvalid  = 1'b0;
-    assign m_axil_wr.bready  = 1'b0;
+    openenoc_endpoint_oetp_engine #(
+        .MAX_RAW_FRAME_SIZE(MAX_RAW_FRAME_SIZE)
+    ) u_oetp_engine (
+        .clk(clk),
+        .rst(rst),
+        .endpoint_if(endpoint_if),
+        .s_axis_local(oetp_tx_axis_if),
+        .m_axis_local(oetp_rx_axis_if),
+        .s_axis_eth(eth_sink_axis_if),
+        .m_axis_eth(eth_source_axis_if),
+        .peer_lookup_if(peer_lookup_if[1]),
+        .initiator_if(initiator_if),
+        .responder_if(responder_if)
+    );
 
-    assign m_axil_rd.araddr  = '0;
-    assign m_axil_rd.arprot  = '0;
-    assign m_axil_rd.aruser  = '0;
-    assign m_axil_rd.arvalid = 1'b0;
-    assign m_axil_rd.rready  = 1'b0;
+    // TX completion is measured at the oETP input, after FIFO and mux pipelines.
+    wire direct_tx_done = oetp_tx_axis_if.tvalid && oetp_tx_axis_if.tready && oetp_tx_axis_if.tlast
+        && oetp_tx_axis_if.tdest[PEER_IDX_W+:2] == initiator_if.ROUTE_DIRECT;
+
+    openenoc_endpoint_direct_axis u_direct_axis (
+        .clk(clk),
+        .rst(rst),
+        .tx_frame_done(direct_tx_done),
+        .endpoint_if(endpoint_if),
+        .m_axis_csr_tx(csr_source_axis_if),
+        .s_axis_csr_rx(csr_sink_axis_if),
+        .tx_event_if(irq_event_if[3]),
+        .rx_event_if(irq_event_if[4])
+    );
+
+    taxi_axis_fifo_adapter #(
+        .DEPTH(FIFO_DEPTH),
+        .RAM_PIPELINE(FIFO_RAM_PIPELINE),
+        .FRAME_FIFO(1'b0),
+        .DROP_OVERSIZE_FRAME(1'b0),
+        .DROP_BAD_FRAME(1'b0),
+        .DROP_WHEN_FULL(1'b0),
+        .MARK_WHEN_FULL(1'b0)
+    ) u_direct_tx_fifo (
+        .clk(clk),
+        .rst(rst),
+        .s_axis(csr_source_axis_if),
+        .m_axis(tx_axis_if[0]),
+        .pause_req(1'b0),
+        .pause_ack(),
+        .status_depth(),
+        .status_depth_commit(),
+        .status_overflow(),
+        .status_bad_frame(),
+        .status_good_frame()
+    );
+
+    taxi_axis_fifo_adapter #(
+        .DEPTH(FIFO_DEPTH),
+        .RAM_PIPELINE(FIFO_RAM_PIPELINE),
+        .FRAME_FIFO(1'b0),
+        .DROP_OVERSIZE_FRAME(1'b0),
+        .DROP_BAD_FRAME(1'b0),
+        .DROP_WHEN_FULL(1'b0),
+        .MARK_WHEN_FULL(1'b0)
+    ) u_dma_tx_fifo (
+        .clk(clk),
+        .rst(rst),
+        .s_axis(dma_tx_axis_if),
+        .m_axis(tx_axis_if[1]),
+        .pause_req(1'b0),
+        .pause_ack(),
+        .status_depth(),
+        .status_depth_commit(),
+        .status_overflow(),
+        .status_bad_frame(),
+        .status_good_frame()
+    );
+
+    taxi_axis_fifo_adapter #(
+        .DEPTH(FIFO_DEPTH),
+        .RAM_PIPELINE(FIFO_RAM_PIPELINE),
+        .FRAME_FIFO(1'b0),
+        .DROP_OVERSIZE_FRAME(1'b0),
+        .DROP_BAD_FRAME(1'b0),
+        .DROP_WHEN_FULL(1'b0),
+        .MARK_WHEN_FULL(1'b0)
+    ) u_dma_rx_fifo (
+        .clk(clk),
+        .rst(rst),
+        .s_axis(rx_axis_if[0]),
+        .m_axis(dma_rx_axis_if),
+        .pause_req(1'b0),
+        .pause_ack(),
+        .status_depth(),
+        .status_depth_commit(),
+        .status_overflow(),
+        .status_bad_frame(),
+        .status_good_frame()
+    );
+
+    taxi_axis_fifo_adapter #(
+        .DEPTH(FIFO_DEPTH),
+        .RAM_PIPELINE(FIFO_RAM_PIPELINE),
+        .FRAME_FIFO(1'b0),
+        .DROP_OVERSIZE_FRAME(1'b0),
+        .DROP_BAD_FRAME(1'b0),
+        .DROP_WHEN_FULL(1'b0),
+        .MARK_WHEN_FULL(1'b0)
+    ) u_direct_rx_fifo (
+        .clk(clk),
+        .rst(rst),
+        .s_axis(rx_axis_if[1]),
+        .m_axis(csr_sink_axis_if),
+        .pause_req(1'b0),
+        .pause_ack(),
+        .status_depth(),
+        .status_depth_commit(),
+        .status_overflow(),
+        .status_bad_frame(),
+        .status_good_frame()
+    );
+
+    taxi_axis_arb_mux #(
+        .S_COUNT(2),
+        .UPDATE_TID(1'b0),
+        .ARB_ROUND_ROBIN(1'b1),
+        .ARB_LSB_HIGH_PRIO(1'b1)
+    ) u_tx_mux (
+        .clk(clk),
+        .rst(rst),
+        .s_axis(tx_axis_if),
+        .m_axis(oetp_tx_axis_if)
+    );
+
+    taxi_axis_demux #(
+        .M_COUNT(2),
+        .TDEST_ROUTE(1'b0)
+    ) u_rx_demux (
+        .clk(clk),
+        .rst(rst),
+        .s_axis(oetp_rx_axis_if),
+        .m_axis(rx_axis_if),
+        .enable(1'b1),
+        .drop(oetp_rx_axis_if.tdest[PEER_IDX_W+:2] == initiator_if.ROUTE_DROP),
+        .select(oetp_rx_axis_if.tdest[PEER_IDX_W+:2] == initiator_if.ROUTE_DIRECT)
+    );
+
+    openenoc_endpoint_irq_controller #(
+        .EVENT_PORTS(7),
+        .FIFO_DEPTH(IRQ_FIFO_DEPTH),
+        .PEER_IDX_W(IRQ_PEER_IDX_W),
+        .SEQUENCE_W(16),
+        .SAMPLED_ENABLE_MASK(7'b0100000)
+    ) u_irq_controller (
+        .clk(clk),
+        .rst(rst),
+        .endpoint_if(endpoint_if),
+        .irq(irq),
+        .event_if(irq_event_if)
+    );
 
 endmodule
 

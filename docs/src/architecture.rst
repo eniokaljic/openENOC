@@ -63,7 +63,7 @@ openENOC Endpoint Interface
 
 The openENOC Endpoint Interface is the termination point for Ethernet communication arriving from the openENOC Switch. Every resource attached to the openENOC fabric, including processors, accelerators, memories, and peripherals, is represented on the network through an openENOC Endpoint Interface. It provides both *memory-mapped* and *streaming* integration models, allowing different classes of compute and memory resources to connect to the common network in a manner appropriate to their communication style. On the local side, integration with processors, accelerators, and memory-mapped resources is provided through AXI4-Lite interface.
 
-The internal structure of the openENOC Endpoint Interface is illustrated in the figure below. It consists of a CSR block, a DMA Engine, an oETP Engine, and supporting buffering logic that enables conversion between the memory-mapped access model used by the CSR and DMA Engine and the streaming transfer model used by oETP. This buffering logic absorbs processing latency and preserves transfer continuity during conversion between the two communication models. The CSR block provides configuration and control access to the endpoint, but may also support a passthrough path toward the AXI4-Stream (AXIS) interface, enabling a streaming integration model for low-latency dataflow-oriented components. In addition, the CSR block can use the Remote Memory (RMEM) Interface to enable direct mapping of remote memory regions without relying on the DMA Engine. This is useful in low-latency applications where simple, direct access is preferred over descriptor-based DMA transfers.
+The internal structure of the openENOC Endpoint Interface is illustrated in the figure below. It consists of a CSR block, a DMA Engine, an oETP Engine, and supporting buffering logic that enables conversion between the memory-mapped access model used by the CSR and DMA Engine and the streaming transfer model used by oETP. This buffering logic absorbs processing latency and preserves transfer continuity during conversion between the two communication models. The CSR block provides configuration and control access to the endpoint, but may also support a passthrough path toward the AXI4-Stream (AXIS) interface, enabling a streaming integration model for low-latency dataflow-oriented components. In addition, the CSR block exposes a Remote Memory (RMEM) window for direct mapping of remote memory regions through the DMA Engine. This is useful in low-latency applications where simple, direct word access is preferred over descriptor-based bulk DMA transfers. The DMA Engine performs local memory access through AXI4 and RMEM CPUIF, while the oETP Engine handles protocol parsing and assembly. The AXIS path between the engines carries complete Ethernet frames without FCS for non-oETP DMA and only the addressed memory-block data for oETP DMA; RMEM words travel through the DMA command/completion interface.
 
 .. figure:: ../images/openENOC-EndpointInterface.svg
    :align: center
@@ -79,6 +79,8 @@ For memory-oriented deployments, endpoint implementations may operate in two com
 * **Non-standalone mode**: the endpoint is connected to a processor through its own AXI4-Lite CSR interface. In this case, the processor controls DMA-related functions such as interrupts, descriptors, and transfer management.
 
 This makes the endpoint suitable both for memory-centric communication and for low-latency dataflow-oriented processing. More broadly, the Endpoint Interface forms the boundary between the Ethernet-based openENOC fabric and the local logic attached to the endpoint. On the network side, it terminates Ethernet frame exchange and handles oETP protocol processing. On the local side, it exposes the corresponding control, memory-mapped, DMA, or streaming access model through AXI4-Lite and AXI4-Stream interfaces.
+
+.. _oetp-protocol:
 
 openENOC Transport Protocol
 ---------------------------
@@ -99,11 +101,262 @@ The message structure used by oETP is illustrated in the figure below. The proto
 
 Although oETP does not mandate any particular MAC address allocation scheme for use within openENOC systems, all examples presented throughout this documentation follow a common convention. Unicast Ethernet frames are assumed to use locally administered MAC addresses with the OUI-like prefix 02:0E:0C, while multicast Ethernet frames use the prefix 03:0E:0C. This convention ensures that the locally administered address bit is set in accordance with IEEE addressing rules and that the unicast or multicast nature of the address is correctly encoded in the least significant bit of the first octet. In addition, the 0E:0C identifier provides a recognizable address space associated with the openENOC ecosystem while avoiding conflicts with globally assigned vendor OUIs.
 
-Each oETP message begins with a compact protocol header consisting of a magic field for protocol identification and a command field that specifies the requested operation. This header is followed by a variable number of protocol parameters, each encoded as a 32-bit value, enabling different transaction types to carry the information required for address specification, data transfer, flow-control management, or protocol extensions. The resulting format preserves Ethernet compatibility while minimizing protocol overhead and simplifying hardware implementation. The Frame Check Sequence (FCS) field shown in the figure is only present when an Ethernet frame is transmitted over an external Ethernet link. In such cases, the FCS is generated and verified by the Ethernet MAC, whereas purely on-chip openENOC links transport the frame without the FCS field. The supported oETP commands, associated parameter formats, transaction encodings, and their semantics are specified by the oETP protocol specification and are outside the scope of this architectural overview.
+oETP retains the most valuable aspect of the RDMA programming model by supporting one-sided memory operations, including remote read and remote write transactions, while eliminating Queue Pair infrastructure and other InfiniBand-specific transport semantics. Its two memory access classes are transparent 32-bit Remote Memory (RMEM) operations and bulk DMA operations over byte-addressed memory regions.
 
-oETP retains the most valuable aspect of the RDMA programming model by supporting one-sided memory operations, including remote read and remote write transactions, while eliminating Queue Pair infrastructure and other InfiniBand-specific transport semantics. Instead of relying on PFC, the protocol employs credit-based flow control, a widely used NoC technique that provides predictable behavior, efficient buffer utilization, and straightforward hardware implementation [9]_ [10]_.
+Frame format and encoding
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By combining Ethernet framing, credit-based flow control, and RDMA-style one-sided memory operations, oETP targets tightly coupled hardware systems rather than distributed datacenter infrastructure. Within openENOC, the protocol is intended to operate over both on-chip Ethernet links inside a single MPSoC or FPGA system and off-chip Ethernet links connecting multiple FPGA-based domains through external MAC & PHY components. This allows the same transport model to span both local and multi-FPGA deployments while preserving a consistent programming and communication model across the entire Ethernet-based architecture.
+Each oETP PDU begins with a one-byte Magic field, ``0x0E``, followed by a
+one-byte Cmd field. The remaining parameters are four-byte words in the order
+defined by the command. All 32-bit parameters use little-endian encoding;
+for example, ``0x11223344`` is transmitted as ``44 33 22 11``. Ethernet MAC
+octet order and EtherType encoding are unchanged: ``0x88B5`` is transmitted
+as ``88 B5``. The initial format uses untagged Ethernet frames.
+
+The maximum Ethernet frame length is **8192 bytes without FCS**, counted from
+Destination MAC through the final payload or Ethernet padding byte. The
+14-byte Ethernet header leaves an **8178-byte oETP PDU budget**. With
+``L_PDU = 2 + 4*N``, the PDU envelope is 6..8178 bytes. The FCS shown in the
+figure is generated and verified by an external Ethernet MAC and is absent
+on on-chip openENOC links; preamble and SFD are also outside this frame budget.
+
+Bulk data is transmitted in increasing memory-address order. A block of B
+bytes occupies ``ceil(B/4)`` data parameters; unused bytes in the last word
+are zero on transmit, ignored on receive, and never written to memory.
+Ethernet padding follows the logical PDU and is also excluded from the memory
+transfer. The oETP engine does not add Ethernet minimum-frame padding: on-chip
+frames carry the logical PDU, and an external MAC pads a frame when it leaves
+the chip. Receive-side Ethernet padding values are ignored. This is separate
+from the final four-byte data parameter's unused bytes. The command layout,
+Length, or saved read-request context determines
+the logical PDU length independently of minimum-frame Ethernet padding.
+
+Command specification
+~~~~~~~~~~~~~~~~~~~~~
+
+The command codes below are assigned. The parameter lists describe the current
+design layouts; each parameter occupies four bytes, including each Data word.
+Wire Error Code values 1..7 identify the causes summarized below.
+
+.. list-table:: oETP command codes and parameter layouts
+   :header-rows: 1
+   :widths: 22 10 43 25
+
+   * - Command
+     - Cmd
+     - Parameters, in order
+     - Operation
+   * - RMEM_READ_REQ
+     - ``0x10``
+     - Request ID, Address
+     - Read one aligned 32-bit word.
+   * - RMEM_READ_RSP
+     - ``0x11``
+     - Request ID, Data
+     - Return the complete word on success.
+   * - RMEM_WRITE_REQ
+     - ``0x20``
+     - Request ID, Address, BitEnable, Data
+     - Write selected bits of one aligned word.
+   * - RMEM_WRITE_RSP
+     - ``0x21``
+     - Request ID
+     - Acknowledge a completed unicast write.
+   * - DMA_READ_REQ
+     - ``0x30``
+     - Request ID, Address, Length
+     - Read one remote memory fragment.
+   * - DMA_READ_RSP
+     - ``0x31``
+     - Request ID, Data[ceil(ExpectedLength/4)], EndOfData
+     - Return the requested fragment on success.
+   * - DMA_WRITE_REQ
+     - ``0x40``
+     - Request ID, Address, Length, Data[ceil(Length/4)], EndOfData
+     - Write one remote memory fragment.
+   * - DMA_WRITE_RSP
+     - ``0x41``
+     - Request ID
+     - Acknowledge a completed unicast fragment write.
+   * - ERROR_RSP
+     - ``0xFF``
+     - Request ID, Error Code
+     - Report failure instead of a success response.
+
+All other Cmd values are reserved. The four memory operation pairs use a
+request code ending in 0 and a success response code ending in 1. ERROR_RSP
+is their common error response; successful responses have no Status field.
+There are no wire Sequence or Control fields. Request ID selects the request
+context, while sequencing and whole-block completion remain local to the
+initiator.
+
+Address and Length are unsigned 32-bit byte quantities. RMEM accesses one
+four-byte word at a word-aligned address. BitEnable is present only on RMEM writes: bit i enables
+Data bit i and maps directly to CPUIF ``wr_biten``. A zero mask is a successful
+no-op after normal validation. RMEM reads return the complete word without
+a mask. Bulk DMA supports unaligned byte ranges and partial final words;
+Length must be positive. The initiator translates Address once into the
+responder's address space, where the complete permitted range is validated.
+
+DMA_READ_RSP obtains ExpectedLength from the saved request rather than a wire
+Length parameter. A successful response covers the complete requested
+operation; a write response follows target-memory completion. An error does
+not imply rollback of any memory bytes already modified.
+
+DMA_WRITE_REQ and DMA_READ_RSP append a four-byte EndOfData parameter,
+``0xE0D0E0D0`` (octets ``D0 E0 D0 E0``), after the complete Data parameter
+array. The receiver checks it only at the position determined by Length or
+the saved ExpectedLength; the same bit pattern inside memory data has no
+special meaning. EndOfData is excluded from memory data and both forms of
+padding. MAC-generated Ethernet padding is zero, so it cannot substitute for
+the marker in a prematurely terminated frame.
+
+Bulk payload is forwarded to the DMA engine as it arrives, after checking the
+command metadata and permitted address range. There is no full-frame buffering
+requirement before memory access. Payload length and framing are checked during
+reception; a late error can leave a partially modified destination, including
+the initiator's local destination for a DMA_READ_RSP. A successful unicast
+write response waits for both receive-frame completion and successful memory
+completion. Buffer synchronization, consistency, and recovery belong to
+software above oETP.
+
+Small internal buffers may synchronize the streaming pipeline and align data
+with control. They do not introduce a full-frame buffering requirement.
+
+TX also streams without a store-and-forward barrier between DMA and oETP.
+The first AXIS TVALID for the fragment starts preparation of the Ethernet/oETP
+frame. EndOfData is emitted only after all data and a successful local read
+completion. A later local read error ends the frame early without EndOfData;
+the receiver records remote stream error **10**, even when zero Ethernet
+padding makes the apparent data length sufficient. Already written bytes are
+not restored. For an incomplete unicast DMA_WRITE_REQ, the receiver returns
+ERROR_RSP cause 2; an incomplete DMA_READ_RSP is never answered with ERROR_RSP.
+
+Every started stream frame is assumed to end with TLAST, including shortened
+frames after an operation error. Version 1 does not infer frame boundaries or
+provide a separate missing-TLAST watchdog. If a subsequent frame continues an
+unterminated DMA frame, excess length or a missing/incorrect EndOfData at the
+expected position can reveal the malformed transfer; the receiver drains to
+the eventual TLAST without reconstructing the lost boundary.
+
+A DMA_WRITE_REQ has PDU length ``18 + 4*ceil(Length/4)``. The common bulk
+fragment limit is therefore **8160 data bytes** at the 8192-byte frame limit.
+Both DMA directions use this bound; a smaller path MTU requires a smaller
+fragment. The raw non-oETP frame limit and oETP memory-data limit are distinct.
+
+The raw frame ceiling is selected at synthesis through the RDL parameter
+``MAX_RAW_FRAME_SIZE``, defaulting to 8192 bytes without FCS. Software may
+select a smaller maximum for locally initiated DMA fragments through the
+global ``config.dma_max_fragment_size.bytes`` CSR, which resets to the
+derived 8160-byte ceiling. The setting is saved for the whole DMA block when
+its request is accepted, after rounding down to a multiple of four and checking
+the effective minimum of four bytes. The final fragment retains the exact
+remaining byte length. Received requests remain bounded by the synthesized
+ceiling, independently of the receiver's local fragmentation preference.
+
+Request sequencing and recovery
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Version 1 uses sequential request-response transactions with at most one
+active locally initiated unicast request per endpoint, shared by RMEM and
+peer DMA. A DMA block advances one fragment at a time, after both the response
+and local completion. Incoming requests and their responses remain serviceable
+while an endpoint waits for its own response. There are no wire credits or
+automatic retransmissions.
+
+When no responder context is available, a new incoming request is discarded
+through TLAST without memory access or a response. The RX parser does not wait
+for that context, so responses to this endpoint's own request can still arrive.
+The discarded request's initiator relies on its configured timeout; group
+writes remain best effort.
+
+RMEM has priority over the next bulk fragment, without interrupting an active
+frame or request. Responses to received requests have transmit priority;
+fair arbitration must also allow non-oETP traffic to progress.
+
+Each RMEM operation or DMA fragment receives a 32-bit Request ID; unicast
+responses echo it and must match the expected source MAC and response command.
+Unmatched or late responses are discarded. A recognized response for the active
+request from the expected peer, with an invalid length, terminates the request
+with an error instead of waiting for timeout. Recognized unicast requests from
+known peers with a trustworthy Request ID receive ERROR_RSP when validation
+fails; unparseable frames are discarded and multicast writes receive no reply.
+The allocation counter increments
+modulo 2^32 and resets only on engine/endpoint ``rst``. Reusing an ID that still
+belongs to an outstanding request first invalidates that older request with a
+timeout outcome, even when its configured timer is disabled. Version 1 has no
+session field or duplicate-execution protection. Hard reset clears all local
+FIFOs and outstanding contexts, giving the engine its power-on state; frames
+subsequently arriving from outside that reset domain cannot be identified as
+pre-reset traffic by Request ID alone.
+
+Two shared 32-bit CSRs specify response waits in endpoint clock cycles:
+``config.rmem_timeout.cycles`` for unicast RMEM and
+``config.dma_timeout.cycles`` separately for each unicast DMA fragment.
+Zero disables the corresponding timer and permits an indefinite wait. A timer
+is sampled when the operation is accepted and starts after the complete request
+frame is accepted by the Ethernet-facing transmit stream. It stops after the
+complete matching response has been received and validated through Ethernet
+TLAST, including EndOfData where present; RX backpressure counts toward the
+timeout. Remaining local memory completion is outside that timer. A valid
+response completing on the same edge as expiry takes priority, including a
+valid ERROR_RSP with its reported cause. There is no whole-block DMA timer.
+A fragment timeout stops the remaining fragments and
+reports local CSR error code **8 (TIMEOUT)**; software controls recovery and
+any deliberate retransmission.
+
+An RMEM failure releases the initiating access through the existing ACK-only
+boundary: a failed read returns ``0xFFFFFFFF`` with ``cpuif_rd_ack``, and a
+failed write asserts ``cpuif_wr_ack``. RMEM and bulk DMA share the peer's
+``dma.error`` and ``dma.error_code`` records, cleared explicitly by
+``dma.clear_error``. RMEM_ERROR remains a separate IRQ source from bulk DMA
+completion. Local causes use CSR codes 1..7: invalid parameters, stream/PDU
+length errors, size/capacity overflow, AXI read SLVERR/DECERR, and AXI write
+SLVERR/DECERR respectively. A valid ERROR_RSP carries one of those 32-bit
+causes and maps to the remote CSR range 9..15 as ``CSR code = 8 + wire code``.
+Values outside 1..7 are invalid response parameters and report local code 1.
+TIMEOUT remains local CSR code 8 and is not sent as a wire error cause.
+Remote code 10 also directly identifies an incomplete received DMA_WRITE_REQ
+or DMA_READ_RSP, including a missing or incorrect EndOfData; this classification
+does not require receiving ERROR_RSP first.
+
+An external MAC uses RX store-and-forward with ``RX_DROP_BAD_FRAME`` enabled.
+Frames with invalid FCS are discarded before entering oETP. Internally streamed
+frames retain the confirmed reception policy without full-frame buffering.
+
+Failure reporting is bilateral for configured peers. A responder identifies
+the initiating peer by the source MAC and records its own local failure before
+sending ERROR_RSP. The initiator records the mapped remote cause. For example,
+an AXI write SLVERR records code 6 at the receiving endpoint and code 14 at the
+initiating endpoint. Each endpoint can independently generate PEER_DMA_COMPLETE
+when its per-peer ``dma.irq_enable`` and global
+``irq.event_enable.peer_dma_complete`` permit it; RMEM failures retain the
+separate RMEM_ERROR source. Received failures do not change the responder's
+locally initiated ``dma.request``, ``idle``, or ``done`` state. A failed write
+can leave partially modified memory, so both sides can initiate software
+recovery. Successful incoming requests generate no completion IRQ.
+Multicast receivers retain local error records and enabled IRQs while
+suppressing ERROR_RSP. IRQ delivery does not gate the error response.
+
+Multicast writes
+~~~~~~~~~~~~~~~~
+
+RMEM_WRITE_REQ and DMA_WRITE_REQ support multicast destinations for
+one-to-N memory replication. The destination MAC's group bit selects response
+suppression: the sender completes after successful local frame emission,
+and receivers send neither a success response nor ERROR_RSP. Multicast is
+best effort, does not run a response timer, and provides no confirmation of
+individual receiver completion. Read requests use unicast destinations.
+
+Incoming individual destinations are compared with ``config.mac_address``;
+group destinations are compared with ``config.multicast_address``. All members
+of a replication group configure the same multicast address while retaining
+individual unicast identities. Outgoing Source MAC uses the unicast address.
+A zero multicast address disables group reception; broadcast is accepted only
+when that register contains the broadcast address. Receivers still identify
+the source peer and validate its permissions and the complete memory range.
+
+By combining Ethernet framing, sequential request-response transactions, and RDMA-style one-sided memory operations, oETP targets tightly coupled hardware systems rather than distributed datacenter infrastructure. Within openENOC, the protocol is intended to operate over both on-chip Ethernet links inside a single MPSoC or FPGA system and off-chip Ethernet links connecting multiple FPGA-based domains through external MAC & PHY components. This allows the same transport model to span both local and multi-FPGA deployments while preserving a consistent programming and communication model across the entire Ethernet-based architecture.
 
 Architectural Relationships
 ---------------------------
@@ -238,10 +491,3 @@ References
 
 .. [8] R. Mittal, A. Shpiner, A. Panda, E. Zahavi, A. Krishnamurthy, S. Ratnasamy and S. Shenker, "Revisiting Network Support for RDMA," in *Proceedings of the ACM SIGCOMM Conference*, 2018.
    `(link) <https://arxiv.org/abs/1806.08159>`_
-
-.. [9] M. Coenen, S. Murali, A. Radulescu, K. Goossens and G. De Micheli, "A Buffer-Sizing Algorithm for Networks-on-Chip Using TDMA and Credit-Based End-to-End Flow Control," in *Proceedings of CODES+ISSS*, 2006.
-   `(link) <https://www.cs.york.ac.uk/rts/docs/CODES-EMSOFT-CASES-2006/codes/p130.pdf>`_
-
-.. [10] N. Concer, L. Bononi, M. Soulie, R. Locatelli and L. P. Carloni, "The Connection-Then-Credit Flow Control Protocol for Heterogeneous Multicore Systems-on-Chip," in *IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems*, vol. 29, no. 6, pp. 869-882, June 2010, doi: 10.1109/TCAD.2010.2048592.
-   `(link) <https://ieeexplore.ieee.org/document/5467323>`_
-
