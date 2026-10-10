@@ -8,8 +8,9 @@
 #include <string.h>
 
 #include "openenoc_iss.h"
+#include "memory_map.h"
 
-#define EXTERNAL_ADDRESS UINT64_C(0x10000000)
+#define EXTERNAL_ADDRESS ((uint64_t)DMEM_BASE_ADDR)
 #define POLL_LIMIT UINT32_C(1000000)
 
 static int check_status(int32_t status, const char *operation)
@@ -26,7 +27,7 @@ static int check_status(int32_t status, const char *operation)
 static void encode_program(uint8_t *image)
 {
     static const uint32_t program[] = {
-        UINT32_C(0x100000b7),
+        (uint32_t)((DMEM_BASE_ADDR & 0xfffff000) | 0xb7),
         UINT32_C(0x02a00113),
         UINT32_C(0x0020a023),
         UINT32_C(0x0000a183),
@@ -50,8 +51,12 @@ int main(void)
         .struct_size = sizeof(config),
         .endpoint_id = 7,
         .imem_base = 0,
-        .imem_size = 32 * 1024,
+        .imem_size = IMEM_SIZE_BYTES,
         .reset_pc = 0,
+        .dmem_base = DMEM_BASE_ADDR,
+        .dmem_size = DMEM_SIZE_BYTES,
+        .csr_base = CSR_BASE_ADDR,
+        .csr_size = CSR_SIZE_BYTES,
     };
     unsigned write_count = 0;
     unsigned read_count = 0;

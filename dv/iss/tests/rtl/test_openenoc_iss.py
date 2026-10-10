@@ -15,15 +15,16 @@ from cocotb.utils import get_sim_time
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 
 from openenoc_iss import IssError, IssLibrary, RequestKind, ResponseStatus, RunState
-from openenoc_iss import load_elf
+from openenoc_iss import load_elf, load_memory_map
 
 EXECUTION_TIMEOUT_CYCLES = 1000
 FIRMWARE_TIMEOUT_CYCLES = 100_000
 AXI_SERVICE_TIMEOUT_NS = 10_000
-DMEM_BASE = 0x10000000
-DMEM_SIZE = 0x00008000
-CSR_BASE = 0x20000000
-CSR_SIZE = 0x00002000
+MEMORY_MAP = load_memory_map(os.environ["OPENENOC_MEMORY_MAP"])
+DMEM_BASE = MEMORY_MAP.dmem_base
+DMEM_SIZE = MEMORY_MAP.dmem_size
+CSR_BASE = MEMORY_MAP.csr_base
+CSR_SIZE = MEMORY_MAP.csr_size
 CSR_SMOKE_PATTERN = 0xA5A55A5A
 CSR_SMOKE_PASSED = 0x600D600D
 CSR_SMOKE_FAILED = 0xBAD0BAD0
@@ -83,9 +84,13 @@ async def wait_for_stop(endpoint, dut):
 async def service_request(endpoint, axi_master, request):
     size = request.size_bytes
     address = request.address
+    memory_map = endpoint.memory_map
     valid_region = any(
         base <= address and address - base <= length - size
-        for base, length in ((DMEM_BASE, DMEM_SIZE), (CSR_BASE, CSR_SIZE))
+        for base, length in (
+            (memory_map.dmem_base, memory_map.dmem_size),
+            (memory_map.csr_base, memory_map.csr_size),
+        )
     )
     if (
         request.kind not in (RequestKind.DATA_READ, RequestKind.DATA_WRITE)

@@ -20,6 +20,16 @@ AXIS loopback remain RTL simulated by Verilator. A dedicated `iss_startup`
 firmware also qualifies the platform's data initialization, BSS clearing,
 read-only data, and stack behavior.
 
+Memory ranges come from the endpoint's RDL-generated
+`build/hal/<endpoint>/sw/memory_map.h`. `HAL_EP` selects the default map for
+ISS commands (`openenoc_endpoint_full` by default). The C ABI passes IMEM,
+DMEM, and CSR ranges per endpoint handle; Python callers may pass a distinct
+`memory_map=load_memory_map(path)` to `create_endpoint` and `load_elf` for each
+instance. Native tests qualify two different maps in one process. The existing
+RTL test top and firmware targets still instantiate/build
+`openenoc_endpoint_full`; mixed RTL endpoint types require a corresponding
+test top, RTL source selection, and firmware build for each type.
+
 ## Prerequisites
 
 On Ubuntu, install the upstream Spike and bare-metal firmware build
@@ -222,6 +232,8 @@ from ELF symbols rather than fixed testbench constants.
 - Private 32 KiB ISS IMEM at `0x00000000`.
 - RTL DMEM at `0x10000000-0x10007fff`.
 - RTL CSR aperture at `0x20000000-0x20001fff`.
+- The listed addresses are the current `openenoc_endpoint_full` HAL map, not
+	constants in the native ISS library.
 - One pending 1-, 2-, or 4-byte data request per endpoint.
 - No interrupts and no external instruction fetches.
 - Validated ELF entry points, load segments, and symbols drive firmware tests.

@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-#define OPENENOC_ISS_ABI_VERSION UINT32_C(1)
+#define OPENENOC_ISS_ABI_VERSION UINT32_C(2)
 #define OPENENOC_ISS_REQUEST_DATA_SIZE UINT32_C(4)
 
 typedef struct openenoc_iss openenoc_iss_t;
@@ -52,6 +52,10 @@ typedef struct {
     uint64_t imem_base;
     uint64_t imem_size;
     uint64_t reset_pc;
+    uint64_t dmem_base;
+    uint64_t dmem_size;
+    uint64_t csr_base;
+    uint64_t csr_size;
 } openenoc_iss_config_t;
 
 typedef struct {

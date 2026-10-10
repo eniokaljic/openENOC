@@ -11,9 +11,7 @@ from pathlib import Path
 from xml.etree import ElementTree
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "python"))
-from openenoc_iss.elf import (
-    DEFAULT_DMEM_BASE, DEFAULT_DMEM_SIZE, DEFAULT_IMEM_BASE, DEFAULT_IMEM_SIZE,
-)
+from openenoc_iss.elf import default_memory_map
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -36,6 +34,7 @@ def command(*args):
 
 
 def build_report():
+    memory_map = default_memory_map()
     results = {}
     for name in SUITES:
         suites = list(ElementTree.parse(REPORTS / f"{name}.xml").getroot().iter("testsuite"))
@@ -62,8 +61,9 @@ def build_report():
         "spike_commit": spike_commit,
         "cpu_profile": compatibility["initial_cpu_profile"],
         "memory": {
-            "private_imem": {"base": DEFAULT_IMEM_BASE, "size": DEFAULT_IMEM_SIZE},
-            "rtl_dmem": {"base": DEFAULT_DMEM_BASE, "size": DEFAULT_DMEM_SIZE},
+            "private_imem": {"base": memory_map.imem_base, "size": memory_map.imem_size},
+            "rtl_dmem": {"base": memory_map.dmem_base, "size": memory_map.dmem_size},
+            "rtl_csr": {"base": memory_map.csr_base, "size": memory_map.csr_size},
         },
         "tools": {
             "python": sys.version.split()[0],

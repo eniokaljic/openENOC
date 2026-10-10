@@ -9,5 +9,6 @@
 #define CSR_BASE_ADDR       0x20000000
 #define IMEM_SIZE_BYTES     (IMEM_DEPTH * 4)
 #define DMEM_SIZE_BYTES     (DMEM_DEPTH * 4)
+#define CSR_SIZE_BYTES      8192
 
 #endif /* MEMORY_MAP_H */

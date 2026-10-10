@@ -8,7 +8,9 @@ from dataclasses import dataclass
 from enum import IntEnum
 from pathlib import Path
 
-ABI_VERSION = 1
+from .elf import MemoryMap, default_memory_map
+
+ABI_VERSION = 2
 OK = 0
 NOT_READY = 1
 
@@ -42,6 +44,10 @@ class _Config(ctypes.Structure):
         ("imem_base", ctypes.c_uint64),
         ("imem_size", ctypes.c_uint64),
         ("reset_pc", ctypes.c_uint64),
+        ("dmem_base", ctypes.c_uint64),
+        ("dmem_size", ctypes.c_uint64),
+        ("csr_base", ctypes.c_uint64),
+        ("csr_size", ctypes.c_uint64),
     ]
 
 
@@ -92,7 +98,7 @@ class _State(ctypes.Structure):
     ]
 
 
-assert ctypes.sizeof(_Config) == 40
+assert ctypes.sizeof(_Config) == 72
 assert ctypes.sizeof(_Request) == 64
 assert ctypes.sizeof(_Response) == 64
 assert ctypes.sizeof(_State) == 48
@@ -198,17 +204,21 @@ class IssLibrary:
         self,
         endpoint_id: int,
         *,
-        imem_base: int = 0,
-        imem_size: int = 32 * 1024,
-        reset_pc: int = 0,
+        memory_map: MemoryMap | None = None,
+        reset_pc: int | None = None,
     ) -> Endpoint:
+        memory_map = memory_map or default_memory_map()
         config = _Config(
             abi_version=ABI_VERSION,
             struct_size=ctypes.sizeof(_Config),
             endpoint_id=endpoint_id,
-            imem_base=imem_base,
-            imem_size=imem_size,
-            reset_pc=reset_pc,
+            imem_base=memory_map.imem_base,
+            imem_size=memory_map.imem_size,
+            reset_pc=memory_map.imem_base if reset_pc is None else reset_pc,
+            dmem_base=memory_map.dmem_base,
+            dmem_size=memory_map.dmem_size,
+            csr_base=memory_map.csr_base,
+            csr_size=memory_map.csr_size,
         )
         handle = ctypes.c_void_p()
         self._check(
@@ -217,13 +227,16 @@ class IssLibrary:
                 ctypes.byref(config), ctypes.byref(handle)
             ),
         )
-        return Endpoint(self, handle)
+        return Endpoint(self, handle, memory_map)
 
 
 class Endpoint:
-    def __init__(self, library: IssLibrary, handle: ctypes.c_void_p):
+    def __init__(
+        self, library: IssLibrary, handle: ctypes.c_void_p, memory_map: MemoryMap
+    ):
         self._library = library
         self._handle = handle
+        self.memory_map = memory_map
 
     def __enter__(self) -> Endpoint:
         return self

@@ -92,7 +92,7 @@ $(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
 	$(Q)$$(RM) -r $$@.tmp.dir
 	$(Q)mv $$@.tmp $$@
 
-$(BUILDDIR)/$(1)/sw/memory_map.h: $(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv | awk-tool-check
+$(BUILDDIR)/$(1)/sw/memory_map.h: $(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_pkg.sv | awk-tool-check
 	$(LOG) 'Generating SW memory map:' '$$@'
 	$(Q)mkdir -p $$(dir $$@)
 	$(Q)$$(RM) $$@.tmp
@@ -115,16 +115,21 @@ $(BUILDDIR)/$(1)/sw/memory_map.h: $(BUILDDIR)/$(1)/rtl/$(1)_pkg.sv | awk-tool-ch
 		found[$$$$2] = 1; \
 		count++; \
 	} \
+	$$$$1 == "localparam" && $$$$2 ~ /_CSR_MIN_ADDR_WIDTH$$$$/ { \
+		csr_width = $$$$4; \
+		sub(/;$$$$/, "", csr_width); \
+	} \
 	END { \
-		if (count != 5) { \
+		if (count != 5 || csr_width == "") { \
 			print "Expected endpoint memory-map parameters were not found" > "/dev/stderr"; \
 			exit 1; \
 		} \
 		print "#define IMEM_SIZE_BYTES     (IMEM_DEPTH * 4)"; \
 		print "#define DMEM_SIZE_BYTES     (DMEM_DEPTH * 4)"; \
+		printf "#define CSR_SIZE_BYTES      %.0f\n", 2 ^ csr_width; \
 		print ""; \
 		print "#endif /* MEMORY_MAP_H */"; \
-	}' $$< > $$@.tmp
+	}' $$^ > $$@.tmp
 	$(Q)mv $$@.tmp $$@
 
 $(BUILDDIR)/$(1)/python/$(CSR_NAME)/__init__.py: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
