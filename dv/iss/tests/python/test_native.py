@@ -11,7 +11,7 @@ from dataclasses import replace
 from threading import Barrier
 
 from openenoc_iss import IssError, IssLibrary, RequestKind, ResponseStatus
-from openenoc_iss import RunState
+from openenoc_iss import RunState, load_memory_map
 
 POLL_TIMEOUT_SECONDS = 2.0
 
@@ -52,10 +52,10 @@ class NativeApiTest(unittest.TestCase):
         self.fail(f"timed out waiting for {minimum} ISS steps")
 
     @staticmethod
-    def mmio_program(value):
+    def mmio_program(value, address=0x10000000):
         return struct.pack(
             "<5I",
-            0x100000B7,
+            (address & 0xfffff000) | 0xb7,
             0x00000113 | (value << 20),
             0x0020A023,
             0x0000A183,
@@ -167,6 +167,37 @@ class NativeApiTest(unittest.TestCase):
             self.assertEqual(endpoint_0_read.request_id, 2)
             self.assertEqual(endpoint_0.read_register(3), 40)
             self.assertEqual(endpoint_0.read_register(4), 41)
+
+    def test_different_endpoint_memory_maps(self):
+        first_map = load_memory_map(os.environ["OPENENOC_MEMORY_MAP"])
+        second_map = replace(
+            first_map, dmem_base=0x30000000, csr_base=0x40000000,
+        )
+        with (
+            self.library.create_endpoint(40, memory_map=first_map) as first,
+            self.library.create_endpoint(41, memory_map=second_map) as second,
+        ):
+            first.load_image(self.mmio_program(42, first_map.dmem_base))
+            second.load_image(self.mmio_program(43, second_map.dmem_base))
+            first.start(entry_pc=first_map.imem_base, max_steps=5)
+            second.start(entry_pc=second_map.imem_base, max_steps=5)
+
+            for endpoint, address, value in (
+                (first, first_map.dmem_base, 42),
+                (second, second_map.dmem_base, 43),
+            ):
+                write_request, read_request = self.service_round_trip(endpoint, value)
+                self.assertEqual(write_request.address, address)
+                self.assertEqual(read_request.address, address)
+                self.assertEqual(
+                    self.wait_for_state(endpoint, RunState.COMPLETED).step_count, 5
+                )
+                self.assertEqual(endpoint.read_register(3), value)
+
+            second.load_image(self.mmio_program(44, first_map.dmem_base))
+            second.start(entry_pc=second_map.imem_base, max_steps=5)
+            self.wait_for_state(second, RunState.ERROR)
+            self.assertIsNone(second.poll())
 
     def test_rejects_bad_duplicate_and_stale_responses(self):
         image = self.mmio_program(23)

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import os
 import re
 import struct
 from dataclasses import dataclass
@@ -15,11 +16,6 @@ from typing import Mapping
 from elftools.common.exceptions import ELFError
 from elftools.elf.elffile import ELFFile
 from elftools.elf.sections import RISCVAttributesSection, SymbolTableSection
-
-DEFAULT_IMEM_BASE = 0x00000000
-DEFAULT_IMEM_SIZE = 0x00008000
-DEFAULT_DMEM_BASE = 0x10000000
-DEFAULT_DMEM_SIZE = 0x00008000
 
 _ADDRESS_SPACE_SIZE = 1 << 32
 _PF_EXECUTE = 1
@@ -36,6 +32,42 @@ _ALLOWED_METADATA_SEGMENTS = {
 
 class ElfValidationError(ValueError):
     pass
+
+
+@dataclass(frozen=True)
+class MemoryMap:
+    imem_base: int
+    imem_size: int
+    dmem_base: int
+    dmem_size: int
+    csr_base: int
+    csr_size: int
+
+
+def load_memory_map(path: str | Path) -> MemoryMap:
+    definitions = dict(re.findall(
+        r"^#define\s+(\w+)\s+(0x[0-9a-fA-F]+|[0-9]+)\s*$",
+        Path(path).read_text(), re.MULTILINE,
+    ))
+    try:
+        values = {name: int(definitions[name], 0) for name in (
+            "IMEM_BASE_ADDR", "IMEM_DEPTH", "DMEM_BASE_ADDR", "DMEM_DEPTH",
+            "CSR_BASE_ADDR", "CSR_SIZE_BYTES",
+        )}
+    except KeyError as error:
+        raise ValueError(f"memory map {path} is missing {error.args[0]}") from error
+    return MemoryMap(
+        imem_base=values["IMEM_BASE_ADDR"],
+        imem_size=values["IMEM_DEPTH"] * 4,
+        dmem_base=values["DMEM_BASE_ADDR"],
+        dmem_size=values["DMEM_DEPTH"] * 4,
+        csr_base=values["CSR_BASE_ADDR"],
+        csr_size=values["CSR_SIZE_BYTES"],
+    )
+
+
+def default_memory_map() -> MemoryMap:
+    return load_memory_map(os.environ["OPENENOC_MEMORY_MAP"])
 
 
 @dataclass(frozen=True)
@@ -85,28 +117,22 @@ class _ProgramRange:
 def load_elf(
     path: str | Path,
     *,
-    imem_base: int = DEFAULT_IMEM_BASE,
-    imem_size: int = DEFAULT_IMEM_SIZE,
-    dmem_base: int = DEFAULT_DMEM_BASE,
-    dmem_size: int = DEFAULT_DMEM_SIZE,
+    memory_map: MemoryMap | None = None,
 ) -> BootImage:
     return parse_elf(
         Path(path).read_bytes(),
-        imem_base=imem_base,
-        imem_size=imem_size,
-        dmem_base=dmem_base,
-        dmem_size=dmem_size,
+        memory_map=memory_map,
     )
 
 
 def parse_elf(
     image: bytes | bytearray | memoryview,
     *,
-    imem_base: int = DEFAULT_IMEM_BASE,
-    imem_size: int = DEFAULT_IMEM_SIZE,
-    dmem_base: int = DEFAULT_DMEM_BASE,
-    dmem_size: int = DEFAULT_DMEM_SIZE,
+    memory_map: MemoryMap | None = None,
 ) -> BootImage:
+    memory_map = memory_map or default_memory_map()
+    imem_base, imem_size = memory_map.imem_base, memory_map.imem_size
+    dmem_base, dmem_size = memory_map.dmem_base, memory_map.dmem_size
     raw_image = bytes(image)
     if not raw_image:
         raise ElfValidationError("ELF image is empty")

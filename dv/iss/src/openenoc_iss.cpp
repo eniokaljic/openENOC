@@ -17,7 +17,7 @@
 #include "riscv/processor.h"
 #include "riscv/simif.h"
 
-static_assert(sizeof(openenoc_iss_config_t) == 40);
+static_assert(sizeof(openenoc_iss_config_t) == 72);
 static_assert(sizeof(openenoc_iss_request_t) == 64);
 static_assert(sizeof(openenoc_iss_response_t) == 64);
 static_assert(sizeof(openenoc_iss_state_t) == 48);
@@ -26,10 +26,6 @@ namespace {
 
 constexpr char kIsa[] = "RV32I";
 constexpr char kPrivilege[] = "M";
-constexpr reg_t kDmemBase = 0x10000000;
-constexpr reg_t kDmemSize = 0x00008000;
-constexpr reg_t kCsrBase = 0x20000000;
-constexpr reg_t kCsrSize = 0x00002000;
 constexpr size_t kRegisterCount = 32;
 
 bool range_contains(reg_t base, reg_t region_size, reg_t address, size_t size)
@@ -68,6 +64,10 @@ public:
         : endpoint_id_(input.endpoint_id),
           imem_base_(input.imem_base),
           reset_pc_(input.reset_pc),
+                    dmem_base_(input.dmem_base),
+                    dmem_size_(input.dmem_size),
+                    csr_base_(input.csr_base),
+                    csr_size_(input.csr_size),
           memory_(static_cast<size_t>(input.imem_size), 0)
     {
         debug_mmu = nullptr;
@@ -297,8 +297,8 @@ public:
 private:
     bool external_address(reg_t address, size_t size) const
     {
-        return range_contains(kDmemBase, kDmemSize, address, size) ||
-            range_contains(kCsrBase, kCsrSize, address, size);
+        return range_contains(dmem_base_, dmem_size_, address, size) ||
+            range_contains(csr_base_, csr_size_, address, size);
     }
 
     bool transact(uint32_t kind, reg_t address, size_t size, uint8_t *bytes)
@@ -402,6 +402,10 @@ private:
     uint32_t endpoint_id_;
     reg_t imem_base_;
     reg_t reset_pc_;
+    reg_t dmem_base_;
+    reg_t dmem_size_;
+    reg_t csr_base_;
+    reg_t csr_size_;
     cfg_t config_;
     std::vector<uint8_t> memory_;
     std::map<size_t, processor_t *> harts_;
@@ -430,8 +434,28 @@ bool valid_config(const openenoc_iss_config_t *config)
     if (config == nullptr ||
             !valid_header(config->abi_version, config->struct_size,
                           sizeof(*config)) ||
-            config->imem_size == 0 ||
-            config->imem_size > std::numeric_limits<size_t>::max()) {
+            config->imem_size == 0 || config->dmem_size == 0 ||
+            config->csr_size == 0 ||
+            config->imem_size > std::numeric_limits<size_t>::max() ||
+            config->imem_base >= (UINT64_C(1) << 32) ||
+            config->dmem_base >= (UINT64_C(1) << 32) ||
+            config->csr_base >= (UINT64_C(1) << 32) ||
+            config->imem_size > (UINT64_C(1) << 32) - config->imem_base ||
+            config->dmem_size > (UINT64_C(1) << 32) - config->dmem_base ||
+            config->csr_size > (UINT64_C(1) << 32) - config->csr_base) {
+        return false;
+    }
+
+    const auto overlaps = [](uint64_t a, uint64_t a_size,
+                             uint64_t b, uint64_t b_size) {
+        return a < b + b_size && b < a + a_size;
+    };
+    if (overlaps(config->imem_base, config->imem_size,
+                 config->dmem_base, config->dmem_size) ||
+            overlaps(config->imem_base, config->imem_size,
+                     config->csr_base, config->csr_size) ||
+            overlaps(config->dmem_base, config->dmem_size,
+                     config->csr_base, config->csr_size)) {
         return false;
     }
 

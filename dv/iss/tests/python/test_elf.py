@@ -4,8 +4,9 @@
 import os
 import struct
 import unittest
+from dataclasses import replace
 
-from openenoc_iss import ElfValidationError, load_elf
+from openenoc_iss import ElfValidationError, load_elf, load_memory_map
 from openenoc_iss.elf import parse_elf
 
 
@@ -57,6 +58,12 @@ class ElfLoaderTest(unittest.TestCase):
         self.assertEqual(
             boot_image.symbol_address("iss_startup_status"), 0x1000000C
         )
+
+    def test_rejects_firmware_for_another_endpoint_map(self):
+        memory_map = load_memory_map(os.environ["OPENENOC_MEMORY_MAP"])
+        other_map = replace(memory_map, dmem_base=0x30000000)
+        with self.assertRaises(ElfValidationError):
+            load_elf(self.startup_path, memory_map=other_map)
 
     def test_rejects_invalid_headers_and_segments(self):
         load_headers = self._load_program_headers(self.image)
