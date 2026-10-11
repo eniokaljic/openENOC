@@ -28,11 +28,13 @@ MEMORY_MAP := $(ROOT_DIR)/build/hal/$(HAL_EP)/sw/memory_map.h
 export OPENENOC_MEMORY_MAP := $(MEMORY_MAP)
 FIRMWARE_BIN := $(ROOT_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.bin
 FIRMWARE_ELF := $(ROOT_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.elf
+IRQ_FIRMWARE_BUILD_ROOT := $(BUILD_DIR)/irq-firmware
+IRQ_FIRMWARE_ELF := $(IRQ_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/csr_smoke.elf
 STARTUP_FIRMWARE_BUILD_ROOT := $(BUILD_DIR)/firmware
 STARTUP_FIRMWARE_ELF := $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_startup.elf
 SPIKE_COMMIT := $(shell $(PYTHON) -c 'import json; print(json.load(open("$(ISS_DIR)/compatibility.json"))["spike"]["commit"])')
 
-.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install iss-library link-firmware link-smoke memory-map processor-smoke python-smoke report rtl-bridge-smoke rtl-firmware-smoke rtl-lanes-smoke rtl-lifecycle-smoke rtl-smoke rtl-startup-smoke rtl-system-smoke spike startup-firmware test-native tsan-smoke
+.PHONY: c-api-smoke check check-all check-submodule clean configure elf-smoke firmware install irq-firmware iss-library link-firmware link-smoke memory-map processor-smoke python-smoke report rtl-bridge-smoke rtl-firmware-smoke rtl-irq-system-smoke rtl-lanes-smoke rtl-lifecycle-smoke rtl-smoke rtl-startup-smoke rtl-system-smoke spike startup-firmware test-native tsan-smoke
 
 check: test-native python-smoke elf-smoke
 
@@ -152,10 +154,11 @@ tsan-smoke: check-submodule $(TSAN_ISS_LIBRARY) memory-map
 		OPENENOC_ISS_LIBRARY=$(TSAN_ISS_LIBRARY) \
 		$(PYTHON) -m unittest discover -s tests/python -p 'test_native.py'
 
-elf-smoke: firmware startup-firmware memory-map
+elf-smoke: firmware irq-firmware startup-firmware memory-map
 	@mkdir -p $(BUILD_DIR)/reports
 	@PYTHONPATH=$(PYTHON_PACKAGE_DIR) \
 		OPENENOC_FIRMWARE_ELF=$(FIRMWARE_ELF) \
+		OPENENOC_IRQ_FIRMWARE_ELF=$(IRQ_FIRMWARE_ELF) \
 		OPENENOC_STARTUP_FIRMWARE_ELF=$(STARTUP_FIRMWARE_ELF) \
 		$(PYTHON) -m pytest -q tests/python/test_elf.py \
 		--junitxml=$(BUILD_DIR)/reports/elf-smoke.xml
@@ -184,6 +187,11 @@ firmware:
 	@$(MAKE) -C $(ROOT_DIR)/sw APP=csr_smoke EP=openenoc_endpoint_full
 	@test -f $(FIRMWARE_BIN) -a -f $(FIRMWARE_ELF)
 
+irq-firmware:
+	@$(MAKE) -C $(ROOT_DIR)/sw APP=csr_smoke EP=openenoc_endpoint_full \
+		PLATFORM=iss MARCH=rv32i_zicsr MABI=ilp32 BUILD_ROOT=$(IRQ_FIRMWARE_BUILD_ROOT)
+	@test -f $(IRQ_FIRMWARE_ELF)
+
 startup-firmware:
 	@$(MAKE) -C $(ROOT_DIR)/sw APP=iss_startup EP=openenoc_endpoint_full \
 		BUILD_ROOT=$(STARTUP_FIRMWARE_BUILD_ROOT)
@@ -194,7 +202,7 @@ link-firmware:
 		BUILD_ROOT=$(STARTUP_FIRMWARE_BUILD_ROOT)
 	@test -f $(STARTUP_FIRMWARE_BUILD_ROOT)/openenoc_endpoint_full/iss_link.elf
 
-rtl-firmware-smoke: iss-library firmware memory-map
+rtl-firmware-smoke: iss-library irq-firmware memory-map
 	@mkdir -p $(BUILD_DIR)/reports
 	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-firmware-smoke.xml \
 		COCOTB_TESTCASE=test_spike_runs_csr_smoke_firmware
@@ -209,6 +217,12 @@ rtl-system-smoke: iss-library link-firmware memory-map
 	@$(MAKE) -C tests/rtl TWO_ENDPOINTS=1 SIM_BUILD=$(BUILD_DIR)/rtl-system-sim \
 		COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-system-smoke.xml \
 		COCOTB_TESTCASE='test_spike_endpoints_exchange_request_reply,test_spike_recovers_after_mid_frame_stop,test_spike_stops_one_endpoint_without_stopping_other'
+
+rtl-irq-system-smoke: iss-library irq-firmware memory-map
+	@mkdir -p $(BUILD_DIR)/reports
+	@$(MAKE) -C tests/rtl TWO_ENDPOINTS=1 SIM_BUILD=$(BUILD_DIR)/rtl-system-sim \
+		COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-irq-system-smoke.xml \
+		COCOTB_TESTCASE=test_spike_irq_two_endpoints
 
 report: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-lifecycle-smoke rtl-firmware-smoke rtl-startup-smoke rtl-system-smoke
 	@$(PYTHON) report.py

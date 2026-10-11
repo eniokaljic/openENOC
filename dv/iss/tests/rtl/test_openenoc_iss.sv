@@ -159,6 +159,7 @@ module test_openenoc_iss #(
             u_endpoint1.u_endpoint_interface.csr_sink_axis_if.tlast;
         wire logic endpoint1_imem_active =
             u_endpoint1.imem_axil_if.awvalid || u_endpoint1.imem_axil_if.arvalid;
+        wire logic iss1_irq = u_endpoint1.u_cpu.irq[3];
     end
 
     initial begin
@@ -197,6 +198,19 @@ module test_openenoc_iss #(
     wire logic [31:0] dmem_word0 = u_endpoint.u_dmem.mem[0];
     wire logic imem_active =
         u_endpoint.imem_axil_if.awvalid || u_endpoint.imem_axil_if.arvalid;
+    wire logic iss_irq = u_endpoint.u_cpu.irq[3];
+    wire logic irq_complete_hwclr =
+        u_endpoint.endpoint_if.core_to_csr.irq.complete.valid.hwclr;
+    wire logic [31:0] irq_complete_token = {
+        u_endpoint.endpoint_if.csr_to_core.irq.complete.valid.value,
+        u_endpoint.endpoint_if.csr_to_core.irq.complete.sequence_.value,
+        u_endpoint.endpoint_if.csr_to_core.irq.complete.source.value,
+        u_endpoint.endpoint_if.csr_to_core.irq.complete.peer_idx.value
+    };
+    wire logic irq_invalid_complete =
+        u_endpoint.endpoint_if.core_to_csr.irq.status.invalid_complete.next;
+    wire logic [7:0] irq_fifo_level =
+        u_endpoint.endpoint_if.core_to_csr.irq.status.fifo_level.next;
     wire logic [31:0] csr_test_value =
         u_endpoint.csr_hwif_out.test_reg.test_field.value;
     wire logic switch_operation_mode =

@@ -16,15 +16,17 @@
 
 #include "riscv/processor.h"
 #include "riscv/simif.h"
+#include "riscv/encoding.h"
 
 static_assert(sizeof(openenoc_iss_config_t) == 72);
 static_assert(sizeof(openenoc_iss_request_t) == 64);
 static_assert(sizeof(openenoc_iss_response_t) == 64);
 static_assert(sizeof(openenoc_iss_state_t) == 48);
+static_assert(sizeof(openenoc_iss_irq_update_t) == 48);
 
 namespace {
 
-constexpr char kIsa[] = "RV32I";
+constexpr char kIsa[] = "RV32I_Zicsr";
 constexpr char kPrivilege[] = "M";
 constexpr size_t kRegisterCount = 32;
 
@@ -62,6 +64,7 @@ class Endpoint final : public simif_t
 public:
     explicit Endpoint(const openenoc_iss_config_t &input)
         : endpoint_id_(input.endpoint_id),
+          irq_enabled_((input.flags & OPENENOC_ISS_CONFIG_IRQ) != 0),
           imem_base_(input.imem_base),
           reset_pc_(input.reset_pc),
                     dmem_base_(input.dmem_base),
@@ -147,6 +150,10 @@ public:
         response_ready_ = false;
         stop_requested_ = false;
         fatal_error_ = false;
+        irq_level_ = false;
+        irq_sequence_ = 0;
+        irq_tick_ = 0;
+        irq_budget_ = 0;
         run_state_ = OPENENOC_ISS_STATE_RUNNING;
 
         try {
@@ -166,6 +173,31 @@ public:
         if (run_state_ == OPENENOC_ISS_STATE_READY) {
             run_state_ = OPENENOC_ISS_STATE_STOPPED;
         }
+        response_cv_.notify_all();
+        return OPENENOC_ISS_OK;
+    }
+
+    int32_t update_irq(const openenoc_iss_irq_update_t &update)
+    {
+        if (!valid_header(update.abi_version, update.struct_size, sizeof(update)) ||
+                update.level > 1 || update.step_budget > 1024 ||
+                update.endpoint_id != endpoint_id_ || !irq_enabled_) {
+            return OPENENOC_ISS_INVALID_ARGUMENT;
+        }
+
+        std::lock_guard lock(mutex_);
+        if (update.epoch != epoch_ || update.sequence <= irq_sequence_ ||
+                update.sim_tick < irq_tick_) {
+            return OPENENOC_ISS_INVALID_ARGUMENT;
+        }
+        if (run_state_ != OPENENOC_ISS_STATE_RUNNING &&
+                run_state_ != OPENENOC_ISS_STATE_WAITING_MMIO) {
+            return OPENENOC_ISS_INVALID_STATE;
+        }
+        irq_sequence_ = update.sequence;
+        irq_tick_ = update.sim_tick;
+        irq_level_ = update.level != 0;
+        irq_budget_ = std::min<uint64_t>(irq_budget_ + update.step_budget, 1024);
         response_cv_.notify_all();
         return OPENENOC_ISS_OK;
     }
@@ -367,13 +399,27 @@ private:
     {
         try {
             for (uint64_t step = 0; step < max_steps; ++step) {
+                bool irq_level = false;
                 {
-                    std::lock_guard lock(mutex_);
+                    std::unique_lock lock(mutex_);
+                    if (irq_enabled_) {
+                        response_cv_.wait(lock, [this] {
+                            return irq_budget_ != 0 || stop_requested_ || fatal_error_;
+                        });
+                    }
                     if (stop_requested_ || fatal_error_) {
                         break;
                     }
+                    if (irq_enabled_) {
+                        --irq_budget_;
+                        irq_level = irq_level_;
+                    }
                 }
 
+                if (irq_enabled_) {
+                    processor_->get_state()->mip->backdoor_write_with_mask(
+                        MIP_MEIP, irq_level ? MIP_MEIP : 0);
+                }
                 processor_->step(1);
 
                 std::lock_guard lock(mutex_);
@@ -400,6 +446,7 @@ private:
     }
 
     uint32_t endpoint_id_;
+    bool irq_enabled_;
     reg_t imem_base_;
     reg_t reset_pc_;
     reg_t dmem_base_;
@@ -422,6 +469,10 @@ private:
     uint64_t snapshot_pc_ = 0;
     bool stop_requested_ = false;
     bool fatal_error_ = false;
+    bool irq_level_ = false;
+    uint64_t irq_sequence_ = 0;
+    uint64_t irq_tick_ = 0;
+    uint64_t irq_budget_ = 0;
     bool pending_active_ = false;
     bool pending_claimed_ = false;
     bool response_ready_ = false;
@@ -442,7 +493,8 @@ bool valid_config(const openenoc_iss_config_t *config)
             config->csr_base >= (UINT64_C(1) << 32) ||
             config->imem_size > (UINT64_C(1) << 32) - config->imem_base ||
             config->dmem_size > (UINT64_C(1) << 32) - config->dmem_base ||
-            config->csr_size > (UINT64_C(1) << 32) - config->csr_base) {
+            config->csr_size > (UINT64_C(1) << 32) - config->csr_base ||
+            (config->flags & ~OPENENOC_ISS_CONFIG_IRQ) != 0) {
         return false;
     }
 
@@ -555,6 +607,15 @@ extern "C" int32_t openenoc_iss_request_stop(openenoc_iss_t *handle)
         return OPENENOC_ISS_INVALID_ARGUMENT;
     }
     return handle->endpoint->request_stop();
+}
+
+extern "C" int32_t openenoc_iss_update_irq(
+    openenoc_iss_t *handle, const openenoc_iss_irq_update_t *update)
+{
+    if (handle == nullptr || update == nullptr) {
+        return OPENENOC_ISS_INVALID_ARGUMENT;
+    }
+    return handle->endpoint->update_irq(*update);
 }
 
 extern "C" int32_t openenoc_iss_try_poll(

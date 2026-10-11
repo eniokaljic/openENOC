@@ -10,7 +10,7 @@ from types import SimpleNamespace
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import RisingEdge, SimTimeoutError, Timer, with_timeout
+from cocotb.triggers import ReadOnly, RisingEdge, SimTimeoutError, Timer, with_timeout
 from cocotb.utils import get_sim_time
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 
@@ -31,8 +31,9 @@ CSR_SMOKE_FAILED = 0xBAD0BAD0
 ISS_STARTUP_PASSED = 0x51A7C0DE
 ISS_STARTUP_FAILED = 0xFA11ED00
 STARTUP_INITIALIZED_WORDS = (0x12345678, 0x89ABCDEF)
+IRQ_QUANTUM = 32
 AXIS_LOOPBACK_WORDS = (
-    0x00000000, 0x01234567, 0x89ABCDEF, 0xFFFFFFFF,
+    0xFFFFFFFF, 0x0122FFFF, 0x89ABCDEF, 0xFFFFFFFF,
     0xA5A55A5A, 0x5A5AA5A5, 0x00000001, 0x80000000,
     0x11111111, 0x22222222, 0x33333333, 0x44444444,
     0xDEADBEEF, 0xC001D00D, 0x13579BDF, 0x2468ACE0,
@@ -50,6 +51,17 @@ async def collect_axis_transfers(dut, prefix, transfers, clock=None):
         await RisingEdge(clock if clock is not None else dut.clk)
         if int(valid.value) and int(ready.value):
             transfers.append((int(data.value), int(keep.value), bool(int(last.value))))
+
+
+async def collect_irq_completions(dut, tokens):
+    previous_ack = False
+    while True:
+        await RisingEdge(dut.clk)
+        assert not int(dut.irq_invalid_complete.value)
+        ack = bool(int(dut.irq_complete_hwclr.value))
+        if ack and not previous_ack:
+            tokens.append(int(dut.irq_complete_token.value))
+        previous_ack = ack
 
 
 def load_boot_image(endpoint, boot_image):
@@ -81,7 +93,37 @@ async def wait_for_stop(endpoint, dut):
     raise AssertionError("Spike worker did not stop after firmware passed")
 
 
-async def service_request(endpoint, axi_master, request):
+class IrqPublisher:
+    def __init__(self, endpoint, level, clock):
+        self.endpoint = endpoint
+        self.level = level
+        self.clock = clock
+        self.epoch = endpoint.state().epoch
+        self.sequence = 0
+        self.seen_high = False
+        self.seen_low_after_high = False
+
+    async def sample(self, credit=0):
+        await ReadOnly()
+        level = bool(int(self.level.value))
+        self.seen_low_after_high |= self.seen_high and not level
+        self.seen_high |= level
+        self.sequence += 1
+        self.endpoint.update_irq(
+            level=level,
+            epoch=self.epoch,
+            sim_tick=int(get_sim_time(unit="ns")),
+            sequence=self.sequence,
+            step_budget=credit,
+        )
+
+    async def run(self):
+        while True:
+            await RisingEdge(self.clock)
+            await self.sample(IRQ_QUANTUM)
+
+
+async def service_request(endpoint, axi_master, request, irq_publisher=None):
     size = request.size_bytes
     address = request.address
     memory_map = endpoint.memory_map
@@ -127,6 +169,8 @@ async def service_request(endpoint, axi_master, request):
     state = endpoint.state()
     if state.run_state == RunState.STOPPED or state.epoch != request.epoch:
         return
+    if irq_publisher is not None:
+        await irq_publisher.sample()
     axi_resp = int(result.resp)
     endpoint.complete(
         request,
@@ -672,8 +716,8 @@ async def test_spike_runs_csr_smoke_firmware(dut):
         await RisingEdge(dut.clk)
     dut.rst.value = 0
 
-    boot_image = load_elf(os.environ["OPENENOC_FIRMWARE_ELF"])
-    imem_file = Path(os.environ["OPENENOC_FIRMWARE_ELF"]).with_name("imem.mem")
+    boot_image = load_elf(os.environ["OPENENOC_IRQ_FIRMWARE_ELF"])
+    imem_file = Path(os.environ["OPENENOC_IRQ_FIRMWARE_ELF"]).with_name("imem.mem")
     imem_image = b"".join(
         struct.pack("<I", int(word, 16))
         for word in imem_file.read_text(encoding="ascii").splitlines()
@@ -691,48 +735,63 @@ async def test_spike_runs_csr_smoke_firmware(dut):
     request_count = 0
     eth_transfers = []
     csr_sink_transfers = []
+    completed_tokens = []
     eth_monitor = cocotb.start_soon(
         collect_axis_transfers(dut, "endpoint_tx", eth_transfers)
     )
     csr_sink_monitor = cocotb.start_soon(
         collect_axis_transfers(dut, "endpoint_csr_sink", csr_sink_transfers)
     )
+    completion_monitor = cocotb.start_soon(collect_irq_completions(dut, completed_tokens))
 
-    with library.create_endpoint(0) as endpoint:
+    with library.create_endpoint(0, irq=True) as endpoint:
         load_boot_image(endpoint, boot_image)
         endpoint.start(entry_pc=boot_image.entry_pc, max_steps=1_000_000)
+        publisher = IrqPublisher(endpoint, dut.iss_irq, dut.clk)
+        await publisher.sample(IRQ_QUANTUM)
+        irq_monitor = cocotb.start_soon(publisher.run())
 
-        for _ in range(FIRMWARE_TIMEOUT_CYCLES):
-            await RisingEdge(dut.clk)
+        try:
+            for _ in range(FIRMWARE_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
 
-            request = endpoint.poll()
-            if request is not None:
-                request_count += 1
-                status_write = (
-                    request.kind == RequestKind.DATA_WRITE
-                    and request.address == status_address
-                    and request.size_bytes == 4
+                request = endpoint.poll()
+                if request is not None:
+                    request_count += 1
+                    status_write = (
+                        request.kind == RequestKind.DATA_WRITE
+                        and request.address == status_address
+                        and request.size_bytes == 4
+                    )
+                    status = request_value(request) if status_write else None
+                    await service_request(endpoint, axi_master, request, publisher)
+                    assert status != CSR_SMOKE_FAILED, (
+                        f"csr_smoke reported failure after {request_count} requests"
+                    )
+                    if status == CSR_SMOKE_PASSED:
+                        endpoint.request_stop()
+                        break
+
+                state = endpoint.state()
+                assert state.run_state != RunState.ERROR
+                assert state.run_state != RunState.COMPLETED, (
+                    "Spike exhausted its instruction budget before firmware completed"
                 )
-                status = request_value(request) if status_write else None
-                await service_request(endpoint, axi_master, request)
-                assert status != CSR_SMOKE_FAILED, (
-                    f"csr_smoke reported failure after {request_count} requests"
+            else:
+                raise AssertionError(
+                    "csr_smoke did not complete through the ISS/RTL bridge"
                 )
-                if status == CSR_SMOKE_PASSED:
-                    endpoint.request_stop()
-                    break
 
-            state = endpoint.state()
-            assert state.run_state != RunState.ERROR
-            assert state.run_state != RunState.COMPLETED, (
-                "Spike exhausted its instruction budget before firmware completed"
-            )
-        else:
-            raise AssertionError(
-                "csr_smoke did not complete through the ISS/RTL bridge"
-            )
+            await wait_for_stop(endpoint, dut)
+        finally:
+            irq_monitor.cancel()
 
-        await wait_for_stop(endpoint, dut)
+    assert publisher.seen_high, "endpoint never asserted IRQ"
+    assert publisher.seen_low_after_high, "endpoint IRQ never deasserted"
+    assert await read_word(axi_master, boot_image.symbol_address("iss_trap_fault_pc")) == 0
+    irq_entries = await read_word(axi_master, boot_image.symbol_address("iss_irq_entries"))
+    irq_returns = await read_word(axi_master, boot_image.symbol_address("iss_irq_returns"))
+    assert irq_entries > 0 and irq_entries == irq_returns
 
     for _ in range(10):
         await RisingEdge(dut.clk)
@@ -741,6 +800,7 @@ async def test_spike_runs_csr_smoke_firmware(dut):
 
     eth_monitor.cancel()
     csr_sink_monitor.cancel()
+    completion_monitor.cancel()
     expected_transfers = [
         (
             word,
@@ -752,6 +812,10 @@ async def test_spike_runs_csr_smoke_firmware(dut):
     assert eth_transfers == expected_transfers
     assert csr_sink_transfers == expected_transfers
     assert sum(keep.bit_count() for _, keep, _ in eth_transfers) == 66
+    assert [(token >> 11) & 0xF for token in completed_tokens] == [4, 3]
+    assert [(token >> 15) & 0xFFFF for token in completed_tokens] == [0, 1]
+    assert not int(dut.irq_invalid_complete.value)
+    assert int(dut.irq_fifo_level.value) == 0
 
     cocotb.log.info(
         "csr_smoke ELF %s completed through Spike after %d external requests",
@@ -763,6 +827,96 @@ async def test_spike_runs_csr_smoke_firmware(dut):
     assert int(dut.switch_pause_request.value) == 1
     assert int(dut.switch_default_forwarding.value) == 0xA
     assert int(dut.imem_active.value) == 0
+
+
+@cocotb.test()
+async def test_spike_irq_two_endpoints(dut):
+    cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
+    masters = [
+        AxiLiteMaster(AxiLiteBus.from_prefix(entity, prefix), dut.clk, dut.rst)
+        for entity, prefix in ((dut, "iss_axil"), (dut.g_dual, "iss1_axil"))
+    ]
+    dut.rst.value = 1
+    for _ in range(5):
+        await RisingEdge(dut.clk)
+    dut.rst.value = 0
+
+    boot_image = load_elf(os.environ["OPENENOC_IRQ_FIRMWARE_ELF"])
+    status_address = boot_image.symbol_address("csr_smoke_status")
+    for master in masters:
+        assert await read_word(master, status_address) == 0
+    library = IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"])
+    transfers = [[], []]
+    monitors = [
+        cocotb.start_soon(collect_axis_transfers(dut, "endpoint_tx", transfers[0])),
+        cocotb.start_soon(collect_axis_transfers(
+            dut.g_dual, "endpoint1_tx", transfers[1], dut.clk
+        )),
+    ]
+    publishers = []
+    irq_monitors = []
+    finished = set()
+    try:
+        with ExitStack() as stack:
+            endpoints = [
+                stack.enter_context(library.create_endpoint(index, irq=True))
+                for index in range(2)
+            ]
+            for index, endpoint in enumerate(endpoints):
+                load_boot_image(endpoint, boot_image)
+                endpoint.start(entry_pc=boot_image.entry_pc, max_steps=1_000_000)
+                level = dut.iss_irq if index == 0 else dut.g_dual.iss1_irq
+                publisher = IrqPublisher(endpoint, level, dut.clk)
+                publishers.append(publisher)
+                await publisher.sample(IRQ_QUANTUM)
+                irq_monitors.append(cocotb.start_soon(publisher.run()))
+
+            for _ in range(FIRMWARE_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                for index, endpoint in enumerate(endpoints):
+                    if index in finished:
+                        continue
+                    request = endpoint.poll()
+                    if request is not None:
+                        status_write = (
+                            request.kind == RequestKind.DATA_WRITE
+                            and request.address == status_address
+                            and request.size_bytes == 4
+                        )
+                        status = request_value(request) if status_write else None
+                        await service_request(endpoint, masters[index], request,
+                                              publishers[index])
+                        assert status != CSR_SMOKE_FAILED
+                        if status == CSR_SMOKE_PASSED:
+                            endpoint.request_stop()
+                            irq_monitors[index].cancel()
+                            finished.add(index)
+                    state = endpoint.state()
+                    assert state.run_state not in (RunState.ERROR, RunState.COMPLETED)
+                if len(finished) == 2:
+                    break
+            else:
+                raise AssertionError("two IRQ firmware instances did not complete")
+            for endpoint in endpoints:
+                await wait_for_stop(endpoint, dut)
+
+        for index, master in enumerate(masters):
+            assert publishers[index].seen_high
+            assert publishers[index].seen_low_after_high
+            assert await read_word(master, status_address) == CSR_SMOKE_PASSED
+            assert await read_word(master, boot_image.symbol_address("iss_trap_fault_pc")) == 0
+            entries = await read_word(master, boot_image.symbol_address("iss_irq_entries"))
+            returns = await read_word(master, boot_image.symbol_address("iss_irq_returns"))
+            assert entries > 0 and entries == returns
+        expected = [
+            (word, 0x3 if index == len(AXIS_LOOPBACK_WORDS) - 1 else 0xF,
+             index == len(AXIS_LOOPBACK_WORDS) - 1)
+            for index, word in enumerate(AXIS_LOOPBACK_WORDS)
+        ]
+        assert transfers == [expected, expected]
+    finally:
+        for monitor in monitors + irq_monitors:
+            monitor.cancel()
 
 
 @cocotb.test()

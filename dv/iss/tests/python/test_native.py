@@ -118,6 +118,67 @@ class NativeApiTest(unittest.TestCase):
             self.assertEqual(endpoint.read_register(3), 42)
             self.assertEqual(endpoint.read_register(4), 43)
 
+    def test_irq_budget_epoch_and_stop(self):
+        image = struct.pack("<2I", 0x34402573, 0x0000006F)
+        with self.library.create_endpoint(13, irq=True) as endpoint:
+            endpoint.load_image(image)
+            endpoint.start(entry_pc=0, max_steps=100)
+            epoch = endpoint.state().epoch
+            self.assertEqual(endpoint.state().step_count, 0)
+            with self.assertRaises(IssError):
+                endpoint.update_irq(level=True, epoch=epoch - 1, sim_tick=0,
+                                    sequence=1, step_budget=1)
+            endpoint.update_irq(level=True, epoch=epoch, sim_tick=0,
+                                sequence=1, step_budget=1)
+            self.wait_for_steps(endpoint, 1)
+            with self.assertRaises(IssError):
+                endpoint.update_irq(level=False, epoch=epoch, sim_tick=0,
+                                    sequence=1, step_budget=1)
+            endpoint.request_stop()
+            self.wait_for_state(endpoint, RunState.STOPPED)
+            self.assertEqual(endpoint.read_register(10) & (1 << 11), 1 << 11)
+
+            endpoint.start(entry_pc=0, max_steps=100)
+            next_epoch = endpoint.state().epoch
+            with self.assertRaises(IssError):
+                endpoint.update_irq(level=True, epoch=epoch, sim_tick=1,
+                                    sequence=2, step_budget=1)
+            endpoint.update_irq(level=False, epoch=next_epoch, sim_tick=0,
+                                sequence=1, step_budget=1)
+            self.wait_for_steps(endpoint, 1)
+            endpoint.request_stop()
+            self.wait_for_state(endpoint, RunState.STOPPED)
+            self.assertEqual(endpoint.read_register(10) & (1 << 11), 0)
+
+    def test_irq_update_does_not_complete_blocked_mmio(self):
+        with (
+            self.library.create_endpoint(20, irq=True) as blocked,
+            self.library.create_endpoint(21, irq=True) as active,
+        ):
+            blocked.load_image(self.mmio_program(40))
+            active.load_image(struct.pack("<I", 0x0000006F))
+            blocked.start(entry_pc=0, max_steps=100)
+            active.start(entry_pc=0, max_steps=100)
+            blocked.update_irq(level=False, epoch=blocked.state().epoch,
+                               sim_tick=10, sequence=1, step_budget=3)
+            pending = self.wait_for_request(blocked)
+            self.assertEqual(pending.kind, RequestKind.DATA_WRITE)
+            blocked.update_irq(level=True, epoch=blocked.state().epoch,
+                               sim_tick=20, sequence=2, step_budget=10)
+            self.assertEqual(blocked.state().run_state, RunState.WAITING_MMIO)
+
+            active.update_irq(level=False, epoch=active.state().epoch,
+                              sim_tick=20, sequence=1, step_budget=5)
+            self.wait_for_steps(active, 5)
+            self.assertEqual(blocked.state().run_state, RunState.WAITING_MMIO)
+            active.request_stop()
+            self.wait_for_state(active, RunState.STOPPED)
+
+            blocked.complete(pending)
+            self.wait_for_steps(blocked, 3)
+            blocked.request_stop()
+            self.wait_for_state(blocked, RunState.STOPPED)
+
     def test_blocked_endpoint_does_not_stall_another(self):
         with (
             self.library.create_endpoint(20) as endpoint_0,

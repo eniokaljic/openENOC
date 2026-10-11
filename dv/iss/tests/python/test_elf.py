@@ -14,6 +14,7 @@ class ElfLoaderTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.path = os.environ["OPENENOC_FIRMWARE_ELF"]
+        cls.irq_path = os.environ["OPENENOC_IRQ_FIRMWARE_ELF"]
         cls.startup_path = os.environ["OPENENOC_STARTUP_FIRMWARE_ELF"]
         with open(cls.path, "rb") as firmware_file:
             cls.image = firmware_file.read()
@@ -48,6 +49,18 @@ class ElfLoaderTest(unittest.TestCase):
         )
         self.assertEqual(boot_image.symbols["csr_smoke_status"].size, 4)
         self.assertEqual(len(boot_image.sha256), 64)
+
+    def test_loads_iss_zicsr_firmware(self):
+        boot_image = load_elf(self.irq_path)
+        self.assertEqual(boot_image.entry_pc, 0)
+        self.assertEqual(len(boot_image.segments), 2)
+        self.assertEqual(boot_image.symbol_address("csr_smoke_status"), 0x10000000)
+        self.assertGreater(boot_image.symbol_address("irq_entry"), 0)
+        self.assertGreater(boot_image.symbol_address("iss_trap_fault_cause"), 0x10000000)
+        with open(self.irq_path, "rb") as firmware_file:
+            unsupported = firmware_file.read().replace(b"zicsr2p0", b"zicbo2p0", 1)
+        with self.assertRaises(ElfValidationError):
+            parse_elf(unsupported)
 
     def test_preserves_startup_load_and_runtime_addresses(self):
         boot_image = load_elf(self.startup_path)

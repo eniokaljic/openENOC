@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .elf import MemoryMap, default_memory_map
 
-ABI_VERSION = 2
+ABI_VERSION = 3
 OK = 0
 NOT_READY = 1
 
@@ -40,7 +40,7 @@ class _Config(ctypes.Structure):
         ("abi_version", ctypes.c_uint32),
         ("struct_size", ctypes.c_uint32),
         ("endpoint_id", ctypes.c_uint32),
-        ("reserved", ctypes.c_uint32),
+        ("flags", ctypes.c_uint32),
         ("imem_base", ctypes.c_uint64),
         ("imem_size", ctypes.c_uint64),
         ("reset_pc", ctypes.c_uint64),
@@ -98,10 +98,24 @@ class _State(ctypes.Structure):
     ]
 
 
+class _IrqUpdate(ctypes.Structure):
+    _fields_ = [
+        ("abi_version", ctypes.c_uint32),
+        ("struct_size", ctypes.c_uint32),
+        ("endpoint_id", ctypes.c_uint32),
+        ("level", ctypes.c_uint32),
+        ("epoch", ctypes.c_uint64),
+        ("sim_tick", ctypes.c_uint64),
+        ("sequence", ctypes.c_uint64),
+        ("step_budget", ctypes.c_uint64),
+    ]
+
+
 assert ctypes.sizeof(_Config) == 72
 assert ctypes.sizeof(_Request) == 64
 assert ctypes.sizeof(_Response) == 64
 assert ctypes.sizeof(_State) == 48
+assert ctypes.sizeof(_IrqUpdate) == 48
 
 
 @dataclass(frozen=True)
@@ -172,6 +186,10 @@ class IssLibrary:
         native.openenoc_iss_start.restype = ctypes.c_int32
         native.openenoc_iss_request_stop.argtypes = [ctypes.c_void_p]
         native.openenoc_iss_request_stop.restype = ctypes.c_int32
+        native.openenoc_iss_update_irq.argtypes = [
+            ctypes.c_void_p, ctypes.POINTER(_IrqUpdate),
+        ]
+        native.openenoc_iss_update_irq.restype = ctypes.c_int32
         native.openenoc_iss_try_poll.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(_Request),
@@ -206,12 +224,14 @@ class IssLibrary:
         *,
         memory_map: MemoryMap | None = None,
         reset_pc: int | None = None,
+        irq: bool = False,
     ) -> Endpoint:
         memory_map = memory_map or default_memory_map()
         config = _Config(
             abi_version=ABI_VERSION,
             struct_size=ctypes.sizeof(_Config),
             endpoint_id=endpoint_id,
+            flags=int(irq),
             imem_base=memory_map.imem_base,
             imem_size=memory_map.imem_size,
             reset_pc=memory_map.imem_base if reset_pc is None else reset_pc,
@@ -272,6 +292,27 @@ class Endpoint:
         self._library._check(
             "request stop",
             self._library._native.openenoc_iss_request_stop(self._handle),
+        )
+
+    def update_irq(
+        self, *, level: bool, epoch: int, sim_tick: int,
+        sequence: int, step_budget: int,
+    ) -> None:
+        update = _IrqUpdate(
+            abi_version=ABI_VERSION,
+            struct_size=ctypes.sizeof(_IrqUpdate),
+            endpoint_id=self.state().endpoint_id,
+            level=int(level),
+            epoch=epoch,
+            sim_tick=sim_tick,
+            sequence=sequence,
+            step_budget=step_budget,
+        )
+        self._library._check(
+            "update irq",
+            self._library._native.openenoc_iss_update_irq(
+                self._handle, ctypes.byref(update)
+            ),
         )
 
     def poll(self) -> Request | None:

@@ -42,6 +42,92 @@ static void encode_program(uint8_t *image)
     }
 }
 
+static int check_irq_updates(openenoc_iss_config_t config)
+{
+    openenoc_iss_t *endpoint = NULL;
+    const uint8_t loop[] = {0x6f, 0x00, 0x00, 0x00};
+    int result = 1;
+    config.flags = OPENENOC_ISS_CONFIG_IRQ;
+    if (check_status(openenoc_iss_create(&config, &endpoint), "create IRQ") ||
+            check_status(openenoc_iss_load_image(endpoint, 0, loop, sizeof(loop)),
+                         "load IRQ loop") ||
+            check_status(openenoc_iss_start(endpoint, 0, 64), "start IRQ")) {
+        goto cleanup;
+    }
+
+    openenoc_iss_state_t state = {
+        .abi_version = OPENENOC_ISS_ABI_VERSION,
+        .struct_size = sizeof(state),
+    };
+    if (check_status(openenoc_iss_try_state(endpoint, &state), "read IRQ state") ||
+            state.step_count != 0) {
+        goto cleanup;
+    }
+
+    openenoc_iss_irq_update_t update = {
+        .abi_version = OPENENOC_ISS_ABI_VERSION,
+        .struct_size = sizeof(update),
+        .endpoint_id = config.endpoint_id,
+        .level = 1,
+        .epoch = state.epoch,
+        .sim_tick = 10,
+        .sequence = 1,
+        .step_budget = 1,
+    };
+    if (check_status(openenoc_iss_update_irq(endpoint, &update), "update IRQ")) {
+        goto cleanup;
+    }
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.sequence = 2;
+    update.sim_tick = 9;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.sim_tick = 10;
+    update.epoch = state.epoch - 1;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.epoch = state.epoch;
+    update.endpoint_id++;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.endpoint_id = config.endpoint_id;
+    update.level = 2;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.level = 0;
+    update.step_budget = 1025;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.step_budget = 0;
+    update.struct_size--;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.struct_size = sizeof(update);
+    update.abi_version--;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    result = 0;
+
+cleanup:
+    if (endpoint != NULL) {
+        openenoc_iss_request_stop(endpoint);
+        openenoc_iss_destroy(endpoint);
+    }
+    if (result != 0) {
+        fprintf(stderr, "IRQ update validation failed\n");
+    }
+    return result;
+}
+
 int main(void)
 {
     uint8_t image[5 * sizeof(uint32_t)] = {0};
@@ -172,6 +258,7 @@ int main(void)
 
     printf("Spike C API smoke passed: endpoint=7, writes=1, reads=1, "
            "x3=42, x4=43\n");
+    result = check_irq_updates(config);
 
 cleanup:
     openenoc_iss_destroy(iss);

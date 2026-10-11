@@ -20,7 +20,7 @@ from elftools.elf.sections import RISCVAttributesSection, SymbolTableSection
 _ADDRESS_SPACE_SIZE = 1 << 32
 _PF_EXECUTE = 1
 _PF_WRITE = 2
-_RV32I_ARCH = re.compile(r"rv32i(?:\d+p\d+)?")
+_RV32I_ARCH = re.compile(r"rv32i(?:\d+p\d+)?(?:_zicsr(?:\d+p\d+)?)?")
 _ALLOWED_METADATA_SEGMENTS = {
     "PT_NULL",
     "PT_NOTE",

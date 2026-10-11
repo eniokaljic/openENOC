@@ -1,0 +1,69 @@
+#include "memory_map.h"
+
+OUTPUT_FORMAT("elf32-littleriscv")
+OUTPUT_ARCH(riscv)
+ENTRY(_start)
+
+__stack_size = 2K;
+
+MEMORY
+{
+    IMEM (rx) : ORIGIN = IMEM_BASE_ADDR, LENGTH = IMEM_SIZE_BYTES
+    DMEM (rw) : ORIGIN = DMEM_BASE_ADDR, LENGTH = DMEM_SIZE_BYTES
+}
+
+SECTIONS
+{
+    .text ORIGIN(IMEM) :
+    {
+        __text_start = .;
+        KEEP(*(.text.boot))
+        KEEP(*(.init))
+        *(.text .text.*)
+        *(.rodata .rodata.*)
+        *(.srodata .srodata.*)
+        . = ALIGN(4);
+        __text_end = .;
+    } > IMEM
+
+    .data :
+    {
+        . = ALIGN(4);
+        __data_start = .;
+        *(.data .data.*)
+        *(.got .got.*)
+        . = ALIGN(8);
+        __sdata_start = .;
+        PROVIDE(__global_pointer$ = __sdata_start + 0x800);
+        *(.sdata .sdata.*)
+        . = ALIGN(4);
+        __data_end = .;
+    } > DMEM AT> IMEM
+
+    __data_load_start = LOADADDR(.data);
+    __data_load_end = LOADADDR(.data) + SIZEOF(.data);
+
+    .bss (NOLOAD) :
+    {
+        . = ALIGN(4);
+        __bss_start = .;
+        *(.bss .bss.*)
+        *(.sbss .sbss.*)
+        *(COMMON)
+        . = ALIGN(4);
+        __bss_end = .;
+    } > DMEM
+
+    . = ALIGN(16);
+    __heap_start = .;
+    __stack_top = ORIGIN(DMEM) + LENGTH(DMEM);
+    __stack_limit = __stack_top - __stack_size;
+    __heap_end = __stack_limit;
+    PROVIDE(end = __heap_start);
+    PROVIDE(_end = __heap_start);
+
+    ASSERT(_start == ORIGIN(IMEM), "Reset entry must start at IMEM_BASE_ADDR")
+    ASSERT(__data_load_end <= ORIGIN(IMEM) + LENGTH(IMEM), "IMEM overflow")
+    ASSERT(__bss_end <= __stack_limit, "DMEM overlaps reserved stack")
+    ASSERT((__stack_top & 0xf) == 0, "Stack must be 16-byte aligned")
+}

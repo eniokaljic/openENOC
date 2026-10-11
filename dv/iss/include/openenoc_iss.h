@@ -10,8 +10,9 @@
 extern "C" {
 #endif
 
-#define OPENENOC_ISS_ABI_VERSION UINT32_C(2)
+#define OPENENOC_ISS_ABI_VERSION UINT32_C(3)
 #define OPENENOC_ISS_REQUEST_DATA_SIZE UINT32_C(4)
+#define OPENENOC_ISS_CONFIG_IRQ UINT32_C(1)
 
 typedef struct openenoc_iss openenoc_iss_t;
 
@@ -48,7 +49,7 @@ typedef struct {
     uint32_t abi_version;
     uint32_t struct_size;
     uint32_t endpoint_id;
-    uint32_t reserved;
+    uint32_t flags;
     uint64_t imem_base;
     uint64_t imem_size;
     uint64_t reset_pc;
@@ -99,6 +100,17 @@ typedef struct {
     uint64_t pending_request_id;
 } openenoc_iss_state_t;
 
+typedef struct {
+    uint32_t abi_version;
+    uint32_t struct_size;
+    uint32_t endpoint_id;
+    uint32_t level;
+    uint64_t epoch;
+    uint64_t sim_tick;
+    uint64_t sequence;
+    uint64_t step_budget;
+} openenoc_iss_irq_update_t;
+
 uint32_t openenoc_iss_abi_version(void);
 const char *openenoc_iss_status_string(int32_t status);
 
@@ -117,6 +129,9 @@ int32_t openenoc_iss_start(
     uint64_t entry_pc,
     uint64_t max_steps);
 int32_t openenoc_iss_request_stop(openenoc_iss_t *handle);
+int32_t openenoc_iss_update_irq(
+    openenoc_iss_t *handle,
+    const openenoc_iss_irq_update_t *update);
 
 int32_t openenoc_iss_try_poll(
     openenoc_iss_t *handle,
