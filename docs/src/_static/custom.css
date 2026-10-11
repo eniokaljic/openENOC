@@ -79,21 +79,28 @@
 }
 
 /* -------------------------
-   Nested container (opened)
+   Opened containers at every depth
 ------------------------- */
-.wy-menu-vertical li.toctree-l1.current > ul {
+.wy-menu-vertical li.current,
+.wy-menu-vertical li.current ul {
     background-color: #0b1220 !important;
+}
+
+.wy-menu-vertical li.toctree-l1.current > ul {
     padding-top: 4px;
     padding-bottom: 6px;
 }
 
 /* -------------------------
-   Nested links
+   Nested link colors at every depth
 ------------------------- */
-.wy-menu-vertical li.toctree-l2 > a,
-.wy-menu-vertical li.toctree-l3 > a {
+.wy-menu-vertical li li > a {
     background-color: #0b1220 !important;
     color: #cbd5e1 !important;
+}
+
+.wy-menu-vertical li.toctree-l2 > a,
+.wy-menu-vertical li.toctree-l3 > a {
     padding-left: 28px;
 }
 
@@ -180,6 +187,24 @@
 
 .rst-content table th {
     background: #f3f4f6;
+}
+
+/* Parameter and signal tables in the RTL Reference. */
+.rst-content table.rtl-reference-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.rst-content .wy-table-responsive table.rtl-reference-table th,
+.rst-content .wy-table-responsive table.rtl-reference-table td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.rst-content table.rtl-reference-table code.literal,
+.rst-content table.rtl-reference-table code.literal .pre {
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 /* =========================================================

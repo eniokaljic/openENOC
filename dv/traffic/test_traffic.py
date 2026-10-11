@@ -7,14 +7,15 @@ import struct
 
 import cocotb_test.simulator
 import pytest
-
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 from cocotb.regression import TestFactory
 from cocotb.handle import Immediate
-
 from cocotbext.axi import AxiStreamBus, AxiStreamFrame, AxiStreamSource, AxiStreamSink
+
+TestFactory.__test__ = False
+
 
 class TB(object):
     def __init__(self, dut):
@@ -32,6 +33,7 @@ class TB(object):
         await RisingEdge(self.dut.clk)
         await RisingEdge(self.dut.clk)
         self.dut.rst.value = 0
+
 
 def read_pcap_packets(filename):
     assert os.path.isfile(filename), f"PCAP file does not exist: {filename}"
@@ -58,9 +60,9 @@ def read_pcap_packets(filename):
     packet_index = 0
 
     while offset < len(data):
-        assert offset + 16 <= len(data), (
-            f"Truncated packet header in {filename}, packet {packet_index}"
-        )
+        assert offset + 16 <= len(
+            data
+        ), f"Truncated packet header in {filename}, packet {packet_index}"
 
         ts_sec, ts_frac, incl_len, orig_len = struct.unpack_from(
             packet_header_fmt,
@@ -70,18 +72,20 @@ def read_pcap_packets(filename):
 
         offset += 16
 
-        assert offset + incl_len <= len(data), (
-            f"Truncated packet payload in {filename}, packet {packet_index}"
-        )
+        assert offset + incl_len <= len(
+            data
+        ), f"Truncated packet payload in {filename}, packet {packet_index}"
 
-        payload = data[offset:offset + incl_len]
+        payload = data[offset : offset + incl_len]
         offset += incl_len
 
-        packets.append({
-            "incl_len": incl_len,
-            "orig_len": orig_len,
-            "payload": payload,
-        })
+        packets.append(
+            {
+                "incl_len": incl_len,
+                "orig_len": orig_len,
+                "payload": payload,
+            }
+        )
 
         packet_index += 1
 
@@ -93,9 +97,7 @@ def compare_pcap_payloads(ref_path, out_path):
     out_global_header, out_packets = read_pcap_packets(out_path)
 
     assert ref_global_header == out_global_header, (
-        f"PCAP global header mismatch:\n"
-        f"  input:  {ref_path}\n"
-        f"  output: {out_path}"
+        f"PCAP global header mismatch:\n" f"  input:  {ref_path}\n" f"  output: {out_path}"
     )
 
     assert len(ref_packets) == len(out_packets), (
@@ -118,10 +120,9 @@ def compare_pcap_payloads(ref_path, out_path):
         )
 
         assert ref_packet["payload"] == out_packet["payload"], (
-            f"PCAP packet {i} payload mismatch:\n"
-            f"  input:  {ref_path}\n"
-            f"  output: {out_path}"
+            f"PCAP packet {i} payload mismatch:\n" f"  input:  {ref_path}\n" f"  output: {out_path}"
         )
+
 
 @cocotb.test()
 async def test(dut):
@@ -134,33 +135,36 @@ async def test(dut):
     await RisingEdge(dut.clk)
     await RisingEdge(dut.clk)
 
-    pcap_in_filename = os.environ["PARAM_PCAP_IN_FILENAME"].replace('\\"', '')
-    pcap_out_filename = os.environ["PARAM_PCAP_OUT_FILENAME"].replace('\\"', '')
+    pcap_in_filename = os.environ["PARAM_PCAP_IN_FILENAME"].replace('\\"', "")
+    pcap_out_filename = os.environ["PARAM_PCAP_OUT_FILENAME"].replace('\\"', "")
 
     compare_pcap_payloads(pcap_in_filename, pcap_out_filename)
+
 
 # ----------------------------------------------------------------------
 # PyTest framework: test parameterization and test runner
 # ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
-repo_dir = os.path.abspath(os.path.join(tests_dir, '..', '..'))
-hw_dir = os.path.join(repo_dir, 'hw')
-libs_dir = os.path.join(repo_dir, 'libs')
-core_dir = os.path.join(hw_dir, 'rtl', 'core')
-taxi_axis_dir = os.path.join(libs_dir, 'taxi', 'src', 'axis', 'rtl')
+repo_dir = os.path.abspath(os.path.join(tests_dir, "..", ".."))
+hw_dir = os.path.join(repo_dir, "hw")
+libs_dir = os.path.join(repo_dir, "libs")
+core_dir = os.path.join(hw_dir, "rtl", "core")
+taxi_axis_dir = os.path.join(libs_dir, "taxi", "src", "axis", "rtl")
+
 
 def process_f_files(files):
     lst = {}
     for f in files:
-        if f[-2:].lower() == '.f':
-            with open(f, 'r') as fp:
+        if f[-2:].lower() == ".f":
+            with open(f, "r") as fp:
                 l = fp.read().split()
             for f in process_f_files([os.path.join(os.path.dirname(f), x) for x in l]):
                 lst[os.path.basename(f)] = f
         else:
             lst[os.path.basename(f)] = f
     return list(lst.values())
+
 
 @pytest.mark.parametrize("data_width", [8, 16, 32, 64, 128, 256, 512])
 @pytest.mark.parametrize("pcap_in_filename", ["test1.pcap", "test2.pcap"])
@@ -179,9 +183,7 @@ def test_traffic(request, data_width, pcap_in_filename):
     verilog_sources = process_f_files(verilog_sources)
 
     sim_build = os.path.join(
-        tests_dir,
-        "sim_build",
-        request.node.name.replace("[", "-").replace("]", "")
+        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
     )
 
     pcap_in_path = os.path.abspath(os.path.join(tests_dir, pcap_in_filename))
@@ -194,10 +196,7 @@ def test_traffic(request, data_width, pcap_in_filename):
         "PCAP_OUT_FILENAME": f'"{pcap_out_path}"',
     }
 
-    extra_env = {
-        f"PARAM_{k}": str(v).strip('"')
-        for k, v in parameters.items()
-    }
+    extra_env = {f"PARAM_{k}": str(v).strip('"') for k, v in parameters.items()}
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -206,6 +205,8 @@ def test_traffic(request, data_width, pcap_in_filename):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(repo_dir, "dv", "common", "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

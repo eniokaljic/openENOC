@@ -11,10 +11,10 @@ import pytest
 from cocotb.clock import Clock
 from cocotb.regression import TestFactory
 from cocotb.triggers import RisingEdge, Timer
+
 TestFactory.__test__ = False
 
 from cocotbext.axi import AxiStreamBus, AxiStreamFrame, AxiStreamSource, AxiStreamSink
-
 
 STATION_MAC = 0x020E0C000010
 OETP_ETHERTYPE = 0x88B5
@@ -26,8 +26,9 @@ OETP_COMMAND = 0x01
 # Helper functions for test frame generation
 # ----------------------------------------------------------------------
 
+
 def mac_bytes(mac):
-    return bytes((mac >> shift) & 0xff for shift in range(40, -1, -8))
+    return bytes((mac >> shift) & 0xFF for shift in range(40, -1, -8))
 
 
 def make_frame(da, sa, length=60):
@@ -51,11 +52,11 @@ def cycle_pause():
 # Standalone forwarding-table handshake model
 # ----------------------------------------------------------------------
 
+
 class ForwardingTableModel:
     """Standalone model of the forwarding table handshake only."""
 
-    def __init__(self, tb, entries=None, default_bitmap=None,
-                 lookup_latency=2, learning_latency=2):
+    def __init__(self, tb, entries=None, default_bitmap=None, lookup_latency=2, learning_latency=2):
         self.tb = tb
         self.dut = tb.dut
         self.entries = dict(entries or {})
@@ -156,9 +157,11 @@ class TB:
         self.dut.rst.value = 0
         await self.cycle(2)
 
+
 # ----------------------------------------------------------------------
 # Standalone cocotb test cases
 # ----------------------------------------------------------------------
+
 
 @cocotb.test()
 async def test_incomplete_destination_address_sets_zero_bitmap(dut):
@@ -230,11 +233,15 @@ async def test_incomplete_source_address_sets_zero_bitmap(dut):
     assert model.learnings == []
     assert tb.sink.empty()
 
+
 # ----------------------------------------------------------------------
 # TestFactory logic: idle and backpressure combinations
 # ----------------------------------------------------------------------
 
-async def run_test_factory_lookup_learning_and_forwarding( dut, idle_inserter=None, backpressure_inserter=None, handshake_latency=2):
+
+async def run_test_factory_lookup_learning_and_forwarding(
+    dut, idle_inserter=None, backpressure_inserter=None, handshake_latency=2
+):
     """Basic data path, MAC parsing, request payloads and tuser assignment."""
 
     tb = TB(dut)
@@ -292,6 +299,7 @@ async def run_test_factory_lookup_learning_and_forwarding( dut, idle_inserter=No
     assert model.learnings == [(sa, 1 << port) for _, sa, port, _ in frames]
     assert tb.sink.empty()
 
+
 # ----------------------------------------------------------------------
 # Dispatch: select test cases to run based on Makefile configuration
 # ----------------------------------------------------------------------
@@ -324,8 +332,7 @@ def process_f_files(files):
             with open(source, "r", encoding="utf-8") as file_list:
                 nested_sources = file_list.read().split()
             nested_sources = [
-                os.path.join(os.path.dirname(source), item)
-                for item in nested_sources
+                os.path.join(os.path.dirname(source), item) for item in nested_sources
             ]
             for nested_source in process_f_files(nested_sources):
                 sources[os.path.basename(nested_source)] = nested_source
@@ -380,10 +387,8 @@ def test_openenoc_axis_forwarding_engine(request, data_w):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
-        extra_args=[
-            "-Wall",
-            os.path.join(common_dir, "config.vlt"),
-        ],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

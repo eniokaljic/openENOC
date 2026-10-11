@@ -5,29 +5,18 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
+/* Forwarding-table destination MAC lookup request/acknowledgement interface. */
 interface openenoc_lookup_if #(
     parameter int NUM_OF_INTERFACES = 8
 );
-    logic                         req;
-    logic [47:0]                  mac_addr;
-    logic                         ack;
+    logic req;
+    logic [47:0] mac_addr;
+    logic ack;
     logic [NUM_OF_INTERFACES-1:0] port_bitmap;
 
-    modport mst (
-        output req,
-        output mac_addr,
+    modport mst(output req, output mac_addr, input ack, input port_bitmap);
 
-        input  ack,
-        input  port_bitmap
-    );
-
-    modport slv (
-        input  req,
-        input  mac_addr,
-
-        output ack,
-        output port_bitmap
-    );
+    modport slv(input req, input mac_addr, output ack, output port_bitmap);
 
 endinterface
 

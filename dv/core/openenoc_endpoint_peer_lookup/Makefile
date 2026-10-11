@@ -3,7 +3,7 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
@@ -13,6 +13,9 @@ REPO_DIR = ../../..
 CORE_DIR = $(REPO_DIR)/hw/rtl/core
 HAL_IF_DIR = $(REPO_DIR)/build/hal/rtl
 HAL_RTL_DIR = $(REPO_DIR)/build/hal/openenoc_endpoint_full/rtl
+HAL_PYTHON_DIR = $(REPO_DIR)/build/hal/openenoc_endpoint_full/python
+
+export PYTHONPATH := $(abspath $(HAL_PYTHON_DIR)):$(PYTHONPATH)
 
 DUT = openenoc_endpoint_peer_lookup
 COCOTB_TEST_MODULES = test_$(DUT)
@@ -32,17 +35,18 @@ VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 
 export PARAM_LOOKUP_PORTS := 2
 
-ifeq ($(SIM), icarus)
-	PLUSARGS += -fst
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-P $(COCOTB_TOPLEVEL).$(subst PARAM_,,$(v))=$($(v)))
-else ifeq ($(SIM), verilator)
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-G$(subst PARAM_,,$(v))=$($(v)))
-	EXTRA_ARGS += -Wall -Wno-TIMESCALEMOD ../../common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-		EXTRA_ARGS += --trace-structs
-	endif
+COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
+	-G$(subst PARAM_,,$(v))=$($(v)))
+EXTRA_ARGS += -Wall ../../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc

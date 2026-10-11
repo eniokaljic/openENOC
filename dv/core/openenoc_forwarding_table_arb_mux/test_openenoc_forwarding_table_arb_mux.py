@@ -18,6 +18,7 @@ TestFactory.__test__ = False
 # Helper functions and reference model
 # ----------------------------------------------------------------------
 
+
 def field(value, index, width):
     return (int(value) >> (index * width)) & ((1 << width) - 1)
 
@@ -93,20 +94,14 @@ class TB:
         d.clk.value = 0
         d.rst.value = int(reset)
         driven = {(t.channel, t.port): t for t in transactions}
-        assert len(driven) == len(transactions), (
-            "two requests for one source in one cycle"
-        )
+        assert len(driven) == len(transactions), "two requests for one source in one cycle"
         req, macs, bitmaps = 0, 0, 0
         for ch in range(2):
             for port in range(n):
                 t = driven.get((ch, port))
                 # Poison inactive payloads immediately after each strobe. This
                 # exposes muxes that use live data instead of captured requests.
-                mac = (
-                    t.mac
-                    if t
-                    else 0xBAD000000000 | (self.cycle << 8) | port | (ch << 7)
-                )
+                mac = t.mac if t else 0xBAD000000000 | (self.cycle << 8) | port | (ch << 7)
                 macs |= mac << ((ch * n + port) * 48)
                 if t:
                     req |= 1 << (ch * n + port)
@@ -142,9 +137,9 @@ class TB:
                 # Independent reference queue records SOURCE captures, not DUT
                 # pending state. Compare both occupancy and RR winner every cycle.
                 expected_pending = sum(1 << p for p in self.queued[ch])
-                assert field(d.pending.value, ch, n) == expected_pending, (
-                    "pending request lost/duplicated"
-                )
+                assert (
+                    field(d.pending.value, ch, n) == expected_pending
+                ), "pending request lost/duplicated"
                 was_busy = self.active[ch] is not None
                 assert bool(int(d.busy.value) & (1 << ch)) == was_busy
                 expected_launch = bool(self.queued[ch]) and not was_busy
@@ -159,9 +154,9 @@ class TB:
 
                 if slave_req & (1 << ch):
                     t = self.active[ch]
-                    assert t is not None and self.jobs[ch] is None, (
-                        "duplicate or unsolicited slave req"
-                    )
+                    assert (
+                        t is not None and self.jobs[ch] is None
+                    ), "duplicate or unsolicited slave req"
                     assert t.started is None
                     t.started = self.cycle
                     self.jobs[ch] = t
@@ -192,9 +187,7 @@ class TB:
                         for offset in range(n)
                         if (self.pointer[ch] + offset) % n in self.queued[ch]
                     )
-                    assert field(d.selected.value, ch, self.index_w) == winner, (
-                        "non-RR grant"
-                    )
+                    assert field(d.selected.value, ch, self.index_w) == winner, "non-RR grant"
                     self.active[ch] = self.queued[ch].pop(winner)
                     self.pointer[ch] = (winner + 1) % n
                     self.launches[ch].append(winner)
@@ -240,10 +233,10 @@ class TB:
         assert self.accepted == self.returned
         assert not any(self.queued) and self.active == [None, None]
 
-
     # ----------------------------------------------------------------------
     # TestFactory traffic scenarios
     # ----------------------------------------------------------------------
+
 
 async def run_traffic(dut, traffic="sequential", latency="alternating", channels=(0, 1)):
     tb = TB(dut, latency)
@@ -287,18 +280,13 @@ async def run_traffic(dut, traffic="sequential", latency="alternating", channels
         await tb.drain()
         for _ in range(3):
             expected = {
-                ch: [(tb.pointer[ch] + port) % tb.n for port in range(tb.n)]
-                for ch in channels
+                ch: [(tb.pointer[ch] + port) % tb.n for port in range(tb.n)] for ch in channels
             }
             offsets = {ch: len(tb.launches[ch]) for ch in channels}
-            await tb.tick([
-                tb.transaction(ch, port)
-                for ch in channels
-                for port in range(tb.n)
-            ])
+            await tb.tick([tb.transaction(ch, port) for ch in channels for port in range(tb.n)])
             await tb.drain()
             for ch in channels:
-                assert tb.launches[ch][offsets[ch]:] == expected[ch]
+                assert tb.launches[ch][offsets[ch] :] == expected[ch]
     else:
         raise ValueError(traffic)
     for ch in set((0, 1)) - set(channels):
@@ -308,6 +296,7 @@ async def run_traffic(dut, traffic="sequential", latency="alternating", channels
 # ----------------------------------------------------------------------
 # Standalone Cocotb test cases
 # ----------------------------------------------------------------------
+
 
 @cocotb.test()
 async def test_independent_response_timing(dut):
@@ -343,9 +332,7 @@ async def test_new_request_on_ack_edge(dut):
     while tb.cycle < first[0].started + first[0].delay:
         await tb.tick()
     replacements = [
-        tb.transaction(ch, port, delay=1 + port * 3)
-        for ch in (0, 1)
-        for port in range(tb.n)
+        tb.transaction(ch, port, delay=1 + port * 3) for ch in (0, 1) for port in range(tb.n)
     ]
     await tb.tick(replacements)
     assert all(t.completed is not None for t in first)
@@ -359,11 +346,7 @@ async def test_held_request_single_transaction(dut):
     """Optional held-until-ack compatibility must not produce duplicates."""
     tb = TB(dut)
     await tb.reset()
-    batch = [
-        tb.transaction(ch, port, delay=2 + port % 7)
-        for ch in (0, 1)
-        for port in range(tb.n)
-    ]
+    batch = [tb.transaction(ch, port, delay=2 + port % 7) for ch in (0, 1) for port in range(tb.n)]
     await tb.tick(batch)
     for _ in range(20000):
         held = [t for t in batch if t.completed is None]
@@ -375,11 +358,7 @@ async def test_held_request_single_transaction(dut):
     await tb.drain()
     assert tb.returned == [tb.n, tb.n]
     # A low req cycle rearms capture; another complete round must still work.
-    await tb.tick([
-        tb.transaction(ch, port)
-        for ch in (0, 1)
-        for port in range(tb.n)
-    ])
+    await tb.tick([tb.transaction(ch, port) for ch in (0, 1) for port in range(tb.n)])
     await tb.drain()
     assert tb.returned == [2 * tb.n, 2 * tb.n]
 
@@ -396,11 +375,7 @@ async def test_randomized_arrivals_and_delays(dut):
         batch = []
         for ch in (0, 1):
             for port in range(tb.n):
-                if (
-                    remaining[ch][port]
-                    and port not in tb.outstanding[ch]
-                    and tb.rng.random() < 0.3
-                ):
+                if remaining[ch][port] and port not in tb.outstanding[ch] and tb.rng.random() < 0.3:
                     batch.append(tb.transaction(ch, port))
                     remaining[ch][port] -= 1
         await tb.tick(batch)
@@ -416,11 +391,7 @@ async def test_reset_active_and_pending(dut):
     """Reset cancels queued and active transactions in DUT and simulated slave."""
     tb = TB(dut)
     await tb.reset()
-    old = [
-        tb.transaction(ch, port, delay=40)
-        for ch in (0, 1)
-        for port in range(tb.n)
-    ]
+    old = [tb.transaction(ch, port, delay=40) for ch in (0, 1) for port in range(tb.n)]
     await tb.tick(old)
     await tb.wait_started(old[0])
     assert all(tb.queued) and all(tb.jobs)
@@ -429,11 +400,7 @@ async def test_reset_active_and_pending(dut):
     for _ in range(50):
         await tb.tick()
     assert tb.returned == [0, 0]
-    await tb.tick([
-        tb.transaction(ch, port)
-        for ch in (0, 1)
-        for port in range(tb.n)
-    ])
+    await tb.tick([tb.transaction(ch, port) for ch in (0, 1) for port in range(tb.n)])
     await tb.drain()
     assert tb.returned == [tb.n, tb.n]
     assert tb.launches == [list(range(tb.n)), list(range(tb.n))]
@@ -456,9 +423,9 @@ if getattr(cocotb, "top", None) is not None:
 # ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
-hw_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..', 'hw'))
-core_dir = os.path.join(hw_dir, 'rtl', 'core')
-common_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', 'common'))
+hw_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "..", "hw"))
+core_dir = os.path.join(hw_dir, "rtl", "core")
+common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
 
 
 @pytest.mark.parametrize("num_of_interfaces", [2, 4, 5, 8, 32])
@@ -478,10 +445,11 @@ def test_openenoc_forwarding_table_arb_mux(request, num_of_interfaces):
     parameters = {}
     parameters["NUM_OF_INTERFACES"] = num_of_interfaces
 
-    extra_env = {f'PARAM_{k}': str(v) for k, v in parameters.items()}
+    extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(tests_dir, "sim_build",
-        request.node.name.replace('[', '-').replace(']', ''))
+    sim_build = os.path.join(
+        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
+    )
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -490,9 +458,8 @@ def test_openenoc_forwarding_table_arb_mux(request, num_of_interfaces):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
-        extra_args=[
-            os.path.join(common_dir, "config.vlt"),
-        ],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

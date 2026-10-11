@@ -5,19 +5,17 @@
 
 ## Overview
 
-This test suite verifies the `openenoc_axil_ram` generic AXI4-Lite memory.
-The DUT derives its data and strobe widths from `taxi_axil_if`, implements a
-byte-addressed power-of-two aperture, and optionally initializes its contents
-from a `$readmemh`-compatible file.
+This cocotb suite verifies AXI4-Lite RAM with and without file initialization.
+The bundled `imem.mem` provides a partial firmware image so the tests can
+check zero-filled locations after the loaded contents. The default fixture
+uses 32-bit data, a 10-bit local aperture, and 32-bit bus addresses.
 
-The bundled `imem.mem` is copied from `build/sw/openenoc_full_endpoint/imem.mem` and contains
-the current PicoRV32 CSR smoke-test firmware. It is intentionally shorter than
-the test RAM so that the tests also verify zero-filled locations following the
-loaded image.
+Component architecture and operation are described in the
+[RTL Reference](../../../docs/src/rtl/openenoc_axil_ram.rst).
 
 ## Test Coverage
 
-The cocotb suite covers:
+The suite covers:
 
 - zero initialization when `INIT_FILE` is empty;
 - little-endian initialization from `imem.mem`;
@@ -36,25 +34,6 @@ The cocotb suite covers:
 - request idle insertion and randomized channel/response backpressure;
 - deterministic randomized read/write stress;
 - `OKAY` read and write responses.
-
-Simultaneous read and write operations to the same memory word are not assigned
-a portable read-during-write value. Such collisions should be prevented or
-resolved by the integrating system when a specific behavior is required.
-
-## Default Configuration
-
-The direct Makefile flow uses:
-
-```text
-DATA_W=32
-ADDR_W=10
-AXIL_ADDR_W=32
-PIPELINE_OUTPUT=0
-INIT_FILE=<absolute path to imem.mem>
-```
-
-`ADDR_W` is the width of the byte-addressed local aperture. The internal word
-depth is therefore `2**ADDR_W / (DATA_W/8)`.
 
 ## Running Tests
 

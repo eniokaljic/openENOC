@@ -3,7 +3,7 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
@@ -33,11 +33,8 @@ VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr_pkg.sv
 VERILOG_SOURCES += $(HAL_IF_DIR)/openenoc_endpoint_if.sv
 VERILOG_SOURCES += $(HAL_IF_DIR)/openenoc_switch_if.sv
 VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_if.sv
-VERILOG_SOURCES += $(TAXI_SYNC_DIR)/taxi_sync_reset.sv
-VERILOG_SOURCES += $(TAXI_SYNC_DIR)/taxi_sync_signal.sv
 VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_adapter.sv
-VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_async_fifo.sv
-VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_async_fifo_adapter.sv
+VERILOG_SOURCES += $(TAXI_AXIS_DIR)/taxi_axis_register.sv
 VERILOG_SOURCES += $(TAXI_AXI_DIR)/taxi_axil_if.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_crossbar_skid_buffer.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_rr_arbiter.sv
@@ -49,6 +46,32 @@ VERILOG_SOURCES += $(PICORV32_DIR)/picorv32.v
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_picorv32_axil_adapter.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_picorv32.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_eth_if.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_cpuif_if.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_cpuif_axil_adapter.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_peer_lookup_if.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_dma_transfer_if.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_irq_event_if.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_dma_engine.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_peer_lookup.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_irq_controller.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_direct_axis.sv
+VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_oetp_engine.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axis/rtl/taxi_axis_fifo.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axis/rtl/taxi_axis_fifo_adapter.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axis/rtl/taxi_axis_arb_mux.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axis/rtl/taxi_axis_demux.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axi/rtl/taxi_axi_if.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axi/rtl/taxi_axi_register_rd.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axi/rtl/taxi_axi_register_wr.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axi/rtl/taxi_axi_axil_adapter.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axi/rtl/taxi_axi_axil_adapter_wr.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/axi/rtl/taxi_axi_axil_adapter_rd.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/dma/rtl/taxi_dma_desc_if.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/dma/rtl/taxi_axi_dma.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/dma/rtl/taxi_axi_dma_rd.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/dma/rtl/taxi_axi_dma_wr.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/prim/rtl/taxi_arbiter.sv
+VERILOG_SOURCES += $(LIBS_DIR)/taxi/src/prim/rtl/taxi_penc.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_interface.sv
 VERILOG_SOURCES += $(CORE_DIR)/openenoc_axil_ram.sv
 VERILOG_SOURCES += $(HAL_RTL_DIR)/openenoc_endpoint_full_csr.sv
@@ -58,14 +81,17 @@ VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 
 export PARAM_IMEM_INIT_FILE := $(abspath $(SW_BUILD_DIR)/imem.mem)
 
-ifeq ($(SIM), verilator)
-	COMPILE_ARGS += '-GIMEM_INIT_FILE="$(PARAM_IMEM_INIT_FILE)"'
-	EXTRA_ARGS += -Wall -Wno-TIMESCALEMOD -Wno-SYNCASYNCNET ../../common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-		EXTRA_ARGS += --trace-structs
-	endif
+COMPILE_ARGS += '-GIMEM_INIT_FILE="$(PARAM_IMEM_INIT_FILE)"'
+EXTRA_ARGS += -Wall ../../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc
