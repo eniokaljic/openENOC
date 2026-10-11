@@ -5,26 +5,14 @@
 
 ## Overview
 
-This cocotb suite verifies `openenoc_axil_cpuif_adapter` in isolation. The
-SystemVerilog wrapper instantiates only the DUT, one `taxi_axil_if`, and one
-`openenoc_cpuif_if`; no CSR block, memory, crossbar, processor, or endpoint
-component is included.
-
-The adapter buffers AXI write-address and write-data channels independently
-and arbitrates complete writes against buffered reads. Read and write requests
-use round-robin selection when both are available. Only one CPUIF operation is
-outstanding, but its completion can be replaced by the next request in the same
-cycle.
-
-An ordered response FIFO retains CPUIF completions under AXI backpressure and
-reserves space for the outstanding operation before it is dispatched. This
-preserves bubble-free CPUIF throughput without risking response loss. Both a
-combinational acknowledgement in the CPUIF request cycle and an acknowledgement
-after an arbitrary delay are supported.
+This cocotb suite verifies `openenoc_axil_cpuif_adapter` in isolation with
+native CPUIF and AXI4-Lite bus fixtures. The default fixture uses 32-bit
+addresses and data. Component architecture and operation are described in
+the [RTL Reference](../../../docs/src/rtl/openenoc_axil_cpuif_adapter.rst).
 
 ## Test Coverage
 
-The cocotb suite covers:
+The suite covers:
 
 - independent AXI write-address and write-data arrival;
 - fall-through dispatch when the second write channel arrives;
@@ -40,20 +28,6 @@ The cocotb suite covers:
 - preservation of read response data; and
 - reset of AXI request buffers, the active CPUIF operation, and queued
   responses.
-
-## Default Configuration
-
-The isolated SystemVerilog wrapper uses:
-
-```text
-DATA_W=32
-ADDR_W=32
-RESPONSE_FIFO_DEPTH=2
-```
-
-The AXI strobe width is derived as `DATA_W/8`. `RESPONSE_FIFO_DEPTH` must be at
-least two so one queued response and one active CPUIF operation can coexist
-during a bubble-free handoff.
 
 ## Running Tests
 

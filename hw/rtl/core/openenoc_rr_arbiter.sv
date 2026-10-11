@@ -6,23 +6,17 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-/*
- * Bubble-free combinational round-robin arbiter.
- *
- * The grant is selected combinationally from the current requests.  Only the
- * round-robin pointer is registered, so a completed grant can be followed by
- * another grant on the next clock cycle without an empty arbitration cycle.
- */
+/* Combinational round-robin arbiter with registered priority. */
 module openenoc_rr_arbiter #(
     parameter PORTS = 2,
     parameter INDEX_W = PORTS > 1 ? $clog2(PORTS) : 1
 ) (
-    input  wire logic               clk,
-    input  wire logic               rst,
-    input  wire logic [PORTS-1:0]   request,
-    input  wire logic               accept,
-    output wire logic [PORTS-1:0]   grant,
-    output wire logic               grant_valid,
+    input wire logic clk,
+    input wire logic rst,
+    input wire logic [PORTS-1:0] request,
+    input wire logic accept,
+    output wire logic [PORTS-1:0] grant,
+    output wire logic grant_valid,
     output wire logic [INDEX_W-1:0] grant_index
 );
 
@@ -60,7 +54,7 @@ module openenoc_rr_arbiter #(
         if (rst) begin
             pointer_reg <= '0;
         end else if (accept && grant_valid_int) begin
-            if (grant_index_int == INDEX_W'(PORTS-1)) begin
+            if (grant_index_int == INDEX_W'(PORTS - 1)) begin
                 pointer_reg <= '0;
             end else begin
                 pointer_reg <= grant_index_int + 1'b1;

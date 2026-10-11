@@ -3,7 +3,7 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
@@ -35,18 +35,18 @@ export PARAM_INIT_FILE := $(abspath imem.mem)
 
 NONSTRING_PARAM_VARS = $(filter-out PARAM_INIT_FILE,$(filter PARAM_%,$(.VARIABLES)))
 
-ifeq ($(SIM), icarus)
-	PLUSARGS += -fst
-	COMPILE_ARGS += $(foreach v,$(NONSTRING_PARAM_VARS),-P $(COCOTB_TOPLEVEL).$(subst PARAM_,,$(v))=$($(v)))
-	COMPILE_ARGS += '-P$(COCOTB_TOPLEVEL).INIT_FILE="$(PARAM_INIT_FILE)"'
-else ifeq ($(SIM), verilator)
-	COMPILE_ARGS += $(foreach v,$(NONSTRING_PARAM_VARS),-G$(subst PARAM_,,$(v))=$($(v)))
-	COMPILE_ARGS += '-GINIT_FILE="$(PARAM_INIT_FILE)"'
-	EXTRA_ARGS += -Wall ../../common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-	endif
+COMPILE_ARGS += $(foreach v,$(NONSTRING_PARAM_VARS),-G$(subst PARAM_,,$(v))=$($(v)))
+COMPILE_ARGS += '-GINIT_FILE="$(PARAM_INIT_FILE)"'
+EXTRA_ARGS += -Wall ../../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc

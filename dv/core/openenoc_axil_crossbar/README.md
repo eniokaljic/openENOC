@@ -3,14 +3,23 @@
 
 # openENOC AXI4-Lite Crossbar Test Suite
 
-This cocotb suite verifies the pipelined `openenoc_axil_crossbar` and its
-internal `openenoc_axil_crossbar_*` components.
+## Overview
 
-The tests cover address routing, simultaneous initiators, independent AW/W
-backpressure, response ordering across targets, DECERR generation, reset,
-payload stability while stalled, and sustained read/write traffic.  The
-throughput tests require consecutive target-side AR, AW, and W handshakes when
-there is no contention or downstream backpressure.
+This cocotb suite verifies the AXI4-Lite crossbar and its address decoder,
+read/write paths, and channel skid buffers.
+
+Component architecture and operation are described in the
+[RTL Reference](../../../docs/src/rtl/openenoc_axil_crossbar.rst).
+
+## Test Coverage
+
+The suite covers:
+
+- address routing, decode errors, and reset;
+- simultaneous initiators and response ordering across targets;
+- independent AW/W backpressure and stable stalled payloads;
+- sustained traffic with consecutive target-side AR, AW, and W handshakes when
+  uncontended.
 
 ## Running Tests
 

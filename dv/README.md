@@ -22,6 +22,8 @@ dv/
 │   └── .../
 ├── hal/
 │   └── .../
+├── sw/
+│   └── .../
 ├── traffic/
 ├── README.md
 └── requirements.txt
@@ -31,6 +33,8 @@ The `core/` directory contains unit-level RTL verification environments. The
 `endpoints/` directory verifies complete endpoint RTL integrations, including
 the CPU, memories, generated CSR block, and project interfaces. The `hal/`
 directory verifies generated endpoint CSR RTL and its Python register model.
+The `sw/` directory contains host tests for software HAL libraries and their
+CPU platform integration.
 The `traffic/` directory validates the reusable PCAP replay and capture
 infrastructure, while `common/` contains simulator configuration shared across
 test suites.
@@ -44,7 +48,7 @@ GTKWave is optional and is only needed when opening generated waveforms. The
 Ubuntu system dependencies can be installed with:
 
 ```bash
-sudo apt install bash make python3 python3-pip python3-venv gtkwave
+sudo apt install bash make python3 python3-pip python3-venv gtkwave liblz4-dev
 ```
 
 Verilator can be installed separately or as part of the
@@ -88,12 +92,19 @@ cocotb-config --version
 
 ## Test-Specific Tools
 
+All project cocotb Makefiles and pytest runners use Verilator with `-Wall` and
+the shared lint exceptions in `common/config.vlt`. They set the HDL timescale
+to `1ns/1ps` explicitly instead of suppressing timescale warnings.
+
 The tests under `core/` and `endpoints/openenoc_endpoint_full/` use Verilator
 through cocotb-test and pytest. Their `run_tests.sh waves` commands enable FST
 waveform generation. The traffic test under `traffic/` uses the cocotb Makefile
 flow. The HAL test under `hal/openenoc_endpoint_full/` uses cocotb,
 cocotbext-axi, GNU Make, and Verilator directly; its optional `make wave` target
 invokes GTKWave.
+
+The [Endpoint IRQ HAL host tests](sw/openenoc_endpoint_irq/README.md) use GNU
+Make, a native GCC compiler and GNU `timeout`.
 
 Before running the HAL or full-endpoint tests, generate the endpoint RTL, Python
 register model, and firmware from the repository root:

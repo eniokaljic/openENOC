@@ -3,7 +3,7 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
@@ -24,13 +24,18 @@ VERILOG_SOURCES += $(CORE_DIR)/openenoc_cpuif_if.sv
 VERILOG_SOURCES += $(CORE_DIR)/$(DUT).sv
 VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 
-ifeq ($(SIM), verilator)
-	EXTRA_ARGS += -Wall ../../common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-		EXTRA_ARGS += --trace-structs
-	endif
+COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
+	-G$(subst PARAM_,,$(v))=$($(v)))
+EXTRA_ARGS += -Wall ../../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc

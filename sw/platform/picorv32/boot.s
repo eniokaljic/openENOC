@@ -1,12 +1,22 @@
 # SPDX-FileCopyrightText: 2026 Enio Kaljic
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-.section .text.boot, "ax", @progbits
+.section .text.reset, "ax", @progbits
 .balign 4
 .globl _start
 .type _start, @function
 
 _start:
+    j .Lboot_start
+.size _start, . - _start
+
+.section .text.irq_vector, "ax", @progbits
+.balign 4
+    j irq_entry
+
+.section .text.boot, "ax", @progbits
+.balign 4
+.Lboot_start:
     # Establish the RISC-V ABI state before entering compiled C code.
     la sp, __stack_top
 
@@ -50,5 +60,3 @@ _start:
     # A returned main has nowhere to transfer control, so stop in place.
 .Lhalt:
     j .Lhalt
-
-.size _start, . - _start

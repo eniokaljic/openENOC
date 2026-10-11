@@ -64,3843 +64,3923 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         Walk the address map and check user defined properties are correctly pulled up
         """
         with self.subTest(msg='register: csr.endpoint_interface'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.config'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.config.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7]'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].udp,{})
-            
-        with self.subTest(msg='register: csr.test_reg'):
-            
-            
-            self.assertDictEqual(self.dut.test_reg.udp,{})
-            
-        with self.subTest(msg='register: csr.regB'):
-            
-            
-            self.assertDictEqual(self.dut.regB.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.config.mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.config.non_oetp_control.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.status.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.control'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.control.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.control'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.control.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.claim'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.complete'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].rmem_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].rmem_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].local_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].local_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].remote_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].remote_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].size'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].register_size.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].rmem_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].rmem_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].local_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].local_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].remote_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].remote_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].size'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].register_size.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].rmem_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].rmem_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].local_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].local_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].remote_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].remote_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].size'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].register_size.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].rmem_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].rmem_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].local_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].local_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].remote_address'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].remote_address.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].size'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].register_size.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[0].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[1]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[1].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[2]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[2].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[3]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[3].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[4]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[4].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[5]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[5].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[6]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[6].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[7]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[7].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[8]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[8].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[9]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[9].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[10]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[10].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[11]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[11].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[12]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[12].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[13]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[13].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[14]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[14].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[15]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[15].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[16]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[16].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[17]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[17].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[18]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[18].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[19]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[19].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[20]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[20].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[21]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[21].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[22]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[22].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[23]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[23].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[24]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[24].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[25]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[25].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[26]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[26].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[27]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[27].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[28]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[28].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[29]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[29].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[30]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[30].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[31]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[31].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[32]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[32].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[33]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[33].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[34]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[34].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[35]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[35].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[36]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[36].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[37]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[37].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[38]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[38].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[39]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[39].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[40]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[40].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[41]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[41].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[42]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[42].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[43]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[43].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[44]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[44].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[45]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[45].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[46]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[46].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[47]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[47].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[48]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[48].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[49]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[49].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[50]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[50].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[51]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[51].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[52]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[52].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[53]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[53].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[54]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[54].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[55]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[55].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[56]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[56].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[57]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[57].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[58]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[58].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[59]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[59].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[60]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[60].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[61]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[61].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[62]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[62].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[63]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[63].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[64]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[64].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[65]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[65].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[66]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[66].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[67]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[67].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[68]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[68].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[69]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[69].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[70]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[70].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[71]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[71].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[72]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[72].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[73]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[73].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[74]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[74].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[75]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[75].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[76]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[76].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[77]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[77].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[78]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[78].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[79]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[79].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[80]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[80].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[81]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[81].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[82]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[82].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[83]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[83].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[84]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[84].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[85]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[85].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[86]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[86].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[87]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[87].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[88]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[88].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[89]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[89].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[90]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[90].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[91]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[91].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[92]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[92].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[93]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[93].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[94]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[94].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[95]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[95].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[96]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[96].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[97]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[97].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[98]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[98].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[99]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[99].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[100]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[100].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[101]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[101].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[102]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[102].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[103]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[103].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[104]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[104].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[105]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[105].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[106]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[106].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[107]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[107].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[108]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[108].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[109]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[109].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[110]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[110].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[111]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[111].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[112]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[112].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[113]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[113].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[114]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[114].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[115]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[115].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[116]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[116].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[117]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[117].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[118]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[118].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[119]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[119].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[120]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[120].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[121]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[121].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[122]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[122].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[123]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[123].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[124]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[124].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[125]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[125].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[126]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[126].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[127]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[127].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[128]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[128].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[129]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[129].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[130]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[130].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[131]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[131].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[132]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[132].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[133]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[133].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[134]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[134].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[135]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[135].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[136]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[136].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[137]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[137].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[138]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[138].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[139]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[139].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[140]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[140].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[141]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[141].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[142]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[142].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[143]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[143].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[144]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[144].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[145]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[145].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[146]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[146].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[147]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[147].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[148]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[148].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[149]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[149].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[150]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[150].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[151]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[151].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[152]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[152].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[153]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[153].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[154]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[154].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[155]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[155].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[156]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[156].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[157]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[157].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[158]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[158].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[159]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[159].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[160]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[160].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[161]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[161].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[162]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[162].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[163]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[163].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[164]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[164].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[165]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[165].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[166]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[166].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[167]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[167].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[168]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[168].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[169]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[169].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[170]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[170].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[171]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[171].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[172]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[172].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[173]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[173].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[174]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[174].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[175]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[175].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[176]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[176].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[177]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[177].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[178]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[178].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[179]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[179].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[180]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[180].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[181]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[181].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[182]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[182].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[183]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[183].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[184]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[184].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[185]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[185].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[186]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[186].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[187]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[187].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[188]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[188].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[189]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[189].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[190]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[190].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[191]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[191].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[192]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[192].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[193]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[193].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[194]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[194].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[195]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[195].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[196]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[196].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[197]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[197].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[198]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[198].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[199]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[199].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[200]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[200].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[201]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[201].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[202]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[202].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[203]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[203].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[204]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[204].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[205]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[205].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[206]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[206].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[207]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[207].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[208]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[208].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[209]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[209].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[210]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[210].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[211]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[211].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[212]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[212].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[213]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[213].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[214]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[214].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[215]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[215].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[216]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[216].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[217]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[217].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[218]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[218].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[219]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[219].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[220]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[220].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[221]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[221].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[222]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[222].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[223]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[223].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[224]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[224].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[225]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[225].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[226]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[226].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[227]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[227].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[228]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[228].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[229]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[229].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[230]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[230].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[231]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[231].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[232]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[232].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[233]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[233].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[234]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[234].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[235]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[235].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[236]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[236].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[237]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[237].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[238]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[238].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[239]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[239].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[240]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[240].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[241]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[241].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[242]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[242].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[243]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[243].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[244]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[244].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[245]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[245].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[246]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[246].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[247]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[247].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[248]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[248].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[249]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[249].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[250]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[250].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[251]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[251].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[252]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[252].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[253]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[253].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[254]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[254].udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[255]'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[255].udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.info'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.info.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_control'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_control.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.default_forwarding'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.default_forwarding.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].config.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].config.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].config.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].config.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].config.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].config.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].config.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].mac_address'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].mac_address.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].iface'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].iface.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].config'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].config.udp,{})
-            
-        with self.subTest(msg='register: csr.test_reg.test_field'):
-            
-            
-            self.assertDictEqual(self.dut.test_reg.test_field.udp,{})
-            
-        with self.subTest(msg='register: csr.regB.f0'):
-            
-            
-            self.assertDictEqual(self.dut.regB.f0.udp,{})
-            
-        with self.subTest(msg='register: csr.regB.f1'):
-            
-            
-            self.assertDictEqual(self.dut.regB.f1.udp,{})
-            
-        with self.subTest(msg='register: csr.regB.f2'):
-            
-            
-            self.assertDictEqual(self.dut.regB.f2.udp,{})
-            
-        with self.subTest(msg='register: csr.regB.f3'):
-            
-            
-            self.assertDictEqual(self.dut.regB.f3.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.rmem_total_depth'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.rmem_total_depth.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.num_of_peers'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.num_of_peers.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.peer_dma_supported'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.peer_dma_supported.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.non_oetp_dma_supported'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.non_oetp_dma_supported.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.direct_axis_supported'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.direct_axis_supported.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.rmem_supported'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.rmem_supported.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.irq_supported'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.irq_supported.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.info.max_dma_frame_size_bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.info.max_dma_frame_size_bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.config.mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.config.mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control.receive_mode'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.config.non_oetp_control.receive_mode.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data.tdata'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.data.tdata.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tvalid'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tvalid.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tlast'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tlast.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tkeep'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tkeep.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status.tready'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.status.tready.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.data.tdata'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.data.tdata.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.control.tready'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.control.tready.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tvalid'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tvalid.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tlast'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tlast.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tkeep'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tkeep.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.request'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.idle'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.done'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.done.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.error'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error_code.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.request'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.idle'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.armed'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.armed.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.done'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.done.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.error'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error_code.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.control.global_enable'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.control.global_enable.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.control.clear_errors'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.control.clear_errors.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.peer_dma_complete'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.peer_dma_complete.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status.claim_pending'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.claim_pending.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status.credit_full'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.credit_full.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status.overflow'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.overflow.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status.invalid_complete'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.invalid_complete.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status.irq_asserted'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.irq_asserted.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status.fifo_level'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.fifo_level.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.status.reserved_count'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.status.reserved_count.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.peer_idx'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.peer_idx.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.source'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.source.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.sequence'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.sequence.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.valid'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.valid.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.peer_idx'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.peer_idx.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.source'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.source.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.sequence'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.sequence.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.valid'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.valid.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].rmem_address.offset'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].rmem_address.offset.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].local_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].local_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].remote_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].remote_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].size.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].register_size.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.mode'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.mode.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.irq_enable'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.irq_enable.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.request'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.request.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.idle'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.idle.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.done'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.done.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.error'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.error.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.error_code'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.error_code.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].rmem_address.offset'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].rmem_address.offset.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].local_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].local_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].remote_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].remote_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].size.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].register_size.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.mode'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.mode.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.irq_enable'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.irq_enable.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.request'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.request.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.idle'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.idle.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.done'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.done.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.error'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.error.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.error_code'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.error_code.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].rmem_address.offset'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].rmem_address.offset.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].local_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].local_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].remote_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].remote_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].size.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].register_size.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.mode'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.mode.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.irq_enable'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.irq_enable.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.request'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.request.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.idle'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.idle.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.done'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.done.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.error'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.error.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.error_code'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.error_code.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].rmem_address.offset'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].rmem_address.offset.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].local_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].local_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].remote_address.base'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].remote_address.base.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].size.bytes'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].register_size.bytes.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.mode'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.mode.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.irq_enable'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.irq_enable.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.request'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.request.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.idle'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.idle.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.done'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.done.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.error'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.error.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.error_code'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.error_code.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[0].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[1].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[1].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[2].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[2].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[3].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[3].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[4].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[4].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[5].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[5].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[6].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[6].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[7].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[7].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[8].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[8].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[9].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[9].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[10].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[10].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[11].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[11].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[12].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[12].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[13].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[13].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[14].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[14].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[15].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[15].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[16].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[16].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[17].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[17].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[18].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[18].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[19].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[19].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[20].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[20].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[21].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[21].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[22].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[22].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[23].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[23].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[24].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[24].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[25].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[25].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[26].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[26].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[27].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[27].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[28].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[28].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[29].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[29].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[30].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[30].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[31].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[31].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[32].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[32].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[33].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[33].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[34].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[34].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[35].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[35].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[36].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[36].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[37].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[37].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[38].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[38].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[39].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[39].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[40].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[40].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[41].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[41].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[42].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[42].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[43].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[43].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[44].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[44].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[45].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[45].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[46].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[46].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[47].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[47].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[48].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[48].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[49].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[49].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[50].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[50].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[51].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[51].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[52].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[52].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[53].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[53].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[54].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[54].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[55].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[55].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[56].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[56].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[57].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[57].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[58].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[58].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[59].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[59].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[60].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[60].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[61].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[61].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[62].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[62].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[63].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[63].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[64].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[64].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[65].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[65].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[66].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[66].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[67].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[67].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[68].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[68].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[69].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[69].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[70].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[70].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[71].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[71].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[72].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[72].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[73].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[73].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[74].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[74].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[75].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[75].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[76].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[76].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[77].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[77].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[78].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[78].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[79].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[79].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[80].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[80].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[81].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[81].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[82].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[82].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[83].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[83].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[84].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[84].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[85].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[85].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[86].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[86].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[87].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[87].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[88].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[88].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[89].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[89].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[90].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[90].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[91].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[91].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[92].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[92].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[93].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[93].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[94].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[94].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[95].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[95].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[96].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[96].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[97].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[97].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[98].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[98].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[99].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[99].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[100].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[100].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[101].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[101].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[102].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[102].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[103].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[103].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[104].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[104].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[105].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[105].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[106].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[106].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[107].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[107].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[108].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[108].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[109].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[109].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[110].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[110].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[111].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[111].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[112].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[112].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[113].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[113].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[114].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[114].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[115].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[115].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[116].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[116].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[117].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[117].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[118].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[118].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[119].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[119].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[120].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[120].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[121].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[121].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[122].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[122].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[123].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[123].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[124].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[124].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[125].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[125].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[126].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[126].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[127].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[127].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[128].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[128].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[129].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[129].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[130].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[130].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[131].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[131].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[132].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[132].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[133].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[133].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[134].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[134].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[135].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[135].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[136].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[136].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[137].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[137].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[138].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[138].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[139].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[139].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[140].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[140].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[141].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[141].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[142].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[142].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[143].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[143].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[144].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[144].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[145].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[145].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[146].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[146].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[147].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[147].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[148].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[148].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[149].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[149].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[150].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[150].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[151].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[151].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[152].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[152].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[153].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[153].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[154].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[154].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[155].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[155].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[156].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[156].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[157].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[157].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[158].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[158].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[159].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[159].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[160].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[160].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[161].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[161].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[162].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[162].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[163].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[163].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[164].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[164].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[165].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[165].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[166].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[166].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[167].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[167].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[168].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[168].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[169].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[169].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[170].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[170].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[171].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[171].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[172].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[172].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[173].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[173].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[174].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[174].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[175].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[175].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[176].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[176].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[177].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[177].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[178].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[178].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[179].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[179].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[180].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[180].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[181].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[181].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[182].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[182].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[183].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[183].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[184].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[184].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[185].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[185].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[186].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[186].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[187].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[187].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[188].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[188].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[189].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[189].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[190].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[190].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[191].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[191].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[192].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[192].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[193].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[193].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[194].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[194].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[195].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[195].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[196].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[196].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[197].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[197].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[198].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[198].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[199].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[199].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[200].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[200].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[201].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[201].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[202].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[202].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[203].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[203].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[204].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[204].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[205].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[205].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[206].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[206].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[207].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[207].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[208].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[208].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[209].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[209].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[210].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[210].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[211].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[211].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[212].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[212].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[213].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[213].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[214].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[214].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[215].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[215].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[216].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[216].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[217].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[217].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[218].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[218].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[219].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[219].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[220].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[220].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[221].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[221].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[222].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[222].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[223].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[223].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[224].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[224].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[225].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[225].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[226].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[226].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[227].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[227].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[228].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[228].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[229].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[229].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[230].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[230].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[231].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[231].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[232].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[232].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[233].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[233].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[234].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[234].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[235].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[235].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[236].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[236].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[237].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[237].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[238].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[238].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[239].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[239].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[240].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[240].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[241].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[241].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[242].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[242].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[243].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[243].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[244].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[244].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[245].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[245].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[246].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[246].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[247].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[247].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[248].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[248].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[249].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[249].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[250].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[250].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[251].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[251].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[252].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[252].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[253].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[253].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[254].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[254].data.udp,{})
-            
-        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[255].data'):
-            
-            
-            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[255].data.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.info.table_depth'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.info.table_depth.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.info.num_of_interfaces'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.info.num_of_interfaces.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_control.operation_mode'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_control.operation_mode.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_control.pause_request'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_control.pause_request.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_control.pause_done'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_control.pause_done.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.default_forwarding.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.default_forwarding.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].config.enabled.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].config.enabled.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].config.enabled.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].config.enabled.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].config.enabled.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].config.enabled.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].config.enabled.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].mac_address.lo_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].mac_address.lo_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].mac_address.hi_word'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].mac_address.hi_word.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].iface.bitmap'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].iface.bitmap.udp,{})
-            
-        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].config.enabled'):
-            
-            
-            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].config.enabled.udp,{})
-            
-        
 
-     
+
+            self.assertDictEqual(self.dut.endpoint_interface.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7]'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].udp,{})
+
+        with self.subTest(msg='register: csr.test_reg'):
+
+
+            self.assertDictEqual(self.dut.test_reg.udp,{})
+
+        with self.subTest(msg='register: csr.regB'):
+
+
+            self.assertDictEqual(self.dut.regB.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.mac_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.multicast_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.multicast_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.non_oetp_control.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.rmem_timeout'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.rmem_timeout.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.dma_timeout'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.dma_timeout.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.dma_max_fragment_size'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.dma_max_fragment_size.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.status.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.control'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.control.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.control'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.control.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].rmem_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].rmem_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].local_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].local_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].remote_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].remote_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].size'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].register_size.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].rmem_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].rmem_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].local_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].local_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].remote_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].remote_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].size'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].register_size.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].rmem_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].rmem_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].local_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].local_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].remote_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].remote_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].size'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].register_size.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].rmem_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].rmem_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].local_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].local_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].remote_address'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].remote_address.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].size'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].register_size.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[0].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[1]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[1].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[2]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[2].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[3]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[3].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[4]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[4].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[5]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[5].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[6]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[6].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[7]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[7].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[8]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[8].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[9]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[9].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[10]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[10].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[11]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[11].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[12]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[12].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[13]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[13].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[14]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[14].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[15]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[15].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[16]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[16].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[17]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[17].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[18]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[18].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[19]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[19].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[20]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[20].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[21]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[21].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[22]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[22].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[23]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[23].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[24]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[24].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[25]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[25].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[26]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[26].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[27]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[27].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[28]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[28].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[29]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[29].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[30]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[30].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[31]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[31].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[32]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[32].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[33]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[33].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[34]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[34].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[35]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[35].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[36]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[36].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[37]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[37].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[38]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[38].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[39]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[39].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[40]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[40].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[41]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[41].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[42]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[42].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[43]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[43].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[44]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[44].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[45]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[45].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[46]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[46].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[47]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[47].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[48]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[48].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[49]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[49].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[50]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[50].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[51]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[51].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[52]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[52].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[53]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[53].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[54]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[54].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[55]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[55].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[56]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[56].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[57]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[57].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[58]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[58].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[59]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[59].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[60]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[60].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[61]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[61].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[62]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[62].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[63]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[63].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[64]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[64].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[65]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[65].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[66]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[66].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[67]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[67].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[68]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[68].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[69]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[69].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[70]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[70].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[71]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[71].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[72]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[72].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[73]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[73].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[74]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[74].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[75]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[75].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[76]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[76].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[77]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[77].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[78]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[78].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[79]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[79].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[80]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[80].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[81]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[81].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[82]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[82].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[83]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[83].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[84]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[84].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[85]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[85].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[86]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[86].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[87]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[87].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[88]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[88].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[89]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[89].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[90]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[90].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[91]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[91].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[92]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[92].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[93]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[93].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[94]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[94].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[95]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[95].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[96]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[96].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[97]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[97].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[98]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[98].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[99]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[99].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[100]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[100].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[101]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[101].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[102]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[102].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[103]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[103].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[104]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[104].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[105]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[105].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[106]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[106].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[107]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[107].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[108]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[108].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[109]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[109].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[110]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[110].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[111]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[111].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[112]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[112].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[113]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[113].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[114]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[114].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[115]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[115].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[116]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[116].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[117]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[117].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[118]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[118].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[119]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[119].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[120]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[120].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[121]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[121].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[122]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[122].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[123]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[123].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[124]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[124].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[125]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[125].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[126]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[126].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[127]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[127].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[128]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[128].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[129]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[129].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[130]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[130].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[131]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[131].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[132]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[132].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[133]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[133].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[134]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[134].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[135]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[135].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[136]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[136].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[137]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[137].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[138]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[138].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[139]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[139].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[140]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[140].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[141]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[141].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[142]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[142].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[143]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[143].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[144]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[144].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[145]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[145].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[146]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[146].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[147]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[147].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[148]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[148].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[149]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[149].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[150]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[150].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[151]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[151].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[152]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[152].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[153]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[153].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[154]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[154].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[155]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[155].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[156]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[156].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[157]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[157].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[158]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[158].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[159]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[159].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[160]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[160].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[161]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[161].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[162]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[162].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[163]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[163].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[164]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[164].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[165]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[165].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[166]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[166].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[167]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[167].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[168]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[168].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[169]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[169].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[170]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[170].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[171]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[171].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[172]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[172].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[173]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[173].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[174]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[174].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[175]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[175].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[176]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[176].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[177]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[177].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[178]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[178].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[179]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[179].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[180]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[180].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[181]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[181].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[182]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[182].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[183]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[183].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[184]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[184].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[185]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[185].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[186]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[186].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[187]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[187].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[188]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[188].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[189]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[189].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[190]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[190].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[191]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[191].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[192]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[192].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[193]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[193].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[194]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[194].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[195]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[195].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[196]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[196].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[197]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[197].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[198]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[198].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[199]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[199].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[200]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[200].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[201]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[201].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[202]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[202].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[203]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[203].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[204]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[204].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[205]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[205].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[206]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[206].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[207]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[207].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[208]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[208].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[209]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[209].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[210]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[210].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[211]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[211].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[212]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[212].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[213]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[213].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[214]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[214].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[215]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[215].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[216]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[216].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[217]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[217].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[218]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[218].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[219]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[219].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[220]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[220].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[221]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[221].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[222]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[222].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[223]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[223].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[224]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[224].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[225]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[225].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[226]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[226].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[227]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[227].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[228]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[228].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[229]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[229].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[230]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[230].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[231]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[231].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[232]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[232].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[233]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[233].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[234]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[234].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[235]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[235].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[236]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[236].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[237]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[237].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[238]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[238].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[239]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[239].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[240]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[240].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[241]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[241].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[242]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[242].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[243]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[243].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[244]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[244].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[245]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[245].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[246]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[246].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[247]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[247].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[248]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[248].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[249]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[249].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[250]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[250].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[251]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[251].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[252]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[252].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[253]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[253].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[254]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[254].udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[255]'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[255].udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.info'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.info.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_control'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_control.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.default_forwarding'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.default_forwarding.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].config.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].config.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].config.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].config.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].config.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].config.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].config.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].mac_address'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].mac_address.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].iface'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].iface.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].config'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].config.udp,{})
+
+        with self.subTest(msg='register: csr.test_reg.test_field'):
+
+
+            self.assertDictEqual(self.dut.test_reg.test_field.udp,{})
+
+        with self.subTest(msg='register: csr.regB.f0'):
+
+
+            self.assertDictEqual(self.dut.regB.f0.udp,{})
+
+        with self.subTest(msg='register: csr.regB.f1'):
+
+
+            self.assertDictEqual(self.dut.regB.f1.udp,{})
+
+        with self.subTest(msg='register: csr.regB.f2'):
+
+
+            self.assertDictEqual(self.dut.regB.f2.udp,{})
+
+        with self.subTest(msg='register: csr.regB.f3'):
+
+
+            self.assertDictEqual(self.dut.regB.f3.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.rmem_total_depth'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.rmem_total_depth.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.num_of_peers'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.num_of_peers.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.peer_dma_supported'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.peer_dma_supported.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.non_oetp_dma_supported'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.non_oetp_dma_supported.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.direct_axis_supported'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.direct_axis_supported.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.rmem_supported'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.rmem_supported.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.irq_supported'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.irq_supported.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.info.max_dma_frame_size_bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.info.max_dma_frame_size_bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.multicast_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.multicast_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.multicast_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.multicast_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control.receive_mode'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.non_oetp_control.receive_mode.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.rmem_timeout.cycles'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.rmem_timeout.cycles.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.dma_timeout.cycles'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.dma_timeout.cycles.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.config.dma_max_fragment_size.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.config.dma_max_fragment_size.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data.tdata'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.data.tdata.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tvalid'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tvalid.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tlast'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tlast.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control.tkeep'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.control.tkeep.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status.tready'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.source.status.tready.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.data.tdata'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.data.tdata.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.control.tready'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.control.tready.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tvalid'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tvalid.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tlast'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tlast.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status.tkeep'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.axis_if.sink.status.tkeep.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.frame_length.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.request'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.clear_errors'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.clear_errors.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.idle'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.done'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.done.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error_code.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.request'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.clear_errors'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.clear_errors.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.idle'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.armed'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.armed.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.done'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.done.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error_code.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.non_oetp_dma.rx.received_length.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.control.global_enable'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.control.global_enable.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.control.clear_errors'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.control.clear_errors.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.peer_dma_complete'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.peer_dma_complete.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_tx_complete.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_dma_rx_complete.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_tx_complete.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable.rmem_error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.event_enable.rmem_error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.claim_pending'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.claim_pending.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.credit_full'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.credit_full.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.overflow'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.overflow.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.invalid_complete'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.invalid_complete.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.irq_asserted'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.irq_asserted.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.fifo_level'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.fifo_level.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.status.reserved_count'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.status.reserved_count.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.peer_idx'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.peer_idx.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.source'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.source.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.sequence'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.sequence.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.claim.valid'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.claim.valid.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.peer_idx'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.peer_idx.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.source'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.source.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.sequence'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.sequence.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.irq.complete.valid'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.irq.complete.valid.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].rmem_address.offset'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].rmem_address.offset.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].local_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].local_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].remote_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].remote_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].size.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].register_size.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.mode'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.mode.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.irq_enable'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.irq_enable.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.request'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.request.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.clear_error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.clear_error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.idle'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.idle.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.done'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.done.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma.error_code'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[0].dma.error_code.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].rmem_address.offset'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].rmem_address.offset.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].local_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].local_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].remote_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].remote_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].size.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].register_size.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.mode'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.mode.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.irq_enable'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.irq_enable.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.request'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.request.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.clear_error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.clear_error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.idle'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.idle.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.done'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.done.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma.error_code'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[1].dma.error_code.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].rmem_address.offset'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].rmem_address.offset.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].local_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].local_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].remote_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].remote_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].size.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].register_size.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.mode'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.mode.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.irq_enable'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.irq_enable.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.request'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.request.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.clear_error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.clear_error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.idle'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.idle.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.done'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.done.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma.error_code'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[2].dma.error_code.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].rmem_address.offset'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].rmem_address.offset.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].local_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].local_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].remote_address.base'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].remote_address.base.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].size.bytes'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].register_size.bytes.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.mode'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.mode.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.irq_enable'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.irq_enable.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.request'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.request.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.clear_error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.clear_error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.idle'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.idle.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.done'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.done.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.error'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.error.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma.error_code'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.peers.entry[3].dma.error_code.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[0].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[1].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[1].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[2].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[2].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[3].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[3].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[4].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[4].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[5].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[5].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[6].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[6].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[7].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[7].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[8].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[8].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[9].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[9].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[10].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[10].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[11].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[11].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[12].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[12].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[13].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[13].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[14].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[14].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[15].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[15].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[16].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[16].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[17].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[17].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[18].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[18].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[19].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[19].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[20].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[20].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[21].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[21].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[22].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[22].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[23].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[23].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[24].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[24].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[25].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[25].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[26].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[26].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[27].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[27].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[28].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[28].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[29].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[29].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[30].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[30].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[31].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[31].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[32].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[32].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[33].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[33].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[34].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[34].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[35].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[35].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[36].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[36].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[37].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[37].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[38].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[38].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[39].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[39].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[40].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[40].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[41].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[41].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[42].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[42].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[43].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[43].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[44].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[44].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[45].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[45].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[46].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[46].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[47].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[47].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[48].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[48].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[49].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[49].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[50].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[50].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[51].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[51].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[52].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[52].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[53].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[53].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[54].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[54].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[55].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[55].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[56].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[56].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[57].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[57].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[58].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[58].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[59].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[59].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[60].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[60].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[61].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[61].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[62].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[62].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[63].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[63].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[64].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[64].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[65].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[65].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[66].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[66].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[67].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[67].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[68].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[68].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[69].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[69].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[70].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[70].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[71].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[71].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[72].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[72].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[73].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[73].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[74].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[74].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[75].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[75].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[76].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[76].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[77].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[77].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[78].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[78].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[79].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[79].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[80].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[80].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[81].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[81].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[82].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[82].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[83].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[83].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[84].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[84].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[85].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[85].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[86].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[86].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[87].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[87].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[88].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[88].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[89].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[89].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[90].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[90].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[91].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[91].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[92].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[92].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[93].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[93].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[94].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[94].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[95].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[95].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[96].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[96].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[97].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[97].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[98].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[98].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[99].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[99].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[100].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[100].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[101].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[101].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[102].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[102].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[103].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[103].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[104].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[104].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[105].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[105].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[106].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[106].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[107].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[107].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[108].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[108].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[109].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[109].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[110].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[110].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[111].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[111].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[112].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[112].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[113].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[113].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[114].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[114].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[115].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[115].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[116].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[116].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[117].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[117].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[118].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[118].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[119].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[119].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[120].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[120].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[121].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[121].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[122].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[122].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[123].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[123].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[124].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[124].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[125].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[125].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[126].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[126].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[127].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[127].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[128].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[128].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[129].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[129].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[130].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[130].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[131].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[131].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[132].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[132].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[133].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[133].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[134].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[134].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[135].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[135].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[136].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[136].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[137].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[137].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[138].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[138].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[139].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[139].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[140].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[140].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[141].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[141].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[142].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[142].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[143].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[143].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[144].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[144].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[145].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[145].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[146].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[146].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[147].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[147].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[148].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[148].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[149].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[149].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[150].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[150].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[151].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[151].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[152].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[152].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[153].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[153].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[154].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[154].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[155].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[155].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[156].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[156].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[157].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[157].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[158].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[158].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[159].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[159].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[160].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[160].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[161].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[161].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[162].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[162].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[163].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[163].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[164].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[164].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[165].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[165].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[166].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[166].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[167].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[167].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[168].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[168].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[169].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[169].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[170].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[170].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[171].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[171].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[172].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[172].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[173].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[173].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[174].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[174].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[175].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[175].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[176].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[176].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[177].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[177].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[178].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[178].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[179].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[179].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[180].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[180].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[181].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[181].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[182].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[182].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[183].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[183].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[184].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[184].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[185].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[185].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[186].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[186].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[187].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[187].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[188].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[188].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[189].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[189].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[190].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[190].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[191].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[191].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[192].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[192].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[193].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[193].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[194].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[194].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[195].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[195].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[196].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[196].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[197].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[197].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[198].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[198].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[199].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[199].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[200].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[200].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[201].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[201].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[202].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[202].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[203].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[203].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[204].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[204].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[205].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[205].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[206].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[206].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[207].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[207].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[208].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[208].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[209].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[209].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[210].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[210].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[211].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[211].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[212].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[212].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[213].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[213].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[214].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[214].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[215].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[215].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[216].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[216].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[217].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[217].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[218].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[218].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[219].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[219].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[220].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[220].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[221].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[221].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[222].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[222].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[223].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[223].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[224].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[224].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[225].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[225].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[226].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[226].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[227].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[227].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[228].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[228].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[229].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[229].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[230].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[230].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[231].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[231].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[232].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[232].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[233].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[233].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[234].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[234].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[235].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[235].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[236].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[236].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[237].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[237].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[238].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[238].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[239].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[239].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[240].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[240].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[241].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[241].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[242].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[242].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[243].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[243].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[244].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[244].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[245].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[245].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[246].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[246].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[247].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[247].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[248].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[248].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[249].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[249].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[250].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[250].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[251].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[251].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[252].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[252].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[253].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[253].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[254].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[254].data.udp,{})
+
+        with self.subTest(msg='register: csr.endpoint_interface.rmem.word[255].data'):
+
+
+            self.assertDictEqual(self.dut.endpoint_interface.rmem.word[255].data.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.info.table_depth'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.info.table_depth.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.info.num_of_interfaces'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.info.num_of_interfaces.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_control.operation_mode'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_control.operation_mode.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_control.pause_request'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_control.pause_request.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_control.pause_done'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_control.pause_done.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.default_forwarding.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.default_forwarding.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[0].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[0].config.enabled.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[1].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[1].config.enabled.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[2].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[2].config.enabled.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[3].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[3].config.enabled.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[4].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[4].config.enabled.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[5].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[5].config.enabled.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[6].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[6].config.enabled.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].mac_address.lo_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].mac_address.lo_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].mac_address.hi_word'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].mac_address.hi_word.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].iface.bitmap'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].iface.bitmap.udp,{})
+
+        with self.subTest(msg='register: csr.switch_interface.forwarding_table.entry[7].config.enabled'):
+
+
+            self.assertDictEqual(self.dut.switch_interface.forwarding_table.entry[7].config.enabled.udp,{})
+
+
+
+
 
     def test_register(self) -> None:
         """
@@ -3936,16 +4016,25 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['rmem_total_depth','num_of_peers','peer_dma_supported','non_oetp_dma_supported','direct_axis_supported','rmem_supported','irq_supported','max_dma_frame_size_bytes', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.config.mac_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.config.mac_address, address=2064, width=64, accesswidth=32, size=8,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.mac_address, address=2080, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.config.mac_address",
-                                                rdl_desc="Local site 48-bit destination MAC address.",
+                                                rdl_desc="Local endpoint 48-bit unicast MAC address. The oETP engine uses this address\nas its source MAC and compares individual-addressed incoming oETP frames against\nit. The I/G bit in the first MAC octet must be zero. Group-addressed oETP frames\nare compared against config.multicast_address instead.",
                                                 inst_name='mac_address',
                                                 parent_full_inst_name='csr.endpoint_interface.config')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.mac_address, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.config.multicast_address'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.multicast_address, address=2088, width=64, accesswidth=32, size=8,
+                                                rdl_name="csr.endpoint_interface.config.multicast_address",
+                                                rdl_desc="Local endpoint 48-bit multicast destination MAC address. For an incoming\noETP frame whose destination I/G bit is one, the engine accepts the destination\nonly when it exactly matches this address. All slave endpoints in a replication\ngroup use the same value. This address is not used as a source MAC. Zero is the\nreset value and matches no group-addressed destination, disabling oETP group\nreception. Broadcast is accepted only when this address is all ones. This field\ndoes not change the separate non-oETP receive-mode policy.",
+                                                inst_name='multicast_address',
+                                                parent_full_inst_name='csr.endpoint_interface.config')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.multicast_address, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['lo_word','hi_word', ]),
+                                                                                          writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.config.non_oetp_control'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.config.non_oetp_control, address=2072, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.non_oetp_control, address=2096, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.config.non_oetp_control",
                                                 rdl_desc="Receive policy for Ethernet frames that do not carry oETP traffic.",
                                                 inst_name='non_oetp_control',
@@ -3953,8 +4042,35 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.non_oetp_control, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['receive_mode', ]),
                                                                                           writeable_fields=set(['receive_mode', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.config.rmem_timeout'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.rmem_timeout, address=2100, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.config.rmem_timeout",
+                                                rdl_desc="Timeout configuration for transparent RMEM operations.",
+                                                inst_name='rmem_timeout',
+                                                parent_full_inst_name='csr.endpoint_interface.config')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.rmem_timeout, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['cycles', ]),
+                                                                                          writeable_fields=set(['cycles', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.config.dma_timeout'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.dma_timeout, address=2104, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.config.dma_timeout",
+                                                rdl_desc="Common response timeout for locally initiated unicast peer DMA fragments.",
+                                                inst_name='dma_timeout',
+                                                parent_full_inst_name='csr.endpoint_interface.config')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.dma_timeout, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['cycles', ]),
+                                                                                          writeable_fields=set(['cycles', ]) )
+        with self.subTest(msg='register: csr.endpoint_interface.config.dma_max_fragment_size'):
+            self._single_register_property_test(rut=self.dut.endpoint_interface.config.dma_max_fragment_size, address=2108, width=32, accesswidth=32, size=4,
+                                                rdl_name="csr.endpoint_interface.config.dma_max_fragment_size",
+                                                rdl_desc="Common software-selected maximum memory fragment size for locally\ninitiated peer DMA transfers. The synthesis-time frame limit remains fixed.",
+                                                inst_name='dma_max_fragment_size',
+                                                parent_full_inst_name='csr.endpoint_interface.config')
+            self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.config.dma_max_fragment_size, has_sw_readable=True, has_sw_writable=True,
+                                                                                          readable_fields=set(['bytes', ]),
+                                                                                          writeable_fields=set(['bytes', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.data'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.data, address=2080, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.data, address=2112, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.source.data",
                                                 rdl_desc="Data register for the AXI4-Stream source interface.",
                                                 inst_name='data',
@@ -3963,7 +4079,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['tdata', ]),
                                                                                           writeable_fields=set(['tdata', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.control'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.control, address=2084, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.control, address=2116, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.source.control",
                                                 rdl_desc="Control register for the AXI4-Stream source interface.",
                                                 inst_name='control',
@@ -3972,7 +4088,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['tvalid','tlast','tkeep', ]),
                                                                                           writeable_fields=set(['tvalid','tlast','tkeep', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.source.status'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.status, address=2088, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.source.status, address=2120, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.source.status",
                                                 rdl_desc="Status register for the AXI4-Stream source interface.",
                                                 inst_name='status',
@@ -3981,7 +4097,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['tready', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.data'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.sink.data, address=2096, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.sink.data, address=2128, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.sink.data",
                                                 rdl_desc="Data register for the AXI4-Stream sink interface.",
                                                 inst_name='data',
@@ -3990,7 +4106,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['tdata', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.control'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.sink.control, address=2100, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.sink.control, address=2132, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.sink.control",
                                                 rdl_desc="Control register for the AXI4-Stream sink interface.",
                                                 inst_name='control',
@@ -3999,7 +4115,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['tready', ]),
                                                                                           writeable_fields=set(['tready', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.axis_if.sink.status'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.sink.status, address=2104, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.axis_if.sink.status, address=2136, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.axis_if.sink.status",
                                                 rdl_desc="Status register for the AXI4-Stream sink interface.",
                                                 inst_name='status',
@@ -4008,7 +4124,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['tvalid','tlast','tkeep', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.buffer_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address, address=2112, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.buffer_address, address=2144, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.tx.buffer_address",
                                                 rdl_desc="Local memory address of the non-oETP Ethernet frame to transmit.",
                                                 inst_name='buffer_address',
@@ -4017,7 +4133,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.frame_length'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length, address=2116, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.frame_length, address=2148, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.tx.frame_length",
                                                 rdl_desc="Length of the complete non-oETP Ethernet frame to transmit.",
                                                 inst_name='frame_length',
@@ -4026,16 +4142,16 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set(['bytes', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.command_status'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status, address=2120, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status, address=2152, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status",
                                                 rdl_desc="Command and completion status for the non-oETP transmit DMA channel.",
                                                 inst_name='command_status',
                                                 parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['request', ]) )
+                                                                                          readable_fields=set(['request','clear_errors','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['request','clear_errors', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.tx.transferred_length'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length, address=2124, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.tx.transferred_length, address=2156, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.tx.transferred_length",
                                                 rdl_desc="Number of bytes transferred for the most recently accepted transmit\nrequest.",
                                                 inst_name='transferred_length',
@@ -4044,7 +4160,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address, address=2128, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_address, address=2160, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.rx.buffer_address",
                                                 rdl_desc="Local memory address of the receive buffer for a non-oETP Ethernet frame.",
                                                 inst_name='buffer_address',
@@ -4053,7 +4169,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity, address=2132, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.buffer_capacity, address=2164, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.rx.buffer_capacity",
                                                 rdl_desc="Capacity of the receive buffer for one complete non-oETP Ethernet frame.",
                                                 inst_name='buffer_capacity',
@@ -4062,16 +4178,16 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set(['bytes', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.command_status'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status, address=2136, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status, address=2168, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status",
                                                 rdl_desc="Command and completion status for the non-oETP receive DMA channel.",
                                                 inst_name='command_status',
                                                 parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['request','idle','armed','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['request', ]) )
+                                                                                          readable_fields=set(['request','clear_errors','idle','armed','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['request','clear_errors', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.non_oetp_dma.rx.received_length'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length, address=2140, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.non_oetp_dma.rx.received_length, address=2172, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.non_oetp_dma.rx.received_length",
                                                 rdl_desc="Length of the most recently received non-oETP Ethernet frame.",
                                                 inst_name='received_length',
@@ -4080,7 +4196,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.irq.control'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.control, address=2144, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.control, address=2176, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.control",
                                                 rdl_desc="Global interrupt-output control and interrupt-controller maintenance requests.",
                                                 inst_name='control',
@@ -4089,16 +4205,16 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['global_enable','clear_errors', ]),
                                                                                           writeable_fields=set(['global_enable','clear_errors', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.irq.event_enable'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.event_enable, address=2148, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.event_enable, address=2180, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.event_enable",
                                                 rdl_desc="Enables generation of individual endpoint IRQ event classes. These fields\ncontrol event capture; irq.control.global_enable only masks the physical\nIRQ output.",
                                                 inst_name='event_enable',
                                                 parent_full_inst_name='csr.endpoint_interface.irq')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.irq.event_enable, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['peer_dma_complete','non_oetp_dma_tx_complete','non_oetp_dma_rx_complete','non_oetp_direct_tx_complete','non_oetp_direct_rx_available', ]),
-                                                                                          writeable_fields=set(['peer_dma_complete','non_oetp_dma_tx_complete','non_oetp_dma_rx_complete','non_oetp_direct_tx_complete','non_oetp_direct_rx_available', ]) )
+                                                                                          readable_fields=set(['peer_dma_complete','non_oetp_dma_tx_complete','non_oetp_dma_rx_complete','non_oetp_direct_tx_complete','non_oetp_direct_rx_available','rmem_error', ]),
+                                                                                          writeable_fields=set(['peer_dma_complete','non_oetp_dma_tx_complete','non_oetp_dma_rx_complete','non_oetp_direct_tx_complete','non_oetp_direct_rx_available','rmem_error', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.irq.status'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.status, address=2152, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.status, address=2184, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.status",
                                                 rdl_desc="Status of the endpoint IRQ event FIFO and its reservation mechanism.",
                                                 inst_name='status',
@@ -4107,7 +4223,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['claim_pending','credit_full','overflow','invalid_complete','irq_asserted','fifo_level','reserved_count', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.irq.claim'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.claim, address=2156, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.claim, address=2188, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.claim",
                                                 rdl_desc="Read-only view of the event at the head of the IRQ event FIFO. Reading this\nregister has no side effect, and all fields remain stable until a matching\nirq.complete request removes the claim.",
                                                 inst_name='claim',
@@ -4116,7 +4232,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['peer_idx','source','sequence','valid', ]),
                                                                                           writeable_fields=set([ ]) )
         with self.subTest(msg='register: csr.endpoint_interface.irq.complete'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.complete, address=2160, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.irq.complete, address=2192, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.irq.complete",
                                                 rdl_desc="Completion request for the current IRQ claim. Software acknowledges an event by\ncopying the complete 32-bit irq.claim value into this register.",
                                                 inst_name='complete',
@@ -4125,7 +4241,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['peer_idx','source','sequence','valid', ]),
                                                                                           writeable_fields=set(['peer_idx','source','sequence','valid', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].mac_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].mac_address, address=2176, width=64, accesswidth=32, size=8,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].mac_address, address=2304, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
                                                 rdl_desc="Remote peer 48-bit destination MAC address.",
                                                 inst_name='mac_address',
@@ -4134,7 +4250,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].rmem_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].rmem_address, address=2184, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].rmem_address, address=2312, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
                                                 rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
@@ -4143,7 +4259,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['offset', ]),
                                                                                           writeable_fields=set(['offset', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].local_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].local_address, address=2188, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].local_address, address=2316, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address",
                                                 rdl_desc="Start address of the local memory region for DMA transfers.",
                                                 inst_name='local_address',
@@ -4152,7 +4268,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].remote_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].remote_address, address=2192, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].remote_address, address=2320, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].remote_address",
                                                 rdl_desc="Start address of the remote peer\u0027s memory region.",
                                                 inst_name='remote_address',
@@ -4161,7 +4277,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].size'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].register_size, address=2196, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].register_size, address=2324, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].size",
                                                 rdl_desc="Size of the remote peer\u0027s memory region.",
                                                 inst_name='size',
@@ -4170,16 +4286,16 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set(['bytes', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[0].dma'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].dma, address=2200, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[0].dma, address=2328, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma",
-                                                rdl_desc="DMA configuration and control for the remote peer.",
+                                                rdl_desc="DMA/RMEM configuration and control for the remote peer, with shared\nsticky error reporting. RMEM and bulk DMA retain separate IRQ event classes.",
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[0]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[0].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','clear_error','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request','clear_error', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].mac_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].mac_address, address=2204, width=64, accesswidth=32, size=8,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].mac_address, address=2332, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
                                                 rdl_desc="Remote peer 48-bit destination MAC address.",
                                                 inst_name='mac_address',
@@ -4188,7 +4304,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].rmem_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].rmem_address, address=2212, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].rmem_address, address=2340, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
                                                 rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
@@ -4197,7 +4313,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['offset', ]),
                                                                                           writeable_fields=set(['offset', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].local_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].local_address, address=2216, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].local_address, address=2344, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address",
                                                 rdl_desc="Start address of the local memory region for DMA transfers.",
                                                 inst_name='local_address',
@@ -4206,7 +4322,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].remote_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].remote_address, address=2220, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].remote_address, address=2348, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].remote_address",
                                                 rdl_desc="Start address of the remote peer\u0027s memory region.",
                                                 inst_name='remote_address',
@@ -4215,7 +4331,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].size'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].register_size, address=2224, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].register_size, address=2352, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].size",
                                                 rdl_desc="Size of the remote peer\u0027s memory region.",
                                                 inst_name='size',
@@ -4224,16 +4340,16 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set(['bytes', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[1].dma'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].dma, address=2228, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[1].dma, address=2356, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma",
-                                                rdl_desc="DMA configuration and control for the remote peer.",
+                                                rdl_desc="DMA/RMEM configuration and control for the remote peer, with shared\nsticky error reporting. RMEM and bulk DMA retain separate IRQ event classes.",
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[1]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[1].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','clear_error','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request','clear_error', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].mac_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].mac_address, address=2232, width=64, accesswidth=32, size=8,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].mac_address, address=2360, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
                                                 rdl_desc="Remote peer 48-bit destination MAC address.",
                                                 inst_name='mac_address',
@@ -4242,7 +4358,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].rmem_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].rmem_address, address=2240, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].rmem_address, address=2368, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
                                                 rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
@@ -4251,7 +4367,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['offset', ]),
                                                                                           writeable_fields=set(['offset', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].local_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].local_address, address=2244, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].local_address, address=2372, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address",
                                                 rdl_desc="Start address of the local memory region for DMA transfers.",
                                                 inst_name='local_address',
@@ -4260,7 +4376,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].remote_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].remote_address, address=2248, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].remote_address, address=2376, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].remote_address",
                                                 rdl_desc="Start address of the remote peer\u0027s memory region.",
                                                 inst_name='remote_address',
@@ -4269,7 +4385,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].size'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].register_size, address=2252, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].register_size, address=2380, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].size",
                                                 rdl_desc="Size of the remote peer\u0027s memory region.",
                                                 inst_name='size',
@@ -4278,16 +4394,16 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set(['bytes', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[2].dma'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].dma, address=2256, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[2].dma, address=2384, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma",
-                                                rdl_desc="DMA configuration and control for the remote peer.",
+                                                rdl_desc="DMA/RMEM configuration and control for the remote peer, with shared\nsticky error reporting. RMEM and bulk DMA retain separate IRQ event classes.",
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[2]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[2].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','clear_error','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request','clear_error', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].mac_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].mac_address, address=2260, width=64, accesswidth=32, size=8,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].mac_address, address=2388, width=64, accesswidth=32, size=8,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].mac_address",
                                                 rdl_desc="Remote peer 48-bit destination MAC address.",
                                                 inst_name='mac_address',
@@ -4296,7 +4412,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['lo_word','hi_word', ]),
                                                                                           writeable_fields=set(['lo_word','hi_word', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].rmem_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].rmem_address, address=2268, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].rmem_address, address=2396, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].rmem_address",
                                                 rdl_desc="Address offset of the virtual memory region corresponding to the remote\npeer\u0027s memory.",
                                                 inst_name='rmem_address',
@@ -4305,7 +4421,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['offset', ]),
                                                                                           writeable_fields=set(['offset', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].local_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].local_address, address=2272, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].local_address, address=2400, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].local_address",
                                                 rdl_desc="Start address of the local memory region for DMA transfers.",
                                                 inst_name='local_address',
@@ -4314,7 +4430,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].remote_address'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].remote_address, address=2276, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].remote_address, address=2404, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].remote_address",
                                                 rdl_desc="Start address of the remote peer\u0027s memory region.",
                                                 inst_name='remote_address',
@@ -4323,7 +4439,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['base', ]),
                                                                                           writeable_fields=set(['base', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].size'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].register_size, address=2280, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].register_size, address=2408, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].size",
                                                 rdl_desc="Size of the remote peer\u0027s memory region.",
                                                 inst_name='size',
@@ -4332,14 +4448,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                                                                           readable_fields=set(['bytes', ]),
                                                                                           writeable_fields=set(['bytes', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.peers.entry[3].dma'):
-            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].dma, address=2284, width=32, accesswidth=32, size=4,
+            self._single_register_property_test(rut=self.dut.endpoint_interface.peers.entry[3].dma, address=2412, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma",
-                                                rdl_desc="DMA configuration and control for the remote peer.",
+                                                rdl_desc="DMA/RMEM configuration and control for the remote peer, with shared\nsticky error reporting. RMEM and bulk DMA retain separate IRQ event classes.",
                                                 inst_name='dma',
                                                 parent_full_inst_name='csr.endpoint_interface.peers.entry[3]')
             self._single_register_read_and_write_test(rut=self.dut.endpoint_interface.peers.entry[3].dma, has_sw_readable=True, has_sw_writable=True,
-                                                                                          readable_fields=set(['mode','irq_enable','request','idle','done','error','error_code', ]),
-                                                                                          writeable_fields=set(['mode','irq_enable','request', ]) )
+                                                                                          readable_fields=set(['mode','irq_enable','request','clear_error','idle','done','error','error_code', ]),
+                                                                                          writeable_fields=set(['mode','irq_enable','request','clear_error', ]) )
         with self.subTest(msg='register: csr.endpoint_interface.rmem.word[0]'):
             self._single_register_property_test(rut=self.dut.endpoint_interface.rmem.word[0], address=3072, width=32, accesswidth=32, size=4,
                                                 rdl_name="csr.endpoint_interface.rmem.word[0..RMEM_TOTAL_DEPTH-1]",
@@ -6887,13 +7003,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_register_read_and_write_test(rut=self.dut.switch_interface.forwarding_table.entry[7].config, has_sw_readable=True, has_sw_writable=True,
                                                                                           readable_fields=set(['enabled', ]),
                                                                                           writeable_fields=set(['enabled', ]) )
-        
+
 
     def test_field(self) -> None:
         """
         Check the properties and function (read and write) on the fields both integer and enum
         """
-        
+
         with self.subTest(msg='field: csr.test_reg.test_field'):
             self._single_field_property_test(fut=self.dut.test_reg.test_field, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
                                              rdl_name="csr.test_reg.test_field[31:0]",
@@ -6972,7 +7088,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.rmem_supported, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.info.irq_supported'):
-            self._single_field_property_test(fut=self.dut.endpoint_interface.info.irq_supported, lsb=47, msb=47, low=47, high=47, is_volatile=False, default=0,
+            self._single_field_property_test(fut=self.dut.endpoint_interface.info.irq_supported, lsb=47, msb=47, low=47, high=47, is_volatile=False, default=1,
                                              rdl_name="csr.endpoint_interface.info.irq_supported",
                                              rdl_desc="Indicates whether the endpoint interrupt output and interrupt-control logic\nare implemented.",
                                              inst_name='irq_supported',
@@ -6981,7 +7097,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.info.max_dma_frame_size_bytes'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.info.max_dma_frame_size_bytes, lsb=48, msb=63, low=48, high=63, is_volatile=False, default=8192,
                                              rdl_name="csr.endpoint_interface.info.max_dma_frame_size_bytes[63:48]",
-                                             rdl_desc="Maximum size in bytes of one AXI4-Stream frame generated or consumed by the\nDMA engine. This field reflects the MAX_DMA_FRAME_SIZE_BYTES parameter value.\nA value of zero indicates that DMA is not supported.",
+                                             rdl_desc="Synthesis-time maximum Ethernet frame size in bytes, excluding FCS. This\nfield reflects the MAX_RAW_FRAME_SIZE parameter value and bounds raw\nnon-oETP DMA frames. The peer DMA memory-fragment ceiling is\n4 * floor((MAX_RAW_FRAME_SIZE - 32) / 4), accounting for the Ethernet\nheader, oETP write metadata, data-word padding and EndOfData. An 8192-byte\nframe limit permits 8160-byte memory fragments. A value of zero indicates\nthat DMA is not supported.",
                                              inst_name='max_dma_frame_size_bytes',
                                              parent_full_inst_name='csr.endpoint_interface.info')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.info.max_dma_frame_size_bytes, is_sw_readable=True, is_sw_writable=False)
@@ -6999,6 +7115,20 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='hi_word',
                                              parent_full_inst_name='csr.endpoint_interface.config.mac_address')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.mac_address.hi_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.config.multicast_address.lo_word'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.multicast_address.lo_word, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.config.multicast_address.lo_word[31:0]",
+                                             rdl_desc="Lower 32 bits [31:0] of the 48-bit multicast MAC address.",
+                                             inst_name='lo_word',
+                                             parent_full_inst_name='csr.endpoint_interface.config.multicast_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.multicast_address.lo_word, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.config.multicast_address.hi_word'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.multicast_address.hi_word, lsb=32, msb=47, low=32, high=47, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.config.multicast_address.hi_word[47:32]",
+                                             rdl_desc="Upper 16 bits [47:32] of the 48-bit multicast MAC address.",
+                                             inst_name='hi_word',
+                                             parent_full_inst_name='csr.endpoint_interface.config.multicast_address')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.multicast_address.hi_word, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.config.non_oetp_control.receive_mode'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.config.non_oetp_control.receive_mode, lsb=0, msb=1, low=0, high=1, is_volatile=False, default=1,
                                              rdl_name="csr.endpoint_interface.config.non_oetp_control.receive_mode[1:0]",
@@ -7006,6 +7136,27 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='receive_mode',
                                              parent_full_inst_name='csr.endpoint_interface.config.non_oetp_control')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.non_oetp_control.receive_mode, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.config.rmem_timeout.cycles'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.rmem_timeout.cycles, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.config.rmem_timeout.cycles[31:0]",
+                                             rdl_desc="Maximum wait for an RMEM response in endpoint clock cycles. Zero disables\nthe timeout and permits an indefinite response wait. Hardware samples this\nvalue when it accepts an RMEM operation; subsequent writes apply to later\noperations. The response timer starts after the complete request frame has\nbeen accepted by the Ethernet-facing transmit stream and runs until the\ncomplete matching response is received and validated through Ethernet TLAST.\nRX backpressure counts toward the timeout; remaining local memory completion\ndoes not. A valid response completing on the expiry edge takes priority,\nincluding a valid ERROR_RSP with its reported cause. Hardware does not\nretry; timeout handling and retry policy belong to software. Multicast\nwrites do not wait for a response and do not use this response timeout.\nAn RMEM read timeout terminates the access with all-ones read data and read\nACK; a write timeout terminates with write ACK. The external-RMEM boundary\nuses no ERR signals. Failures set error and error_code in the associated\npeers.entry[].dma register and may generate a separate RMEM_ERROR IRQ event.",
+                                             inst_name='cycles',
+                                             parent_full_inst_name='csr.endpoint_interface.config.rmem_timeout')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.rmem_timeout.cycles, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.config.dma_timeout.cycles'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.dma_timeout.cycles, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.config.dma_timeout.cycles[31:0]",
+                                             rdl_desc="Maximum wait for a response to one peer DMA fragment, in endpoint clock\ncycles. This value is shared by all peers. Zero disables the timeout and\npermits an indefinite response wait. Hardware samples this value when the\noETP engine accepts the fragment request; later writes apply to later\nfragments. The response timer starts after the complete request frame has\nbeen accepted by the Ethernet-facing transmit stream and runs until the\ncomplete matching response is received and validated through Ethernet TLAST,\nincluding EndOfData where present. RX backpressure counts toward the timeout;\nremaining local memory completion does not. A valid response completing on\nthe expiry edge takes priority, including a valid ERROR_RSP with its reported\ncause. On expiry, hardware\naborts the remaining fragments of that DMA transfer and reports error code\n8 (timeout) in the peer DMA status. Hardware does not retry; software decides\nwhether to start another transfer. This timeout does not apply to multicast\nwrites, non-oETP DMA, or transparent RMEM operations.",
+                                             inst_name='cycles',
+                                             parent_full_inst_name='csr.endpoint_interface.config.dma_timeout')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.dma_timeout.cycles, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.config.dma_max_fragment_size.bytes'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.config.dma_max_fragment_size.bytes, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=8160,
+                                             rdl_name="csr.endpoint_interface.config.dma_max_fragment_size.bytes[31:0]",
+                                             rdl_desc="Maximum meaningful memory bytes in one locally initiated DMA fragment,\nexcluding Ethernet/oETP headers, word padding, EndOfData and FCS. The\nhardware rounds the written value down to a multiple of four before\nvalidating it. The effective MFS must be at least four bytes and at most\n4 * floor((MAX_RAW_FRAME_SIZE - 32) / 4). With an 8192-byte frame ceiling,\nthe effective range is 4 through 8160 bytes in steps of four, with reset\nvalue 8160. For example, 31 selects 28, 7 selects 4, and 8161 through 8163\nselect 8160. Hardware snapshots the effective value when it accepts the\nwhole peer DMA transfer; later writes apply only to subsequent transfers.\nThe final fragment uses the exact remaining byte length and may be shorter\nthan four bytes. A written value of 0 through 3, or a rounded value above\nthe synthesized ceiling, rejects a new transfer with local error code 1\nbefore issuing any memory or protocol operation. The CSR retains the\nunrounded written value. This setting does not\nrestrict received peer requests, which use the synthesized fragment\nceiling, and does not affect RMEM, direct CSR streams or non-oETP DMA.",
+                                             inst_name='bytes',
+                                             parent_full_inst_name='csr.endpoint_interface.config.dma_max_fragment_size')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.config.dma_max_fragment_size.bytes, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.axis_if.source.data.tdata'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.axis_if.source.data.tdata, lsb=0, msb=31, low=0, high=31, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.axis_if.source.data.tdata[31:0]",
@@ -7097,6 +7248,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.clear_errors'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.clear_errors, lsb=9, msb=9, low=9, high=9, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.clear_errors",
+                                             rdl_desc="Writing one clears this channel\u0027s error flag and error code.\nHardware clears the command after accepting it. The command does not\nabort an active transfer, clear done or transferred length, or complete\nan IRQ claim. A new failure takes precedence over a simultaneous clear.\nStarting or successfully completing a transfer preserves a recorded error.",
+                                             inst_name='clear_errors',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.clear_errors, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.idle",
@@ -7114,14 +7272,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.error",
-                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted\ntransfer terminates with an error and clears it when the next request\nis accepted.",
+                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when an\naccepted transfer fails. Only command_status.clear_errors or endpoint\nreset clears it; starting or successfully completing another transfer\npreserves a recorded error.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.tx.command_status.error_code[31:28]",
-                                             rdl_desc="Sticky error code for the most recently completed transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             rdl_desc="Sticky error code for the most recent transmit failure:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nThese errors describe local non-oETP DMA work. Only\ncommand_status.clear_errors or endpoint reset clears this field.\nA new failure replaces the code and takes precedence over a simultaneous\nclear; successful transfers preserve the previous failure.",
                                              inst_name='error_code',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.tx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.tx.command_status.error_code, is_sw_readable=True, is_sw_writable=False)
@@ -7153,6 +7311,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.clear_errors'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.clear_errors, lsb=9, msb=9, low=9, high=9, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.clear_errors",
+                                             rdl_desc="Writing one clears this channel\u0027s error flag and error code.\nHardware clears the command after accepting it. The command does not\nabort an active or armed receive, clear done or received length, or\ncomplete an IRQ claim. A new failure takes precedence over a simultaneous\nclear. Starting or successfully completing a transfer preserves a\nrecorded error.",
+                                             inst_name='clear_errors',
+                                             parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.clear_errors, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.idle",
@@ -7177,14 +7342,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.error",
-                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when the accepted\nreceive request terminates with an error and clears it when the next request\nis accepted.",
+                                             rdl_desc="Sticky error-completion flag. Hardware sets this field when an\naccepted receive fails. Only command_status.clear_errors or endpoint\nreset clears it; starting or successfully completing another receive\npreserves a recorded error.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.non_oetp_dma.rx.command_status.error_code[31:28]",
-                                             rdl_desc="Sticky error code for the most recently completed receive transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Received frame exceeds the configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             rdl_desc="Sticky error code for the most recent receive failure:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Received frame exceeds the configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nOnly command_status.clear_errors or endpoint reset clears this field.\nA new failure replaces the code and takes precedence over a simultaneous\nclear; successful transfers preserve the previous failure.",
                                              inst_name='error_code',
                                              parent_full_inst_name='csr.endpoint_interface.non_oetp_dma.rx.command_status')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.non_oetp_dma.rx.command_status.error_code, is_sw_readable=True, is_sw_writable=False)
@@ -7212,7 +7377,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.peer_dma_complete'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.peer_dma_complete, lsb=0, msb=0, low=0, high=0, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.irq.event_enable.peer_dma_complete",
-                                             rdl_desc="Enables PEER_DMA_COMPLETE events. A peer event is queued only when this\nfield and the selected peer\u0027s dma.irq_enable field were both set when the DMA\nrequest was accepted.",
+                                             rdl_desc="Enables PEER_DMA_COMPLETE events. A peer event is queued only when this\nfield and the selected peer\u0027s dma.irq_enable field were both set when the DMA\nrequest was accepted. A failed incoming bulk DMA request also generates this\nevent for the peer resolved from the source MAC. For incoming failures,\nhardware captures the per-peer enable when recording the failure and samples\nthis field at IRQ admission. Successful incoming requests generate no event.\nCSR error recording and the error response do not wait for IRQ FIFO capacity.",
                                              inst_name='peer_dma_complete',
                                              parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.peer_dma_complete, is_sw_readable=True, is_sw_writable=True)
@@ -7244,6 +7409,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='non_oetp_direct_rx_available',
                                              parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.non_oetp_direct_rx_available, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.irq.event_enable.rmem_error'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.irq.event_enable.rmem_error, lsb=5, msb=5, low=5, high=5, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.irq.event_enable.rmem_error",
+                                             rdl_desc="Enables RMEM_ERROR events for locally initiated RMEM failures, including\ntimeout and an accepted ERROR_RSP, and failed incoming RMEM requests from a\nresolved peer. Hardware records the associated peer\u0027s\ndma.error and dma.error_code before\nexposing the event and terminates the failed RMEM access without waiting\nfor IRQ FIFO capacity. For locally initiated failures the enable is sampled\nwhen the failure is recorded; incoming failures sample it at IRQ admission.\nThe bulk DMA per-peer irq_enable does not gate RMEM_ERROR.\nSuccessful RMEM accesses generate no event.",
+                                             inst_name='rmem_error',
+                                             parent_full_inst_name='csr.endpoint_interface.irq.event_enable')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.event_enable.rmem_error, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.irq.status.claim_pending'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.status.claim_pending, lsb=0, msb=0, low=0, high=0, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.status.claim_pending",
@@ -7296,14 +7468,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.irq.claim.peer_idx'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.peer_idx, lsb=0, msb=10, low=0, high=10, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.claim.peer_idx[10:0]",
-                                             rdl_desc="Zero-based peer index for a PEER_DMA_COMPLETE event, in the range 0 through\nNUM_OF_PEERS-1. The field is not applicable to other event sources and is driven\nto zero for deterministic readback.",
+                                             rdl_desc="Zero-based peer index for a PEER_DMA_COMPLETE or RMEM_ERROR event, in the range 0 through\nNUM_OF_PEERS-1. The field is not applicable to other event sources and is driven\nto zero for deterministic readback.",
                                              inst_name='peer_idx',
                                              parent_full_inst_name='csr.endpoint_interface.irq.claim')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.peer_idx, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.irq.claim.source'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.irq.claim.source, lsb=11, msb=14, low=11, high=14, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.irq.claim.source[3:0]",
-                                             rdl_desc="IRQ event source:\u003cul\u003e\n\u003cli\u003e0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or\nerror; peer_idx identifies the peer.\u003c/li\u003e\n\u003cli\u003e1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with\neither success or error.\u003c/li\u003e\n\u003cli\u003e2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with\neither success or error.\u003c/li\u003e\n\u003cli\u003e3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit\nframe was accepted by the oETP engine.\u003c/li\u003e\n\u003cli\u003e4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP\nreceive frame is available on the CSR-facing AXI4-Stream interface.\u003c/li\u003e\n\u003cli\u003e5-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nThis field is meaningful only when valid is set.",
+                                             rdl_desc="IRQ event source:\u003cul\u003e\n\u003cli\u003e0: PEER_DMA_COMPLETE. A peer DMA request completed with either success or\nerror; peer_idx identifies the peer.\u003c/li\u003e\n\u003cli\u003e1: NON_OETP_DMA_TX_COMPLETE. A non-oETP transmit DMA request completed with\neither success or error.\u003c/li\u003e\n\u003cli\u003e2: NON_OETP_DMA_RX_COMPLETE. A non-oETP receive DMA request completed with\neither success or error.\u003c/li\u003e\n\u003cli\u003e3: NON_OETP_DIRECT_TX_COMPLETE. The final beat of a direct non-oETP transmit\nframe was accepted by the oETP engine.\u003c/li\u003e\n\u003cli\u003e4: NON_OETP_DIRECT_RX_AVAILABLE. The first beat of a new direct non-oETP\nreceive frame is available on the CSR-facing AXI4-Stream interface.\u003c/li\u003e\n\u003cli\u003e5: RMEM_ERROR. A locally initiated RMEM operation failed. The cause is\nrecorded in peers.entry[peer_idx].dma; peer_idx identifies the associated peer.\u003c/li\u003e\n\u003cli\u003e6-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nThis field is meaningful only when valid is set.",
                                              inst_name='source',
                                              parent_full_inst_name='csr.endpoint_interface.irq.claim')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.irq.claim.source, is_sw_readable=True, is_sw_writable=False)
@@ -7401,7 +7573,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields. For a\nfailed incoming bulk DMA request, this field is captured when recording\nthe failure and irq.event_enable.peer_dma_complete is sampled at IRQ\nadmission. The event identifies this peer by the received source MAC.\nSuccessful incoming requests generate no event. RMEM errors use their\nseparate irq.event_enable.rmem_error path.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
@@ -7412,6 +7584,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.clear_error'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.clear_error, lsb=9, msb=9, low=9, high=9, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.clear_error",
+                                             rdl_desc="Writing one clears this peer\u0027s shared RMEM/DMA error flag and error\ncode. The field remains asserted until hardware accepts and clears the\ncommand. It does not abort an active operation, clear done, or complete\nan IRQ claim. A new failure takes precedence over a simultaneous clear.\nStarting or successfully completing an operation does not clear a\npreviously recorded error.",
+                                             inst_name='clear_error',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.clear_error, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
@@ -7429,14 +7608,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
+                                             rdl_desc="Shared sticky RMEM/DMA error flag for this peer. Hardware sets this\nfield when a locally initiated RMEM access or bulk DMA transfer fails,\nor when servicing an incoming RMEM or bulk DMA request from this peer\nfails. Received requests are associated by source MAC. An incoming failure\nrecords its code before exposing its error response, independently of\nIRQ enable; it does not change the locally initiated dma.request, idle,\nor done state. An incomplete incoming DMA data frame records remote\nstream code 10. Multicast response suppression does not suppress this\nlocal error record or an enabled event.\nOnly dma.clear_error or endpoint reset clears a latched error; starting\nor successfully completing another operation does not clear it. The\nflag is independent of the IRQ event-enable fields.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[0].dma.error_code'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
-                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             rdl_desc="Shared sticky code for the most recent RMEM or bulk DMA failure for this peer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Local invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e2: Local stream/PDU length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Local supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e4: Local AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: Local AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: Local AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: Local AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8: Local peer response timeout or Request ID wrap collision. An RMEM access\n    terminates through its ACK-only boundary; a bulk DMA timeout aborts\n    the remaining fragments. Hardware does not retry.\u003c/li\u003e\n\u003cli\u003e9: Remote invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e10: Remote stream/PDU length or TLAST error. Also used directly by\n    the receiver of an incomplete DMA_WRITE_REQ or DMA_READ_RSP,\n    including missing or incorrect EndOfData.\u003c/li\u003e\n\u003cli\u003e11: Remote supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e12: Remote AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e13: Remote AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e14: Remote AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e15: Remote AXI write DECERR response.\u003c/li\u003e\n\u003c/ul\u003e\nCodes 1-8 describe errors detected by this endpoint, including\nmalformed responses, local memory failures, and failures while servicing\nreceived requests. Codes 9-15 describe\nfailures reported by the responding peer through a valid ERROR_RSP.\nCode 10 additionally reports an incomplete incoming DMA data frame\ndetected at this endpoint, without requiring an ERROR_RSP first.\nA missing or incorrect EndOfData uses this same code even when\nEthernet padding masks the short data length. A receiver of an\nincomplete unicast DMA_WRITE_REQ records CSR code 10 but sends\nERROR_RSP wire cause 2; multicast writes generate no response.\nERROR_RSP carries a 32-bit cause in the range 1-7, which the initiating\noETP engine validates and maps to CSR code = 8 + wire code. Values\noutside 1-7 are invalid response parameters and record local code 1;\nthey must not be truncated or mistaken for local TIMEOUT = 8.\nThe oETP initiator completion channel carries this final CSR encoding\nfor both RMEM and bulk DMA. The responder completion channel reports\nits cause 1-7 for serialization as ERROR_RSP; cause 2 on an incomplete\nreceived bulk write corresponds to receiver CSR code 10. Hardware\nclears this field only on dma.clear_error or endpoint reset. Successful\noperations preserve a recorded failure. A new failure replaces the code\nand takes precedence over a simultaneous clear. A failed streaming\ntransfer may have partially modified memory; error reporting does not\nprovide rollback or an exact count of modified bytes. Software manages\nbuffer synchronization and recovery.",
                                              inst_name='error_code',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[0].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[0].dma.error_code, is_sw_readable=True, is_sw_writable=False)
@@ -7492,7 +7671,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields. For a\nfailed incoming bulk DMA request, this field is captured when recording\nthe failure and irq.event_enable.peer_dma_complete is sampled at IRQ\nadmission. The event identifies this peer by the received source MAC.\nSuccessful incoming requests generate no event. RMEM errors use their\nseparate irq.event_enable.rmem_error path.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
@@ -7503,6 +7682,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.clear_error'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.clear_error, lsb=9, msb=9, low=9, high=9, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.clear_error",
+                                             rdl_desc="Writing one clears this peer\u0027s shared RMEM/DMA error flag and error\ncode. The field remains asserted until hardware accepts and clears the\ncommand. It does not abort an active operation, clear done, or complete\nan IRQ claim. A new failure takes precedence over a simultaneous clear.\nStarting or successfully completing an operation does not clear a\npreviously recorded error.",
+                                             inst_name='clear_error',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.clear_error, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
@@ -7520,14 +7706,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
+                                             rdl_desc="Shared sticky RMEM/DMA error flag for this peer. Hardware sets this\nfield when a locally initiated RMEM access or bulk DMA transfer fails,\nor when servicing an incoming RMEM or bulk DMA request from this peer\nfails. Received requests are associated by source MAC. An incoming failure\nrecords its code before exposing its error response, independently of\nIRQ enable; it does not change the locally initiated dma.request, idle,\nor done state. An incomplete incoming DMA data frame records remote\nstream code 10. Multicast response suppression does not suppress this\nlocal error record or an enabled event.\nOnly dma.clear_error or endpoint reset clears a latched error; starting\nor successfully completing another operation does not clear it. The\nflag is independent of the IRQ event-enable fields.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[1].dma.error_code'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
-                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             rdl_desc="Shared sticky code for the most recent RMEM or bulk DMA failure for this peer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Local invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e2: Local stream/PDU length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Local supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e4: Local AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: Local AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: Local AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: Local AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8: Local peer response timeout or Request ID wrap collision. An RMEM access\n    terminates through its ACK-only boundary; a bulk DMA timeout aborts\n    the remaining fragments. Hardware does not retry.\u003c/li\u003e\n\u003cli\u003e9: Remote invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e10: Remote stream/PDU length or TLAST error. Also used directly by\n    the receiver of an incomplete DMA_WRITE_REQ or DMA_READ_RSP,\n    including missing or incorrect EndOfData.\u003c/li\u003e\n\u003cli\u003e11: Remote supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e12: Remote AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e13: Remote AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e14: Remote AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e15: Remote AXI write DECERR response.\u003c/li\u003e\n\u003c/ul\u003e\nCodes 1-8 describe errors detected by this endpoint, including\nmalformed responses, local memory failures, and failures while servicing\nreceived requests. Codes 9-15 describe\nfailures reported by the responding peer through a valid ERROR_RSP.\nCode 10 additionally reports an incomplete incoming DMA data frame\ndetected at this endpoint, without requiring an ERROR_RSP first.\nA missing or incorrect EndOfData uses this same code even when\nEthernet padding masks the short data length. A receiver of an\nincomplete unicast DMA_WRITE_REQ records CSR code 10 but sends\nERROR_RSP wire cause 2; multicast writes generate no response.\nERROR_RSP carries a 32-bit cause in the range 1-7, which the initiating\noETP engine validates and maps to CSR code = 8 + wire code. Values\noutside 1-7 are invalid response parameters and record local code 1;\nthey must not be truncated or mistaken for local TIMEOUT = 8.\nThe oETP initiator completion channel carries this final CSR encoding\nfor both RMEM and bulk DMA. The responder completion channel reports\nits cause 1-7 for serialization as ERROR_RSP; cause 2 on an incomplete\nreceived bulk write corresponds to receiver CSR code 10. Hardware\nclears this field only on dma.clear_error or endpoint reset. Successful\noperations preserve a recorded failure. A new failure replaces the code\nand takes precedence over a simultaneous clear. A failed streaming\ntransfer may have partially modified memory; error reporting does not\nprovide rollback or an exact count of modified bytes. Software manages\nbuffer synchronization and recovery.",
                                              inst_name='error_code',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[1].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[1].dma.error_code, is_sw_readable=True, is_sw_writable=False)
@@ -7583,7 +7769,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields. For a\nfailed incoming bulk DMA request, this field is captured when recording\nthe failure and irq.event_enable.peer_dma_complete is sampled at IRQ\nadmission. The event identifies this peer by the received source MAC.\nSuccessful incoming requests generate no event. RMEM errors use their\nseparate irq.event_enable.rmem_error path.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
@@ -7594,6 +7780,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.clear_error'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.clear_error, lsb=9, msb=9, low=9, high=9, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.clear_error",
+                                             rdl_desc="Writing one clears this peer\u0027s shared RMEM/DMA error flag and error\ncode. The field remains asserted until hardware accepts and clears the\ncommand. It does not abort an active operation, clear done, or complete\nan IRQ claim. A new failure takes precedence over a simultaneous clear.\nStarting or successfully completing an operation does not clear a\npreviously recorded error.",
+                                             inst_name='clear_error',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.clear_error, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
@@ -7611,14 +7804,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
+                                             rdl_desc="Shared sticky RMEM/DMA error flag for this peer. Hardware sets this\nfield when a locally initiated RMEM access or bulk DMA transfer fails,\nor when servicing an incoming RMEM or bulk DMA request from this peer\nfails. Received requests are associated by source MAC. An incoming failure\nrecords its code before exposing its error response, independently of\nIRQ enable; it does not change the locally initiated dma.request, idle,\nor done state. An incomplete incoming DMA data frame records remote\nstream code 10. Multicast response suppression does not suppress this\nlocal error record or an enabled event.\nOnly dma.clear_error or endpoint reset clears a latched error; starting\nor successfully completing another operation does not clear it. The\nflag is independent of the IRQ event-enable fields.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[2].dma.error_code'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
-                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             rdl_desc="Shared sticky code for the most recent RMEM or bulk DMA failure for this peer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Local invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e2: Local stream/PDU length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Local supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e4: Local AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: Local AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: Local AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: Local AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8: Local peer response timeout or Request ID wrap collision. An RMEM access\n    terminates through its ACK-only boundary; a bulk DMA timeout aborts\n    the remaining fragments. Hardware does not retry.\u003c/li\u003e\n\u003cli\u003e9: Remote invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e10: Remote stream/PDU length or TLAST error. Also used directly by\n    the receiver of an incomplete DMA_WRITE_REQ or DMA_READ_RSP,\n    including missing or incorrect EndOfData.\u003c/li\u003e\n\u003cli\u003e11: Remote supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e12: Remote AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e13: Remote AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e14: Remote AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e15: Remote AXI write DECERR response.\u003c/li\u003e\n\u003c/ul\u003e\nCodes 1-8 describe errors detected by this endpoint, including\nmalformed responses, local memory failures, and failures while servicing\nreceived requests. Codes 9-15 describe\nfailures reported by the responding peer through a valid ERROR_RSP.\nCode 10 additionally reports an incomplete incoming DMA data frame\ndetected at this endpoint, without requiring an ERROR_RSP first.\nA missing or incorrect EndOfData uses this same code even when\nEthernet padding masks the short data length. A receiver of an\nincomplete unicast DMA_WRITE_REQ records CSR code 10 but sends\nERROR_RSP wire cause 2; multicast writes generate no response.\nERROR_RSP carries a 32-bit cause in the range 1-7, which the initiating\noETP engine validates and maps to CSR code = 8 + wire code. Values\noutside 1-7 are invalid response parameters and record local code 1;\nthey must not be truncated or mistaken for local TIMEOUT = 8.\nThe oETP initiator completion channel carries this final CSR encoding\nfor both RMEM and bulk DMA. The responder completion channel reports\nits cause 1-7 for serialization as ERROR_RSP; cause 2 on an incomplete\nreceived bulk write corresponds to receiver CSR code 10. Hardware\nclears this field only on dma.clear_error or endpoint reset. Successful\noperations preserve a recorded failure. A new failure replaces the code\nand takes precedence over a simultaneous clear. A failed streaming\ntransfer may have partially modified memory; error reporting does not\nprovide rollback or an exact count of modified bytes. Software manages\nbuffer synchronization and recovery.",
                                              inst_name='error_code',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[2].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[2].dma.error_code, is_sw_readable=True, is_sw_writable=False)
@@ -7674,7 +7867,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.irq_enable'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.irq_enable, lsb=2, msb=2, low=2, high=2, is_volatile=False, default=0,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.irq_enable",
-                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields.",
+                                             rdl_desc="Enables generation of a PEER_DMA_COMPLETE IRQ event for this peer.\nHardware samples this field together with irq.event_enable.peer_dma_complete\nwhen it accepts the peer DMA request. Changing the field while a transfer is\nactive does not affect that transfer. Disabling the field does not affect\nDMA execution or the done, error, and error_code status fields. For a\nfailed incoming bulk DMA request, this field is captured when recording\nthe failure and irq.event_enable.peer_dma_complete is sampled at IRQ\nadmission. The event identifies this peer by the received source MAC.\nSuccessful incoming requests generate no event. RMEM errors use their\nseparate irq.event_enable.rmem_error path.",
                                              inst_name='irq_enable',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.irq_enable, is_sw_readable=True, is_sw_writable=True)
@@ -7685,6 +7878,13 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                              inst_name='request',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.request, is_sw_readable=True, is_sw_writable=True)
+        with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.clear_error'):
+            self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.clear_error, lsb=9, msb=9, low=9, high=9, is_volatile=False, default=0,
+                                             rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.clear_error",
+                                             rdl_desc="Writing one clears this peer\u0027s shared RMEM/DMA error flag and error\ncode. The field remains asserted until hardware accepts and clears the\ncommand. It does not abort an active operation, clear done, or complete\nan IRQ claim. A new failure takes precedence over a simultaneous clear.\nStarting or successfully completing an operation does not clear a\npreviously recorded error.",
+                                             inst_name='clear_error',
+                                             parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
+            self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.clear_error, is_sw_readable=True, is_sw_writable=True)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.idle'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.idle, lsb=16, msb=16, low=16, high=16, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.idle[16:16]",
@@ -7702,14 +7902,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.error'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error, lsb=25, msb=25, low=25, high=25, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error[25:25]",
-                                             rdl_desc="Sticky error-completion flag for this peer. Hardware sets this field\nif the accepted block transfer terminates with an error and clears it when\nthe next request is accepted.",
+                                             rdl_desc="Shared sticky RMEM/DMA error flag for this peer. Hardware sets this\nfield when a locally initiated RMEM access or bulk DMA transfer fails,\nor when servicing an incoming RMEM or bulk DMA request from this peer\nfails. Received requests are associated by source MAC. An incoming failure\nrecords its code before exposing its error response, independently of\nIRQ enable; it does not change the locally initiated dma.request, idle,\nor done state. An incomplete incoming DMA data frame records remote\nstream code 10. Multicast response suppression does not suppress this\nlocal error record or an enabled event.\nOnly dma.clear_error or endpoint reset clears a latched error; starting\nor successfully completing another operation does not clear it. The\nflag is independent of the IRQ event-enable fields.",
                                              inst_name='error',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error, is_sw_readable=True, is_sw_writable=False)
         with self.subTest(msg='field: csr.endpoint_interface.peers.entry[3].dma.error_code'):
             self._single_field_property_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error_code, lsb=28, msb=31, low=28, high=31, is_volatile=True, default=None,
                                              rdl_name="csr.endpoint_interface.peers.entry[0..NUM_OF_PEERS-1].dma.error_code[31:28]",
-                                             rdl_desc="Sticky error code for the most recently completed peer DMA transfer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Invalid DMA configuration or descriptor.\u003c/li\u003e\n\u003cli\u003e2: AXI4-Stream length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Frame exceeds the supported size or configured buffer capacity.\u003c/li\u003e\n\u003cli\u003e4: AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8-15: Reserved.\u003c/li\u003e\n\u003c/ul\u003e\nHardware clears this field when the next request is accepted.",
+                                             rdl_desc="Shared sticky code for the most recent RMEM or bulk DMA failure for this peer:\u003cul\u003e\n\u003cli\u003e0: No error.\u003c/li\u003e\n\u003cli\u003e1: Local invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e2: Local stream/PDU length or TLAST error.\u003c/li\u003e\n\u003cli\u003e3: Local supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e4: Local AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e5: Local AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e6: Local AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e7: Local AXI write DECERR response.\u003c/li\u003e\n\u003cli\u003e8: Local peer response timeout or Request ID wrap collision. An RMEM access\n    terminates through its ACK-only boundary; a bulk DMA timeout aborts\n    the remaining fragments. Hardware does not retry.\u003c/li\u003e\n\u003cli\u003e9: Remote invalid request, configuration, descriptor, or parameters.\u003c/li\u003e\n\u003cli\u003e10: Remote stream/PDU length or TLAST error. Also used directly by\n    the receiver of an incomplete DMA_WRITE_REQ or DMA_READ_RSP,\n    including missing or incorrect EndOfData.\u003c/li\u003e\n\u003cli\u003e11: Remote supported-size or buffer-capacity overflow.\u003c/li\u003e\n\u003cli\u003e12: Remote AXI read SLVERR response.\u003c/li\u003e\n\u003cli\u003e13: Remote AXI read DECERR response.\u003c/li\u003e\n\u003cli\u003e14: Remote AXI write SLVERR response.\u003c/li\u003e\n\u003cli\u003e15: Remote AXI write DECERR response.\u003c/li\u003e\n\u003c/ul\u003e\nCodes 1-8 describe errors detected by this endpoint, including\nmalformed responses, local memory failures, and failures while servicing\nreceived requests. Codes 9-15 describe\nfailures reported by the responding peer through a valid ERROR_RSP.\nCode 10 additionally reports an incomplete incoming DMA data frame\ndetected at this endpoint, without requiring an ERROR_RSP first.\nA missing or incorrect EndOfData uses this same code even when\nEthernet padding masks the short data length. A receiver of an\nincomplete unicast DMA_WRITE_REQ records CSR code 10 but sends\nERROR_RSP wire cause 2; multicast writes generate no response.\nERROR_RSP carries a 32-bit cause in the range 1-7, which the initiating\noETP engine validates and maps to CSR code = 8 + wire code. Values\noutside 1-7 are invalid response parameters and record local code 1;\nthey must not be truncated or mistaken for local TIMEOUT = 8.\nThe oETP initiator completion channel carries this final CSR encoding\nfor both RMEM and bulk DMA. The responder completion channel reports\nits cause 1-7 for serialization as ERROR_RSP; cause 2 on an incomplete\nreceived bulk write corresponds to receiver CSR code 10. Hardware\nclears this field only on dma.clear_error or endpoint reset. Successful\noperations preserve a recorded failure. A new failure replaces the code\nand takes precedence over a simultaneous clear. A failed streaming\ntransfer may have partially modified memory; error reporting does not\nprovide rollback or an exact count of modified bytes. Software manages\nbuffer synchronization and recovery.",
                                              inst_name='error_code',
                                              parent_full_inst_name='csr.endpoint_interface.peers.entry[3].dma')
             self._single_int_field_read_and_write_test(fut=self.dut.endpoint_interface.peers.entry[3].dma.error_code, is_sw_readable=True, is_sw_writable=False)
@@ -9777,7 +9977,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
         Check the properties on the addrmaps files
         """
 
-        
+
         with self.subTest(msg='addrmap: top_node'):
             self._single_addrmap_property_test(dut=self.dut,
                                                size=4352,
@@ -9790,11 +9990,11 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                          readable_registers=NodeIterators('test_reg','regB',),
                                          sections=NodeIterators('endpoint_interface','switch_interface',),
                                          memories=NodeIterators())
-        
+
 
 
         # test all the address maps
-        
+
 
     def test_regfile(self) -> None:
         """
@@ -9815,14 +10015,14 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                          sections=NodeIterators('config','axis_if','non_oetp_dma','irq','peers','rmem',))
         with self.subTest(msg='regfile: csr.endpoint_interface.config'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.config,
-                                               size=12,
+                                               size=32,
                                                rdl_name="csr.endpoint_interface.config",
                                                rdl_desc="Configuration register file for this openENOC Endpoint Interface instance.",
                                                inst_name='config',
                                                parent_full_inst_name='csr.endpoint_interface')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.config,
-                                         writeable_registers=NodeIterators('mac_address','non_oetp_control',),
-                                         readable_registers=NodeIterators('mac_address','non_oetp_control',),
+                                         writeable_registers=NodeIterators('mac_address','multicast_address','non_oetp_control','rmem_timeout','dma_timeout','dma_max_fragment_size',),
+                                         readable_registers=NodeIterators('mac_address','multicast_address','non_oetp_control','rmem_timeout','dma_timeout','dma_max_fragment_size',),
                                          sections=NodeIterators())
         with self.subTest(msg='regfile: csr.endpoint_interface.axis_if'):
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.axis_if,
@@ -9894,7 +10094,7 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
             self._single_regfile_property_test(dut=self.dut.endpoint_interface.irq,
                                                size=20,
                                                rdl_name="csr.endpoint_interface.irq",
-                                               rdl_desc="Endpoint-level interrupt control and claim interface. Interrupt events from peer\nDMA, non-oETP DMA, and direct AXI4-Stream transfers are serialized through a shared\nevent FIFO.",
+                                               rdl_desc="Endpoint-level interrupt control and claim interface. Interrupt events from peer\nDMA, non-oETP DMA, direct AXI4-Stream transfers, and RMEM failures are serialized\nthrough a shared event FIFO.",
                                                inst_name='irq',
                                                parent_full_inst_name='csr.endpoint_interface')
             self._test_regfile_iterators(dut=self.dut.endpoint_interface.irq,
@@ -10077,34 +10277,34 @@ class csr_single_access(csr_TestCase): # type: ignore[valid-type,misc]
                                          writeable_registers=NodeIterators('mac_address','iface','config',),
                                          readable_registers=NodeIterators('mac_address','iface','config',),
                                          sections=NodeIterators())
-        
 
-    
+
+
 
     def test_array_slicing(self) -> None:
         """
         Check slicing into array
         """
         full_slice:NodeArray
-        
+
         with self.subTest(msg='hidden_node: csr.endpoint_interface.peers.entry[]'):
-            
+
             full_slice = self.dut.endpoint_interface.peers.get_child_by_system_rdl_name('entry')
-            
+
             self.assertCountEqual(iter(full_slice[:]), iter(full_slice))
-        
+
         with self.subTest(msg='hidden_node: csr.endpoint_interface.rmem.word[]'):
-            
+
             full_slice = self.dut.endpoint_interface.rmem.get_child_by_system_rdl_name('word')
-            
+
             self.assertCountEqual(iter(full_slice[:]), iter(full_slice))
-        
+
         with self.subTest(msg='hidden_node: csr.switch_interface.forwarding_table.entry[]'):
-            
+
             full_slice = self.dut.switch_interface.forwarding_table.get_child_by_system_rdl_name('entry')
-            
+
             self.assertCountEqual(iter(full_slice[:]), iter(full_slice))
-        
+
 
 
 
@@ -10113,13 +10313,13 @@ class csr_block_access(csr_TestCase_BlockAccess): # type: ignore[valid-type,misc
     tests for all the block access methods
     """
 
-    
+
 
     def test_register_array_context_manager(self) -> None:
         """
         Walk the register map and check that register map context managers work correctly
         """
-        
+
         # test context manager to register:
         # csr.endpoint_interface.rmem.word[]
         # size 4
@@ -10134,7 +10334,7 @@ class csr_block_access(csr_TestCase_BlockAccess): # type: ignore[valid-type,misc
                                 patch(base_name + '.write_block_addr_space') as write_block_callback_mock:
                 with self.dut.endpoint_interface.rmem.word.single_read_modify_write() as dut:
                     pass
-                
+
                 read_callback_mock.assert_not_called()
                 write_callback_mock.assert_not_called()
 
@@ -10143,18 +10343,18 @@ class csr_alt_block_access(csr_TestCase_AltBlockAccess): # type: ignore[valid-ty
     tests for all the block access methods with the alternative callbacks, this is a simpler
     version of the tests above
     """
-    
+
 
     def test_register_array_context_manager(self) -> None:
         """
         Walk the register map and check that register map context managers work correctly
         """
-        
+
         # test context manager to register with alt block interfaces:
         # csr.endpoint_interface.rmem.word[]
         # size 4
         # total_size 1024
-        
+
         empty_read = [0 for i in range(1024 // 4)]
         follow_along = [0 for i in range(1024 // 4)]
         with self.subTest(msg='register: csr.endpoint_interface.rmem.word[]'):
@@ -10165,10 +10365,10 @@ class csr_alt_block_access(csr_TestCase_AltBlockAccess): # type: ignore[valid-ty
                             patch(base_name + '.write_block_addr_space_alt') as write_block_callback_mock:
                 with self.dut.endpoint_interface.rmem.word.single_read_modify_write() as dut:
                     pass
-                
+
                 read_callback_mock.assert_not_called()
                 write_callback_mock.assert_not_called()
-        
+
 
 
 if __name__ == '__main__':

@@ -11,9 +11,11 @@ import pytest
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge
 from cocotb.regression import TestFactory
+
 TestFactory.__test__ = False
 
 from cocotbext.axi import AxiStreamBus, AxiStreamFrame, AxiStreamSource, AxiStreamSink
+
 
 class TB:
     def __init__(self, dut):
@@ -49,12 +51,15 @@ class TB:
         await RisingEdge(self.dut.clk)
         await RisingEdge(self.dut.clk)
 
+
 # ----------------------------------------------------------------------
 # Helper functions for test parameterization
 # ----------------------------------------------------------------------
 
+
 def make_payload(length):
     return bytes(itertools.islice(itertools.cycle(range(1, 256)), length))
+
 
 def make_header(seed):
     # Distinct, easily recognizable 16-byte header per frame index.
@@ -64,8 +69,10 @@ def make_header(seed):
     oetp = [(0xA0 + seed) & 0xFF, seed & 0xFF]
     return bytes(dst + src + etype + oetp)
 
+
 def cycle_pause():
     return itertools.cycle([1, 1, 1, 0])
+
 
 def size_list():
     data_width = len(cocotb.top.s_axis_if.tdata)
@@ -73,27 +80,32 @@ def size_list():
     # payload lengths (the 16-byte header is always prepended on top of these)
     return list(range(0, byte_width * 4 + 1)) + [64] + [0] * 4
 
+
 def tuser_values(frame):
     tu = frame.tuser
     if isinstance(tu, (list, tuple)):
         return list(tu)
     return [tu]
 
+
 def check_frame(rx_frame, tx_frame, expected_tuser):
     # payload passes through unchanged
-    assert rx_frame.tdata == tx_frame.tdata, \
-        f"tdata mismatch: {bytes(rx_frame.tdata).hex()} != {bytes(tx_frame.tdata).hex()}"
+    assert (
+        rx_frame.tdata == tx_frame.tdata
+    ), f"tdata mismatch: {bytes(rx_frame.tdata).hex()} != {bytes(tx_frame.tdata).hex()}"
     # 128-bit header present and stable on tuser for the whole frame
     for tu in tuser_values(rx_frame):
-        assert tu == expected_tuser, \
-            f"tuser mismatch: {tu:032x} != {expected_tuser:032x}"
+        assert tu == expected_tuser, f"tuser mismatch: {tu:032x} != {expected_tuser:032x}"
 
 
 # ----------------------------------------------------------------------
 # TestFactory logic: sweep payload sizes, idle and backpressure combos
 # ----------------------------------------------------------------------
 
-async def run_test_factory_frames(dut, payload_lengths=None, payload_data=None, idle_inserter=None, backpressure_inserter=None):
+
+async def run_test_factory_frames(
+    dut, payload_lengths=None, payload_data=None, idle_inserter=None, backpressure_inserter=None
+):
     tb = TB(dut)
     await tb.reset()
 
@@ -125,7 +137,7 @@ async def run_test_factory_frames(dut, payload_lengths=None, payload_data=None, 
 # Dispatch: select test cases to run based on Makefile configuration
 # ----------------------------------------------------------------------
 
-if getattr(cocotb, 'top', None) is not None:
+if getattr(cocotb, "top", None) is not None:
     factory = TestFactory(run_test_factory_frames)
     factory.add_option("payload_lengths", [size_list])
     factory.add_option("payload_data", [make_payload])
@@ -138,24 +150,26 @@ if getattr(cocotb, 'top', None) is not None:
 # ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
-repo_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..'))
-hw_dir = os.path.join(repo_dir, 'hw')
-libs_dir = os.path.join(repo_dir, 'libs')
-core_dir = os.path.join(hw_dir, 'rtl', 'core')
-taxi_axis_dir = os.path.join(libs_dir, 'taxi', 'src', 'axis', 'rtl')
-common_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', 'common'))
+repo_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", ".."))
+hw_dir = os.path.join(repo_dir, "hw")
+libs_dir = os.path.join(repo_dir, "libs")
+core_dir = os.path.join(hw_dir, "rtl", "core")
+taxi_axis_dir = os.path.join(libs_dir, "taxi", "src", "axis", "rtl")
+common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
+
 
 def process_f_files(files):
     lst = {}
     for f in files:
-        if f[-2:].lower() == '.f':
-            with open(f, 'r') as fp:
+        if f[-2:].lower() == ".f":
+            with open(f, "r") as fp:
                 l = fp.read().split()
             for f in process_f_files([os.path.join(os.path.dirname(f), x) for x in l]):
                 lst[os.path.basename(f)] = f
         else:
             lst[os.path.basename(f)] = f
     return list(lst.values())
+
 
 @pytest.mark.parametrize("data_w", [8, 16, 32, 64])
 def test_openenoc_axis_header_parser(request, data_w):
@@ -174,19 +188,20 @@ def test_openenoc_axis_header_parser(request, data_w):
     verilog_sources = process_f_files(verilog_sources)
 
     parameters = {}
-    parameters['DATA_W'] = data_w
-    parameters['KEEP_EN'] = int(parameters['DATA_W'] > 8)
-    parameters['KEEP_W'] = (parameters['DATA_W'] + 7) // 8
-    parameters['STRB_EN'] = 0
-    parameters['LAST_EN'] = 1
-    parameters['USER_W'] = 128
-    parameters['DEPTH'] = 0
-    parameters['M_REG_TYPE'] = 2
+    parameters["DATA_W"] = data_w
+    parameters["KEEP_EN"] = int(parameters["DATA_W"] > 8)
+    parameters["KEEP_W"] = (parameters["DATA_W"] + 7) // 8
+    parameters["STRB_EN"] = 0
+    parameters["LAST_EN"] = 1
+    parameters["USER_W"] = 128
+    parameters["DEPTH"] = 0
+    parameters["M_REG_TYPE"] = 2
 
-    extra_env = {f'PARAM_{k}': str(v) for k, v in parameters.items()}
+    extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(tests_dir, "sim_build",
-        request.node.name.replace('[', '-').replace(']', ''))
+    sim_build = os.path.join(
+        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
+    )
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -195,9 +210,8 @@ def test_openenoc_axis_header_parser(request, data_w):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
-        extra_args=[
-            os.path.join(common_dir, "config.vlt"),
-        ],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

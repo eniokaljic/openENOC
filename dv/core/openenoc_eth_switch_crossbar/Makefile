@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 TOPLEVEL_LANG = verilog
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
@@ -46,12 +46,18 @@ export PARAM_FABRIC_DATA_W := 32
 export PARAM_PORT_FIFO_DEPTH := 64
 export PARAM_PORT_SIDE := 15
 
-ifeq ($(SIM), verilator)
-COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-G$(subst PARAM_,,$(v))=$($(v)))
-EXTRA_ARGS += -Wall -Wno-DECLFILENAME ../../common/config.vlt
+COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
+	-G$(subst PARAM_,,$(v))=$($(v)))
+EXTRA_ARGS += -Wall ../../common/config.vlt
 ifeq ($(WAVES), 1)
-EXTRA_ARGS += --trace --trace-fst
-endif
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc

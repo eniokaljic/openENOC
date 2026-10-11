@@ -19,7 +19,16 @@ MEMORY
 
 SECTIONS
 {
-    /* Boot code is retained first so the reset address resolves to _start. */
+    /* PicoRV32 reset and IRQ entry points must precede ordinary code. */
+    .vectors ORIGIN(IMEM) :
+    {
+        __reset_vector = .;
+        KEEP(*(.text.reset))
+        . = __reset_vector + 0x10;
+        __irq_vector = .;
+        KEEP(*(.text.irq_vector))
+    } > IMEM
+
     .text :
     {
         . = ALIGN(4);
@@ -86,6 +95,9 @@ SECTIONS
     PROVIDE(end = __heap_start);
     PROVIDE(_end = __heap_start);
 
+    ASSERT(_start == ORIGIN(IMEM), "Reset vector must start at IMEM_BASE_ADDR")
+    ASSERT(__irq_vector == 0x10, "IRQ vector must match PicoRV32 PROGADDR_IRQ")
+    ASSERT(SIZEOF(.vectors) == 0x14, "IRQ vector must contain one 32-bit jump")
     ASSERT(__data_load_end <= ORIGIN(IMEM) + LENGTH(IMEM),
            "IMEM overflow: code and initialized data do not fit")
     ASSERT(__bss_end <= __stack_limit,

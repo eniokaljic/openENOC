@@ -5,29 +5,18 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
+/* Forwarding-table source MAC learning request/acknowledgement interface. */
 interface openenoc_learning_if #(
     parameter int NUM_OF_INTERFACES = 8
 );
-    logic                         req;
-    logic [47:0]                  mac_addr;
+    logic req;
+    logic [47:0] mac_addr;
     logic [NUM_OF_INTERFACES-1:0] port_bitmap;
-    logic                         ack;
+    logic ack;
 
-    modport mst (
-        output req,
-        output mac_addr,
-        output port_bitmap,
+    modport mst(output req, output mac_addr, output port_bitmap, input ack);
 
-        input  ack
-    );
-
-    modport slv (
-        input  req,
-        input  mac_addr,
-        input  port_bitmap,
-
-        output ack
-    );
+    modport slv(input req, input mac_addr, input port_bitmap, output ack);
 
 endinterface
 

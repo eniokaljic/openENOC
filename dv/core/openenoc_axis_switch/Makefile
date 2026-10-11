@@ -3,7 +3,7 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
@@ -46,16 +46,18 @@ export PARAM_S_REG_TYPE := 2
 export PARAM_M_REG_TYPE := 0
 export PARAM_TUSER_BITMAP_ROUTE := 1
 
-ifeq ($(SIM), icarus)
-	PLUSARGS += -fst
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-P $(COCOTB_TOPLEVEL).$(subst PARAM_,,$(v))=$($(v)))
-else ifeq ($(SIM), verilator)
-	COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),-G$(subst PARAM_,,$(v))=$($(v)))
-	EXTRA_ARGS += ../../common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-	endif
+COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
+	-G$(subst PARAM_,,$(v))=$($(v)))
+EXTRA_ARGS += -Wall ../../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@rm -rf __pycache__
+	@rm -f *.pyc

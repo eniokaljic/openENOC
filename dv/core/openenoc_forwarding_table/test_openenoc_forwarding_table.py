@@ -11,6 +11,7 @@ import pytest
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
 from cocotb.regression import TestFactory
+
 TestFactory.__test__ = False
 
 # operation_mode encoding (CSR forwarding_control.operation_mode)
@@ -185,6 +186,7 @@ class TB:
 # Helper functions
 # ----------------------------------------------------------------------
 
+
 def make_mac(index):
     # locally administered unicast MAC addresses, one per table index
     return 0x020E0C000000 | (index & 0xFFFFFF)
@@ -198,6 +200,7 @@ def single_port(index, num_of_interfaces):
 # Test cases
 # ----------------------------------------------------------------------
 
+
 async def run_reset_state(dut):
     tb = TB(dut)
     flood = tb.iface_mask
@@ -205,8 +208,11 @@ async def run_reset_state(dut):
 
     for index in range(tb.table_depth):
         mac, bitmap, enabled = await tb.cpu_read_entry(index)
-        assert (mac, bitmap, enabled) == (0, 0, 0), \
-            f"entry {index} is not cleared after reset: {mac:012x} {bitmap:x} {enabled}"
+        assert (mac, bitmap, enabled) == (
+            0,
+            0,
+            0,
+        ), f"entry {index} is not cleared after reset: {mac:012x} {bitmap:x} {enabled}"
 
     # an empty table always misses, so every lookup returns default_forwarding
     assert await tb.lookup(make_mac(0)) == flood
@@ -255,8 +261,9 @@ async def run_lookup_managed(dut):
     await tb.reset(operation_mode=MANAGED, default_forwarding=flood)
 
     for index in range(tb.table_depth):
-        await tb.cpu_write_entry(index, make_mac(index),
-                                 single_port(index, tb.num_of_interfaces), 1)
+        await tb.cpu_write_entry(
+            index, make_mac(index), single_port(index, tb.num_of_interfaces), 1
+        )
 
     for index in range(tb.table_depth):
         expected = single_port(index, tb.num_of_interfaces)
@@ -285,8 +292,11 @@ async def run_learning_ignored_in_managed_mode(dut):
 
     # the learning process is transparent, but the table stays untouched
     for index in range(tb.table_depth):
-        assert await tb.cpu_read_entry(index) == (0, 0, 0), \
-            f"entry {index} modified while in managed mode"
+        assert await tb.cpu_read_entry(index) == (
+            0,
+            0,
+            0,
+        ), f"entry {index} modified while in managed mode"
 
     assert await tb.lookup(make_mac(0)) == flood
 
@@ -307,8 +317,7 @@ async def run_learning_unmanaged(dut):
 
     # software may still inspect the learned entries
     mac, bitmap, enabled = await tb.cpu_read_entry(0)
-    assert (mac, bitmap, enabled) == (make_mac(0),
-                                      single_port(0, tb.num_of_interfaces), 1)
+    assert (mac, bitmap, enabled) == (make_mac(0), single_port(0, tb.num_of_interfaces), 1)
 
     # a known MAC address only refreshes the port bitmap, no entry is consumed
     last = tb.table_depth - 1
@@ -342,8 +351,11 @@ async def run_cpu_write_ignored_in_unmanaged_mode(dut):
     # writes are acknowledged, but must not change the table
     await tb.cpu_write_entry(0, 0xFFFFFFFFFFFF, tb.iface_mask, 0)
 
-    assert await tb.cpu_read_entry(0) == (mac, bitmap, 1), \
-        "software write accepted while in unmanaged mode"
+    assert await tb.cpu_read_entry(0) == (
+        mac,
+        bitmap,
+        1,
+    ), "software write accepted while in unmanaged mode"
     assert await tb.lookup(mac) == bitmap
 
 
@@ -367,8 +379,10 @@ async def run_exclusive_access(dut):
     dut.lookup_if.mac_addr.value = STALE
 
     while int(dut.lookup_if.ack.value) != 1:
-        assert int(dut.lookup_if.ack.value) + int(dut.cpuif_rd_ack.value) \
-            + int(dut.cpuif_wr_ack.value) <= 1, "table served two masters at once"
+        assert (
+            int(dut.lookup_if.ack.value) + int(dut.cpuif_rd_ack.value) + int(dut.cpuif_wr_ack.value)
+            <= 1
+        ), "table served two masters at once"
         await tb.cycle()
 
     assert int(dut.cpuif_rd_ack.value) == 0, "table served two masters at once"
@@ -417,8 +431,12 @@ async def run_concurrent_requests(dut):
     lookup_bitmap = None
 
     for _ in range(16):
-        active = int(dut.cpuif_rd_ack.value) + int(dut.cpuif_wr_ack.value) \
-            + int(dut.lookup_if.ack.value) + int(dut.learning_if.ack.value)
+        active = (
+            int(dut.cpuif_rd_ack.value)
+            + int(dut.cpuif_wr_ack.value)
+            + int(dut.lookup_if.ack.value)
+            + int(dut.learning_if.ack.value)
+        )
         assert active <= 1, "more than one interface acknowledged in one cycle"
 
         if int(dut.cpuif_rd_ack.value):
@@ -435,8 +453,7 @@ async def run_concurrent_requests(dut):
         acks["learning"] += int(dut.learning_if.ack.value)
         await tb.cycle()
 
-    assert acks == {"cpu": 1, "lookup": 1, "learning": 1}, \
-        f"lost or duplicated requests: {acks}"
+    assert acks == {"cpu": 1, "lookup": 1, "learning": 1}, f"lost or duplicated requests: {acks}"
 
     # software has the highest priority, learning the lowest
     assert order == ["cpu", "lookup", "learning"], f"unexpected service order: {order}"
@@ -451,8 +468,11 @@ async def run_concurrent_requests(dut):
     assert await tb.lookup(mac) == bitmap
 
     # and software sees the learned entry through the CPU interface as well
-    assert await tb.cpu_read_entry(0) == (mac, bitmap, 1), \
-        "the learned entry is not visible to software"
+    assert await tb.cpu_read_entry(0) == (
+        mac,
+        bitmap,
+        1,
+    ), "the learned entry is not visible to software"
 
 
 async def run_iface_bit_enables(dut):
@@ -515,8 +535,9 @@ async def run_blackhole_entry(dut):
 
     # a hit with an empty bitmap means "drop", it must not fall back to
     # default_forwarding the way a miss does
-    assert await tb.lookup(dropped) == 0, \
-        "a hit with an empty bitmap fell back to default_forwarding"
+    assert (
+        await tb.lookup(dropped) == 0
+    ), "a hit with an empty bitmap fell back to default_forwarding"
 
     # an actual miss still floods
     assert await tb.lookup(make_mac(12)) == flood
@@ -539,8 +560,11 @@ async def run_learn_pointer_unaffected_by_managed_mode(dut):
     bitmap = single_port(0, tb.num_of_interfaces)
     await tb.learn(mac, bitmap)
 
-    assert await tb.cpu_read_entry(0) == (mac, bitmap, 1), \
-        "the circular write pointer moved while in managed mode"
+    assert await tb.cpu_read_entry(0) == (
+        mac,
+        bitmap,
+        1,
+    ), "the circular write pointer moved while in managed mode"
 
 
 async def run_cpu_address_out_of_range(dut):
@@ -565,12 +589,15 @@ async def run_cpu_address_out_of_range(dut):
     # must neither write anything nor return anything
     await tb.cpu_write_entry(bad, 0xFFFFFFFFFFFF, tb.iface_mask, 1)
 
-    assert await tb.cpu_read_entry(bad) == (0, 0, 0), \
-        "a read outside the table returned data"
-    assert await tb.cpu_read_entry(0) == (mac, bitmap, 1), \
-        "a write outside the table corrupted an existing entry"
-    assert await tb.lookup(0xFFFFFFFFFFFF) == 0, \
-        "a write outside the table created a searchable entry"
+    assert await tb.cpu_read_entry(bad) == (0, 0, 0), "a read outside the table returned data"
+    assert await tb.cpu_read_entry(0) == (
+        mac,
+        bitmap,
+        1,
+    ), "a write outside the table corrupted an existing entry"
+    assert (
+        await tb.lookup(0xFFFFFFFFFFFF) == 0
+    ), "a write outside the table created a searchable entry"
 
 
 async def run_held_request(dut):
@@ -603,8 +630,11 @@ async def run_held_request(dut):
     next_mac = make_mac(3)
     next_bitmap = single_port(1, tb.num_of_interfaces)
     await tb.learn(next_mac, next_bitmap)
-    assert await tb.cpu_read_entry(1) == (next_mac, next_bitmap, 1), \
-        "a held learning request consumed more than one entry"
+    assert await tb.cpu_read_entry(1) == (
+        next_mac,
+        next_bitmap,
+        1,
+    ), "a held learning request consumed more than one entry"
 
     # the same for the lookup interface
     dut.lookup_if.mac_addr.value = mac
@@ -631,8 +661,9 @@ async def run_back_to_back_requests(dut):
     count = min(tb.table_depth, 8)
 
     for index in range(count):
-        await tb.cpu_write_entry(index, make_mac(index),
-                                 single_port(index, tb.num_of_interfaces), 1)
+        await tb.cpu_write_entry(
+            index, make_mac(index), single_port(index, tb.num_of_interfaces), 1
+        )
 
     # every request is issued in the cycle right after the previous acknowledge,
     # without the settling cycle the TB helpers normally insert
@@ -649,8 +680,9 @@ async def run_back_to_back_requests(dut):
 
         expected = single_port(index, tb.num_of_interfaces)
         got = int(dut.lookup_if.port_bitmap.value)
-        assert got == expected, \
-            f"back to back lookup {index} returned {got:x}, expected {expected:x}"
+        assert (
+            got == expected
+        ), f"back to back lookup {index} returned {got:x}, expected {expected:x}"
 
     dut.lookup_if.mac_addr.value = 0
 
@@ -659,23 +691,25 @@ async def run_back_to_back_requests(dut):
 # Dispatch: select test cases to run based on Makefile configuration
 # ----------------------------------------------------------------------
 
-if getattr(cocotb, 'top', None) is not None:
-    for test in [run_reset_state,
-                 run_cpu_program_and_readback,
-                 run_cpu_write_bit_enables,
-                 run_iface_bit_enables,
-                 run_lookup_managed,
-                 run_duplicate_mac_lowest_index_wins,
-                 run_blackhole_entry,
-                 run_learning_ignored_in_managed_mode,
-                 run_learn_pointer_unaffected_by_managed_mode,
-                 run_learning_unmanaged,
-                 run_cpu_write_ignored_in_unmanaged_mode,
-                 run_cpu_address_out_of_range,
-                 run_exclusive_access,
-                 run_concurrent_requests,
-                 run_held_request,
-                 run_back_to_back_requests]:
+if getattr(cocotb, "top", None) is not None:
+    for test in [
+        run_reset_state,
+        run_cpu_program_and_readback,
+        run_cpu_write_bit_enables,
+        run_iface_bit_enables,
+        run_lookup_managed,
+        run_duplicate_mac_lowest_index_wins,
+        run_blackhole_entry,
+        run_learning_ignored_in_managed_mode,
+        run_learn_pointer_unaffected_by_managed_mode,
+        run_learning_unmanaged,
+        run_cpu_write_ignored_in_unmanaged_mode,
+        run_cpu_address_out_of_range,
+        run_exclusive_access,
+        run_concurrent_requests,
+        run_held_request,
+        run_back_to_back_requests,
+    ]:
         TestFactory(test).generate_tests()
 
 # ----------------------------------------------------------------------
@@ -683,15 +717,14 @@ if getattr(cocotb, 'top', None) is not None:
 # ----------------------------------------------------------------------
 
 tests_dir = os.path.dirname(__file__)
-hw_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', '..', 'hw'))
-core_dir = os.path.join(hw_dir, 'rtl', 'core')
-common_dir = os.path.abspath(os.path.join(tests_dir, '..', '..', 'common'))
+hw_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "..", "hw"))
+core_dir = os.path.join(hw_dir, "rtl", "core")
+common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
 
 
 # a table depth that is not a power of two leaves addresses inside the address
 # space that have no entry behind them, which exercises the range check
-@pytest.mark.parametrize("num_of_interfaces, table_depth",
-                         [(2, 4), (4, 8), (5, 20), (8, 32)])
+@pytest.mark.parametrize("num_of_interfaces, table_depth", [(2, 4), (4, 8), (5, 20), (8, 32)])
 def test_openenoc_forwarding_table(request, num_of_interfaces, table_depth):
     dut = "openenoc_forwarding_table"
     module = os.path.splitext(os.path.basename(__file__))[0]
@@ -705,13 +738,14 @@ def test_openenoc_forwarding_table(request, num_of_interfaces, table_depth):
     ]
 
     parameters = {}
-    parameters['NUM_OF_INTERFACES'] = num_of_interfaces
-    parameters['TABLE_DEPTH'] = table_depth
+    parameters["NUM_OF_INTERFACES"] = num_of_interfaces
+    parameters["TABLE_DEPTH"] = table_depth
 
-    extra_env = {f'PARAM_{k}': str(v) for k, v in parameters.items()}
+    extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(tests_dir, "sim_build",
-        request.node.name.replace('[', '-').replace(']', ''))
+    sim_build = os.path.join(
+        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
+    )
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -720,9 +754,8 @@ def test_openenoc_forwarding_table(request, num_of_interfaces, table_depth):
         toplevel=toplevel,
         module=module,
         parameters=parameters,
-        extra_args=[
-            os.path.join(common_dir, "config.vlt"),
-        ],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

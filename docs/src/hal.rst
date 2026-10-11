@@ -86,7 +86,9 @@ The endpoint interface HAL is organized around a CSR-based management interface 
 
 A central configuration aspect of the endpoint interface HAL is the description of the local endpoint instance and the set of remote peers that it can access. The read-only information register exposes implementation parameters such as the total depth of the virtual remote-memory region and the number of supported remote peers. These values allow software to discover the size and structure of the endpoint address space without relying on hard-coded assumptions.
 
-The endpoint configuration registers define the local MAC address used by the endpoint when exchanging frames with the openENOC network. Remote communication targets are described through a peer table, where each entry contains the MAC address of a remote peer, the offset of the corresponding virtual remote-memory region, the local memory base address, the remote memory base address, and the size of the region. This structure allows software to describe how local memory resources are related to remote memory regions visible through the endpoint.
+The endpoint configuration registers define the local unicast MAC address and a separate multicast destination address. The oETP receive filter compares an individual destination against ``config.mac_address`` and a group destination against ``config.multicast_address``. All endpoints in a replication group configure the same multicast address while retaining individual unicast identities; outgoing oETP frames use the unicast address as their source. A zero multicast address disables oETP group reception. The multicast register follows the unicast MAC register, with both response-timeout registers following the non-oETP receive policy. This destination filtering will be implemented in the oETP engine.
+
+Remote communication targets are described through a peer table, where each entry contains the MAC address of a remote peer, the offset of the corresponding virtual remote-memory region, the local memory base address, the remote memory base address, and the size of the region. This structure allows software to describe how local memory resources are related to remote memory regions visible through the endpoint.
 
 The HAL supports two complementary access models. The first model is a software-visible AXI4-Stream access path exposed through source and sink register files. The source register file allows software to provide stream data words, assert the corresponding valid indication, and mark the last word of a frame. Software observes the ready status to determine when the endpoint can accept the next transfer. Conversely, the sink register file allows hardware to present received stream data to software, together with valid and last indications, while software acknowledges reception through the ready control field.
 
@@ -94,11 +96,98 @@ This CSR-mapped AXI4-Stream interface mirrors the basic AXI4-Stream handshake se
 
 The second access model is memory-oriented communication through the virtual remote-memory region. This region provides a software-visible address space representing memory associated with one or more remote peers. The mapping between a remote peer and its corresponding portion of the virtual memory space is defined by the peer configuration registers. Accesses to this region may be handled directly or used as the basis for DMA-driven transfers, depending on the configured DMA mode for the selected peer.
 
+The response-timeout configuration uses two 32-bit cycle counts: ``config.rmem_timeout.cycles`` for transparent RMEM and ``config.dma_timeout.cycles`` for individual unicast peer DMA fragments. The DMA setting is shared by all peers; there is no separate whole-transfer timeout. Both reset to zero, which permits an indefinite response wait. A DMA fragment timeout aborts the remaining fragments and reports peer DMA error code 8 (TIMEOUT). Software controls recovery and any restart; hardware does not retransmit automatically. Multicast writes complete locally without waiting for responses. These CSRs define the oETP timeout policy; runtime enforcement is part of the forthcoming oETP engine implementation.
+
+An RMEM read timeout returns ``0xFFFFFFFF`` with ``cpuif_rd_ack``; an RMEM write timeout asserts ``cpuif_wr_ack``. The existing generated external-RMEM boundary carries ACK and read data and remains unchanged without ERR signals. Transparent RMEM (peer mode 1) and bulk DMA share ``peers.entry[].dma.error`` and the four-bit ``error_code``. Local timeout records code 8; a received ERROR_RSP requires an explicit wire-to-CSR code mapping. Starting or successfully completing another operation preserves the error. Writing one to the peer's ``dma.clear_error`` clears the flag and code; hardware acknowledges by clearing the command field. New failures take precedence over a simultaneous clear. The command does not abort active work, clear done, or complete an IRQ claim.
+
+Failure reporting also covers received requests. The responder identifies the
+peer by source MAC and records the servicing failure before exposing its failed
+completion to the oETP engine. The initiator maps the valid ERROR_RSP cause to
+remote code 9..15. An AXI write SLVERR therefore records local code 6 at the
+responder and remote code 14 at the initiator. Received failures preserve the
+responder's locally initiated ``dma.request``, ``idle``, and ``done`` state;
+successful incoming requests preserve sticky errors and generate no IRQ.
+An incomplete received DMA_WRITE_REQ or DMA_READ_RSP, including missing or
+incorrect EndOfData, records remote code 10 directly. A truncated received
+write returns ERROR_RSP wire cause 2, while its receiver retains CSR code 10.
+Both endpoints can independently notify software that destination memory may
+be partially updated. Multicast receivers retain local diagnostics and enabled
+events while suppressing responses.
+
+RMEM and bulk DMA retain separate IRQ sources: ``irq.event_enable.rmem_error``
+enables source 5 for RMEM failures, while bulk DMA retains PEER_DMA_COMPLETE,
+source 0, gated by the per-peer ``dma.irq_enable`` and global
+``irq.event_enable.peer_dma_complete``. For a received bulk failure, the
+per-peer enable is captured when recording the error and the global enable
+is sampled at IRQ admission. Received RMEM failures use the separate global
+RMEM gate at admission. Error recording is independent of IRQ enable; neither
+releasing an RMEM access nor returning an error completion waits for IRQ FIFO
+capacity. The responder retains a pending notification and defers its next
+incoming request until the notification is admitted and committed. Clearing
+the CSR error and completing an IRQ claim remain independent operations.
+
+The DMA engine owns the shared status and receives tagged RMEM error
+completions on the common transfer interface. Both RMEM CPUIF directions and
+the RMEM IRQ producer belong to that engine. The locally initiating CPUIF
+transaction controller and its event generation remain to be implemented;
+the existing scalar CSR stub is retained. The responder already records
+incoming failures and emits the appropriate error event, including unsupported
+RMEM requests. The oETP engine owns protocol framing and response timeouts;
+its parser and ERROR_RSP assembly remain to be implemented.
+
+For non-oETP DMA, AXIS between the engines carries the complete raw Ethernet
+frame without FCS. For oETP bulk DMA, it streams exactly the requested memory
+bytes without headers, EndOfData, or padding, starting on the first matching
+TVALID. The oETP engine appends the 32-bit ``0xE0D0E0D0`` EndOfData only after
+successful final read completion; failures finish the frame without that
+marker. The common oETP fragment maximum is 8160 bytes at the unchanged
+8192-byte raw Ethernet frame limit. Final TX and late RX protocol outcomes
+must be added to the internal transfer contract when implementing the parser.
+Address and Length are command metadata, and RMEM data travels directly on
+command/completion fields. Internal AXIS ``TUSER[0]`` retains the final-fragment
+flag; ``TUSER[1]`` distinguishes initiator (0) from responder (1) when both
+command paths use the same peer and sequence. This adds no software-visible
+mode or wire field. The full contract is described in :ref:`rtl-oetp-engine`.
+
+``MAX_RAW_FRAME_SIZE`` remains a synthesis-time endpoint RDL parameter and
+defaults to 8192 bytes without FCS. The read-only
+``info.max_dma_frame_size_bytes`` advertises that raw frame ceiling. The global
+``config.dma_max_fragment_size.bytes`` register follows ``config.dma_timeout``
+and selects the maximum memory bytes per locally initiated peer DMA fragment.
+Its reset and upper bound are ``4 * floor((MAX_RAW_FRAME_SIZE - 32) / 4)``,
+or 8160 bytes in the default build. Hardware rounds the written value down to
+a multiple of four, then requires an effective MFS from four through that bound.
+The CSR retains the original value: 31 selects 28, 7 selects four, and 8163
+selects 8160. Values zero through three or a rounded value above the bound
+reject a new DMA block with local error code 1. The final fragment retains the
+exact remaining Length, even if it is shorter than four bytes.
+The DMA engine snapshots the effective MFS at whole-transfer acceptance, so writes
+during a transfer affect only later blocks. Received requests use the physical
+fragment ceiling; raw non-oETP DMA, direct CSR streams, and RMEM are unaffected.
+
 DMA behavior is controlled independently for each peer. When DMA operation is disabled, the peer entry remains configured but no automatic transfer is performed. In transparent mode, accesses to the virtual remote-memory region are translated into corresponding accesses to the remote peer memory region on a word-by-word basis. This mode is suitable when software requires a direct memory-mapped view of remote resources and when simple access semantics are preferred over bulk synchronization.
 
 The endpoint interface HAL also supports mirrored transfer modes. In mirror-to-local mode, the local memory region is used as the software-visible representation of the remote peer memory, and the state of the remote memory region is fetched from the remote peer on demand or periodically. In mirror-to-remote mode, the remote memory region is used as the destination representation, and the state of the local memory region is sent to the remote peer on demand or periodically. These modes allow software to configure endpoint-to-endpoint memory synchronization without directly managing individual transport frames.
 
 DMA transfers are initiated through a peer-specific request field. The corresponding status fields indicate whether the DMA engine is idle, whether the requested transfer has completed successfully, or whether an error has occurred. A typical software sequence therefore consists of configuring the peer address mapping, selecting the DMA mode, issuing a transfer request, and observing the idle, done, and error status indications until the operation reaches a terminal state.
+
+Peer DMA error status distinguishes locally detected causes 1..7, local
+TIMEOUT = 8, and remote causes 9..15 reported through ERROR_RSP. Code 10 also
+directly identifies an incomplete received DMA data frame or absent/incorrect
+EndOfData, without requiring ERROR_RSP first. Wire causes
+1..7 map to the remote CSR range by adding 8 after validating the complete
+32-bit value. Local AXI read/write SLVERR and DECERR use codes 4..7; their
+remote equivalents use 12..15. Invalid wire causes report local invalid-parameter
+code 1. The initiator completion interface carries this final encoding, which
+the DMA engine preserves for both RMEM and bulk DMA. Raw non-oETP DMA error
+status describes local work. RMEM failure handling is described in :ref:`rtl-oetp-engine`.
+
+Non-oETP TX and RX each expose ``command_status.clear_errors`` at bit 9.
+Writing one clears that channel's ``error`` and ``error_code``; hardware clears
+the command after accepting it. Starting or successfully completing another
+transfer preserves a recorded error, and a new failure takes precedence over a
+simultaneous clear. Clearing leaves an active or armed transfer, ``done``, byte
+counts, and IRQ events intact. TX, RX, and per-peer error records clear independently.
 
 The DMA control mechanism described here is local to endpoint management and should not be confused with Ethernet link-level or protocol-level flow control. Its purpose is to coordinate software-visible memory mappings and transfer requests with the internal endpoint datapath, DMA engine, and oETP processing logic.
 

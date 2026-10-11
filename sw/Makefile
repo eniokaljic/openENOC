@@ -45,7 +45,7 @@ XXD ?= xxd
 AVAILABLE_EPS := $(basename $(notdir $(sort $(wildcard $(HAL_EPS_DIR)/*.rdl))))
 
 COMMON_CPPFLAGS := \
-	-I$(PLATFORMS_DIR)/$(PLATFORM)/include \
+	-I$(PLATFORMS_DIR)/$(PLATFORM) \
 	-I$(HAL_BUILD_DIR)/$(EP)/sw \
 	$(addprefix -I,$(LIB_DIRS))
 

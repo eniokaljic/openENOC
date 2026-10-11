@@ -6,26 +6,18 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-/*
- * Two-entry elastic buffer with registered input READY.
- *
- * The buffer can accept and emit one transfer per clock cycle after the
- * initial fill.  The temporary register absorbs one transfer when downstream
- * backpressure arrives too late to withdraw the registered input READY.
- */
+/* Two-entry elastic buffer with registered input READY. */
 module openenoc_axil_crossbar_skid_buffer #(
     parameter DATA_W = 1
 ) (
-    input  wire logic              clk,
-    input  wire logic              rst,
-
-    input  wire logic [DATA_W-1:0] s_data,
-    input  wire logic              s_valid,
-    output wire logic              s_ready,
-
+    input wire logic clk,
+    input wire logic rst,
+    input wire logic [DATA_W-1:0] s_data,
+    input wire logic s_valid,
+    output wire logic s_ready,
     output wire logic [DATA_W-1:0] m_data,
-    output wire logic              m_valid,
-    input  wire logic              m_ready
+    output wire logic m_valid,
+    input wire logic m_ready
 );
 
     logic [DATA_W-1:0] output_data_reg;
@@ -40,8 +32,7 @@ module openenoc_axil_crossbar_skid_buffer #(
     logic store_input_to_temp;
     logic store_temp_to_output;
 
-    wire logic input_ready_early = m_ready ||
-        (!temp_valid_reg && (!output_valid_reg || !s_valid));
+    wire logic input_ready_early = m_ready || (!temp_valid_reg && (!output_valid_reg || !s_valid));
 
     assign s_ready = input_ready_reg;
     assign m_data = output_data_reg;

@@ -25,9 +25,11 @@ sw/
 ├── platform/
 │   └── <platform>/
 │       ├── boot.s
+│       ├── irq.c
+│       ├── irq.s
+│       ├── irq.h
 │       └── sections.lds.in
-├── Makefile
-└── README.md
+└── Makefile
 ```
 
 The application and platform directories may also contain additional `.c`, `.s`,
@@ -83,7 +85,7 @@ awk 'BEGIN { print "awk OK" }'
 
 Run the remaining commands below from the `sw/` directory.
 
-## Selecting an Application and Endpoint
+## Selecting an Application, Endpoint and Platform
 
 List the available applications and endpoints:
 
@@ -93,13 +95,25 @@ make list-eps
 ```
 
 Applications are discovered from `apps/*/main.c`. Endpoints are discovered from
-the SystemRDL specifications under `../hal/endpoint/*.rdl`.
+the SystemRDL specifications under `../hal/endpoints/*.rdl`.
 
-Both `APP` and `EP` are mandatory for every build:
+CPU platforms are provided under `platform/<platform>/` and selected with
+`PLATFORM`, which defaults to `picorv32`. Each platform supplies its startup,
+linker script template, CPU interrupt utilities and local headers. Platform
+details are documented alongside the sources; see the
+[PicoRV32 platform](platform/picorv32/README.md).
+
+Both `APP` and `EP` are mandatory for every build. The platform can be selected
+explicitly:
 
 ```bash
-make APP=csr_smoke EP=openenoc_full_endpoint
+make APP=csr_smoke EP=openenoc_endpoint_full PLATFORM=picorv32
 ```
+
+Application behavior is documented in the corresponding application directory;
+see [csr_smoke](apps/csr_smoke/README.md). Verification setup and execution are
+documented under `dv/`, including the
+[full endpoint suite](../dv/endpoints/openenoc_endpoint_full/README.md).
 
 The selected endpoint provides generated SW headers at:
 
@@ -119,6 +133,11 @@ endpoint directory, so applications use the endpoint-independent include:
 
 The generated root type is always `csr_t`, while its nested declarations use the
 common `csr__*` namespace.
+
+The HAL libraries use these generated types to access the selected endpoint.
+The [HAL API reference](lib/hal/README.md) describes IRQ configuration, claim
+handling, callback dispatch and the internal hooks implemented by the selected
+CPU platform.
 
 ## Build Configuration
 
@@ -152,15 +171,15 @@ Build outputs are written to the repository path `build/sw/<endpoint>/`. The
 application is identified by the artifact file names, while the platform and ISA
 are intentionally not encoded in this path.
 
-For example, `APP=csr_smoke EP=openenoc_full_endpoint` generates:
+Each application generates the following files:
 
 ```text
-build/sw/openenoc_full_endpoint/
-├── csr_smoke.elf
-├── csr_smoke.bin
-├── csr_smoke.hex
-├── csr_smoke.lst
-├── csr_smoke.map
+build/sw/<endpoint>/
+├── <application>.elf
+├── <application>.bin
+├── <application>.hex
+├── <application>.lst
+├── <application>.map
 ├── sections.lds
 └── imem.mem
 ```

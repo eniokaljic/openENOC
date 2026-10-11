@@ -7,12 +7,12 @@
 addrmap csr #(
     longint unsigned NUM_OF_PEERS = 4,
     longint unsigned RMEM_TOTAL_DEPTH = 256,
-    longint unsigned MAX_DMA_FRAME_SIZE_BYTES = 8192,
+    longint unsigned MAX_RAW_FRAME_SIZE = 8192,
     longint unsigned HAS_PEER_DMA = 1,
     longint unsigned HAS_NON_OETP_DMA = 1,
     longint unsigned HAS_DIRECT_AXIS = 1,
     longint unsigned HAS_RMEM = 1,
-    longint unsigned HAS_IRQ = 0,
+    longint unsigned HAS_IRQ = 1,
     longint unsigned NUM_OF_INTERFACES = 4,
     longint unsigned TABLE_DEPTH = 8
 ) {
@@ -59,7 +59,7 @@ addrmap csr #(
     openenoc_endpoint_interface #(
         .NUM_OF_PEERS(NUM_OF_PEERS),
         .RMEM_TOTAL_DEPTH(RMEM_TOTAL_DEPTH),
-        .MAX_DMA_FRAME_SIZE_BYTES(MAX_DMA_FRAME_SIZE_BYTES),
+        .MAX_RAW_FRAME_SIZE(MAX_RAW_FRAME_SIZE),
         .HAS_PEER_DMA(HAS_PEER_DMA),
         .HAS_NON_OETP_DMA(HAS_NON_OETP_DMA),
         .HAS_DIRECT_AXIS(HAS_DIRECT_AXIS),

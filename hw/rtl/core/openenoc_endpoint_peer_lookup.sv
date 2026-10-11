@@ -5,270 +5,246 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-/*
- * openENOC endpoint peer-table lookup
- *
- * Requests from the lookup clients are arbitrated round-robin. The selected
- * peer entry is sampled from the CSR interface when the request is accepted,
- * and the registered response is presented one cycle later. Response data is
- * retained until its client accepts it.
- *
- * Disabled entries never match. Index lookups select peer-DMA entries, RMEM
- * lookups select transparent-RMEM entries whose half-open region contains the
- * requested address, and MAC lookups select any enabled entry. req_mode_mask
- * can further restrict the accepted modes for every lookup type.
- */
+/* Shared endpoint peer-table lookup with round-robin arbitration. */
 module openenoc_endpoint_peer_lookup #(
     parameter int LOOKUP_PORTS = 2,
     parameter int NUM_OF_PEERS = 4,
     parameter int PEER_IDX_W = NUM_OF_PEERS > 1 ? $clog2(NUM_OF_PEERS) : 1,
     parameter int ADDR_W = 32
 ) (
-    input  wire logic                    clk,
-    input  wire logic                    rst,
-
-    openenoc_endpoint_if.core            endpoint_if,
-    openenoc_peer_lookup_if.slv           lookup_if[LOOKUP_PORTS]
+    input wire logic clk,
+    input wire logic rst,
+    openenoc_endpoint_if.core endpoint_if,
+    openenoc_peer_lookup_if.slv lookup_if[LOOKUP_PORTS]
 );
 
     localparam int PORT_IDX_W = LOOKUP_PORTS > 1 ? $clog2(LOOKUP_PORTS) : 1;
     localparam logic [1:0] LOOKUP_BY_INDEX = lookup_if[0].LOOKUP_BY_INDEX;
-    localparam logic [1:0] LOOKUP_BY_RMEM  = lookup_if[0].LOOKUP_BY_RMEM;
-    localparam logic [1:0] LOOKUP_BY_MAC   = lookup_if[0].LOOKUP_BY_MAC;
+    localparam logic [1:0] LOOKUP_BY_RMEM = lookup_if[0].LOOKUP_BY_RMEM;
+    localparam logic [1:0] LOOKUP_BY_MAC = lookup_if[0].LOOKUP_BY_MAC;
 
     // Check configuration
     /* verilator lint_off GENUNNAMED */
-    if (LOOKUP_PORTS < 1)
-        $fatal(0, "Error: LOOKUP_PORTS must be at least 1 (instance %m)");
-    if (NUM_OF_PEERS < 1)
-        $fatal(0, "Error: NUM_OF_PEERS must be at least 1 (instance %m)");
-    if (PEER_IDX_W < 1)
-        $fatal(0, "Error: PEER_IDX_W must be at least 1 (instance %m)");
+    if (LOOKUP_PORTS < 1) $fatal(0, "Error: LOOKUP_PORTS must be at least 1 (instance %m)");
+    if (NUM_OF_PEERS < 1) $fatal(0, "Error: NUM_OF_PEERS must be at least 1 (instance %m)");
+    if (PEER_IDX_W < 1) $fatal(0, "Error: PEER_IDX_W must be at least 1 (instance %m)");
+    if (PEER_IDX_W < (NUM_OF_PEERS > 1 ? $clog2(NUM_OF_PEERS) : 1))
+        $fatal(0, {"Error: PEER_IDX_W cannot represent every peer ", "(instance %m)"});
     if (ADDR_W != 32)
-        $fatal(0, "Error: ADDR_W must match the 32-bit peer CSR fields (instance %m)");
+        $fatal(0, {"Error: ADDR_W must match the 32-bit peer CSR ", "fields (instance %m)"});
     if (endpoint_if.NUM_OF_PEERS != NUM_OF_PEERS)
-        $fatal(0, "Error: endpoint interface peer count mismatch (instance %m)");
+        $fatal(0, {"Error: endpoint interface peer count mismatch ", "(instance %m)"});
     /* verilator lint_on GENUNNAMED */
 
-    wire [LOOKUP_PORTS-1:0] request;
-    wire [LOOKUP_PORTS-1:0] grant;
-    wire                    grant_valid;
-    wire [PORT_IDX_W-1:0]   grant_index;
-    wire [1:0]              req_type[LOOKUP_PORTS];
-    wire [3:0]              req_mode_mask[LOOKUP_PORTS];
-    wire [PEER_IDX_W-1:0]   req_peer_idx[LOOKUP_PORTS];
-    wire [ADDR_W-1:0]       req_rmem_addr[LOOKUP_PORTS];
-    wire [47:0]             req_mac_addr[LOOKUP_PORTS];
-    wire [LOOKUP_PORTS-1:0] rsp_ready;
+    typedef enum logic [1:0] {
+        EMPTY,
+        ONE,
+        FULL
+    } queue_state_t;
+    queue_state_t queue_state_reg;
 
-    logic                   rsp_valid_reg;
-    logic [PORT_IDX_W-1:0]  rsp_owner_reg;
-    logic                   rsp_hit_reg;
-    logic [PEER_IDX_W-1:0]  rsp_peer_idx_reg;
-    logic [47:0]            rsp_mac_addr_reg;
-    logic [ADDR_W-1:0]      rsp_rmem_offset_reg;
-    logic [ADDR_W-1:0]      rsp_local_addr_reg;
-    logic [ADDR_W-1:0]      rsp_remote_addr_reg;
-    logic [ADDR_W-1:0]      rsp_size_reg;
-    logic [1:0]             rsp_dma_mode_reg;
-    logic                   rsp_irq_enable_reg;
+    logic [PORT_IDX_W-1:0] arbitration_cursor_reg;
+    logic queue_head_reg, queue_tail_reg;
 
-    logic                   response_ready;
-    wire                    response_slot_available = !rsp_valid_reg || response_ready;
-    wire                    request_accept = !rst && response_slot_available && grant_valid;
+    logic [LOOKUP_PORTS-1:0] request_ready_reg, response_valid_reg;
+    logic [LOOKUP_PORTS-1:0] request_valid, response_ready;
+    logic [1:0] request_type[LOOKUP_PORTS];
+    logic [3:0] request_mode_mask[LOOKUP_PORTS];
+    logic [PEER_IDX_W-1:0] request_peer_index[LOOKUP_PORTS];
+    logic [ADDR_W-1:0] request_rmem_address[LOOKUP_PORTS];
+    logic [47:0] request_mac_address[LOOKUP_PORTS];
 
-    openenoc_rr_arbiter #(
-        .PORTS   (LOOKUP_PORTS),
-        .INDEX_W (PORT_IDX_W)
-    )
-    u_request_arbiter (
-        .clk         (clk),
-        .rst         (rst),
-        .request     (request),
-        .accept      (request_accept),
-        .grant       (grant),
-        .grant_valid (grant_valid),
-        .grant_index (grant_index)
-    );
-
-    logic [1:0]                selected_req_type;
-    logic [3:0]                selected_req_mode_mask;
-    logic [PEER_IDX_W-1:0]     selected_req_peer_idx;
-    logic [ADDR_W-1:0]         selected_req_rmem_addr;
-    logic [47:0]               selected_req_mac_addr;
-
-    always_comb begin
-        selected_req_type = '0;
-        selected_req_mode_mask = '0;
-        selected_req_peer_idx = '0;
-        selected_req_rmem_addr = '0;
-        selected_req_mac_addr = '0;
-
-        for (int port = 0; port < LOOKUP_PORTS; port++) begin
-            if (grant[port]) begin
-                selected_req_type = req_type[port];
-                selected_req_mode_mask = req_mode_mask[port];
-                selected_req_peer_idx = req_peer_idx[port];
-                selected_req_rmem_addr = req_rmem_addr[port];
-                selected_req_mac_addr = req_mac_addr[port];
-            end
-        end
-    end
-
-    logic                   lookup_hit_next;
-    logic [PEER_IDX_W-1:0]  lookup_peer_idx_next;
-    logic [47:0]            lookup_mac_addr_next;
-    logic [ADDR_W-1:0]      lookup_rmem_offset_next;
-    logic [ADDR_W-1:0]      lookup_local_addr_next;
-    logic [ADDR_W-1:0]      lookup_remote_addr_next;
-    logic [ADDR_W-1:0]      lookup_size_next;
-    logic [1:0]             lookup_dma_mode_next;
-    logic                   lookup_irq_enable_next;
-
-    always_comb begin
-        lookup_hit_next = 1'b0;
-        lookup_peer_idx_next = '0;
-        lookup_mac_addr_next = '0;
-        lookup_rmem_offset_next = '0;
-        lookup_local_addr_next = '0;
-        lookup_remote_addr_next = '0;
-        lookup_size_next = '0;
-        lookup_dma_mode_next = '0;
-        lookup_irq_enable_next = 1'b0;
-
-        for (int peer = 0; peer < NUM_OF_PEERS; peer++) begin
-            logic [1:0] peer_mode;
-            logic [47:0] peer_mac_addr;
-            logic [ADDR_W-1:0] peer_rmem_offset;
-            logic [ADDR_W-1:0] peer_size;
-            logic type_match;
-            logic key_match;
-
-            peer_mode = endpoint_if.csr_to_core.peers.entry[peer].dma.mode.value;
-            peer_mac_addr = {
-                endpoint_if.csr_to_core.peers.entry[peer].mac_address.hi_word.value,
-                endpoint_if.csr_to_core.peers.entry[peer].mac_address.lo_word.value
-            };
-            peer_rmem_offset =
-                endpoint_if.csr_to_core.peers.entry[peer].rmem_address.offset.value;
-            peer_size = endpoint_if.csr_to_core.peers.entry[peer].size.bytes.value;
-            type_match = 1'b0;
-            key_match = 1'b0;
-
-            case (selected_req_type)
-                LOOKUP_BY_INDEX: begin
-                    type_match = peer_mode == 2'd2 || peer_mode == 2'd3;
-                    key_match = selected_req_peer_idx == PEER_IDX_W'(peer);
-                end
-                LOOKUP_BY_RMEM: begin
-                    type_match = peer_mode == 2'd1;
-                    key_match = peer_size != 0 &&
-                        {1'b0, selected_req_rmem_addr} >= {1'b0, peer_rmem_offset} &&
-                        {1'b0, selected_req_rmem_addr} <
-                            ({1'b0, peer_rmem_offset} + {1'b0, peer_size});
-                end
-                LOOKUP_BY_MAC: begin
-                    type_match = peer_mode != 2'd0;
-                    key_match = selected_req_mac_addr == peer_mac_addr;
-                end
-                default: begin
-                    type_match = 1'b0;
-                    key_match = 1'b0;
-                end
-            endcase
-
-            if (!lookup_hit_next && type_match && key_match &&
-                    selected_req_mode_mask[peer_mode]) begin
-                lookup_hit_next = 1'b1;
-                lookup_peer_idx_next = PEER_IDX_W'(peer);
-                lookup_mac_addr_next = peer_mac_addr;
-                lookup_rmem_offset_next = peer_rmem_offset;
-                lookup_local_addr_next =
-                    endpoint_if.csr_to_core.peers.entry[peer].local_address.base.value;
-                lookup_remote_addr_next =
-                    endpoint_if.csr_to_core.peers.entry[peer].remote_address.base.value;
-                lookup_size_next = peer_size;
-                lookup_dma_mode_next = peer_mode;
-                lookup_irq_enable_next =
-                    endpoint_if.csr_to_core.peers.entry[peer].dma.irq_enable.value;
-            end
-        end
-    end
-
-    always_comb begin
-        response_ready = 1'b0;
-
-        for (int port = 0; port < LOOKUP_PORTS; port++) begin
-            if (rsp_valid_reg && rsp_owner_reg == PORT_IDX_W'(port)) begin
-                response_ready = rsp_ready[port];
-            end
-        end
-    end
+    typedef struct packed {
+        logic hit;
+        logic [PEER_IDX_W-1:0] peer_idx;
+        logic [47:0] mac_addr;
+        logic [ADDR_W-1:0] rmem_offset, local_addr, remote_addr, size;
+        logic [1:0] dma_mode;
+        logic irq_enable;
+    } response_t;
+    response_t response_reg[LOOKUP_PORTS];
 
     for (genvar port = 0; port < LOOKUP_PORTS; port++) begin : g_lookup_port
-        /* verilator lint_off GENUNNAMED */
-        if (lookup_if[port].NUM_OF_PEERS != NUM_OF_PEERS ||
-                lookup_if[port].PEER_IDX_W != PEER_IDX_W ||
-                lookup_if[port].ADDR_W != ADDR_W)
-            $fatal(0, "Error: lookup interface parameter mismatch (instance %m)");
-        /* verilator lint_on GENUNNAMED */
-
-        wire port_rsp_valid = rsp_valid_reg && rsp_owner_reg == PORT_IDX_W'(port);
-
-        assign request[port] = lookup_if[port].req_valid;
-        assign req_type[port] = lookup_if[port].req_type;
-        assign req_mode_mask[port] = lookup_if[port].req_mode_mask;
-        assign req_peer_idx[port] = lookup_if[port].req_peer_idx;
-        assign req_rmem_addr[port] = lookup_if[port].req_rmem_addr;
-        assign req_mac_addr[port] = lookup_if[port].req_mac_addr;
-        assign rsp_ready[port] = lookup_if[port].rsp_ready;
-        assign lookup_if[port].req_ready = !rst && response_slot_available && grant[port];
-        assign lookup_if[port].rsp_valid = port_rsp_valid;
-        assign lookup_if[port].rsp_hit = port_rsp_valid ? rsp_hit_reg : 1'b0;
-        assign lookup_if[port].rsp_peer_idx = port_rsp_valid ? rsp_peer_idx_reg : '0;
-        assign lookup_if[port].rsp_mac_addr = port_rsp_valid ? rsp_mac_addr_reg : '0;
-        assign lookup_if[port].rsp_rmem_offset =
-            port_rsp_valid ? rsp_rmem_offset_reg : '0;
-        assign lookup_if[port].rsp_local_addr =
-            port_rsp_valid ? rsp_local_addr_reg : '0;
-        assign lookup_if[port].rsp_remote_addr =
-            port_rsp_valid ? rsp_remote_addr_reg : '0;
-        assign lookup_if[port].rsp_size = port_rsp_valid ? rsp_size_reg : '0;
-        assign lookup_if[port].rsp_dma_mode = port_rsp_valid ? rsp_dma_mode_reg : '0;
-        assign lookup_if[port].rsp_irq_enable =
-            port_rsp_valid ? rsp_irq_enable_reg : 1'b0;
+        if (lookup_if[port].NUM_OF_PEERS != NUM_OF_PEERS || lookup_if[port].PEER_IDX_W != PEER_IDX_W
+            || lookup_if[port].ADDR_W != ADDR_W) begin : g_bad_interface
+            initial $fatal(0, {"Error: lookup interface parameter mismatch ", "(instance %m)"});
+        end
+        assign request_valid[port] = lookup_if[port].req_valid;
+        assign request_type[port] = lookup_if[port].req_type;
+        assign request_mode_mask[port] = lookup_if[port].req_mode_mask;
+        assign request_peer_index[port] = lookup_if[port].req_peer_idx;
+        assign request_rmem_address[port] = lookup_if[port].req_rmem_addr;
+        assign request_mac_address[port] = lookup_if[port].req_mac_addr;
+        assign response_ready[port] = lookup_if[port].rsp_ready;
+        assign lookup_if[port].req_ready = request_ready_reg[port];
+        assign lookup_if[port].rsp_valid = response_valid_reg[port];
+        assign lookup_if[port].rsp_hit = response_reg[port].hit;
+        assign lookup_if[port].rsp_peer_idx = response_reg[port].peer_idx;
+        assign lookup_if[port].rsp_mac_addr = response_reg[port].mac_addr;
+        assign lookup_if[port].rsp_rmem_offset = response_reg[port].rmem_offset;
+        assign lookup_if[port].rsp_local_addr = response_reg[port].local_addr;
+        assign lookup_if[port].rsp_remote_addr = response_reg[port].remote_addr;
+        assign lookup_if[port].rsp_size = response_reg[port].size;
+        assign lookup_if[port].rsp_dma_mode = response_reg[port].dma_mode;
+        assign lookup_if[port].rsp_irq_enable = response_reg[port].irq_enable;
     end
 
-    always_ff @(posedge clk) begin
+    typedef struct packed {
+        logic [PORT_IDX_W-1:0] owner;
+        response_t result;
+    } queued_response_t;
+    queued_response_t queue_reg[2];
+
+    wire [1:0] peer_dma_mode[NUM_OF_PEERS];
+    wire [15:0] peer_mac_address_hi_word[NUM_OF_PEERS];
+    wire [31:0] peer_mac_address_lo_word[NUM_OF_PEERS];
+    wire [31:0] peer_rmem_address_offset[NUM_OF_PEERS];
+    wire [31:0] peer_size_bytes[NUM_OF_PEERS];
+    wire [31:0] peer_local_address_base[NUM_OF_PEERS];
+    wire [31:0] peer_remote_address_base[NUM_OF_PEERS];
+    wire [0:0] peer_dma_irq_enable[NUM_OF_PEERS];
+
+    for (genvar peer = 0; peer < NUM_OF_PEERS; peer++) begin : peer_config
+        assign peer_dma_mode[peer] = endpoint_if.csr_to_core.peers.entry[peer].dma.mode.value;
+        assign peer_mac_address_hi_word[peer] =
+            endpoint_if.csr_to_core.peers.entry[peer].mac_address.hi_word.value;
+        assign peer_mac_address_lo_word[peer] =
+            endpoint_if.csr_to_core.peers.entry[peer].mac_address.lo_word.value;
+        assign peer_rmem_address_offset[peer] =
+            endpoint_if.csr_to_core.peers.entry[peer].rmem_address.offset.value;
+        assign peer_size_bytes[peer] = endpoint_if.csr_to_core.peers.entry[peer].size.bytes.value;
+        assign peer_local_address_base[peer] =
+            endpoint_if.csr_to_core.peers.entry[peer].local_address.base.value;
+        assign peer_remote_address_base[peer] =
+            endpoint_if.csr_to_core.peers.entry[peer].remote_address.base.value;
+        assign peer_dma_irq_enable[peer] =
+            endpoint_if.csr_to_core.peers.entry[peer].dma.irq_enable.value;
+    end
+
+    always_ff @(posedge clk) begin : response_queue
+        logic head, tail;
+        logic [1:0] count;
+        logic [PORT_IDX_W-1:0] arbitration_cursor;
+        logic selected;
+        logic pushed;
+        logic push_index;
+        queued_response_t pushed_response, head_response;
+
+        head = queue_head_reg;
+        tail = queue_tail_reg;
+        count = 2'(queue_state_reg);
+        arbitration_cursor = arbitration_cursor_reg;
+        selected = 1'b0;
+        pushed = 1'b0;
+        push_index = queue_tail_reg;
+        pushed_response = '0;
+        request_ready_reg <= '0;
+        response_valid_reg <= '0;
+
+        for (int port = 0; port < LOOKUP_PORTS; port++) begin
+            response_reg[port] <= '0;
+        end
+
+        if (count != 0 && response_ready[queue_reg[head].owner]) begin
+            count = count - 1'b1;
+            head = !head;
+        end
+
+        for (int port = 0; port < LOOKUP_PORTS; port++) begin
+            if (request_ready_reg[port] && request_valid[port]) begin
+                response_t result;
+
+                result = '0;
+                for (int peer = 0; peer < NUM_OF_PEERS; peer++) begin
+                    logic [1:0] mode;
+                    logic [47:0] mac;
+                    logic [31:0] base_addr, size;
+                    logic match_key;
+
+                    mode = peer_dma_mode[peer];
+                    mac = {peer_mac_address_hi_word[peer], peer_mac_address_lo_word[peer]};
+                    base_addr = peer_rmem_address_offset[peer];
+                    size = peer_size_bytes[peer];
+                    match_key = 1'b0;
+
+                    case (request_type[port])
+                        LOOKUP_BY_INDEX:
+                            match_key = (mode == 2 || mode == 3)
+                                && request_peer_index[port] == PEER_IDX_W'(peer);
+                        LOOKUP_BY_RMEM:
+                            match_key = mode == 1 && size != 0 &&
+                                {1'b0, request_rmem_address[port]} >= {1'b0, base_addr} &&
+                                {1'b0, request_rmem_address[port]} < {1'b0, base_addr} + {1'b0,
+                                    size};
+                        LOOKUP_BY_MAC: match_key = mode != 0 && request_mac_address[port] == mac;
+                        default: begin
+                        end
+                    endcase
+
+                    if (!result.hit && match_key && request_mode_mask[port][mode]) begin
+                        result.hit = 1'b1;
+                        result.peer_idx = PEER_IDX_W'(peer);
+                        result.mac_addr = mac;
+                        result.rmem_offset = base_addr;
+                        result.local_addr = peer_local_address_base[peer];
+                        result.remote_addr = peer_remote_address_base[peer];
+                        result.size = size;
+                        result.dma_mode = mode;
+                        result.irq_enable = peer_dma_irq_enable[peer];
+                    end
+                end
+
+                pushed = 1'b1;
+                push_index = tail;
+                pushed_response = '{
+                    owner: PORT_IDX_W'(port),
+                    result: result
+                };
+                queue_reg[tail] <= pushed_response;
+                tail = !tail;
+                count = count + 1'b1;
+                arbitration_cursor = port == LOOKUP_PORTS - 1 ? '0 : PORT_IDX_W'(port + 1);
+            end
+        end
+
+        if (count < 2) begin
+            for (int offset = 0; offset < LOOKUP_PORTS; offset++) begin
+                int candidate;
+
+                candidate = int'(arbitration_cursor) + offset;
+                if (candidate >= LOOKUP_PORTS) begin
+                    candidate -= LOOKUP_PORTS;
+                end
+                if (!selected && request_valid[candidate]) begin
+                    selected = 1'b1;
+                    request_ready_reg[candidate] <= 1'b1;
+                end
+            end
+        end
+
+        if (count != 0) begin
+            head_response = pushed && push_index == head ? pushed_response : queue_reg[head];
+            response_valid_reg[head_response.owner] <= 1'b1;
+            response_reg[head_response.owner] <= head_response.result;
+        end
+
+        queue_state_reg <= queue_state_t'(count);
+        queue_head_reg <= head;
+        queue_tail_reg <= tail;
+        arbitration_cursor_reg <= arbitration_cursor;
+
         if (rst) begin
-            rsp_valid_reg <= 1'b0;
-            rsp_owner_reg <= '0;
-            rsp_hit_reg <= 1'b0;
-            rsp_peer_idx_reg <= '0;
-            rsp_mac_addr_reg <= '0;
-            rsp_rmem_offset_reg <= '0;
-            rsp_local_addr_reg <= '0;
-            rsp_remote_addr_reg <= '0;
-            rsp_size_reg <= '0;
-            rsp_dma_mode_reg <= '0;
-            rsp_irq_enable_reg <= 1'b0;
-        end else if (request_accept) begin
-            rsp_valid_reg <= 1'b1;
-            rsp_owner_reg <= grant_index;
-            rsp_hit_reg <= lookup_hit_next;
-            rsp_peer_idx_reg <= lookup_peer_idx_next;
-            rsp_mac_addr_reg <= lookup_mac_addr_next;
-            rsp_rmem_offset_reg <= lookup_rmem_offset_next;
-            rsp_local_addr_reg <= lookup_local_addr_next;
-            rsp_remote_addr_reg <= lookup_remote_addr_next;
-            rsp_size_reg <= lookup_size_next;
-            rsp_dma_mode_reg <= lookup_dma_mode_next;
-            rsp_irq_enable_reg <= lookup_irq_enable_next;
-        end else if (response_ready) begin
-            rsp_valid_reg <= 1'b0;
+            queue_state_reg <= EMPTY;
+            queue_head_reg <= 1'b0;
+            queue_tail_reg <= 1'b0;
+            arbitration_cursor_reg <= '0;
+            request_ready_reg <= '0;
+            response_valid_reg <= '0;
+            for (int port = 0; port < LOOKUP_PORTS; port++) begin
+                response_reg[port] <= '0;
+            end
         end
     end
-
 endmodule
 
 `resetall

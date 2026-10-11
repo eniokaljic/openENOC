@@ -10,20 +10,9 @@ from cocotb.clock import Clock
 from cocotb.triggers import FallingEdge, RisingEdge, Timer
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
 
-
 LOOKUP_BY_INDEX = 0
 LOOKUP_BY_RMEM = 1
 LOOKUP_BY_MAC = 2
-
-PEER_BASE = 0x880
-PEER_STRIDE = 0x1C
-PEER_MAC_LO = 0x00
-PEER_MAC_HI = 0x04
-PEER_RMEM_OFFSET = 0x08
-PEER_LOCAL_BASE = 0x0C
-PEER_REMOTE_BASE = 0x10
-PEER_SIZE = 0x14
-PEER_DMA = 0x18
 
 
 def packed_slice(signal, index, width):
@@ -40,9 +29,14 @@ def pack(values, width):
 
 class TB:
     def __init__(self, dut):
+        from csr.lib import NormalCallbackSet
+        from csr.reg_model.csr import csr_cls
+
         self.dut = dut
         self.log = logging.getLogger("cocotb.tb")
         self.log.setLevel(logging.DEBUG)
+        # Use generated register locations even when the surrounding map changes.
+        self.csr = csr_cls(callbacks=NormalCallbackSet())
 
         self.ports = int(os.environ.get("PARAM_LOOKUP_PORTS", 2))
         self.peer_w = len(dut.req_peer_idx) // self.ports
@@ -57,9 +51,7 @@ class TB:
         self.rsp_ready = [0] * self.ports
 
         cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
-        self.axil_master = AxiLiteMaster(
-            AxiLiteBus.from_prefix(dut, "s_axil"), dut.clk, dut.rst
-        )
+        self.axil_master = AxiLiteMaster(AxiLiteBus.from_prefix(dut, "s_axil"), dut.clk, dut.rst)
 
     def drive_lookup(self):
         self.dut.req_valid.value = pack(self.req_valid, 1)
@@ -108,26 +100,26 @@ class TB:
         mode,
         irq_enable,
     ):
-        base = PEER_BASE + index * PEER_STRIDE
-        await self.write_word(base + PEER_MAC_LO, mac)
-        await self.write_word(base + PEER_MAC_HI, mac >> 32)
-        await self.write_word(base + PEER_RMEM_OFFSET, rmem_offset)
-        await self.write_word(base + PEER_LOCAL_BASE, local_addr)
-        await self.write_word(base + PEER_REMOTE_BASE, remote_addr)
-        await self.write_word(base + PEER_SIZE, size)
-        await self.write_word(base + PEER_DMA, mode | (irq_enable << 2))
+        peer = self.csr.endpoint_interface.peers.entry[index]
+        await self.write_word(peer.mac_address.address, mac)
+        await self.write_word(peer.mac_address.address + 4, mac >> 32)
+        await self.write_word(peer.rmem_address.address, rmem_offset)
+        await self.write_word(peer.local_address.address, local_addr)
+        await self.write_word(peer.remote_address.address, remote_addr)
+        await self.write_word(peer.register_size.address, size)
+        await self.write_word(peer.dma.address, mode | (irq_enable << 2))
 
     async def read_peer(self, index):
-        base = PEER_BASE + index * PEER_STRIDE
-        mac_lo = await self.read_word(base + PEER_MAC_LO)
-        mac_hi = await self.read_word(base + PEER_MAC_HI)
+        peer = self.csr.endpoint_interface.peers.entry[index]
+        mac_lo = await self.read_word(peer.mac_address.address)
+        mac_hi = await self.read_word(peer.mac_address.address + 4)
         return {
             "mac_addr": mac_lo | ((mac_hi & 0xFFFF) << 32),
-            "rmem_offset": await self.read_word(base + PEER_RMEM_OFFSET),
-            "local_addr": await self.read_word(base + PEER_LOCAL_BASE),
-            "remote_addr": await self.read_word(base + PEER_REMOTE_BASE),
-            "size": await self.read_word(base + PEER_SIZE),
-            "dma": await self.read_word(base + PEER_DMA),
+            "rmem_offset": await self.read_word(peer.rmem_address.address),
+            "local_addr": await self.read_word(peer.local_address.address),
+            "remote_addr": await self.read_word(peer.remote_address.address),
+            "size": await self.read_word(peer.register_size.address),
+            "dma": await self.read_word(peer.dma.address),
         }
 
     def set_request(
@@ -153,13 +145,9 @@ class TB:
             "hit": packed_slice(self.dut.rsp_hit, port, 1),
             "peer_idx": packed_slice(self.dut.rsp_peer_idx, port, self.peer_w),
             "mac_addr": packed_slice(self.dut.rsp_mac_addr, port, 48),
-            "rmem_offset": packed_slice(
-                self.dut.rsp_rmem_offset, port, self.addr_w
-            ),
+            "rmem_offset": packed_slice(self.dut.rsp_rmem_offset, port, self.addr_w),
             "local_addr": packed_slice(self.dut.rsp_local_addr, port, self.addr_w),
-            "remote_addr": packed_slice(
-                self.dut.rsp_remote_addr, port, self.addr_w
-            ),
+            "remote_addr": packed_slice(self.dut.rsp_remote_addr, port, self.addr_w),
             "size": packed_slice(self.dut.rsp_size, port, self.addr_w),
             "dma_mode": packed_slice(self.dut.rsp_dma_mode, port, 2),
             "irq_enable": packed_slice(self.dut.rsp_irq_enable, port, 1),
@@ -192,9 +180,9 @@ class TB:
         else:
             raise AssertionError(f"lookup request on port {port} was not accepted")
 
-        assert int(self.dut.rsp_valid.value) == 0, (
-            "response was asserted combinationally in the request cycle"
-        )
+        assert (
+            int(self.dut.rsp_valid.value) == 0
+        ), "response was asserted combinationally in the request cycle"
 
         await RisingEdge(self.dut.clk)
         await Timer(1, unit="ns")
@@ -316,32 +304,30 @@ async def test_lookup_modes_priority_and_boundaries(dut):
         "dma": PEERS[1]["mode"] | (PEERS[1]["irq_enable"] << 2),
     }
 
-    assert await tb.lookup(0, LOOKUP_BY_INDEX, 0xF, peer_idx=3) == \
-        expected_response(3, PEERS[3])
+    assert await tb.lookup(0, LOOKUP_BY_INDEX, 0xF, peer_idx=3) == expected_response(3, PEERS[3])
     assert await tb.lookup(0, LOOKUP_BY_INDEX, 0xF, peer_idx=1) == MISS
     assert await tb.lookup(0, LOOKUP_BY_INDEX, 1 << 2, peer_idx=3) == MISS
 
-    assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x1000) == \
-        expected_response(1, PEERS[1])
-    assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x1090) == \
-        expected_response(1, PEERS[1])
-    assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x1100) == \
-        expected_response(2, PEERS[2])
+    assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x1000) == expected_response(
+        1, PEERS[1]
+    )
+    assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x1090) == expected_response(
+        1, PEERS[1]
+    )
+    assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x1100) == expected_response(
+        2, PEERS[2]
+    )
     assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x1180) == MISS
     assert await tb.lookup(1, LOOKUP_BY_RMEM, 1 << 2, rmem_addr=0x1000) == MISS
 
-    assert await tb.lookup(
-        0, LOOKUP_BY_MAC, 1 << 1, mac_addr=PEERS[1]["mac"]
-    ) == expected_response(1, PEERS[1])
-    assert await tb.lookup(
-        0, LOOKUP_BY_MAC, 1 << 3, mac_addr=PEERS[3]["mac"]
-    ) == expected_response(3, PEERS[3])
-    assert await tb.lookup(
-        0, LOOKUP_BY_MAC, 0xF, mac_addr=PEERS[0]["mac"]
-    ) == MISS
-    assert await tb.lookup(
-        0, LOOKUP_BY_MAC, 0, mac_addr=PEERS[3]["mac"]
-    ) == MISS
+    assert await tb.lookup(0, LOOKUP_BY_MAC, 1 << 1, mac_addr=PEERS[1]["mac"]) == expected_response(
+        1, PEERS[1]
+    )
+    assert await tb.lookup(0, LOOKUP_BY_MAC, 1 << 3, mac_addr=PEERS[3]["mac"]) == expected_response(
+        3, PEERS[3]
+    )
+    assert await tb.lookup(0, LOOKUP_BY_MAC, 0xF, mac_addr=PEERS[0]["mac"]) == MISS
+    assert await tb.lookup(0, LOOKUP_BY_MAC, 0, mac_addr=PEERS[3]["mac"]) == MISS
     assert await tb.lookup(0, 3, 0xF, peer_idx=3) == MISS
 
 
@@ -355,18 +341,14 @@ async def test_rmem_wrap_and_zero_size(dut):
     wrapping["size"] = 0x20
     await tb.write_peer(1, **wrapping)
 
-    assert await tb.lookup(
-        0, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0xFFFFFFF8
-    ) == expected_response(1, wrapping)
-    assert await tb.lookup(
-        0, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x00000008
-    ) == MISS
+    assert await tb.lookup(0, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0xFFFFFFF8) == expected_response(
+        1, wrapping
+    )
+    assert await tb.lookup(0, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0x00000008) == MISS
 
     wrapping["size"] = 0
     await tb.write_peer(1, **wrapping)
-    assert await tb.lookup(
-        0, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0xFFFFFFF0
-    ) == MISS
+    assert await tb.lookup(0, LOOKUP_BY_RMEM, 1 << 1, rmem_addr=0xFFFFFFF0) == MISS
 
 
 @cocotb.test()
@@ -375,15 +357,8 @@ async def test_snapshot_backpressure_and_pipeline_replacement(dut):
     await tb.reset()
     await configure_peers(tb)
 
-    old_response = await tb.accept_request(
-        0, LOOKUP_BY_INDEX, 1 << 3, peer_idx=3
-    )
+    old_response = await tb.accept_request(0, LOOKUP_BY_INDEX, 1 << 3, peer_idx=3)
     assert old_response == expected_response(3, PEERS[3])
-
-    tb.set_request(1, LOOKUP_BY_INDEX, 1 << 3, peer_idx=3)
-    await FallingEdge(dut.clk)
-    await Timer(1, unit="ns")
-    assert int(dut.req_ready.value) == 0, "pending response did not backpressure requests"
 
     updated = dict(PEERS[3])
     updated.update(
@@ -399,15 +374,24 @@ async def test_snapshot_backpressure_and_pipeline_replacement(dut):
     assert int(dut.rsp_valid.value) == 1
     assert tb.response(0) == old_response, "stalled response changed with its CSR source"
 
-    tb.rsp_ready[0] = 1
-    tb.drive_lookup()
-    await FallingEdge(dut.clk)
-    await Timer(1, unit="ns")
-    assert packed_slice(dut.req_ready, 1, 1) == 1
-
+    tb.set_request(1, LOOKUP_BY_INDEX, 1 << 3, peer_idx=3)
+    for _ in range(10):
+        await FallingEdge(dut.clk)
+        await Timer(1, unit="ns")
+        if packed_slice(dut.req_ready, 1, 1):
+            break
+    else:
+        raise AssertionError("registered request grant did not arrive")
     await RisingEdge(dut.clk)
     await Timer(1, unit="ns")
     tb.req_valid[1] = 0
+    tb.drive_lookup()
+    assert int(dut.req_ready.value) == 0, "full response buffers did not backpressure requests"
+    assert tb.response(0) == old_response
+    tb.rsp_ready[0] = 1
+    tb.drive_lookup()
+    await RisingEdge(dut.clk)
+    await Timer(1, unit="ns")
     tb.rsp_ready[0] = 0
     tb.drive_lookup()
 
@@ -427,6 +411,9 @@ async def test_round_robin_and_full_throughput(dut):
     tb.rsp_ready = [1, 1]
     tb.drive_lookup()
 
+    await RisingEdge(dut.clk)
+    await Timer(1, unit="ns")
+    assert int(dut.rsp_valid.value) == 0
     owners = []
     for _ in range(8):
         await RisingEdge(dut.clk)
@@ -451,11 +438,51 @@ async def test_round_robin_and_full_throughput(dut):
     assert int(dut.rsp_valid.value) == 0
 
 
+@cocotb.test()
+async def test_registered_outputs_between_clock_edges(dut):
+    tb = TB(dut)
+    await tb.reset()
+    await configure_peers(tb)
+    response = await tb.accept_request(0, LOOKUP_BY_MAC, 0xF, mac_addr=PEERS[1]["mac"])
+    names = [
+        "req_ready",
+        "rsp_valid",
+        "rsp_hit",
+        "rsp_peer_idx",
+        "rsp_mac_addr",
+        "rsp_rmem_offset",
+        "rsp_local_addr",
+        "rsp_remote_addr",
+        "rsp_size",
+        "rsp_dma_mode",
+        "rsp_irq_enable",
+    ]
+    outputs = [getattr(dut, name) for name in names]
+    for _ in range(8):
+        await FallingEdge(dut.clk)
+        await Timer(1, unit="ns")
+        before = [int(signal.value) for signal in outputs]
+        tb.rsp_ready = [1] * tb.ports
+        tb.req_valid = [1] * tb.ports
+        tb.req_mac_addr = [0] * tb.ports
+        tb.drive_lookup()
+        await Timer(1, unit="ns")
+        assert [int(signal.value) for signal in outputs] == before
+        tb.req_valid = [0] * tb.ports
+        tb.rsp_ready = [0] * tb.ports
+        tb.drive_lookup()
+        await Timer(1, unit="ns")
+        assert [int(signal.value) for signal in outputs] == before
+    assert tb.response(0) == response
+    await tb.consume_response(0)
+
+
 tests_dir = os.path.abspath(os.path.dirname(__file__))
 repo_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", ".."))
 core_dir = os.path.join(repo_dir, "hw", "rtl", "core")
 hal_if_dir = os.path.join(repo_dir, "build", "hal", "rtl")
 hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "openenoc_endpoint_full", "rtl")
+hal_python_dir = os.path.join(repo_dir, "build", "hal", "openenoc_endpoint_full", "python")
 common_dir = os.path.join(repo_dir, "dv", "common")
 
 
@@ -482,15 +509,13 @@ def test_openenoc_endpoint_peer_lookup(request):
 
     cocotb_test.simulator.run(
         simulator="verilator",
-        python_search=[tests_dir],
+        python_search=[tests_dir, hal_python_dir],
         verilog_sources=verilog_sources,
         toplevel=toplevel,
         module=module,
         parameters=parameters,
-        extra_args=[
-            "-Wno-TIMESCALEMOD",
-            os.path.join(common_dir, "config.vlt"),
-        ],
+        timescale="1ns/1ps",
+        extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
         sim_build=sim_build,
         extra_env=extra_env,
     )

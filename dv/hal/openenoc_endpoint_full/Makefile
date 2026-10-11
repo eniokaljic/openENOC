@@ -2,21 +2,27 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 TOPLEVEL_LANG = verilog
-SIM = verilator
+
+override SIM := verilator
+
+COCOTB_HDL_TIMEUNIT = 1ns
+COCOTB_HDL_TIMEPRECISION = 1ps
 
 # PeakRDL outputs
-ENDPOINT          = openenoc_endpoint_full
-BUILDDIR          = $(abspath $(CURDIR)/../../../build/hal)
+ENDPOINT = openenoc_endpoint_full
+BUILDDIR = $(abspath $(CURDIR)/../../../build/hal)
 ENDPOINT_BUILDDIR = $(BUILDDIR)/$(ENDPOINT)
-PEAKRDLRTL        = $(ENDPOINT_BUILDDIR)/rtl
-PEAKRDLPYTHON     = $(ENDPOINT_BUILDDIR)/python
+PEAKRDLRTL = $(ENDPOINT_BUILDDIR)/rtl
+PEAKRDLPYTHON = $(ENDPOINT_BUILDDIR)/python
 
 # Top-level module
-TOPLEVEL = $(ENDPOINT)_csr
+CSR_MODULE = $(ENDPOINT)_csr
+TOPLEVEL = test_$(CSR_MODULE)
 
 # RTL sources
-VERILOG_SOURCES += $(PEAKRDLRTL)/$(TOPLEVEL)_pkg.sv
-VERILOG_SOURCES += $(PEAKRDLRTL)/$(TOPLEVEL).sv
+VERILOG_SOURCES += $(PEAKRDLRTL)/$(CSR_MODULE)_pkg.sv
+VERILOG_SOURCES += $(PEAKRDLRTL)/$(CSR_MODULE).sv
+VERILOG_SOURCES += $(CURDIR)/$(TOPLEVEL).sv
 
 # cocotb test module (without .py)
 COCOTB_TEST_MODULES = testbench
