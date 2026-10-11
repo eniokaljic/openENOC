@@ -90,7 +90,10 @@ ifeq ($(SIM), verilator)
 	ifneq ($(TWO_ENDPOINTS),)
 		COMPILE_ARGS += -GTWO_ENDPOINTS=$(TWO_ENDPOINTS)
 	endif
-	EXTRA_ARGS += -Wall -Wno-TIMESCALEMOD -Wno-SYNCASYNCNET -Wno-MULTIDRIVEN $(REPO_DIR)/dv/common/config.vlt
+	ifneq ($(DUAL_LOOPBACK),)
+		COMPILE_ARGS += -GDUAL_LOOPBACK=$(DUAL_LOOPBACK)
+	endif
+	EXTRA_ARGS += -Wall $(REPO_DIR)/dv/common/config.vlt
 	ifeq ($(WAVES), 1)
 		EXTRA_ARGS += --trace
 		EXTRA_ARGS += --trace-fst

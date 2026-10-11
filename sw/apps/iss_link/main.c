@@ -21,6 +21,37 @@ volatile uint32_t iss_link_status;
 volatile uint32_t iss_link_received;
 volatile uint32_t iss_link_release;
 
+/* Broadcast destination, source 22:01:ef:cd:ab:89, EtherType 0x0800. */
+static const uint32_t frame_header[] = {
+    UINT32_C(0xffffffff), UINT32_C(0x0122ffff),
+    UINT32_C(0x89abcdef), UINT32_C(0x00000008),
+};
+
+static void send_header(volatile csr__endpoint_interface__axis_if_t *axis_if) {
+    for (unsigned index = 0; index < sizeof(frame_header) / sizeof(frame_header[0]); ++index) {
+        while (openenoc_endpoint_axis_send(
+            axis_if, frame_header[index], 0xf, false) ==
+            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+        }
+    }
+}
+
+static bool receive_header(volatile csr__endpoint_interface__axis_if_t *axis_if) {
+    for (unsigned index = 0; index < sizeof(frame_header) / sizeof(frame_header[0]); ++index) {
+        uint32_t data;
+        uint8_t keep;
+        bool last;
+
+        while (openenoc_endpoint_axis_receive(axis_if, &data, &keep, &last) ==
+            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+        }
+        if (data != frame_header[index] || keep != 0xf || last) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main(void) {
     volatile csr_t *const csr = (volatile csr_t *)(uintptr_t)CSR_BASE_ADDR;
     const uint32_t role = csr->test_reg.f.test_field;
@@ -42,6 +73,7 @@ int main(void) {
     }
 
     if (role == INITIATOR_ROLE) {
+        send_header(&csr->endpoint_interface.axis_if);
         while (openenoc_endpoint_axis_send(
             &csr->endpoint_interface.axis_if, outgoing, 0xf, false) ==
             OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
@@ -54,6 +86,10 @@ int main(void) {
         }
     }
 
+    if (!receive_header(&csr->endpoint_interface.axis_if)) {
+        iss_link_status = STATUS_FAILED;
+        return 1;
+    }
     while (openenoc_endpoint_axis_receive(
         &csr->endpoint_interface.axis_if, &received, &keep, &last) ==
         OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
@@ -74,6 +110,7 @@ int main(void) {
             iss_link_status = STATUS_FAILED;
             return 1;
         }
+        send_header(&csr->endpoint_interface.axis_if);
         while (openenoc_endpoint_axis_send(
             &csr->endpoint_interface.axis_if, outgoing, 0xf, true) ==
             OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {

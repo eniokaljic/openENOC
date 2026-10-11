@@ -9,14 +9,16 @@ Verilator.
 
 Spike is embedded through its `processor_t` and `simif_t` APIs and hidden
 behind a versioned C ABI in `include/openenoc_iss.h`. Each endpoint handle owns
-one RV32I hart and one native worker thread. A worker publishes external data
+one RV32I+Zicsr hart and one native worker thread. A worker publishes external data
 accesses through a single request slot and waits while Python/cocotb services
 the corresponding AXI4-Lite transaction. The cocotb simulator thread remains
 free to advance RTL and service other endpoints.
 
-The integration runs the existing, unchanged `csr_smoke` firmware on Spike
+The integration runs the existing, unchanged `csr_smoke` C application on Spike
 while the endpoint crossbar, DMEM, generated CSR block, endpoint logic, and
-AXIS loopback remain RTL simulated by Verilator. A dedicated `iss_startup`
+AXIS loopback remain RTL simulated by Verilator. Its `PLATFORM=iss` firmware
+uses standard M-mode CSRs and `mret`, so its ELF is different from the
+PicoRV32 ELF, which uses PicoRV32-specific IRQ instructions. A dedicated `iss_startup`
 firmware also qualifies the platform's data initialization, BSS clearing,
 read-only data, and stack behavior.
 
@@ -130,18 +132,31 @@ for such writes belongs to the coordinated lifecycle tests.
 The current `accepted_sim_tick` records submission to the AXI BFM, not the
 exact AW/AR handshake; `completed_sim_tick` is recorded after its R/B response.
 
-Build and run the unchanged `csr_smoke` firmware through Spike and the RTL
-endpoint with:
+Build and run the unchanged `csr_smoke` C application through Spike and the
+RTL endpoint with:
 
 ```bash
 make -C dv/iss rtl-firmware-smoke
 ```
 
-This one-endpoint check confirms that the ELF loaded by Spike contains the
-same IMEM bytes used by the PicoRV32 baseline. It checks both Ethernet TX and
-CSR sink handshakes against the baseline's 17-beat frame (66 valid bytes),
-including the final `TKEEP` and `TLAST`, and verifies the completion status
-remains stable. It does not qualify multi-endpoint traffic.
+The target builds a separate `rv32i_zicsr` ELF under `build/dv/iss/irq-firmware`
+and checks its own IMEM load image. The IRQ-enabled worker samples the actual
+RTL CPU IRQ level as `mip.MEIP` and receives bounded instruction credit from
+cocotb (initially 32 steps per sampled clock, not 32 PicoRV32 cycles). After
+each AXI R/B response, the bridge publishes the stable IRQ level before
+releasing the blocked Spike instruction. The test verifies trap entry/return,
+both CSR claim completion tokens, high/low IRQ level, and the 17-beat frame
+(66 valid bytes), including the last `TKEEP` and `TLAST`.
+
+Run two independent IRQ-enabled `csr_smoke` instances with a separate RTL
+Ethernet loopback for each endpoint:
+
+```bash
+make -C dv/iss rtl-irq-system-smoke JOBS=2
+```
+
+The dual IRQ target uses its own Verilator build directory; it does not replace
+the older crossed-link `iss_link` test below.
 
 Run two Spike contexts against separate RTL endpoints with directly crossed
 Ethernet streams:
@@ -152,17 +167,23 @@ make -C dv/iss rtl-system-smoke
 
 Both contexts execute the `iss_link` ELF independently, with roles selected
 through their private RTL CSR blocks. The initiator sends a request; the
-responder receives it before sending a distinct reply. The test holds
+responder receives it before sending a distinct reply. Both frames carry a
+broadcast Ethernet header, so the endpoint's default filtered non-oETP receive
+policy admits them without disabling MAC filtering. Firmware validates the
+header and payload; the test checks every transferred beat. The test holds
 endpoint 0's AXI read address channel while endpoint 1 progresses, then
 checks both physical stream directions, status words, received payloads and
 isolated DMEM markers. No instruction-by-instruction host barrier is used.
 The test uses a shared reset and a separate Verilator build directory from
 one-endpoint tests. A separate case stops one worker in a local loop while
-the other completes pending RTL MMIO without a shared reset. A two-beat request
-also tests stopping its initiator after the first AXIS handshake: the responder
+the other completes pending RTL MMIO without a shared reset. A six-beat request
+also tests stopping its initiator after the header and first payload word,
+before `TLAST`: the responder
 remains active until coordinated stop, then a shared RTL/BFM reset discards the
 partial frame before both workers restart and complete a fresh exchange.
-An AXI response that arrives after the worker stops is not applied to Spike.
+Firmware tasks are cancelled and awaited before their endpoint handles close.
+An AXI response that arrives after the worker stops is not applied to Spike,
+including a stop racing the native completion call.
 Continuing an interrupted frame without resetting both endpoints is not
 supported.
 
@@ -179,10 +200,17 @@ Run every native, Python, and RTL check with:
 make -C dv/iss check-all
 ```
 
+The old payload-only `iss_link` frames were rejected by the endpoint's new
+default MAC filter after the RTL update. Adding the Ethernet header restores
+the crossed request/reply and mid-frame recovery checks; local loopback is
+still used only by the separate IRQ-enabled `csr_smoke` target. A successful
+`check-all` manifest, not an individual smoke result, is the aggregate gate.
+
 Each successful run writes per-target JUnit XML and a validated JSON manifest
 under `build/dv/iss/reports`. The manifest records the repository and pinned
 Spike commits, whether tracked source files are modified, the ISS library and
-firmware SHA-256 hashes, CPU/memory profile, tool versions, and test counts.
+firmware SHA-256 hashes for both platform-specific `csr_smoke` ELFs,
+CPU/memory/IRQ profile, tool versions, and test counts.
 Missing or failing XML prevents manifest generation. `check-all` removes the
 previous manifest before starting, so it cannot report a stale success.
 Standalone `rtl-*` and `test-native` targets write their own JUnit files but
@@ -228,12 +256,16 @@ from ELF symbols rather than fixed testbench constants.
 
 ## Current Profile
 
-- RV32I, machine privilege mode, one hart per endpoint handle.
+- RV32I+Zicsr, machine privilege mode, one hart per endpoint handle.
 - Private 32 KiB ISS IMEM at `0x00000000`.
 - RTL DMEM at `0x10000000-0x10007fff`.
 - RTL CSR aperture at `0x20000000-0x20001fff`.
 - The listed addresses are the current `openenoc_endpoint_full` HAL map, not
 	constants in the native ISS library.
 - One pending 1-, 2-, or 4-byte data request per endpoint.
-- No interrupts and no external instruction fetches.
+- Opt-in, level-sensitive M-mode external IRQ through `mip.MEIP`; non-IRQ
+  endpoint handles retain their unpaced execution behavior.
+- IRQ-enabled handles receive bounded instruction credit, initially 32 steps
+  per sampled RTL clock. This is not a PicoRV32 cycle model.
+- No external instruction fetches.
 - Validated ELF entry points, load segments, and symbols drive firmware tests.

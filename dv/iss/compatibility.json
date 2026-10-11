@@ -5,8 +5,11 @@
     "commit": "4ffd6ba860f4190ceac2716fa3c2cf139e85538f"
   },
   "initial_cpu_profile": {
-    "isa": "RV32I",
+    "isa": "RV32I_Zicsr",
     "privilege": "M",
-    "interrupts": false
+    "interrupts": true,
+    "irq_opt_in": true,
+    "irq_model": "direct_meip",
+    "irq_quantum_instructions": 32
   }
 }

@@ -3,7 +3,8 @@
 
 import os
 import struct
-from contextlib import ExitStack
+from asyncio import CancelledError
+from contextlib import AsyncExitStack, ExitStack
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -32,6 +33,13 @@ ISS_STARTUP_PASSED = 0x51A7C0DE
 ISS_STARTUP_FAILED = 0xFA11ED00
 STARTUP_INITIALIZED_WORDS = (0x12345678, 0x89ABCDEF)
 IRQ_QUANTUM = 32
+LINK_HEADER = tuple(
+    (word, 0xF, False)
+    for word in (0xFFFFFFFF, 0x0122FFFF, 0x89ABCDEF, 0x00000008)
+)
+LINK_REQUEST_PREFIX = LINK_HEADER + ((0x13579BDF, 0xF, False),)
+LINK_REQUEST_FRAME = LINK_REQUEST_PREFIX + ((0x89ABCDEF, 0xF, True),)
+LINK_REPLY_FRAME = LINK_HEADER + ((0x2468ACE0, 0xF, True),)
 AXIS_LOOPBACK_WORDS = (
     0xFFFFFFFF, 0x0122FFFF, 0x89ABCDEF, 0xFFFFFFFF,
     0xA5A55A5A, 0x5A5AA5A5, 0x00000001, 0x80000000,
@@ -92,6 +100,20 @@ async def wait_for_stop(endpoint, dut):
         await RisingEdge(dut.clk)
     raise AssertionError("Spike worker did not stop after firmware passed")
 
+async def stop_firmware_tasks(endpoints, tasks, dut):
+    for endpoint in endpoints:
+        endpoint.request_stop()
+    pending = [task for task in tasks if not task.done()]
+    for task in pending:
+        task.cancel()
+    for task in pending:
+        try:
+            await task
+        except CancelledError:
+            pass
+    for endpoint in endpoints:
+        await wait_for_stop(endpoint, dut)
+
 
 class IrqPublisher:
     def __init__(self, endpoint, level, clock):
@@ -105,6 +127,9 @@ class IrqPublisher:
 
     async def sample(self, credit=0):
         await ReadOnly()
+        self.publish(credit)
+
+    def publish(self, credit=0):
         level = bool(int(self.level.value))
         self.seen_low_after_high |= self.seen_high and not level
         self.seen_high |= level
@@ -172,18 +197,26 @@ async def service_request(endpoint, axi_master, request, irq_publisher=None):
     if irq_publisher is not None:
         await irq_publisher.sample()
     axi_resp = int(result.resp)
-    endpoint.complete(
-        request,
-        data=data,
-        status=(
-            ResponseStatus.OK
-            if axi_resp == 0
-            else ResponseStatus.BUS_ERROR
-        ),
-        axi_resp=axi_resp,
-        accepted_sim_tick=accepted_tick,
-        completed_sim_tick=completed_tick,
-    )
+    try:
+        endpoint.complete(
+            request,
+            data=data,
+            status=(
+                ResponseStatus.OK
+                if axi_resp == 0
+                else ResponseStatus.BUS_ERROR
+            ),
+            axi_resp=axi_resp,
+            accepted_sim_tick=accepted_tick,
+            completed_sim_tick=completed_tick,
+        )
+    except IssError as error:
+        if error.status != -2 or endpoint.state().run_state != RunState.STOPPED:
+            raise
+        cocotb.log.info(
+            "Discarding AXI response for request %d after worker stop",
+            request.request_id,
+        )
 
 
 @cocotb.test()
@@ -868,7 +901,9 @@ async def test_spike_irq_two_endpoints(dut):
                 level = dut.iss_irq if index == 0 else dut.g_dual.iss1_irq
                 publisher = IrqPublisher(endpoint, level, dut.clk)
                 publishers.append(publisher)
-                await publisher.sample(IRQ_QUANTUM)
+            await ReadOnly()
+            for publisher in publishers:
+                publisher.publish(IRQ_QUANTUM)
                 irq_monitors.append(cocotb.start_soon(publisher.run()))
 
             for _ in range(FIRMWARE_TIMEOUT_CYCLES):
@@ -976,7 +1011,7 @@ async def test_spike_endpoints_exchange_request_reply(dut):
 
     runners = []
     try:
-        with ExitStack() as stack:
+        async with AsyncExitStack() as stack:
             library = IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"])
             endpoints = [
                 stack.enter_context(library.create_endpoint(index))
@@ -990,17 +1025,18 @@ async def test_spike_endpoints_exchange_request_reply(dut):
                 cocotb.start_soon(run_firmware(index, endpoint))
                 for index, endpoint in enumerate(endpoints)
             ]
+            stack.push_async_callback(stop_firmware_tasks, endpoints, runners, dut)
             await Timer(1000, unit="ns")
             assert endpoints[0].state().run_state == RunState.WAITING_MMIO
             assert request_counts[1] > request_counts[0]
             masters[0].read_if.ar_channel.pause = False
             for _ in range(FIRMWARE_TIMEOUT_CYCLES):
                 await RisingEdge(dut.clk)
-                if transfers[0][0]:
+                if len(transfers[0][0]) == len(LINK_REQUEST_PREFIX):
                     break
             else:
-                raise AssertionError("Initiator did not send the first request beat")
-            assert transfers[0][0] == [(0x13579BDF, 0xF, False)]
+                raise AssertionError("Initiator did not send the request prefix")
+            assert transfers[0][0] == list(LINK_REQUEST_PREFIX)
             assert await read_word(masters[0], release_address) == 0
             await write_word(masters[0], release_address, 1)
             for runner in runners:
@@ -1013,16 +1049,14 @@ async def test_spike_endpoints_exchange_request_reply(dut):
         for monitor in monitors:
             monitor.cancel()
 
-    request_words = [(0x13579BDF, 0xF, False), (0x89ABCDEF, 0xF, True)]
-    reply_word = (0x2468ACE0, 0xF, True)
     for index, master in enumerate(masters):
         assert transfers[index] == (
-            [request_words, [reply_word]] if index == 0
-            else [[reply_word], request_words]
+            [list(LINK_REQUEST_FRAME), list(LINK_REPLY_FRAME)] if index == 0
+            else [list(LINK_REPLY_FRAME), list(LINK_REQUEST_FRAME)]
         )
         assert await read_word(master, status_address) == 0x600D0001 + index
         assert await read_word(master, received_address) == (
-            reply_word[0] if index == 0 else request_words[0][0]
+            0x2468ACE0 if index == 0 else 0x13579BDF
         )
         assert await read_word(master, DMEM_BASE + 0x4000) == 0x12340000 + index
     assert int(dut.imem_active.value) == 0
@@ -1076,7 +1110,7 @@ async def test_spike_recovers_after_mid_frame_stop(dut):
         raise AssertionError(f"endpoint {index} did not stop")
 
     try:
-        with ExitStack() as stack:
+        async with AsyncExitStack() as stack:
             library = IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"])
             endpoints = [
                 stack.enter_context(library.create_endpoint(index))
@@ -1093,24 +1127,25 @@ async def test_spike_recovers_after_mid_frame_stop(dut):
                 cocotb.start_soon(pump(index, endpoint))
                 for index, endpoint in enumerate(endpoints)
             ]
+            stack.push_async_callback(stop_firmware_tasks, endpoints, runners, dut)
 
             for _ in range(FIRMWARE_TIMEOUT_CYCLES):
                 await RisingEdge(dut.clk)
-                if sink_transfers:
+                if len(sink_transfers) == len(LINK_REQUEST_PREFIX):
                     break
             else:
-                raise AssertionError("First request beat did not reach endpoint 1")
-            first_beat = (0x13579BDF, 0xF, False)
-            assert tx_transfers == [first_beat]
-            assert sink_transfers == [first_beat]
+                raise AssertionError("Request prefix did not reach endpoint 1")
+            prefix = list(LINK_REQUEST_PREFIX)
+            assert tx_transfers == prefix
+            assert sink_transfers == prefix
             assert await read_word(masters[0], release_address) == 0
             endpoints[0].request_stop()
             await wait_for_stop(endpoints[0], dut)
             assert endpoints[1].state().run_state != RunState.STOPPED
             for _ in range(100):
                 await RisingEdge(dut.clk)
-            assert tx_transfers == [first_beat]
-            assert sink_transfers == [first_beat]
+            assert tx_transfers == prefix
+            assert sink_transfers == prefix
             assert await read_word(masters[1], status_address) == 0
             endpoints[1].request_stop()
             await wait_for_stop(endpoints[1], dut)
@@ -1124,8 +1159,8 @@ async def test_spike_recovers_after_mid_frame_stop(dut):
             dut.rst.value = 0
             for _ in range(20):
                 await RisingEdge(dut.clk)
-            assert tx_transfers == [first_beat]
-            assert sink_transfers == [first_beat]
+            assert tx_transfers == prefix
+            assert sink_transfers == prefix
 
             for index, master in enumerate(masters):
                 await write_word(master, CSR_BASE, index + 1)
@@ -1135,18 +1170,19 @@ async def test_spike_recovers_after_mid_frame_stop(dut):
                 cocotb.start_soon(pump(index, endpoint))
                 for index, endpoint in enumerate(endpoints)
             ]
+            stack.push_async_callback(stop_firmware_tasks, endpoints, runners, dut)
             for _ in range(FIRMWARE_TIMEOUT_CYCLES):
                 await RisingEdge(dut.clk)
-                if len(tx_transfers) == 2:
+                if len(tx_transfers) == 2 * len(prefix):
                     break
             else:
                 raise AssertionError("Restarted initiator did not send a request")
-            assert tx_transfers[1] == first_beat
+            assert tx_transfers[len(prefix):] == prefix
             await write_word(masters[0], release_address, 1)
             for runner in runners:
                 await with_timeout(runner, 1_000_000, "ns")
 
-            assert tx_transfers == [first_beat, first_beat, (0x89ABCDEF, 0xF, True)]
+            assert tx_transfers == prefix + list(LINK_REQUEST_FRAME)
             assert sink_transfers == tx_transfers
             for index, master in enumerate(masters):
                 assert await read_word(master, status_address) == 0x600D0001 + index

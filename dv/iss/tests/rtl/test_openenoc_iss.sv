@@ -6,7 +6,8 @@
 `default_nettype none
 
 module test_openenoc_iss #(
-    parameter bit TWO_ENDPOINTS = 1'b0
+    parameter bit TWO_ENDPOINTS = 1'b0,
+    parameter bit DUAL_LOOPBACK = 1'b0
 ) ();
 
     logic clk;
@@ -89,6 +90,27 @@ module test_openenoc_iss #(
             .rst (rst)
         );
 
+        if (DUAL_LOOPBACK) begin : g_independent_loopbacks
+            assign eth_if.a2b_axis_if.tready = eth_if.b2a_axis_if.tready;
+            assign eth_if.b2a_axis_if.tdata = eth_if.a2b_axis_if.tdata;
+            assign eth_if.b2a_axis_if.tkeep = eth_if.a2b_axis_if.tkeep;
+            assign eth_if.b2a_axis_if.tstrb = eth_if.a2b_axis_if.tstrb;
+            assign eth_if.b2a_axis_if.tid = eth_if.a2b_axis_if.tid;
+            assign eth_if.b2a_axis_if.tdest = eth_if.a2b_axis_if.tdest;
+            assign eth_if.b2a_axis_if.tuser = eth_if.a2b_axis_if.tuser;
+            assign eth_if.b2a_axis_if.tlast = eth_if.a2b_axis_if.tlast;
+            assign eth_if.b2a_axis_if.tvalid = eth_if.a2b_axis_if.tvalid;
+
+            assign eth1_if.a2b_axis_if.tready = eth1_if.b2a_axis_if.tready;
+            assign eth1_if.b2a_axis_if.tdata = eth1_if.a2b_axis_if.tdata;
+            assign eth1_if.b2a_axis_if.tkeep = eth1_if.a2b_axis_if.tkeep;
+            assign eth1_if.b2a_axis_if.tstrb = eth1_if.a2b_axis_if.tstrb;
+            assign eth1_if.b2a_axis_if.tid = eth1_if.a2b_axis_if.tid;
+            assign eth1_if.b2a_axis_if.tdest = eth1_if.a2b_axis_if.tdest;
+            assign eth1_if.b2a_axis_if.tuser = eth1_if.a2b_axis_if.tuser;
+            assign eth1_if.b2a_axis_if.tlast = eth1_if.a2b_axis_if.tlast;
+            assign eth1_if.b2a_axis_if.tvalid = eth1_if.a2b_axis_if.tvalid;
+        end else begin : g_crossed
         assign eth_if.a2b_axis_if.tready = eth1_if.b2a_axis_if.tready;
         assign eth1_if.b2a_axis_if.tdata = eth_if.a2b_axis_if.tdata;
         assign eth1_if.b2a_axis_if.tkeep = eth_if.a2b_axis_if.tkeep;
@@ -108,6 +130,7 @@ module test_openenoc_iss #(
         assign eth_if.b2a_axis_if.tuser = eth1_if.a2b_axis_if.tuser;
         assign eth_if.b2a_axis_if.tlast = eth1_if.a2b_axis_if.tlast;
         assign eth_if.b2a_axis_if.tvalid = eth1_if.a2b_axis_if.tvalid;
+        end
 
         initial begin
             switch1_if.core_to_csr = '{default: '0};

@@ -20,13 +20,14 @@ REPORTS = BUILD / "reports"
 SUITES = (
     "native-smoke", "python-smoke", "elf-smoke", "rtl-smoke", "rtl-lanes-smoke",
     "rtl-bridge-smoke", "rtl-lifecycle-smoke", "rtl-firmware-smoke",
-    "rtl-startup-smoke", "rtl-system-smoke",
+    "rtl-startup-smoke", "rtl-irq-system-smoke", "rtl-system-smoke",
 )
-FIRMWARE = (
-    ROOT / "build/sw/openenoc_endpoint_full/csr_smoke.elf",
-    BUILD / "firmware/openenoc_endpoint_full/iss_startup.elf",
-    BUILD / "firmware/openenoc_endpoint_full/iss_link.elf",
-)
+FIRMWARE = {
+    "csr_smoke.elf": ROOT / "build/sw/openenoc_endpoint_full/csr_smoke.elf",
+    "csr_smoke_iss.elf": BUILD / "irq-firmware/openenoc_endpoint_full/csr_smoke.elf",
+    "iss_startup.elf": BUILD / "firmware/openenoc_endpoint_full/iss_startup.elf",
+    "iss_link.elf": BUILD / "firmware/openenoc_endpoint_full/iss_link.elf",
+}
 
 
 def command(*args):
@@ -72,8 +73,8 @@ def build_report():
             "riscv_gcc": command("riscv64-unknown-elf-gcc", "--version"),
         },
         "firmware_sha256": {
-            path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in FIRMWARE
+            name: hashlib.sha256(path.read_bytes()).hexdigest()
+            for name, path in FIRMWARE.items()
         },
         "iss_library_sha256": hashlib.sha256(
             (BUILD / "lib/libopenenoc_iss.so").read_bytes()

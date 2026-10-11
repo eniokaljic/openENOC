@@ -220,11 +220,12 @@ rtl-system-smoke: iss-library link-firmware memory-map
 
 rtl-irq-system-smoke: iss-library irq-firmware memory-map
 	@mkdir -p $(BUILD_DIR)/reports
-	@$(MAKE) -C tests/rtl TWO_ENDPOINTS=1 SIM_BUILD=$(BUILD_DIR)/rtl-system-sim \
+	@$(MAKE) -C tests/rtl TWO_ENDPOINTS=1 DUAL_LOOPBACK=1 \
+		SIM_BUILD=$(BUILD_DIR)/rtl-irq-system-sim \
 		COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-irq-system-smoke.xml \
 		COCOTB_TESTCASE=test_spike_irq_two_endpoints
 
-report: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-lifecycle-smoke rtl-firmware-smoke rtl-startup-smoke rtl-system-smoke
+report: check rtl-smoke rtl-lanes-smoke rtl-bridge-smoke rtl-lifecycle-smoke rtl-firmware-smoke rtl-startup-smoke rtl-irq-system-smoke rtl-system-smoke
 	@$(PYTHON) report.py
 
 check-all:
