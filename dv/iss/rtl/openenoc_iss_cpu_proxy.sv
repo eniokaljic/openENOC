@@ -8,6 +8,8 @@
 /* verilator lint_off DECLFILENAME */
 /* verilator lint_off UNUSEDPARAM */
 module openenoc_picorv32 #(
+    parameter [0:0] ENABLE_IRQ = 0,
+    parameter [31:0] LATCHED_IRQ = 32'hffff_ffff,
     parameter [31:0] PROGADDR_RESET = 32'h0000_0000,
     parameter [31:0] STACKADDR = 32'hffff_ffff
 ) (

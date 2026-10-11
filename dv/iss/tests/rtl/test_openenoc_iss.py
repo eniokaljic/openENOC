@@ -678,9 +678,12 @@ async def test_spike_runs_csr_smoke_firmware(dut):
         struct.pack("<I", int(word, 16))
         for word in imem_file.read_text(encoding="ascii").splitlines()
     )
-    assert len(boot_image.segments) == 1
-    assert boot_image.segments[0].load_address == 0
-    assert boot_image.segments[0].data == imem_image
+    image_offset = 0
+    for segment in boot_image.segments:
+        assert segment.load_address == image_offset
+        assert imem_image[image_offset:image_offset + len(segment.data)] == segment.data
+        image_offset += len(segment.data)
+    assert image_offset == len(imem_image)
     status_address = boot_image.symbol_address("csr_smoke_status")
     assert boot_image.symbols["csr_smoke_status"].size == 4
     assert await read_word(axi_master, status_address) == 0

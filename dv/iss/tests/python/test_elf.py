@@ -22,10 +22,27 @@ class ElfLoaderTest(unittest.TestCase):
         boot_image = load_elf(self.path)
 
         self.assertEqual(boot_image.entry_pc, 0)
-        self.assertEqual(len(boot_image.segments), 1)
+        self.assertEqual(len(boot_image.segments), 2)
         self.assertEqual(boot_image.segments[0].load_address, 0)
         self.assertEqual(boot_image.segments[0].virtual_address, 0)
         self.assertGreater(len(boot_image.segments[0].data), 0)
+        data_segment = boot_image.segments[1]
+        self.assertEqual(
+            data_segment.load_address,
+            boot_image.symbol_address("__data_load_start"),
+        )
+        self.assertEqual(
+            data_segment.virtual_address,
+            boot_image.symbol_address("__data_start"),
+        )
+        self.assertEqual(
+            len(data_segment.data),
+            boot_image.symbol_address("__data_end") - data_segment.virtual_address,
+        )
+        self.assertEqual(
+            data_segment.memory_size,
+            boot_image.symbol_address("__bss_end") - data_segment.virtual_address,
+        )
         self.assertEqual(
             boot_image.symbol_address("csr_smoke_status"), 0x10000000
         )
@@ -51,7 +68,10 @@ class ElfLoaderTest(unittest.TestCase):
         )
         self.assertEqual(data_segment.data, bytes.fromhex("78563412efcdab89"))
         self.assertEqual(len(data_segment.data), 8)
-        self.assertEqual(data_segment.memory_size, 16)
+        self.assertEqual(
+            data_segment.memory_size,
+            boot_image.symbol_address("__bss_end") - data_segment.virtual_address,
+        )
         self.assertEqual(
             boot_image.symbol_address("startup_bss"), 0x10000008
         )
