@@ -47,9 +47,7 @@ module test_openenoc_endpoint_interface #(
     logic [9:0] rmem_addr;
     logic [31:0] rmem_wr_data, rmem_wr_biten, rmem_timeout_cycles;
     wire rmem_ack, rmem_wr_ack, rmem_master_active;
-    wire [31:0] rmem_rd_data, oetp_rmem_timeout_cycles;
-    wire dma_rmem_req;
-    wire [31:0] dma_rmem_addr, dma_rmem_wr_data, dma_rmem_wr_biten;
+    wire [31:0] rmem_rd_data;
 
     openenoc_endpoint_if #(
         .NUM_OF_PEERS(2),
@@ -174,11 +172,6 @@ module test_openenoc_endpoint_interface #(
     assign rmem_ack = endpoint_if.core_to_csr.rmem.rd_ack;
     assign rmem_wr_ack = endpoint_if.core_to_csr.rmem.wr_ack;
     assign rmem_rd_data = endpoint_if.core_to_csr.rmem.rd_data;
-    assign oetp_rmem_timeout_cycles = u_endpoint_interface.u_oetp_engine.rmem_timeout_cycles;
-    assign dma_rmem_req = u_endpoint_interface.u_dma_engine.rmem_cpuif.req;
-    assign dma_rmem_addr = u_endpoint_interface.u_dma_engine.rmem_cpuif.addr;
-    assign dma_rmem_wr_data = u_endpoint_interface.u_dma_engine.rmem_cpuif.wr_data;
-    assign dma_rmem_wr_biten = u_endpoint_interface.u_dma_engine.rmem_cpuif.wr_biten;
     assign claim = {
         endpoint_if.core_to_csr.irq.claim.valid.next,
         endpoint_if.core_to_csr.irq.claim.sequence_.next,

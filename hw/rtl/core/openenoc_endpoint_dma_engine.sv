@@ -188,13 +188,13 @@ module openenoc_endpoint_dma_engine #(
     openenoc_cpuif_if #(
         .ADDR_W(32),
         .DATA_W(32)
-    ) rmem_cpuif();
+    ) csr_rmem_cpuif();
 
-    assign rmem_cpuif.req = endpoint_if.csr_to_core.rmem.req;
-    assign rmem_cpuif.addr = 32'(endpoint_if.csr_to_core.rmem.addr);
-    assign rmem_cpuif.req_is_wr = endpoint_if.csr_to_core.rmem.req_is_wr;
-    assign rmem_cpuif.wr_data = endpoint_if.csr_to_core.rmem.wr_data;
-    assign rmem_cpuif.wr_biten = endpoint_if.csr_to_core.rmem.wr_biten;
+    assign csr_rmem_cpuif.req = endpoint_if.csr_to_core.rmem.req;
+    assign csr_rmem_cpuif.addr = 32'(endpoint_if.csr_to_core.rmem.addr);
+    assign csr_rmem_cpuif.req_is_wr = endpoint_if.csr_to_core.rmem.req_is_wr;
+    assign csr_rmem_cpuif.wr_data = endpoint_if.csr_to_core.rmem.wr_data;
+    assign csr_rmem_cpuif.wr_biten = endpoint_if.csr_to_core.rmem.wr_biten;
 
     typedef enum logic [3:0] {
         RM_IDLE,
@@ -856,9 +856,9 @@ module openenoc_endpoint_dma_engine #(
     assign endpoint_if.core_to_csr.non_oetp_dma.tx.transferred_length.bytes.next =
         raw_tx_transferred_len_reg;
     logic peer_csr_clear_error_hwclr_reg[NUM_OF_PEERS];
-    assign endpoint_if.core_to_csr.rmem.rd_ack = rmem_cpuif.rd_ack;
-    assign endpoint_if.core_to_csr.rmem.rd_data = rmem_cpuif.rd_data;
-    assign endpoint_if.core_to_csr.rmem.wr_ack = rmem_cpuif.wr_ack;
+    assign endpoint_if.core_to_csr.rmem.rd_ack = csr_rmem_cpuif.rd_ack;
+    assign endpoint_if.core_to_csr.rmem.rd_data = csr_rmem_cpuif.rd_data;
+    assign endpoint_if.core_to_csr.rmem.wr_ack = csr_rmem_cpuif.wr_ack;
     for (genvar n = 0; n < NUM_OF_PEERS; n++) begin : g_csr_peer_output
         assign endpoint_if.core_to_csr.peers.entry[n].dma.clear_error.hwclr =
             peer_csr_clear_error_hwclr_reg[n];
@@ -908,13 +908,13 @@ module openenoc_endpoint_dma_engine #(
         peer_lookup_if.rsp_ready <= rst ? '0
             : ((rmem_lookup_owner ? rmem_state_reg == RM_LOOKUP_RSP
                     : peer_state_reg == PEER_LOOKUP_RSP) && !(lookup_rsp_fire));
-        rmem_cpuif.wr_ack <= rst ? '0 : (!rst && rmem_state_reg == RM_DONE && rmem_write_reg);
-        rmem_cpuif.rd_ack <= rst ? '0 : (!rst && rmem_state_reg == RM_DONE && !rmem_write_reg);
-        rmem_cpuif.wr_err <= 1'b0;
-        rmem_cpuif.rd_err <= 1'b0;
-        rmem_cpuif.rd_data <= rst ? '0 : (rmem_error_reg != 0 ? 32'hffffffff : rmem_rdata_reg);
+        csr_rmem_cpuif.wr_ack <= rst ? '0 : (!rst && rmem_state_reg == RM_DONE && rmem_write_reg);
+        csr_rmem_cpuif.rd_ack <= rst ? '0 : (!rst && rmem_state_reg == RM_DONE && !rmem_write_reg);
+        csr_rmem_cpuif.wr_err <= 1'b0;
+        csr_rmem_cpuif.rd_err <= 1'b0;
+        csr_rmem_cpuif.rd_data <= rst ? '0 : (rmem_error_reg != 0 ? 32'hffffffff : rmem_rdata_reg);
         case (rmem_state_reg)
-            RM_IDLE: if (rmem_cpuif.req && rmem_armed_reg) rmem_state_reg <= RM_LOOKUP_REQ;
+            RM_IDLE: if (csr_rmem_cpuif.req && rmem_armed_reg) rmem_state_reg <= RM_LOOKUP_REQ;
             RM_LOOKUP_REQ:
                 if (rmem_lookup_owner && lookup_req_fire) rmem_state_reg <= RM_LOOKUP_RSP;
             RM_LOOKUP_RSP: if (lookup_rsp_fire) rmem_state_reg <= RM_READY;
@@ -925,17 +925,18 @@ module openenoc_endpoint_dma_engine #(
                 if (initiator_req_fire && initiator_if.req_kind == TRANSFER_KIND_RMEM)
                     rmem_state_reg <= RM_WAIT;
             RM_WAIT: if (rmem_cpl_accept) rmem_state_reg <= RM_DONE;
-            RM_DONE: rmem_state_reg <= rmem_cpuif.req && rmem_armed_reg ? RM_LOOKUP_REQ : RM_IDLE;
+            RM_DONE: rmem_state_reg <= csr_rmem_cpuif.req && rmem_armed_reg
+                ? RM_LOOKUP_REQ : RM_IDLE;
             default: rmem_state_reg <= RM_IDLE;
         endcase
-        if (!rmem_cpuif.req) rmem_armed_reg <= 1'b1;
-        if ((rmem_state_reg == RM_IDLE || rmem_state_reg == RM_DONE) && rmem_cpuif.req
+        if (!csr_rmem_cpuif.req) rmem_armed_reg <= 1'b1;
+        if ((rmem_state_reg == RM_IDLE || rmem_state_reg == RM_DONE) && csr_rmem_cpuif.req
             && rmem_armed_reg) begin
             rmem_armed_reg <= 1'b0;
-            rmem_addr_reg <= rmem_cpuif.addr;
-            rmem_write_reg <= rmem_cpuif.req_is_wr;
-            rmem_wdata_reg <= rmem_cpuif.wr_data;
-            rmem_biten_reg <= rmem_cpuif.wr_biten;
+            rmem_addr_reg <= csr_rmem_cpuif.addr;
+            rmem_write_reg <= csr_rmem_cpuif.req_is_wr;
+            rmem_wdata_reg <= csr_rmem_cpuif.wr_data;
+            rmem_biten_reg <= csr_rmem_cpuif.wr_biten;
             rmem_error_reg <= DMA_ERROR_NONE;
             rmem_hit_reg <= 1'b0;
         end
@@ -1174,7 +1175,7 @@ module openenoc_endpoint_dma_engine #(
         end
         if (!command_valid_reg && command_slot_found
             && (!SERIAL_PEER_REQUESTS || !any_sent_fragment) && rmem_state_reg == RM_IDLE
-            && !rmem_cpuif.req) begin
+            && !csr_rmem_cpuif.req) begin
             command_slot_reg <= command_slot;
             command_valid_reg <= 1'b1;
         end
