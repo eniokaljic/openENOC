@@ -1,0 +1,266 @@
+// SPDX-FileCopyrightText: 2026 Kerim Bavcic
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+#include <inttypes.h>
+#include <sched.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "openenoc_iss.h"
+#include "memory_map.h"
+
+#define EXTERNAL_ADDRESS ((uint64_t)DMEM_BASE_ADDR)
+#define POLL_LIMIT UINT32_C(1000000)
+
+static int check_status(int32_t status, const char *operation)
+{
+    if (status == OPENENOC_ISS_OK) {
+        return 0;
+    }
+
+    fprintf(stderr, "%s failed: %s (%" PRId32 ")\n", operation,
+            openenoc_iss_status_string(status), status);
+    return 1;
+}
+
+static void encode_program(uint8_t *image)
+{
+    static const uint32_t program[] = {
+        (uint32_t)((DMEM_BASE_ADDR & 0xfffff000) | 0xb7),
+        UINT32_C(0x02a00113),
+        UINT32_C(0x0020a023),
+        UINT32_C(0x0000a183),
+        UINT32_C(0x00118213),
+    };
+
+    for (size_t word = 0; word < sizeof(program) / sizeof(program[0]); ++word) {
+        for (size_t byte = 0; byte < sizeof(program[word]); ++byte) {
+            image[word * sizeof(program[word]) + byte] =
+                (uint8_t)(program[word] >> (byte * 8));
+        }
+    }
+}
+
+static int check_irq_updates(openenoc_iss_config_t config)
+{
+    openenoc_iss_t *endpoint = NULL;
+    const uint8_t loop[] = {0x6f, 0x00, 0x00, 0x00};
+    int result = 1;
+    config.flags = OPENENOC_ISS_CONFIG_IRQ;
+    if (check_status(openenoc_iss_create(&config, &endpoint), "create IRQ") ||
+            check_status(openenoc_iss_load_image(endpoint, 0, loop, sizeof(loop)),
+                         "load IRQ loop") ||
+            check_status(openenoc_iss_start(endpoint, 0, 64), "start IRQ")) {
+        goto cleanup;
+    }
+
+    openenoc_iss_state_t state = {
+        .abi_version = OPENENOC_ISS_ABI_VERSION,
+        .struct_size = sizeof(state),
+    };
+    if (check_status(openenoc_iss_try_state(endpoint, &state), "read IRQ state") ||
+            state.step_count != 0) {
+        goto cleanup;
+    }
+
+    openenoc_iss_irq_update_t update = {
+        .abi_version = OPENENOC_ISS_ABI_VERSION,
+        .struct_size = sizeof(update),
+        .endpoint_id = config.endpoint_id,
+        .level = 1,
+        .epoch = state.epoch,
+        .sim_tick = 10,
+        .sequence = 1,
+        .step_budget = 1,
+    };
+    if (check_status(openenoc_iss_update_irq(endpoint, &update), "update IRQ")) {
+        goto cleanup;
+    }
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.sequence = 2;
+    update.sim_tick = 9;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.sim_tick = 10;
+    update.epoch = state.epoch - 1;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.epoch = state.epoch;
+    update.endpoint_id++;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.endpoint_id = config.endpoint_id;
+    update.level = 2;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.level = 0;
+    update.step_budget = 1025;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.step_budget = 0;
+    update.struct_size--;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    update.struct_size = sizeof(update);
+    update.abi_version--;
+    if (openenoc_iss_update_irq(endpoint, &update) != OPENENOC_ISS_INVALID_ARGUMENT) {
+        goto cleanup;
+    }
+    result = 0;
+
+cleanup:
+    if (endpoint != NULL) {
+        openenoc_iss_request_stop(endpoint);
+        openenoc_iss_destroy(endpoint);
+    }
+    if (result != 0) {
+        fprintf(stderr, "IRQ update validation failed\n");
+    }
+    return result;
+}
+
+int main(void)
+{
+    uint8_t image[5 * sizeof(uint32_t)] = {0};
+    openenoc_iss_t *iss = NULL;
+    openenoc_iss_config_t config = {
+        .abi_version = OPENENOC_ISS_ABI_VERSION,
+        .struct_size = sizeof(config),
+        .endpoint_id = 7,
+        .imem_base = 0,
+        .imem_size = IMEM_SIZE_BYTES,
+        .reset_pc = 0,
+        .dmem_base = DMEM_BASE_ADDR,
+        .dmem_size = DMEM_SIZE_BYTES,
+        .csr_base = CSR_BASE_ADDR,
+        .csr_size = CSR_SIZE_BYTES,
+    };
+    unsigned write_count = 0;
+    unsigned read_count = 0;
+    int result = 1;
+
+    if (openenoc_iss_abi_version() != OPENENOC_ISS_ABI_VERSION) {
+        fprintf(stderr, "Unexpected ISS ABI version\n");
+        return 1;
+    }
+
+    encode_program(image);
+    if (check_status(openenoc_iss_create(&config, &iss), "create") ||
+            check_status(openenoc_iss_load_image(
+                iss, 0, image, sizeof(image)), "load image") ||
+            check_status(openenoc_iss_start(iss, 0, 5), "start")) {
+        goto cleanup;
+    }
+
+    for (uint32_t attempt = 0; attempt < POLL_LIMIT; ++attempt) {
+        openenoc_iss_request_t request = {
+            .abi_version = OPENENOC_ISS_ABI_VERSION,
+            .struct_size = sizeof(request),
+        };
+        int32_t poll_status = openenoc_iss_try_poll(iss, &request);
+
+        if (poll_status == OPENENOC_ISS_OK) {
+            openenoc_iss_response_t response = {
+                .abi_version = OPENENOC_ISS_ABI_VERSION,
+                .struct_size = sizeof(response),
+                .endpoint_id = request.endpoint_id,
+                .status = OPENENOC_ISS_RESPONSE_OK,
+                .epoch = request.epoch,
+                .request_id = request.request_id,
+                .axi_resp = 0,
+                .size_bytes = request.size_bytes,
+            };
+
+            if (request.endpoint_id != config.endpoint_id ||
+                    request.address != EXTERNAL_ADDRESS ||
+                    request.size_bytes != sizeof(uint32_t) ||
+                    request.byte_enable != UINT32_C(0xf)) {
+                fprintf(stderr, "Unexpected MMIO request metadata\n");
+                goto cleanup;
+            }
+
+            if (request.kind == OPENENOC_ISS_REQUEST_DATA_WRITE) {
+                if (memcmp(request.data, "\x2a\x00\x00\x00", 4) != 0 ||
+                        request.pc != 8 || write_count != 0) {
+                    fprintf(stderr, "Unexpected MMIO write request\n");
+                    goto cleanup;
+                }
+                ++write_count;
+            } else if (request.kind == OPENENOC_ISS_REQUEST_DATA_READ) {
+                if (request.pc != 12 || read_count != 0) {
+                    fprintf(stderr, "Unexpected MMIO read request\n");
+                    goto cleanup;
+                }
+                response.data[0] = 42;
+                ++read_count;
+            } else {
+                fprintf(stderr, "Unexpected MMIO request kind\n");
+                goto cleanup;
+            }
+
+            if (check_status(openenoc_iss_complete(iss, &response),
+                             "complete request")) {
+                goto cleanup;
+            }
+        } else if (poll_status != OPENENOC_ISS_NOT_READY) {
+            check_status(poll_status, "poll request");
+            goto cleanup;
+        }
+
+        openenoc_iss_state_t state = {
+            .abi_version = OPENENOC_ISS_ABI_VERSION,
+            .struct_size = sizeof(state),
+        };
+        if (check_status(openenoc_iss_try_state(iss, &state), "read state")) {
+            goto cleanup;
+        }
+        if (state.run_state == OPENENOC_ISS_STATE_ERROR) {
+            fprintf(stderr, "ISS worker entered error state\n");
+            goto cleanup;
+        }
+        if (state.run_state == OPENENOC_ISS_STATE_COMPLETED) {
+            uint64_t x3 = 0;
+            uint64_t x4 = 0;
+            if (state.pc != sizeof(image) || state.step_count != 5 ||
+                    write_count != 1 || read_count != 1 ||
+                    check_status(openenoc_iss_read_register(iss, 3, &x3),
+                                 "read x3") ||
+                    check_status(openenoc_iss_read_register(iss, 4, &x4),
+                                 "read x4") ||
+                    x3 != 42 || x4 != 43) {
+                fprintf(stderr,
+                        "Unexpected final state: pc=0x%" PRIx64
+                        ", steps=%" PRIu64 ", x3=%" PRIu64
+                        ", x4=%" PRIu64 "\n",
+                        state.pc, state.step_count, x3, x4);
+                goto cleanup;
+            }
+            result = 0;
+            break;
+        }
+
+        sched_yield();
+    }
+
+    if (result != 0) {
+        fprintf(stderr, "Timed out waiting for the ISS worker\n");
+        goto cleanup;
+    }
+
+    printf("Spike C API smoke passed: endpoint=7, writes=1, reads=1, "
+           "x3=42, x4=43\n");
+    result = check_irq_updates(config);
+
+cleanup:
+    openenoc_iss_destroy(iss);
+    return result;
+}
