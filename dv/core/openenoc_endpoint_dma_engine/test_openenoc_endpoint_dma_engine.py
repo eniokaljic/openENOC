@@ -1814,7 +1814,7 @@ common_dir = os.path.join(repo_dir, "dv", "common")
 
 
 @pytest.mark.parametrize("max_raw_frame_size", [96, 8192])
-def test_openenoc_endpoint_dma_engine(request, max_raw_frame_size):
+def test_openenoc_endpoint_dma_engine(sim_build_dir, sim_trace_args, max_raw_frame_size):
     module = os.path.splitext(os.path.basename(__file__))[0]
     parameters = {
         "NUM_OF_PEERS": NUM_OF_PEERS,
@@ -1826,7 +1826,7 @@ def test_openenoc_endpoint_dma_engine(request, max_raw_frame_size):
         "FRAGMENT_SLOTS": 8,
     }
     extra_env = {f"PARAM_{key}": str(value) for key, value in parameters.items()}
-    sim_build = os.path.join(tests_dir, "sim_build", request.node.name)
+    sim_build = sim_build_dir
 
     verilog_sources = [
         os.path.join(hal_if_dir, "openenoc_endpoint_if.sv"),
@@ -1856,6 +1856,7 @@ def test_openenoc_endpoint_dma_engine(request, max_raw_frame_size):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

@@ -9,9 +9,6 @@ This cocotb suite verifies peer lookup with the generated CSR block and bridge.
 All peer configuration uses AXI4-Lite transactions. Five cases run with two
 clients, four peers, two-bit peer indices, and 32-bit addresses.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_endpoint_peer_lookup.rst).
-
 ## Test Coverage
 
 The suite covers:

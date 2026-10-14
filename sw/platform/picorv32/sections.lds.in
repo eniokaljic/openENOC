@@ -53,6 +53,7 @@ SECTIONS
         . = ALIGN(4);
         __data_start = .;
 
+        KEEP(*(.data._openenoc_assert_status))
         *(.data .data.*)
         *(.got .got.*)
 

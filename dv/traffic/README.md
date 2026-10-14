@@ -25,7 +25,7 @@ The verification environment consists of:
 * `taxi_axis_if.sv` - AXI4-Stream interface definition used by this test configuration
 * `test1.pcap` - input PCAP file used by the regression
 * `test2.pcap` - input PCAP file used by the regression
-* `output.pcap` - generated output file when running a single simulation configuration
+* `output.pcap` - generated capture stored in the simulation output directory
 
 ## Testbench Architecture
 
@@ -57,7 +57,7 @@ The main configuration parameters are:
 export PARAM_DATA_WIDTH := 8
 export PARAM_CLOCK_PERIOD := 10000
 export PARAM_PCAP_IN_FILENAME := \"test1.pcap\"
-export PARAM_PCAP_OUT_FILENAME := \"output.pcap\"
+export PARAM_PCAP_OUT_FILENAME := \"$(SIM_BUILD)/output.pcap\"
 ```
 
 `DATA_WIDTH` selects the AXI4-Stream data width in bits. The regression covers the following widths:
@@ -103,7 +103,13 @@ The pytest configuration runs the test for two input PCAP files and seven AXI4-S
 
 This produces 14 regression configurations in total.
 
-Each pytest case writes its output PCAP file into a separate `sim_build` subdirectory derived from the pytest case name. This avoids collisions between parallel or repeated test runs.
+Each pytest case writes its output PCAP file under
+`build/dv/traffic/sim_build/pytest/<case>/`. The Make flow writes it under
+`build/dv/traffic/sim_build/`, alongside `results.xml` and `dump.fst` when
+tracing is enabled. The case name separates parameter configurations.
+
+Python bytecode and temporary files also stay under `build/dv/traffic/`.
+See the [shared output layout](../README.md#generated-artifacts).
 
 ## Test Flow
 

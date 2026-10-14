@@ -249,9 +249,9 @@ taxi_axi_dir = os.path.join(repo_dir, "libs", "taxi", "src", "axi", "rtl")
 common_dir = os.path.join(repo_dir, "dv", "common")
 
 
-def test_openenoc_cpuif_axil_adapter(request):
+def test_openenoc_cpuif_axil_adapter(sim_build_dir, sim_trace_args):
     module = os.path.splitext(os.path.basename(__file__))[0]
-    sim_build = os.path.join(tests_dir, "sim_build", request.node.name)
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -266,5 +266,6 @@ def test_openenoc_cpuif_axil_adapter(request):
         module=module,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
     )

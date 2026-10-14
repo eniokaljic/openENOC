@@ -486,7 +486,7 @@ hal_python_dir = os.path.join(repo_dir, "build", "hal", "openenoc_endpoint_full"
 common_dir = os.path.join(repo_dir, "dv", "common")
 
 
-def test_openenoc_endpoint_peer_lookup(request):
+def test_openenoc_endpoint_peer_lookup(sim_build_dir, sim_trace_args):
     dut = "openenoc_endpoint_peer_lookup"
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
@@ -505,7 +505,7 @@ def test_openenoc_endpoint_peer_lookup(request):
 
     parameters = {"LOOKUP_PORTS": 2}
     extra_env = {"PARAM_LOOKUP_PORTS": "2"}
-    sim_build = os.path.join(tests_dir, "sim_build", request.node.name)
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -516,6 +516,7 @@ def test_openenoc_endpoint_peer_lookup(request):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

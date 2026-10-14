@@ -12,9 +12,6 @@ and 32-bit data. Pytest runs 18 cases at raw-frame ceilings of 96 and 8192
 bytes; compact transfer cases use a 64-byte local fragment size. The fixture
 also enables concurrent scheduler requests to exercise reordered completions.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_endpoint_dma_engine.rst).
-
 ## Test Coverage
 
 The suite covers:

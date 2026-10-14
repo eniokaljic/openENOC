@@ -11,9 +11,6 @@ clocked stream fixtures. Pytest sweeps asymmetric pairs from widths 8, 16, 32,
 streams. The fixture uses two widest-side storage beats and streaming FIFO
 policy.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_eth_adapter.rst).
-
 ## Test Coverage
 
 The suite covers:

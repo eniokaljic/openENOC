@@ -30,7 +30,6 @@ module openenoc_endpoint_dma_engine #(
     openenoc_irq_event_if.producer rmem_irq_event_if,
     openenoc_irq_event_if.producer responder_irq_event_if
 );
-
     taxi_axis_if #(
         .DATA_W(s_axis_oetp.DATA_W),
         .KEEP_W(s_axis_oetp.KEEP_W),
@@ -180,7 +179,7 @@ module openenoc_endpoint_dma_engine #(
     // rounded to four bytes on the wire in both directions.
     localparam int unsigned MAX_DMA_FRAGMENT_SIZE_BYTES = MAX_RAW_FRAME_SIZE > 32
         ? ((MAX_RAW_FRAME_SIZE - 32) / 4) * 4 : 0;
-    wire[31:0] configured_fragment_size =
+    wire [31:0] configured_fragment_size =
         endpoint_if.csr_to_core.config_.dma_max_fragment_size.bytes.value;
     wire [31:0] effective_fragment_size = {configured_fragment_size[31:2], 2'b00};
 
@@ -205,6 +204,7 @@ module openenoc_endpoint_dma_engine #(
         RM_WAIT,
         RM_DONE
     } rmem_state_t;
+
     rmem_state_t rmem_state_reg;
 
     typedef enum logic [1:0] {
@@ -212,6 +212,7 @@ module openenoc_endpoint_dma_engine #(
         RM_IRQ_ADMIT,
         RM_IRQ_COMMIT
     } rmem_irq_state_t;
+
     rmem_irq_state_t rmem_irq_state_reg;
 
     logic rmem_armed_reg, rmem_write_reg, rmem_hit_reg;
@@ -229,9 +230,9 @@ module openenoc_endpoint_dma_engine #(
     wire rmem_cpl_accept = initiator_cpl_fire && initiator_if.cpl_kind == TRANSFER_KIND_RMEM;
     wire rmem_error_valid = (rmem_cpl_accept && initiator_if.cpl_error)
         || (rmem_state_reg == RM_DONE && rmem_hit_reg && rmem_error_reg != 0);
-    wire[PEER_IDX_W-1:0] rmem_error_peer_idx = rmem_state_reg == RM_DONE ? rmem_peer_reg
+    wire [PEER_IDX_W-1:0] rmem_error_peer_idx = rmem_state_reg == RM_DONE ? rmem_peer_reg
         : initiator_if.cpl_peer_idx;
-    wire[ERROR_W-1:0] rmem_error_code = rmem_state_reg == RM_DONE ? rmem_error_reg
+    wire [ERROR_W-1:0] rmem_error_code = rmem_state_reg == RM_DONE ? rmem_error_reg
         : initiator_if.cpl_error_code;
 
     localparam logic [3:0] EVENT_PEER_DMA_COMPLETE = 4'd0;
@@ -246,8 +247,10 @@ module openenoc_endpoint_dma_engine #(
     localparam logic [1:0] WR_CLIENT_RESPONDER = 2'd1;
     localparam logic [1:0] WR_CLIENT_NON_OETP = 2'd2;
 
-    function automatic logic [LEN_W-1:0] fragment_length(input logic [LEN_W-1:0] remaining,
-                                                        input logic [LEN_W-1:0] maximum);
+    function automatic logic [LEN_W-1:0] fragment_length(
+        input logic [LEN_W-1:0] remaining,
+        input logic [LEN_W-1:0] maximum
+    );
         if (remaining > maximum) begin
             fragment_length = maximum;
         end else begin
@@ -462,11 +465,11 @@ module openenoc_endpoint_dma_engine #(
     logic [LEN_W-1:0] peer_tx_status_len_reg;
     logic [ERROR_W-1:0] peer_tx_status_error_reg;
     logic any_sent_fragment;
-    wire responder_drop_payload = responder_state_reg == RESP_WAIT && responder_memory_done_reg &&
-        responder_cpl_error_reg && responder_rx_required_reg && !responder_payload_done_reg &&
-        memory_input.tvalid && memory_input.tdest == {ROUTE_PEER, responder_peer_idx_reg} &&
-        memory_input.tuser[AXIS_USER_ROLE_BIT] == TRANSFER_ROLE_RESPONDER &&
-        memory_input.tid == responder_sequence_reg;
+    wire responder_drop_payload = responder_state_reg == RESP_WAIT && responder_memory_done_reg
+        && responder_cpl_error_reg && responder_rx_required_reg && !responder_payload_done_reg
+        && memory_input.tvalid && memory_input.tdest == {ROUTE_PEER, responder_peer_idx_reg}
+        && memory_input.tuser[AXIS_USER_ROLE_BIT] == TRANSFER_ROLE_RESPONDER
+        && memory_input.tid == responder_sequence_reg;
 
     logic responder_irq_enable_reg;
     logic [3:0] responder_irq_source_reg;
@@ -548,7 +551,8 @@ module openenoc_endpoint_dma_engine #(
     logic [SLOT_IDX_W-1:0] memory_write_slot_reg;
     logic free_slot_found, command_slot_found, memory_read_slot_found, memory_write_slot_found;
     logic retire_slot_found, issue_peer_found, commit_peer_found;
-    logic[SLOT_IDX_W-1:0] free_slot, command_slot, memory_read_slot, memory_write_slot, retire_slot;
+    logic [SLOT_IDX_W-1:0] free_slot, command_slot, memory_read_slot, memory_write_slot,
+        retire_slot;
     logic [PEER_IDX_W-1:0] issue_peer, commit_peer;
     logic cpl_slot_found;
     logic [SLOT_IDX_W-1:0] cpl_slot;
@@ -634,19 +638,24 @@ module openenoc_endpoint_dma_engine #(
     logic [PEER_IDX_W-1:0] peer_request_index;
 
     function automatic logic responder_window_valid(
-        input logic [PEER_IDX_W-1:0] peer_idx, input logic kind, op,
-        input logic [ADDR_W-1:0] addr, input logic [LEN_W-1:0] len);
+        input logic [PEER_IDX_W-1:0] peer_idx,
+        input logic kind, op,
+        input logic [ADDR_W-1:0] addr,
+        input logic [LEN_W-1:0] len
+    );
         logic [32:0] base_addr, limit_addr, end_addr;
         logic [1:0] mode;
+
         if (int'(peer_idx) >= NUM_OF_PEERS) return 1'b0;
         base_addr = {1'b0, endpoint_if.csr_to_core.peers.entry[peer_idx].local_address.base.value};
-        limit_addr = base_addr +
-            {1'b0, endpoint_if.csr_to_core.peers.entry[peer_idx].size.bytes.value};
+        limit_addr = base_addr
+            + {1'b0, endpoint_if.csr_to_core.peers.entry[peer_idx].size.bytes.value};
         end_addr = {1'b0, addr} + {1'b0, len};
         mode = endpoint_if.csr_to_core.peers.entry[peer_idx].dma.mode.value;
-        return len != 0 && limit_addr <= 33'h100000000 && {1'b0, addr} >= base_addr && end_addr <=
-            limit_addr && (kind == TRANSFER_KIND_RMEM ? (mode == 1 && len == 4 && addr[1:0] == 0) :
-                        (op == DMA_OP_WRITE ? mode == 2 : mode == 3));
+        return len != 0 && limit_addr <= 33'h100000000 && {1'b0, addr} >= base_addr
+            && end_addr <= limit_addr
+            && (kind == TRANSFER_KIND_RMEM ? (mode == 1 && len == 4 && addr[1:0] == 0)
+                : (op == DMA_OP_WRITE ? mode == 2 : mode == 3));
     endfunction
 
     always_comb begin
@@ -655,6 +664,7 @@ module openenoc_endpoint_dma_engine #(
 
         for (int unsigned offset = 0; offset < NUM_OF_PEERS; offset++) begin
             int unsigned candidate;
+
             candidate = int'(peer_rr_reg) + offset;
             if (candidate >= NUM_OF_PEERS) begin
                 candidate = candidate - NUM_OF_PEERS;
@@ -686,6 +696,7 @@ module openenoc_endpoint_dma_engine #(
         cpl_slot = '0;
         peer_has_fragment = '0;
         any_sent_fragment = 1'b0;
+
         for (int unsigned n = 0; n < FRAGMENT_SLOTS; n++) begin
             if (!fragment_reg[n].valid && !free_slot_found) begin
                 free_slot_found = 1'b1;
@@ -742,6 +753,7 @@ module openenoc_endpoint_dma_engine #(
         commit_peer = '0;
         for (int unsigned offset = 0; offset < NUM_OF_PEERS; offset++) begin
             int unsigned candidate;
+
             candidate = int'(issue_rr_reg) + offset;
             if (candidate >= NUM_OF_PEERS) candidate -= NUM_OF_PEERS;
             if (!issue_peer_found && peer_active_reg[candidate]
@@ -763,10 +775,10 @@ module openenoc_endpoint_dma_engine #(
         // Descriptor selection follows the FIFO head, never a separate arbiter that could pair a
         // descriptor with another frame's payload.
         memory_write_job_valid[WR_CLIENT_PEER] = memory_write_slot_found;
-        memory_write_job_valid[WR_CLIENT_RESPONDER] = responder_state_reg == RESP_WR_QUEUE &&
-            memory_input.tvalid && memory_input.tdest == {ROUTE_PEER, responder_peer_idx_reg} &&
-            memory_input.tuser[AXIS_USER_ROLE_BIT] == TRANSFER_ROLE_RESPONDER &&
-            memory_input.tid == responder_sequence_reg;
+        memory_write_job_valid[WR_CLIENT_RESPONDER] = responder_state_reg == RESP_WR_QUEUE
+            && memory_input.tvalid && memory_input.tdest == {ROUTE_PEER, responder_peer_idx_reg}
+            && memory_input.tuser[AXIS_USER_ROLE_BIT] == TRANSFER_ROLE_RESPONDER
+            && memory_input.tid == responder_sequence_reg;
         memory_write_job_valid[WR_CLIENT_NON_OETP] = raw_rx_state_reg == NON_RX_QUEUE
             && memory_input.tvalid && memory_input.tdest[PEER_IDX_W+:2] == ROUTE_NON_OETP_DMA;
 
@@ -776,6 +788,7 @@ module openenoc_endpoint_dma_engine #(
         memory_write_pick = memory_write_rr_reg;
         for (int unsigned offset = 0; offset < 3; offset++) begin
             int unsigned candidate;
+
             candidate = int'(memory_read_rr_reg) + offset;
             if (candidate >= 3) candidate -= 3;
             if (!memory_read_pick_valid && memory_read_job_valid[candidate]) begin
@@ -831,7 +844,9 @@ module openenoc_endpoint_dma_engine #(
     end
 
     assign endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.armed.next = raw_rx_armed_reg;
+
     logic csr_raw_rx_clear_errors_hwclr_reg;
+
     assign endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.clear_errors.hwclr =
         csr_raw_rx_clear_errors_hwclr_reg;
     assign endpoint_if.core_to_csr.non_oetp_dma.rx.command_status.done.next = raw_rx_done_reg;
@@ -843,7 +858,9 @@ module openenoc_endpoint_dma_engine #(
         raw_rx_request_hwclr_reg;
     assign endpoint_if.core_to_csr.non_oetp_dma.rx.received_length.bytes.next =
         raw_rx_received_len_reg;
+
     logic csr_raw_tx_clear_errors_hwclr_reg;
+
     assign endpoint_if.core_to_csr.non_oetp_dma.tx.command_status.clear_errors.hwclr =
         csr_raw_tx_clear_errors_hwclr_reg;
     assign endpoint_if.core_to_csr.non_oetp_dma.tx.command_status.done.next = raw_tx_done_reg;
@@ -855,10 +872,13 @@ module openenoc_endpoint_dma_engine #(
         raw_tx_request_hwclr_reg;
     assign endpoint_if.core_to_csr.non_oetp_dma.tx.transferred_length.bytes.next =
         raw_tx_transferred_len_reg;
+
     logic peer_csr_clear_error_hwclr_reg[NUM_OF_PEERS];
+
     assign endpoint_if.core_to_csr.rmem.rd_ack = csr_rmem_cpuif.rd_ack;
     assign endpoint_if.core_to_csr.rmem.rd_data = csr_rmem_cpuif.rd_data;
     assign endpoint_if.core_to_csr.rmem.wr_ack = csr_rmem_cpuif.wr_ack;
+
     for (genvar n = 0; n < NUM_OF_PEERS; n++) begin : g_csr_peer_output
         assign endpoint_if.core_to_csr.peers.entry[n].dma.clear_error.hwclr =
             peer_csr_clear_error_hwclr_reg[n];
@@ -913,23 +933,52 @@ module openenoc_endpoint_dma_engine #(
         csr_rmem_cpuif.wr_err <= 1'b0;
         csr_rmem_cpuif.rd_err <= 1'b0;
         csr_rmem_cpuif.rd_data <= rst ? '0 : (rmem_error_reg != 0 ? 32'hffffffff : rmem_rdata_reg);
+
         case (rmem_state_reg)
-            RM_IDLE: if (csr_rmem_cpuif.req && rmem_armed_reg) rmem_state_reg <= RM_LOOKUP_REQ;
-            RM_LOOKUP_REQ:
-                if (rmem_lookup_owner && lookup_req_fire) rmem_state_reg <= RM_LOOKUP_RSP;
-            RM_LOOKUP_RSP: if (lookup_rsp_fire) rmem_state_reg <= RM_READY;
-            RM_READY:
-                if (rmem_error_reg != 0) rmem_state_reg <= RM_DONE;
-                else if (!command_valid_reg && !any_sent_fragment) rmem_state_reg <= RM_SEND;
-            RM_SEND:
-                if (initiator_req_fire && initiator_if.req_kind == TRANSFER_KIND_RMEM)
+            RM_IDLE: begin
+                if (csr_rmem_cpuif.req && rmem_armed_reg) begin
+                    rmem_state_reg <= RM_LOOKUP_REQ;
+                end
+            end
+            RM_LOOKUP_REQ: begin
+                if (rmem_lookup_owner && lookup_req_fire) begin
+                    rmem_state_reg <= RM_LOOKUP_RSP;
+                end
+            end
+            RM_LOOKUP_RSP: begin
+                if (lookup_rsp_fire) begin
+                    rmem_state_reg <= RM_READY;
+                end
+            end
+            RM_READY: begin
+                if (rmem_error_reg != 0) begin
+                    rmem_state_reg <= RM_DONE;
+                end else if (!command_valid_reg && !any_sent_fragment) begin
+                    rmem_state_reg <= RM_SEND;
+                end
+            end
+            RM_SEND: begin
+                if (initiator_req_fire && initiator_if.req_kind == TRANSFER_KIND_RMEM) begin
                     rmem_state_reg <= RM_WAIT;
-            RM_WAIT: if (rmem_cpl_accept) rmem_state_reg <= RM_DONE;
-            RM_DONE: rmem_state_reg <= csr_rmem_cpuif.req && rmem_armed_reg
-                ? RM_LOOKUP_REQ : RM_IDLE;
-            default: rmem_state_reg <= RM_IDLE;
+                end
+            end
+            RM_WAIT: begin
+                if (rmem_cpl_accept) begin
+                    rmem_state_reg <= RM_DONE;
+                end
+            end
+            RM_DONE: begin
+                rmem_state_reg <= csr_rmem_cpuif.req && rmem_armed_reg ? RM_LOOKUP_REQ : RM_IDLE;
+            end
+            default: begin
+                rmem_state_reg <= RM_IDLE;
+            end
         endcase
-        if (!csr_rmem_cpuif.req) rmem_armed_reg <= 1'b1;
+
+        if (!csr_rmem_cpuif.req) begin
+            rmem_armed_reg <= 1'b1;
+        end
+
         if ((rmem_state_reg == RM_IDLE || rmem_state_reg == RM_DONE) && csr_rmem_cpuif.req
             && rmem_armed_reg) begin
             rmem_armed_reg <= 1'b0;
@@ -940,6 +989,7 @@ module openenoc_endpoint_dma_engine #(
             rmem_error_reg <= DMA_ERROR_NONE;
             rmem_hit_reg <= 1'b0;
         end
+
         if (rmem_state_reg == RM_LOOKUP_RSP && peer_lookup_if.rsp_valid) begin
             logic [32:0] displacement, remote_addr;
 
@@ -951,9 +1001,11 @@ module openenoc_endpoint_dma_engine #(
             rmem_remote_addr_reg <= remote_addr[31:0];
             if (!peer_lookup_if.rsp_hit || rmem_addr_reg[1:0] != 0
                 || displacement + 33'd4 > {1'b0, peer_lookup_if.rsp_size}
-                || remote_addr + 33'd4 > 33'h100000000 || remote_addr[1:0] != 0)
+                || remote_addr + 33'd4 > 33'h100000000 || remote_addr[1:0] != 0) begin
                 rmem_error_reg <= DMA_ERROR_INVALID;
+            end
         end
+
         if (rmem_state_reg == RM_WAIT && rmem_cpl_accept) begin
             rmem_irq_enable_reg <= endpoint_if.csr_to_core.irq.event_enable.rmem_error.value;
             rmem_rdata_reg <= initiator_if.cpl_rdata;
@@ -961,12 +1013,15 @@ module openenoc_endpoint_dma_engine #(
             if (initiator_if.cpl_peer_idx != rmem_peer_reg
                 || initiator_if.cpl_sequence != rmem_sequence_reg
                 || initiator_if.cpl_op != rmem_write_reg
-                || (!initiator_if.cpl_error && initiator_if.cpl_transferred_len != 4))
+                || (!initiator_if.cpl_error && initiator_if.cpl_transferred_len != 4)) begin
                 rmem_error_reg <= DMA_ERROR_AXIS;
+            end
         end
+
         if (rmem_state_reg == RM_DONE) begin
             rmem_sequence_reg <= rmem_sequence_reg + 1'b1;
         end
+
         if (rst) begin
             rmem_state_reg <= RM_IDLE;
             rmem_armed_reg <= 1'b1;
@@ -996,10 +1051,12 @@ module openenoc_endpoint_dma_engine #(
                 && !(rmem_irq_commit_fire));
         rmem_irq_event_if.commit_source <= rst ? '0 : (rmem_irq_event_if.EVENT_RMEM_ERROR);
         rmem_irq_event_if.commit_peer_idx <= rst ? '0 : (RMEM_IRQ_PEER_W'(rmem_irq_peer_reg));
+
         rmem_irq_pending_found = 1'b0;
         rmem_irq_pending_peer = '0;
         for (int offset = 0; offset < NUM_OF_PEERS; offset++) begin
             int candidate;
+
             candidate = int'(rmem_irq_rr_reg) + offset;
             if (candidate >= NUM_OF_PEERS) candidate -= NUM_OF_PEERS;
             if (rmem_irq_pending_reg[candidate] && !rmem_irq_pending_found) begin
@@ -1007,25 +1064,44 @@ module openenoc_endpoint_dma_engine #(
                 rmem_irq_pending_peer = PEER_IDX_W'(candidate);
             end
         end
+
         case (rmem_irq_state_reg)
-            RM_IRQ_IDLE: if (rmem_irq_pending_found) rmem_irq_state_reg <= RM_IRQ_ADMIT;
-            RM_IRQ_ADMIT:
-                if (rmem_irq_admit_fire)
+            RM_IRQ_IDLE: begin
+                if (rmem_irq_pending_found) begin
+                    rmem_irq_state_reg <= RM_IRQ_ADMIT;
+                end
+            end
+            RM_IRQ_ADMIT: begin
+                if (rmem_irq_admit_fire) begin
                     rmem_irq_state_reg <= rmem_irq_event_if.admit_reserved ? RM_IRQ_COMMIT
                         : RM_IRQ_IDLE;
-            RM_IRQ_COMMIT: if (rmem_irq_commit_fire) rmem_irq_state_reg <= RM_IRQ_IDLE;
-            default: rmem_irq_state_reg <= RM_IRQ_IDLE;
+                end
+            end
+            RM_IRQ_COMMIT: begin
+                if (rmem_irq_commit_fire) begin
+                    rmem_irq_state_reg <= RM_IRQ_IDLE;
+                end
+            end
+            default: begin
+                rmem_irq_state_reg <= RM_IRQ_IDLE;
+            end
         endcase
 
-        if (rmem_irq_state_reg == RM_IRQ_IDLE && rmem_irq_pending_found)
+        if (rmem_irq_state_reg == RM_IRQ_IDLE && rmem_irq_pending_found) begin
             rmem_irq_peer_reg <= rmem_irq_pending_peer;
+        end
+
         if (rmem_irq_state_reg == RM_IRQ_ADMIT && rmem_irq_admit_fire) begin
             rmem_irq_pending_reg[rmem_irq_peer_reg] <= 1'b0;
             rmem_irq_rr_reg <= rmem_irq_peer_reg == PEER_IDX_W'(NUM_OF_PEERS - 1) ? '0
                 : rmem_irq_peer_reg + 1'b1;
         end
-        if (rmem_state_reg == RM_DONE && rmem_hit_reg && rmem_error_reg != 0 && rmem_irq_enable_reg)
+
+        if (rmem_state_reg == RM_DONE && rmem_hit_reg && rmem_error_reg != 0
+            && rmem_irq_enable_reg) begin
             rmem_irq_pending_reg[rmem_peer_reg] <= 1'b1;
+        end
+
         if (rst) begin
             rmem_irq_state_reg <= RM_IRQ_IDLE;
             rmem_irq_peer_reg <= '0;
@@ -1070,15 +1146,16 @@ module openenoc_endpoint_dma_engine #(
             : (rmem_state_reg == RM_SEND ? 1'b1 : fragment_reg[command_slot_reg].last);
         initiator_if.cpl_ready <= rst ? '0 : (!rst);
         initiator_if.non_oetp_rx_claim_valid <= 1'b0;
-        irq_event_if[0].admit_valid <= rst ?
-            '0 : ((peer_state_reg == PEER_ADMIT) && !(peer_irq_admit_fire));
+        irq_event_if[0].admit_valid <= rst ? '0 : ((peer_state_reg == PEER_ADMIT)
+                && !(peer_irq_admit_fire));
         irq_event_if[0].admit_source <= rst ? '0 : EVENT_PEER_DMA_COMPLETE;
         irq_event_if[0].admit_enable <= rst ? '0 : peer_irq_enable_reg;
-        irq_event_if[0].commit_valid <= rst ?
-            '0 : ((peer_commit_valid_reg) && !(peer_irq_commit_fire));
+        irq_event_if[0].commit_valid <= rst ? '0 : ((peer_commit_valid_reg)
+                && !(peer_irq_commit_fire));
         irq_event_if[0].commit_source <= rst ? '0 : EVENT_PEER_DMA_COMPLETE;
         irq_event_if[0].commit_peer_idx <= rst ? '0 : (DMA_IRQ_PEER_W'(peer_commit_index_reg));
         peer_request_hwclr_reg <= '0;
+
         for (int unsigned n = 0; n < NUM_OF_PEERS; n++) begin
             if (endpoint_if.csr_to_core.peers.entry[n].dma.clear_error.value
                 && !peer_csr_clear_error_hwclr_reg[n]) begin
@@ -1086,15 +1163,20 @@ module openenoc_endpoint_dma_engine #(
                 peer_error_code_reg[n] <= DMA_ERROR_NONE;
             end
         end
+
         case (peer_state_reg)
-            PEER_IDLE:
+            PEER_IDLE: begin
                 if (peer_request_found) begin
                     peer_index_reg <= peer_request_index;
                     peer_state_reg <= PEER_LOOKUP_REQ;
                 end
-            PEER_LOOKUP_REQ:
-                if (!rmem_lookup_owner && lookup_req_fire) peer_state_reg <= PEER_LOOKUP_RSP;
-            PEER_LOOKUP_RSP:
+            end
+            PEER_LOOKUP_REQ: begin
+                if (!rmem_lookup_owner && lookup_req_fire) begin
+                    peer_state_reg <= PEER_LOOKUP_RSP;
+                end
+            end
+            PEER_LOOKUP_RSP: begin
                 if (!rmem_lookup_owner && lookup_rsp_fire) begin
                     peer_mode_reg <= peer_lookup_if.rsp_hit ? peer_lookup_if.rsp_dma_mode : 2'd0;
                     peer_irq_enable_reg <= peer_lookup_if.rsp_irq_enable;
@@ -1103,7 +1185,8 @@ module openenoc_endpoint_dma_engine #(
                     peer_size_reg <= peer_lookup_if.rsp_size;
                     peer_state_reg <= PEER_ADMIT;
                 end
-            PEER_ADMIT:
+            end
+            PEER_ADMIT: begin
                 if (peer_irq_admit_fire) begin
                     logic config_valid;
 
@@ -1112,9 +1195,9 @@ module openenoc_endpoint_dma_engine #(
                         && effective_fragment_size >= 4
                         && effective_fragment_size <= 32'(MAX_DMA_FRAGMENT_SIZE_BYTES)
                         && peer_local_addr_reg + ADDR_W'(peer_size_reg - 1'b1)
-                        >= peer_local_addr_reg
+                            >= peer_local_addr_reg
                         && peer_remote_addr_reg + ADDR_W'(peer_size_reg - 1'b1)
-                        >= peer_remote_addr_reg;
+                            >= peer_remote_addr_reg;
                     peer_context_reg[peer_index_reg].mode <= peer_mode_reg;
                     peer_context_reg[peer_index_reg].local_addr <= peer_local_addr_reg;
                     peer_context_reg[peer_index_reg].remote_addr <= peer_remote_addr_reg;
@@ -1133,21 +1216,26 @@ module openenoc_endpoint_dma_engine #(
                         peer_error_code_reg[peer_index_reg] <= DMA_ERROR_INVALID;
                     end
                     peer_active_reg[peer_index_reg] <= config_valid;
-                    if (!config_valid)
+                    if (!config_valid) begin
                         peer_commit_pending_reg[peer_index_reg] <= irq_event_if[0].admit_reserved;
+                    end
                     peer_rr_reg <= peer_index_reg == PEER_IDX_W'(NUM_OF_PEERS - 1) ? PEER_IDX_W'(0)
                         : peer_index_reg + 1'b1;
                     peer_state_reg <= PEER_IDLE;
                 end
-            default: peer_state_reg <= PEER_IDLE;
+            end
+            default: begin
+                peer_state_reg <= PEER_IDLE;
+            end
         endcase
 
         if (free_slot_found && issue_peer_found) begin
             logic [LEN_W-1:0] len;
 
-            len = fragment_length(peer_context_reg[issue_peer].size
-                    - peer_context_reg[issue_peer].issued,
-                    peer_context_reg[issue_peer].max_fragment_size);
+            len = fragment_length(
+                peer_context_reg[issue_peer].size - peer_context_reg[issue_peer].issued,
+                peer_context_reg[issue_peer].max_fragment_size
+            );
             fragment_reg[free_slot] <= '{
                 valid: 1'b1,
                 command_sent: 1'b0,
@@ -1163,7 +1251,7 @@ module openenoc_endpoint_dma_engine #(
                     + ADDR_W'(peer_context_reg[issue_peer].issued),
                 len: len,
                 last: peer_context_reg[issue_peer].issued + len
-                    == peer_context_reg[issue_peer].size,
+                        == peer_context_reg[issue_peer].size,
                 local_error: DMA_ERROR_NONE,
                 completion_error: DMA_ERROR_NONE
             };
@@ -1173,40 +1261,51 @@ module openenoc_endpoint_dma_engine #(
             issue_rr_reg <= issue_peer == PEER_IDX_W'(NUM_OF_PEERS - 1) ? PEER_IDX_W'(0)
                 : issue_peer + 1'b1;
         end
+
         if (!command_valid_reg && command_slot_found
             && (!SERIAL_PEER_REQUESTS || !any_sent_fragment) && rmem_state_reg == RM_IDLE
             && !csr_rmem_cpuif.req) begin
             command_slot_reg <= command_slot;
             command_valid_reg <= 1'b1;
         end
+
         if (initiator_req_fire && initiator_if.req_kind == TRANSFER_KIND_DMA) begin
             fragment_reg[command_slot_reg].command_sent <= 1'b1;
             command_valid_reg <= 1'b0;
         end
-        if (memory_read_accept_pulse_reg && memory_read_accept_client_reg == RD_CLIENT_PEER)
+
+        if (memory_read_accept_pulse_reg && memory_read_accept_client_reg == RD_CLIENT_PEER) begin
             fragment_reg[memory_read_slot_reg].local_started <= 1'b1;
-        if (memory_write_accept_pulse_reg && memory_write_accept_client_reg == WR_CLIENT_PEER)
+        end
+
+        if (memory_write_accept_pulse_reg && memory_write_accept_client_reg == WR_CLIENT_PEER) begin
             fragment_reg[memory_write_slot_reg].local_started <= 1'b1;
+        end
+
         if (memory_read_done_pulse_reg && memory_read_done_client_reg == RD_CLIENT_PEER) begin
             fragment_reg[memory_read_slot_reg].local_done <= 1'b1;
             fragment_reg[memory_read_slot_reg].local_error <= memory_read_done_error_reg;
         end
+
         if (memory_write_done_pulse_reg && memory_write_done_client_reg == WR_CLIENT_PEER) begin
             fragment_reg[memory_write_slot_reg].local_done <= 1'b1;
             fragment_reg[memory_write_slot_reg].local_error <= memory_write_done_error_reg;
         end
+
         if (initiator_cpl_fire && initiator_if.cpl_kind == TRANSFER_KIND_DMA
             && cpl_slot_found) begin
             fragment_reg[cpl_slot].remote_done <= 1'b1;
             if (initiator_if.cpl_op != fragment_reg[cpl_slot].op
                 || initiator_if.cpl_last != fragment_reg[cpl_slot].last
                 || (!initiator_if.cpl_error
-                    && initiator_if.cpl_transferred_len != fragment_reg[cpl_slot].len))
+                    && initiator_if.cpl_transferred_len != fragment_reg[cpl_slot].len)) begin
                 fragment_reg[cpl_slot].completion_error <= DMA_ERROR_AXIS;
-            else
+            end else begin
                 // The protocol completion already distinguishes local and remote causes.
-                fragment_reg[cpl_slot].completion_error <= initiator_if.cpl_error ?
-                    initiator_if.cpl_error_code : DMA_ERROR_NONE;
+                fragment_reg[cpl_slot].completion_error <= initiator_if.cpl_error
+                    ? initiator_if.cpl_error_code : DMA_ERROR_NONE;
+            end
+
             // A rejected command has no payload. Do not issue a local descriptor for it; an already
             // running local transfer still drains to TLAST.
             if (initiator_if.cpl_error && initiator_if.cpl_transferred_len == 0
@@ -1215,29 +1314,34 @@ module openenoc_endpoint_dma_engine #(
                     && memory_read_slot_reg == cpl_slot)
                 && !(memory_write_accept_pulse_reg
                     && memory_write_accept_client_reg == WR_CLIENT_PEER
-                    && memory_write_slot_reg == cpl_slot))
+                    && memory_write_slot_reg == cpl_slot)) begin
                 fragment_reg[cpl_slot].local_done <= 1'b1;
+            end
         end
+
         for (int unsigned n = 0; n < FRAGMENT_SLOTS; n++) begin
             if (fragment_reg[n].valid && !fragment_reg[n].command_sent
-                && peer_context_reg[fragment_reg[n].peer_idx].error_code != DMA_ERROR_NONE)
+                && peer_context_reg[fragment_reg[n].peer_idx].error_code != DMA_ERROR_NONE) begin
                 fragment_reg[n].valid <= 1'b0;
+            end
         end
+
         if (retire_slot_found) begin
             if (peer_context_reg[fragment_reg[retire_slot].peer_idx].error_code
                 == DMA_ERROR_NONE) begin
+                // A shortened RX AXIS is a consequence of the same remote frame failure when
+                // oETP has classified that failure as 10.
                 peer_context_reg[fragment_reg[retire_slot].peer_idx].error_code <=
-                    // A shortened RX AXIS is a consequence of the same remote frame failure when
-                    // oETP has classified that failure as 10.
                     fragment_reg[retire_slot].local_error == DMA_ERROR_AXIS
                         && fragment_reg[retire_slot].completion_error
-                        == initiator_if.ERROR_REMOTE_AXIS ? initiator_if.ERROR_REMOTE_AXIS
+                            == initiator_if.ERROR_REMOTE_AXIS ? initiator_if.ERROR_REMOTE_AXIS
                         : fragment_reg[retire_slot].local_error != DMA_ERROR_NONE
                         ? fragment_reg[retire_slot].local_error
                         : fragment_reg[retire_slot].completion_error;
             end
             fragment_reg[retire_slot].valid <= 1'b0;
         end
+
         for (int unsigned n = 0; n < NUM_OF_PEERS; n++) begin
             if (peer_active_reg[n] && !peer_has_fragment[n]
                 && (peer_context_reg[n].issued == peer_context_reg[n].size
@@ -1252,12 +1356,16 @@ module openenoc_endpoint_dma_engine #(
                 peer_commit_pending_reg[n] <= peer_context_reg[n].irq_reserved;
             end
         end
+
         if (!peer_commit_valid_reg && commit_peer_found) begin
             peer_commit_valid_reg <= 1'b1;
             peer_commit_index_reg <= commit_peer;
             peer_commit_pending_reg[commit_peer] <= 1'b0;
         end
-        if (peer_irq_commit_fire) peer_commit_valid_reg <= 1'b0;
+
+        if (peer_irq_commit_fire) begin
+            peer_commit_valid_reg <= 1'b0;
+        end
 
         // New failures win over clear_error. IRQ production stays with its owner.
         if (rmem_error_valid && int'(rmem_error_peer_idx) < NUM_OF_PEERS
@@ -1302,19 +1410,19 @@ module openenoc_endpoint_dma_engine #(
                 peer_context_reg[n] <= '0;
                 peer_error_code_reg[n] <= DMA_ERROR_NONE;
             end
-            for (int unsigned n = 0; n < FRAGMENT_SLOTS; n++) fragment_reg[n] <= '0;
+            for (int unsigned n = 0; n < FRAGMENT_SLOTS; n++) begin
+                fragment_reg[n] <= '0;
+            end
         end
-
     end
 
     always_ff @(posedge clk) begin : raw_transmit_control
-        irq_event_if[1].admit_valid <= rst ?
-            '0 : ((raw_tx_state_reg == NON_TX_ADMIT) && !(raw_tx_irq_admit_fire));
+        irq_event_if[1].admit_valid <= rst ? '0 : ((raw_tx_state_reg == NON_TX_ADMIT)
+                && !(raw_tx_irq_admit_fire));
         irq_event_if[1].admit_source <= rst ? '0 : (EVENT_NON_OETP_DMA_TX_COMPLETE);
         irq_event_if[1].admit_enable <= rst ? '0 : 1'b1;
-        irq_event_if[1].commit_valid <= rst ?
-            '0 : ((raw_tx_state_reg == NON_TX_COMMIT && raw_tx_irq_reserved_reg) &&
-                !(raw_tx_irq_commit_fire));
+        irq_event_if[1].commit_valid <= rst ? '0 : ((raw_tx_state_reg == NON_TX_COMMIT
+                    && raw_tx_irq_reserved_reg) && !(raw_tx_irq_commit_fire));
         irq_event_if[1].commit_source <= rst ? '0 : (EVENT_NON_OETP_DMA_TX_COMPLETE);
         irq_event_if[1].commit_peer_idx <= '0;
         raw_tx_request_hwclr_reg <= 1'b0;
@@ -1334,10 +1442,10 @@ module openenoc_endpoint_dma_engine #(
             end
             NON_TX_ADMIT: begin
                 if (raw_tx_irq_admit_fire) begin
-                    raw_tx_addr_reg
-                        <= endpoint_if.csr_to_core.non_oetp_dma.tx.buffer_address.base.value;
-                    raw_tx_len_reg
-                        <= endpoint_if.csr_to_core.non_oetp_dma.tx.frame_length.bytes.value;
+                    raw_tx_addr_reg <=
+                        endpoint_if.csr_to_core.non_oetp_dma.tx.buffer_address.base.value;
+                    raw_tx_len_reg <=
+                        endpoint_if.csr_to_core.non_oetp_dma.tx.frame_length.bytes.value;
                     raw_tx_irq_reserved_reg <= irq_event_if[1].admit_reserved;
                     raw_tx_request_hwclr_reg <= 1'b1;
                     raw_tx_idle_reg <= 1'b0;
@@ -1345,14 +1453,14 @@ module openenoc_endpoint_dma_engine #(
                     raw_tx_transferred_len_reg <= '0;
 
                     if (endpoint_if.csr_to_core.non_oetp_dma.tx.frame_length.bytes.value == 0
-                        || endpoint_if.csr_to_core.non_oetp_dma.tx.frame_length.bytes.value >
-                        MAX_RAW_FRAME_SIZE) begin
+                        || endpoint_if.csr_to_core.non_oetp_dma.tx.frame_length.bytes.value
+                            > MAX_RAW_FRAME_SIZE) begin
                         raw_tx_idle_reg <= 1'b1;
                         raw_tx_error_reg <= 1'b1;
                         raw_tx_error_code_reg <= DMA_ERROR_INVALID;
                         raw_tx_state_reg <= NON_TX_COMMIT;
-                        irq_event_if[1].commit_valid <= raw_tx_state_reg == NON_TX_ADMIT ?
-                            irq_event_if[1].admit_reserved : raw_tx_irq_reserved_reg;
+                        irq_event_if[1].commit_valid <= raw_tx_state_reg == NON_TX_ADMIT
+                            ? irq_event_if[1].admit_reserved : raw_tx_irq_reserved_reg;
                     end else begin
                         raw_tx_state_reg <= NON_TX_QUEUE;
                     end
@@ -1381,8 +1489,8 @@ module openenoc_endpoint_dma_engine #(
                         end
                     end
                     raw_tx_state_reg <= NON_TX_COMMIT;
-                    irq_event_if[1].commit_valid <= raw_tx_state_reg == NON_TX_ADMIT ?
-                        irq_event_if[1].admit_reserved : raw_tx_irq_reserved_reg;
+                    irq_event_if[1].commit_valid <= raw_tx_state_reg == NON_TX_ADMIT
+                        ? irq_event_if[1].admit_reserved : raw_tx_irq_reserved_reg;
                 end
             end
             NON_TX_COMMIT: begin
@@ -1391,7 +1499,9 @@ module openenoc_endpoint_dma_engine #(
                     raw_tx_state_reg <= NON_TX_IDLE;
                 end
             end
-            default: raw_tx_state_reg <= NON_TX_IDLE;
+            default: begin
+                raw_tx_state_reg <= NON_TX_IDLE;
+            end
         endcase
 
         if (rst) begin
@@ -1406,7 +1516,6 @@ module openenoc_endpoint_dma_engine #(
             raw_tx_request_hwclr_reg <= 1'b0;
             raw_tx_irq_reserved_reg <= 1'b0;
         end
-
     end
 
     always_ff @(posedge clk) begin : raw_receive_control
@@ -1414,13 +1523,12 @@ module openenoc_endpoint_dma_engine #(
                 && !(responder_non_oetp_rx_claim_fire));
         responder_if.non_oetp_rx_claim_ready <= rst ? '0 : ((!rst
                     && raw_rx_state_reg == NON_RX_ARMED) && !(responder_non_oetp_rx_claim_fire));
-        irq_event_if[2].admit_valid <= rst ?
-            '0 : ((raw_rx_state_reg == NON_RX_ADMIT) && !(raw_rx_irq_admit_fire));
+        irq_event_if[2].admit_valid <= rst ? '0 : ((raw_rx_state_reg == NON_RX_ADMIT)
+                && !(raw_rx_irq_admit_fire));
         irq_event_if[2].admit_source <= rst ? '0 : (EVENT_NON_OETP_DMA_RX_COMPLETE);
         irq_event_if[2].admit_enable <= rst ? '0 : 1'b1;
-        irq_event_if[2].commit_valid <= rst ?
-            '0 : ((raw_rx_state_reg == NON_RX_COMMIT && raw_rx_irq_reserved_reg) &&
-                !(raw_rx_irq_commit_fire));
+        irq_event_if[2].commit_valid <= rst ? '0 : ((raw_rx_state_reg == NON_RX_COMMIT
+                    && raw_rx_irq_reserved_reg) && !(raw_rx_irq_commit_fire));
         irq_event_if[2].commit_source <= rst ? '0 : (EVENT_NON_OETP_DMA_RX_COMPLETE);
         irq_event_if[2].commit_peer_idx <= '0;
         raw_rx_request_hwclr_reg <= 1'b0;
@@ -1440,10 +1548,10 @@ module openenoc_endpoint_dma_engine #(
             end
             NON_RX_ADMIT: begin
                 if (raw_rx_irq_admit_fire) begin
-                    raw_rx_addr_reg
-                        <= endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_address.base.value;
-                    raw_rx_capacity_reg
-                        <= endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_capacity.bytes.value;
+                    raw_rx_addr_reg <=
+                        endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_address.base.value;
+                    raw_rx_capacity_reg <=
+                        endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_capacity.bytes.value;
                     raw_rx_irq_reserved_reg <= irq_event_if[2].admit_reserved;
                     raw_rx_request_hwclr_reg <= 1'b1;
                     raw_rx_idle_reg <= 1'b0;
@@ -1452,15 +1560,15 @@ module openenoc_endpoint_dma_engine #(
                     raw_rx_received_len_reg <= '0;
 
                     if (endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_capacity.bytes.value == 0
-                        || endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_capacity.bytes.value >
-                        MAX_RAW_FRAME_SIZE) begin
+                        || endpoint_if.csr_to_core.non_oetp_dma.rx.buffer_capacity.bytes.value
+                            > MAX_RAW_FRAME_SIZE) begin
                         raw_rx_idle_reg <= 1'b1;
                         raw_rx_armed_reg <= 1'b0;
                         raw_rx_error_reg <= 1'b1;
                         raw_rx_error_code_reg <= DMA_ERROR_INVALID;
                         raw_rx_state_reg <= NON_RX_COMMIT;
-                        irq_event_if[2].commit_valid <= raw_rx_state_reg == NON_RX_ADMIT ?
-                            irq_event_if[2].admit_reserved : raw_rx_irq_reserved_reg;
+                        irq_event_if[2].commit_valid <= raw_rx_state_reg == NON_RX_ADMIT
+                            ? irq_event_if[2].admit_reserved : raw_rx_irq_reserved_reg;
                     end else begin
                         raw_rx_state_reg <= NON_RX_ARMED;
                     end
@@ -1498,8 +1606,8 @@ module openenoc_endpoint_dma_engine #(
                         raw_rx_error_code_reg <= memory_write_done_error_reg;
                     end
                     raw_rx_state_reg <= NON_RX_COMMIT;
-                    irq_event_if[2].commit_valid <= raw_rx_state_reg == NON_RX_ADMIT ?
-                        irq_event_if[2].admit_reserved : raw_rx_irq_reserved_reg;
+                    irq_event_if[2].commit_valid <= raw_rx_state_reg == NON_RX_ADMIT
+                        ? irq_event_if[2].admit_reserved : raw_rx_irq_reserved_reg;
                 end
             end
             NON_RX_COMMIT: begin
@@ -1508,7 +1616,9 @@ module openenoc_endpoint_dma_engine #(
                     raw_rx_state_reg <= NON_RX_IDLE;
                 end
             end
-            default: raw_rx_state_reg <= NON_RX_IDLE;
+            default: begin
+                raw_rx_state_reg <= NON_RX_IDLE;
+            end
         endcase
 
         if (rst) begin
@@ -1524,7 +1634,6 @@ module openenoc_endpoint_dma_engine #(
             raw_rx_request_hwclr_reg <= 1'b0;
             raw_rx_irq_reserved_reg <= 1'b0;
         end
-
     end
 
     always_ff @(posedge clk) begin : responder_control
@@ -1551,25 +1660,36 @@ module openenoc_endpoint_dma_engine #(
         responder_if.cpl_last <= rst ? '0 : responder_last_reg;
         responder_if.cpl_error <= rst ? '0 : responder_cpl_error_reg;
         responder_if.cpl_error_code <= rst ? '0 : (responder_cpl_error_code_reg);
-        if (responder_error_valid) responder_error_recorded_reg <= 1'b1;
+
+        if (responder_error_valid) begin
+            responder_error_recorded_reg <= 1'b1;
+        end
+
         if (responder_rx_status_fire) begin
             responder_rx_done_reg <= 1'b1;
             responder_rx_len_reg <= responder_if.rx_status_len;
             responder_rx_error_reg <= responder_if.rx_status_error_code;
             if (responder_if.rx_status_peer_idx != responder_peer_idx_reg
-                || responder_if.rx_status_sequence != responder_sequence_reg)
+                || responder_if.rx_status_sequence != responder_sequence_reg) begin
                 responder_rx_error_reg <= DMA_ERROR_AXIS;
+            end
+
             if (responder_if.rx_status_len == 0 && responder_if.rx_status_error_code != 0) begin
                 responder_memory_done_reg <= 1'b1;
                 responder_payload_done_reg <= 1'b1;
                 responder_cpl_len_reg <= '0;
                 responder_cpl_error_reg <= 1'b1;
                 responder_cpl_error_code_reg <= responder_if.rx_status_error_code;
-                if (responder_state_reg == RESP_WR_QUEUE) responder_state_reg <= RESP_WAIT;
+                if (responder_state_reg == RESP_WR_QUEUE) begin
+                    responder_state_reg <= RESP_WAIT;
+                end
             end
         end
-        if (responder_drop_payload && memory_input.tready && memory_input.tlast)
+
+        if (responder_drop_payload && memory_input.tready && memory_input.tlast) begin
             responder_payload_done_reg <= 1'b1;
+        end
+
         if (responder_state_reg == RESP_WAIT && responder_memory_done_reg
             && (!responder_rx_required_reg
                 || (responder_rx_done_reg
@@ -1612,7 +1732,7 @@ module openenoc_endpoint_dma_engine #(
                         || responder_if.req_len == 0
                         || responder_if.req_len > LEN_W'(MAX_DMA_FRAGMENT_SIZE_BYTES)
                         || responder_if.req_addr
-                        + ADDR_W'(responder_if.req_len - 1'b1) < responder_if.req_addr) begin
+                            + ADDR_W'(responder_if.req_len - 1'b1) < responder_if.req_addr) begin
                         responder_cpl_error_reg <= 1'b1;
                         responder_cpl_error_code_reg <= responder_if.req_error_code != 0
                             ? responder_if.req_error_code : DMA_ERROR_INVALID;
@@ -1624,7 +1744,9 @@ module openenoc_endpoint_dma_engine #(
                             && responder_if.req_biten == 0) begin
                             responder_cpl_len_reg <= LEN_W'(4);
                             responder_state_reg <= RESP_COMPLETE;
-                        end else responder_state_reg <= RESP_RMEM_REQ;
+                        end else begin
+                            responder_state_reg <= RESP_RMEM_REQ;
+                        end
                     end else if (responder_if.req_op == DMA_OP_READ) begin
                         responder_state_reg <= RESP_RD_QUEUE;
                     end else begin
@@ -1677,7 +1799,9 @@ module openenoc_endpoint_dma_engine #(
                         ? (m_local_cpuif.wr_err ? ERROR_W'(6) : DMA_ERROR_NONE)
                         : (m_local_cpuif.rd_err ? ERROR_W'(4) : DMA_ERROR_NONE);
                     responder_state_reg <= RESP_COMPLETE;
-                end else responder_state_reg <= RESP_RMEM_WAIT;
+                end else begin
+                    responder_state_reg <= RESP_RMEM_WAIT;
+                end
             end
             RESP_RMEM_WAIT: begin
                 if ((responder_op_reg && m_local_cpuif.wr_ack)
@@ -1697,7 +1821,9 @@ module openenoc_endpoint_dma_engine #(
                     responder_state_reg <= RESP_IDLE;
                 end
             end
-            default: responder_state_reg <= RESP_IDLE;
+            default: begin
+                responder_state_reg <= RESP_IDLE;
+            end
         endcase
 
         if (rst) begin
@@ -1723,7 +1849,6 @@ module openenoc_endpoint_dma_engine #(
             responder_cpl_error_reg <= 1'b0;
             responder_cpl_error_code_reg <= DMA_ERROR_NONE;
         end
-
     end
 
     always_ff @(posedge clk) begin : memory_read_control
@@ -1738,8 +1863,8 @@ module openenoc_endpoint_dma_engine #(
         memory_read_desc_if.req_len <= rst ? '0 : memory_read_len_reg;
         memory_read_desc_if.req_tag <= rst ? '0 : memory_read_client_reg;
         memory_read_desc_if.req_id <= rst ? '0 : memory_read_sequence_reg;
-        memory_read_desc_if.req_dest <= rst ?
-            '0 : ({memory_read_client_reg == RD_CLIENT_NON_OETP ? ROUTE_NON_OETP_DMA : ROUTE_PEER,
+        memory_read_desc_if.req_dest <= rst ? '0
+            : ({memory_read_client_reg == RD_CLIENT_NON_OETP ? ROUTE_NON_OETP_DMA : ROUTE_PEER,
                 memory_read_peer_idx_reg});
         memory_read_desc_if.req_user <= '0;
         memory_read_desc_if.req_user[AXIS_USER_LAST_BIT] <= rst ? '0 : (memory_read_last_reg);
@@ -1797,6 +1922,7 @@ module openenoc_endpoint_dma_engine #(
                             memory_read_last_reg <= 1'b1;
                         end
                     endcase
+
                     memory_read_state_reg <= RD_DESC;
                 end
             end
@@ -1824,10 +1950,12 @@ module openenoc_endpoint_dma_engine #(
                     memory_read_byte_count_reg <= next_byte_count;
                     memory_read_saw_last_reg <= last_seen_now;
                 end
+
                 if (memory_read_desc_if.sts_valid) begin
                     memory_read_status_seen_reg <= 1'b1;
                     memory_read_status_error_reg <= ERROR_W'(memory_read_desc_if.sts_error);
                 end
+
                 if (last_seen_now && status_seen_now) begin
                     if (memory_read_remaining_reg != 0) begin
                         memory_read_addr_reg <= memory_read_addr_reg + ADDR_W'(memory_read_len_reg);
@@ -1854,7 +1982,9 @@ module openenoc_endpoint_dma_engine #(
                     end
                 end
             end
-            default: memory_read_state_reg <= RD_IDLE;
+            default: begin
+                memory_read_state_reg <= RD_IDLE;
+            end
         endcase
 
         if (rst) begin
@@ -1880,7 +2010,6 @@ module openenoc_endpoint_dma_engine #(
             memory_read_status_seen_reg <= 1'b0;
             memory_read_status_error_reg <= DMA_ERROR_NONE;
         end
-
     end
 
     always_ff @(posedge clk) begin : memory_write_control
@@ -1895,8 +2024,8 @@ module openenoc_endpoint_dma_engine #(
         memory_write_desc_if.req_len <= rst ? '0 : memory_write_len_reg;
         memory_write_desc_if.req_tag <= rst ? '0 : memory_write_client_reg;
         memory_write_desc_if.req_id <= rst ? '0 : memory_write_sequence_reg;
-        memory_write_desc_if.req_dest <= rst ?
-            '0 : ({memory_write_client_reg == WR_CLIENT_NON_OETP ? ROUTE_NON_OETP_DMA : ROUTE_PEER,
+        memory_write_desc_if.req_dest <= rst ? '0
+            : ({memory_write_client_reg == WR_CLIENT_NON_OETP ? ROUTE_NON_OETP_DMA : ROUTE_PEER,
                 memory_write_peer_idx_reg});
         memory_write_desc_if.req_user <= '0;
         memory_write_desc_if.req_user[AXIS_USER_LAST_BIT] <= rst ? '0 : (memory_write_last_reg);
@@ -1946,6 +2075,7 @@ module openenoc_endpoint_dma_engine #(
                             memory_write_last_reg <= 1'b1;
                         end
                     endcase
+
                     memory_write_state_reg <= WR_DESC;
                 end
             end
@@ -1995,8 +2125,8 @@ module openenoc_endpoint_dma_engine #(
                             || memory_write_src_tdest != {ROUTE_PEER, memory_write_peer_idx_reg}
                             || memory_write_src_tuser[AXIS_USER_LAST_BIT] != memory_write_last_reg
                             || memory_write_src_tuser[AXIS_USER_ROLE_BIT]
-                            != (memory_write_client_reg == WR_CLIENT_RESPONDER
-                                ? TRANSFER_ROLE_RESPONDER : TRANSFER_ROLE_INITIATOR))) begin
+                                != (memory_write_client_reg == WR_CLIENT_RESPONDER
+                                    ? TRANSFER_ROLE_RESPONDER : TRANSFER_ROLE_INITIATOR))) begin
                         stream_error_now = DMA_ERROR_AXIS;
                     end
 
@@ -2006,9 +2136,10 @@ module openenoc_endpoint_dma_engine #(
                                 && next_input_len >= memory_write_len_reg)) begin
                             stream_error_now = DMA_ERROR_OVERFLOW;
                         end
-                    end else if
-                        ((memory_write_src_tlast && next_input_len != memory_write_len_reg) ||
-                        (!memory_write_src_tlast && next_input_len >= memory_write_len_reg)) begin
+                    end else if ((memory_write_src_tlast
+                            && next_input_len != memory_write_len_reg)
+                        || (!memory_write_src_tlast
+                            && next_input_len >= memory_write_len_reg)) begin
                         stream_error_now = DMA_ERROR_AXIS;
                     end
                 end
@@ -2037,7 +2168,9 @@ module openenoc_endpoint_dma_engine #(
                     memory_write_state_reg <= WR_IDLE;
                 end
             end
-            default: memory_write_state_reg <= WR_IDLE;
+            default: begin
+                memory_write_state_reg <= WR_IDLE;
+            end
         endcase
 
         if (rst) begin
@@ -2065,7 +2198,6 @@ module openenoc_endpoint_dma_engine #(
             memory_write_first_pulse_reg <= 1'b0;
             memory_write_done_pulse_reg <= 1'b0;
         end
-
     end
 
     always_ff @(posedge clk) begin : peer_transmit_status
@@ -2076,7 +2208,10 @@ module openenoc_endpoint_dma_engine #(
             peer_tx_status_len_reg <= '0;
             peer_tx_status_error_reg <= '0;
         end else begin
-            if (initiator_tx_status_fire) peer_tx_status_valid_reg <= 1'b0;
+            if (initiator_tx_status_fire) begin
+                peer_tx_status_valid_reg <= 1'b0;
+            end
+
             if (memory_read_done_pulse_reg && memory_read_done_client_reg == RD_CLIENT_PEER) begin
                 peer_tx_status_valid_reg <= 1'b1;
                 peer_tx_status_peer_reg <= memory_read_peer_idx_reg;
@@ -2085,7 +2220,6 @@ module openenoc_endpoint_dma_engine #(
                 peer_tx_status_error_reg <= memory_read_done_error_reg;
             end
         end
-
     end
 
     always_ff @(posedge clk) begin : responder_irq_control
@@ -2098,6 +2232,7 @@ module openenoc_endpoint_dma_engine #(
         responder_irq_event_if.commit_source <= rst ? '0 : (responder_irq_source_reg);
         responder_irq_event_if.commit_peer_idx <= rst ? '0
             : (RESPONDER_IRQ_PEER_W'(responder_irq_peer_idx_reg));
+
         // Reserve IRQ capacity only for failed incoming requests. Successful requests need no
         // event. Retain a pending failure notification under backpressure, while allowing the
         // current error reply to proceed. The next incoming request waits until that notification
@@ -2107,20 +2242,25 @@ module openenoc_endpoint_dma_engine #(
                 responder_irq_peer_idx_reg <= responder_peer_idx_reg;
                 responder_irq_source_reg <= responder_kind_reg == TRANSFER_KIND_RMEM
                     ? responder_irq_event_if.EVENT_RMEM_ERROR : EVENT_PEER_DMA_COMPLETE;
-                responder_irq_enable_reg <= responder_kind_reg == TRANSFER_KIND_RMEM ||
-                    endpoint_if.csr_to_core.peers.entry[
-                    responder_peer_idx_reg].dma.irq_enable.value;
+                responder_irq_enable_reg <= responder_kind_reg == TRANSFER_KIND_RMEM
+                    || endpoint_if.csr_to_core.peers.entry[
+                        responder_peer_idx_reg].dma.irq_enable.value;
                 responder_irq_state_reg <= RESP_IRQ_ADMIT;
             end
         end
+
         case (responder_irq_state_reg)
-            RESP_IRQ_ADMIT:
+            RESP_IRQ_ADMIT: begin
                 if (responder_irq_admit_fire) begin
                     responder_irq_state_reg <= responder_irq_event_if.admit_reserved
                         ? RESP_IRQ_COMMIT : RESP_IRQ_IDLE;
                 end
-            RESP_IRQ_COMMIT:
-                if (responder_irq_commit_fire) responder_irq_state_reg <= RESP_IRQ_IDLE;
+            end
+            RESP_IRQ_COMMIT: begin
+                if (responder_irq_commit_fire) begin
+                    responder_irq_state_reg <= RESP_IRQ_IDLE;
+                end
+            end
             default: begin
             end
         endcase
@@ -2142,7 +2282,6 @@ module openenoc_endpoint_dma_engine #(
             peer_csr_clear_error_hwclr_reg[n] <= rst ? '0 : (!rst
                     && endpoint_if.csr_to_core.peers.entry[n].dma.clear_error.value);
         end
-
     end
 
 endmodule

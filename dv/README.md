@@ -22,8 +22,6 @@ dv/
 │   └── .../
 ├── hal/
 │   └── .../
-├── sw/
-│   └── .../
 ├── traffic/
 ├── README.md
 └── requirements.txt
@@ -33,8 +31,6 @@ The `core/` directory contains unit-level RTL verification environments. The
 `endpoints/` directory verifies complete endpoint RTL integrations, including
 the CPU, memories, generated CSR block, and project interfaces. The `hal/`
 directory verifies generated endpoint CSR RTL and its Python register model.
-The `sw/` directory contains host tests for software HAL libraries and their
-CPU platform integration.
 The `traffic/` directory validates the reusable PCAP replay and capture
 infrastructure, while `common/` contains simulator configuration shared across
 test suites.
@@ -103,17 +99,16 @@ flow. The HAL test under `hal/openenoc_endpoint_full/` uses cocotb,
 cocotbext-axi, GNU Make, and Verilator directly; its optional `make wave` target
 invokes GTKWave.
 
-The [Endpoint IRQ HAL host tests](sw/openenoc_endpoint_irq/README.md) use GNU
-Make, a native GCC compiler and GNU `timeout`.
-
-Before running the HAL or full-endpoint tests, generate the endpoint RTL, Python
-register model, and firmware from the repository root:
+Before running the HAL or full-endpoint tests, generate the endpoint RTL and
+Python register model from the repository root:
 
 ```bash
 python -m pip install -r hal/requirements.txt
 make -C hal
-make -C sw APP=csr_smoke EP=openenoc_endpoint_full
 ```
+
+Full endpoint DV builds `endpoint_test` with `DEBUG=1` through its Makefile before
+simulation; pytest invokes the same firmware target once per session.
 
 Run each suite from its own directory using the commands documented in its
 README. For example:
@@ -129,3 +124,37 @@ The generated-CSR-only test is available separately:
 cd dv/hal/openenoc_endpoint_full
 make
 ```
+
+## Generated Artifacts
+
+All simulation outputs stay under `build/dv/`, using the same group and
+component names as the source directories:
+
+```text
+build/dv/<group>/<component>/
+├── sim_build/                   # Make simulation build and outputs
+│   └── pytest/<case>/           # Separate build and outputs for each pytest case
+├── __pycache__/                 # Python bytecode cache
+└── tmp/                        # Compiler and Python temporary files
+```
+
+The traffic suite uses `build/dv/traffic/`. Simulator executables, generated
+C++ sources, result XML, `dump.fst`, and captured PCAP files stay in the
+corresponding `sim_build` directory. Pytest's session cache is shared at
+`build/dv/.pytest_cache/`; its shared configuration cache and temporary files
+use `build/dv/common/pytest/`. Python's cache prefix mirrors source paths
+inside the selected `__pycache__` directory.
+
+`common/sim_paths.mk`, `common/sim_paths.sh`, and `conftest.py` configure these
+paths for Make, shell wrappers, and direct pytest invocation. `make clean`
+and `run_tests.sh clean` remove the component's generated artifacts.
+
+Waveform commands open the FST from `sim_build/dump.fst`. For example,
+from the repository root:
+
+```bash
+gtkwave build/dv/endpoints/openenoc_endpoint_full/sim_build/dump.fst
+```
+
+For pytest waveforms, run with `WAVES=1` and open the FST from the selected
+`sim_build/pytest/<case>/` directory.

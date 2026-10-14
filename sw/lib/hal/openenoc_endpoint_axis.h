@@ -5,28 +5,37 @@
 #ifndef OPENENOC_ENDPOINT_AXIS_H
 #define OPENENOC_ENDPOINT_AXIS_H
 
-#include <stdbool.h>
-#include <stdint.h>
+#include "openenoc_endpoint_common.h"
 
-#include "csr.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef enum {
-    OPENENOC_ENDPOINT_AXIS_STATUS_OK = 0,
-    OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY = 1,
-} openenoc_endpoint_axis_status_t;
-
-// Non-blocking: OK means the CSR accepted the transfer request.
-openenoc_endpoint_axis_status_t openenoc_endpoint_axis_send(
-    volatile csr__endpoint_interface__axis_if_t *axis_if,
+openenoc_endpoint_status_t openenoc_endpoint_axis_send(
+    volatile csr__endpoint_interface_t *endpoint,
     uint32_t data,
     uint8_t keep,
     bool last);
 
-// Output arguments are updated only when OK is returned.
-openenoc_endpoint_axis_status_t openenoc_endpoint_axis_receive(
-    volatile csr__endpoint_interface__axis_if_t *axis_if,
+openenoc_endpoint_status_t openenoc_endpoint_axis_receive(
+    volatile csr__endpoint_interface_t *endpoint,
     uint32_t *data,
     uint8_t *keep,
     bool *last);
+
+openenoc_endpoint_status_t openenoc_endpoint_axis_send_stream(
+    volatile csr__endpoint_interface_t *endpoint,
+    const void *buffer,
+    uint32_t byte_count);
+
+openenoc_endpoint_status_t openenoc_endpoint_axis_receive_stream(
+    volatile csr__endpoint_interface_t *endpoint,
+    void *buffer,
+    uint32_t buffer_capacity_bytes,
+    uint32_t *received_bytes);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

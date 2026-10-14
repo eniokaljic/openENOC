@@ -3,6 +3,7 @@
 
 # Sphinx build output
 docs/build/
+/build/docs/
 
 # Sphinx cache
 docs/src/_build/

@@ -11,9 +11,6 @@ event interfaces for cocotb. Eight cases run in eight configurations covering
 1–7 producer ports, FIFO depths 1, 3, 4, 7, 8, 16, and 260, peer widths up to
 11 bits, and sequence widths up to 16 bits.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_endpoint_irq_controller.rst).
-
 ## Test Coverage
 
 The suite covers:

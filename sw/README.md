@@ -107,11 +107,11 @@ Both `APP` and `EP` are mandatory for every build. The platform can be selected
 explicitly:
 
 ```bash
-make APP=csr_smoke EP=openenoc_endpoint_full PLATFORM=picorv32
+make APP=endpoint_test EP=openenoc_endpoint_full PLATFORM=picorv32
 ```
 
 Application behavior is documented in the corresponding application directory;
-see [csr_smoke](apps/csr_smoke/README.md). Verification setup and execution are
+see [endpoint_test](apps/endpoint_test/README.md). Verification setup and execution are
 documented under `dv/`, including the
 [full endpoint suite](../dv/endpoints/openenoc_endpoint_full/README.md).
 
@@ -134,18 +134,18 @@ endpoint directory, so applications use the endpoint-independent include:
 The generated root type is always `csr_t`, while its nested declarations use the
 common `csr__*` namespace.
 
-The HAL libraries use these generated types to access the selected endpoint.
-The [HAL API reference](lib/hal/README.md) describes IRQ configuration, claim
-handling, callback dispatch and the internal hooks implemented by the selected
-CPU platform.
+The runtime HAL exposes one application API for configuration, peer mappings,
+DMA, RMEM, AXIS and IRQ. Calls take the mapped generated
+`csr__endpoint_interface_t` pointer, and the common public header includes the
+selected `csr.h`.
 
 ## Build Configuration
 
 The default configuration is equivalent to:
 
 ```bash
-make APP=csr_smoke EP=openenoc_full_endpoint \
-    PLATFORM=picorv32 MARCH=rv32i MABI=ilp32
+make APP=endpoint_test EP=openenoc_endpoint_full \
+    PLATFORM=picorv32 MARCH=rv32i MABI=ilp32 DEBUG=0
 ```
 
 The main configuration variables are:
@@ -155,15 +155,23 @@ The main configuration variables are:
 | `APP` | none | Application directory name under `apps/` |
 | `EP` | none | Endpoint name derived from `hal/endpoint/<endpoint>.rdl` |
 | `PLATFORM` | `picorv32` | CPU startup code, linker script, and platform headers |
+| `DEBUG` | `0` | `1` enables assertions and debug symbols; `0` defines `NDEBUG` |
 | `MARCH` | `rv32i` | RISC-V ISA passed to the compiler and linker |
 | `MABI` | `ilp32` | RISC-V ABI passed to the compiler and linker |
 | `CROSS_COMPILE` | `riscv64-unknown-elf-` | GNU toolchain command prefix |
 | `VERBOSE` | `0` | Set to `1` to print commands in addition to concise build-step messages |
 
+`DEBUG` accepts only `0` or `1`. Debug mode adds `-g` and undefines `NDEBUG`;
+release mode defines `NDEBUG`, which disables runtime assertions. Both modes
+retain the existing `-Os` optimization. The selected mode controls `NDEBUG` after
+user-supplied `CPPFLAGS` and `CFLAGS` are applied. Required HAL calls execute
+outside assertions, so disabling checks preserves the firmware's operations.
+Full endpoint DV builds `endpoint_test` with `DEBUG=1` before simulation.
+
 All sources are compiled and linked in one compiler invocation. No persistent
 object or dependency directories are generated. The complete firmware is rebuilt
 for each build request so that configuration changes cannot reuse an artifact made
-for a different platform or ISA.
+for a different platform, ISA or debug mode.
 
 ## Generated Artifacts
 

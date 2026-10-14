@@ -34,18 +34,24 @@ def command(*args):
     return subprocess.check_output(args, text=True).strip().splitlines()[0]
 
 
+def read_test_counts(path):
+    cases = list(ElementTree.parse(path).getroot().iter("testcase"))
+    counts = {
+        "tests": len(cases),
+        "failures": sum(case.find("failure") is not None for case in cases),
+        "errors": sum(case.find("error") is not None for case in cases),
+        "skipped": sum(case.find("skipped") is not None for case in cases),
+    }
+    if counts["tests"] == counts["skipped"] or counts["failures"] or counts["errors"]:
+        raise ValueError(f"{path.stem} did not pass: {counts}")
+    return counts
+
+
 def build_report():
     memory_map = default_memory_map()
-    results = {}
-    for name in SUITES:
-        suites = list(ElementTree.parse(REPORTS / f"{name}.xml").getroot().iter("testsuite"))
-        counts = {
-            field: sum(int(suite.get(field, "0")) for suite in suites)
-            for field in ("tests", "failures", "errors", "skipped")
-        }
-        if not counts["tests"] or counts["failures"] or counts["errors"]:
-            raise ValueError(f"{name} did not pass: {counts}")
-        results[name] = counts
+    results = {
+        name: read_test_counts(REPORTS / f"{name}.xml") for name in SUITES
+    }
 
     spike_commit = command("git", "-C", str(ROOT / "libs/riscv-isa-sim"), "rev-parse", "HEAD")
     compatibility = json.loads((ROOT / "dv/iss/compatibility.json").read_text())

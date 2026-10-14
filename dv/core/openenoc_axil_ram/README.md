@@ -10,9 +10,6 @@ The bundled `imem.mem` provides a partial firmware image so the tests can
 check zero-filled locations after the loaded contents. The default fixture
 uses 32-bit data, a 10-bit local aperture, and 32-bit bus addresses.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_axil_ram.rst).
-
 ## Test Coverage
 
 The suite covers:

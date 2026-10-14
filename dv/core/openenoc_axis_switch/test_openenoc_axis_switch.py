@@ -357,7 +357,14 @@ def process_f_files(files):
 @pytest.mark.parametrize("m_count", [2, 4])
 @pytest.mark.parametrize("s_count", [2, 4])
 @pytest.mark.parametrize("tuser_bitmap_route", [0, 1])
-def test_openenoc_axis_switch(request, s_count, m_count, data_w, tuser_bitmap_route):
+def test_openenoc_axis_switch(
+    sim_build_dir,
+    sim_trace_args,
+    s_count,
+    m_count,
+    data_w,
+    tuser_bitmap_route,
+):
     dut = "openenoc_axis_switch"
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
@@ -393,9 +400,7 @@ def test_openenoc_axis_switch(request, s_count, m_count, data_w, tuser_bitmap_ro
 
     extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(
-        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
-    )
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -406,6 +411,7 @@ def test_openenoc_axis_switch(request, s_count, m_count, data_w, tuser_bitmap_ro
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

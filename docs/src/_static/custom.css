@@ -189,22 +189,44 @@
     background: #f3f4f6;
 }
 
-/* Parameter and signal tables in the RTL Reference. */
-.rst-content table.rtl-reference-table {
+/* Wrap handwritten documentation tables without changing generated CSR maps. */
+.rst-content table.rtl-reference-table,
+.rst-content table.documentation-table {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     table-layout: fixed;
 }
 
-.rst-content .wy-table-responsive table.rtl-reference-table th,
-.rst-content .wy-table-responsive table.rtl-reference-table td {
+.rst-content table.rtl-reference-table th,
+.rst-content table.rtl-reference-table td,
+.rst-content table.documentation-table th,
+.rst-content table.documentation-table td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+}
+
+.rst-content table.rtl-reference-table code.literal,
+.rst-content table.rtl-reference-table code.literal .pre,
+.rst-content table.documentation-table code.literal,
+.rst-content table.documentation-table code.literal .pre {
     white-space: normal;
     overflow-wrap: anywhere;
 }
 
-.rst-content table.rtl-reference-table code.literal,
-.rst-content table.rtl-reference-table code.literal .pre {
-    white-space: normal;
-    overflow-wrap: anywhere;
+.rst-content table.rtl-reference-table .line-block,
+.rst-content table.documentation-table .line-block {
+    margin: 0;
+}
+
+@media screen and (max-width: 480px) {
+    .rst-content table.rtl-reference-table th,
+    .rst-content table.rtl-reference-table td,
+    .rst-content table.documentation-table th,
+    .rst-content table.documentation-table td {
+        padding: 8px;
+    }
 }
 
 /* =========================================================

@@ -31,9 +31,11 @@ static const uint32_t axis_loopback_words[AXIS_LOOPBACK_WORD_COUNT] = {
     UINT32_C(0x0000beef),
 };
 
-/* Keep the simulator's result at the first DMEM word. */
+/* Application objects precede libraries in this priority section, keeping the
+ * simulator's result at the first DMEM word.
+ */
 volatile uint32_t csr_smoke_status
-    __attribute__((section(".data.csr_smoke_status"))) = CSR_SMOKE_RUNNING;
+    __attribute__((section(".data._openenoc_assert_status"))) = CSR_SMOKE_RUNNING;
 
 /* The ISR owns these DMEM buffers until it publishes the TLAST notification. */
 static volatile uint32_t received_words[AXIS_LOOPBACK_WORD_COUNT];
@@ -46,19 +48,21 @@ static volatile bool tx_frame_complete;
 static volatile bool irq_error;
 
 struct receiver_context {
-    volatile csr__endpoint_interface__axis_if_t *axis_if;
+    volatile csr__endpoint_interface_t *endpoint;
 };
 
 static struct receiver_context receiver_context;
 
 static void receive_axis_frame(
-    volatile csr__endpoint_interface__irq_t *irq,
+    volatile csr__endpoint_interface_t *endpoint,
+    const openenoc_endpoint_irq_claim_t *claim,
     void *context) {
     struct receiver_context *receiver = context;
-    volatile csr__endpoint_interface__axis_if_t *axis_if = receiver->axis_if;
+    volatile csr__endpoint_interface_t *axis_endpoint = receiver->endpoint;
     bool last = false;
 
-    (void)irq;
+    (void)endpoint;
+    (void)claim;
 
     if (rx_frame_complete) {
         irq_error = true;
@@ -68,8 +72,8 @@ static void receive_axis_frame(
         uint32_t data;
         uint8_t keep;
 
-        if (openenoc_endpoint_axis_receive(axis_if, &data, &keep, &last) ==
-            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+        if (openenoc_endpoint_axis_receive(axis_endpoint, &data, &keep, &last) ==
+            OPENENOC_ENDPOINT_STATUS_NOT_READY) {
             continue;
         }
 
@@ -95,9 +99,11 @@ static void receive_axis_frame(
 }
 
 static void notify_tx_complete(
-    volatile csr__endpoint_interface__irq_t *irq,
+    volatile csr__endpoint_interface_t *endpoint,
+    const openenoc_endpoint_irq_claim_t *claim,
     void *context) {
-    (void)irq;
+    (void)endpoint;
+    (void)claim;
     (void)context;
 
     if (tx_frame_complete) {
@@ -155,14 +161,14 @@ int main(void) {
         return 1;
     }
 
-    receiver_context.axis_if = &csr->endpoint_interface.axis_if;
-    openenoc_endpoint_irq_bind(&csr->endpoint_interface.irq, &endpoint_irq_callbacks);
+    receiver_context.endpoint = &csr->endpoint_interface;
+    openenoc_endpoint_irq_bind(&csr->endpoint_interface, &endpoint_irq_callbacks);
     const openenoc_endpoint_irq_config_t irq_config = {
         .global_enable = true,
         .non_oetp_direct_tx_complete = true,
         .non_oetp_direct_rx_available = true,
     };
-    openenoc_endpoint_irq_configure(&csr->endpoint_interface.irq, &irq_config);
+    openenoc_endpoint_irq_set_config(&csr->endpoint_interface, &irq_config);
 
     // Capture IRQ events while sending, but keep the CPU masked until the final
     // beat is submitted. A blocking loopback RX ISR must not preempt its sender.
@@ -171,10 +177,10 @@ int main(void) {
         bool last = i == AXIS_LOOPBACK_WORD_COUNT - 1U;
 
         while (openenoc_endpoint_axis_send(
-            &csr->endpoint_interface.axis_if,
+            &csr->endpoint_interface,
             axis_loopback_words[i],
             last ? AXIS_LOOPBACK_LAST_KEEP : AXIS_LOOPBACK_FULL_KEEP,
-            last) == OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+            last) == OPENENOC_ENDPOINT_STATUS_NOT_READY) {
         }
     }
 
@@ -182,7 +188,7 @@ int main(void) {
     while ((!rx_frame_complete || !tx_frame_complete) && !irq_error) {
     }
     openenoc_endpoint_irq_mask();
-    openenoc_endpoint_irq_set_global_enable(&csr->endpoint_interface.irq, false);
+    openenoc_endpoint_irq_set_global_enable(&csr->endpoint_interface, false);
 
     if (irq_error || received_word_count != AXIS_LOOPBACK_WORD_COUNT ||
         received_byte_count != AXIS_LOOPBACK_BYTE_COUNT) {

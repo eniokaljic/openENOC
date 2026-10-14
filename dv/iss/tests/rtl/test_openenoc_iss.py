@@ -802,6 +802,7 @@ async def test_spike_runs_csr_smoke_firmware(dut):
                         f"csr_smoke reported failure after {request_count} requests"
                     )
                     if status == CSR_SMOKE_PASSED:
+                        irq_monitor.cancel()
                         endpoint.request_stop()
                         break
 
@@ -923,8 +924,8 @@ async def test_spike_irq_two_endpoints(dut):
                                               publishers[index])
                         assert status != CSR_SMOKE_FAILED
                         if status == CSR_SMOKE_PASSED:
-                            endpoint.request_stop()
                             irq_monitors[index].cancel()
+                            endpoint.request_stop()
                             finished.add(index)
                     state = endpoint.state()
                     assert state.run_state not in (RunState.ERROR, RunState.COMPLETED)
@@ -1274,7 +1275,9 @@ async def test_spike_qualifies_elf_startup(dut):
     assert DMEM_BASE <= bss_address < DMEM_BASE + DMEM_SIZE
     assert DMEM_BASE <= status_address < DMEM_BASE + DMEM_SIZE
     assert any(
-        segment.virtual_address == initialized_address
+        segment.virtual_address <= initialized_address
+        and initialized_address + len(STARTUP_INITIALIZED_WORDS) * 4
+        <= segment.virtual_address + len(segment.data)
         and segment.load_address != segment.virtual_address
         for segment in boot_image.segments
     )

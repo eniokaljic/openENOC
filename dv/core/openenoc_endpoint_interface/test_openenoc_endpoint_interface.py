@@ -691,7 +691,7 @@ async def test_error_irq_retention_under_full_fifo(dut):
 
 
 @pytest.mark.parametrize("axi_data_w,eth_data_w", [(32, 32), (64, 32), (32, 64), (64, 8)])
-def test_openenoc_endpoint_interface(request, axi_data_w, eth_data_w):
+def test_openenoc_endpoint_interface(sim_build_dir, sim_trace_args, axi_data_w, eth_data_w):
     tests = Path(__file__).resolve().parent
     repo = tests.parents[2]
     core = repo / "hw/rtl/core"
@@ -737,5 +737,6 @@ def test_openenoc_endpoint_interface(request, axi_data_w, eth_data_w):
         parameters={"AXI_DATA_W": axi_data_w, "ETH_DATA_W": eth_data_w},
         timescale="1ns/1ps",
         extra_args=["-Wall", str(repo / "dv/common/config.vlt")],
-        sim_build=str(tests / "sim_build" / request.node.name),
+        plus_args=sim_trace_args,
+        sim_build=sim_build_dir,
     )
