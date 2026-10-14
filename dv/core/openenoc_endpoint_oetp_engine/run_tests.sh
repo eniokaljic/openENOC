@@ -4,6 +4,8 @@
 
 set -euo pipefail
 
+source "$(dirname -- "${BASH_SOURCE[0]}")/../../common/sim_paths.sh"
+
 case "${1:-}" in
     pytest)
         pytest test_openenoc_endpoint_oetp_engine.py -v
@@ -12,8 +14,9 @@ case "${1:-}" in
         WAVES=1 make
         ;;
     clean)
-        rm -f results.xml dump.fst
-        rm -rf sim_build .pytest_cache __pycache__
+        rm -f "$dv_sim_output/sim_build/results.xml" "$dv_sim_output/sim_build/dump.fst"
+        rm -rf "$dv_sim_output/sim_build" "$dv_sim_output/__pycache__" "$dv_sim_output/tmp" \
+            .pytest_cache __pycache__
         ;;
     *)
         echo "Usage: ./run_tests.sh [pytest|waves|clean]"

@@ -8,9 +8,6 @@
 This cocotb suite verifies the AXI4-Lite crossbar and its address decoder,
 read/write paths, and channel skid buffers.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_axil_crossbar.rst).
-
 ## Test Coverage
 
 The suite covers:

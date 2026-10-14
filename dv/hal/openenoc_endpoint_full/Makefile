@@ -8,6 +8,8 @@ override SIM := verilator
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
+include ../../common/sim_paths.mk
+
 # PeakRDL outputs
 ENDPOINT = openenoc_endpoint_full
 BUILDDIR = $(abspath $(CURDIR)/../../../build/hal)
@@ -27,10 +29,6 @@ VERILOG_SOURCES += $(CURDIR)/$(TOPLEVEL).sv
 # cocotb test module (without .py)
 COCOTB_TEST_MODULES = testbench
 
-# Build outputs
-SIM_OUTPUT = $(abspath $(CURDIR)/../../../build/dv/hal/$(ENDPOINT))
-SIM_BUILD = $(SIM_OUTPUT)/sim_build
-
 # Verilator flags
 EXTRA_ARGS += --sv
 EXTRA_ARGS += --trace
@@ -46,13 +44,12 @@ include $(shell cocotb-config --makefiles)/Makefile.sim
 
 # View waveform
 wave:
-	gtkwave dump.fst
+	gtkwave "$(SIM_BUILD)/dump.fst"
 
 # Hardware test
-hwtest: $(PEAKRDLPYTHON)
+hwtest: $(PEAKRDLPYTHON) | $(TMPDIR)
 	python -m hardware_test
 
 # Extended clean
 clean::
-	@rm -rf __pycache__
-	@rm -f *.pyc
+	@$(RM) -rf "$(SIM_OUTPUT)/sim_build" "$(SIM_OUTPUT)/__pycache__" "$(TMPDIR)"

@@ -429,7 +429,7 @@ common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
 
 
 @pytest.mark.parametrize("num_of_interfaces", [2, 4, 5, 8, 32])
-def test_openenoc_forwarding_table_arb_mux(request, num_of_interfaces):
+def test_openenoc_forwarding_table_arb_mux(sim_build_dir, sim_trace_args, num_of_interfaces):
     dut = "openenoc_forwarding_table_arb_mux"
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
@@ -447,9 +447,7 @@ def test_openenoc_forwarding_table_arb_mux(request, num_of_interfaces):
 
     extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(
-        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
-    )
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -460,6 +458,7 @@ def test_openenoc_forwarding_table_arb_mux(request, num_of_interfaces):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

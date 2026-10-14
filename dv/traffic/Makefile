@@ -9,6 +9,8 @@ WAVES ?= 0
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
+include ../common/sim_paths.mk
+
 REPO_DIR = ../..
 HW_DIR = $(REPO_DIR)/hw
 LIBS_DIR = $(REPO_DIR)/libs
@@ -35,7 +37,7 @@ VERILOG_SOURCES := $(call uniq_base,$(call process_f_files,$(VERILOG_SOURCES)))
 export PARAM_DATA_WIDTH := 8
 export PARAM_CLOCK_PERIOD := 10000
 export PARAM_PCAP_IN_FILENAME := \"test1.pcap\"
-export PARAM_PCAP_OUT_FILENAME := \"output.pcap\"
+export PARAM_PCAP_OUT_FILENAME := \"$(SIM_BUILD)/output.pcap\"
 
 COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
 	-G$(subst PARAM_,,$(v))=$($(v)))
@@ -50,5 +52,4 @@ include $(shell cocotb-config --makefiles)/Makefile.sim
 
 # Extended clean
 clean::
-	@rm -rf __pycache__
-	@rm -f *.pyc
+	@$(RM) -rf "$(SIM_OUTPUT)/sim_build" "$(SIM_OUTPUT)/__pycache__" "$(TMPDIR)"

@@ -9,10 +9,14 @@
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = src
-BUILDDIR      = build
+BUILDDIR      = ../build/docs
+
+export PYTHONPYCACHEPREFIX := $(abspath $(BUILDDIR)/__pycache__)
+export TMPDIR := $(abspath $(BUILDDIR)/tmp)
 
 # Put it first so that "make" without argument is like "make help".
 help:
+	@mkdir -p "$(TMPDIR)"
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 .PHONY: help Makefile
@@ -20,4 +24,5 @@ help:
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
+	@mkdir -p "$(TMPDIR)"
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

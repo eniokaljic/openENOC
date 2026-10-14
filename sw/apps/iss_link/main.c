@@ -27,23 +27,23 @@ static const uint32_t frame_header[] = {
     UINT32_C(0x89abcdef), UINT32_C(0x00000008),
 };
 
-static void send_header(volatile csr__endpoint_interface__axis_if_t *axis_if) {
+static void send_header(volatile csr__endpoint_interface_t *endpoint) {
     for (unsigned index = 0; index < sizeof(frame_header) / sizeof(frame_header[0]); ++index) {
         while (openenoc_endpoint_axis_send(
-            axis_if, frame_header[index], 0xf, false) ==
-            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+            endpoint, frame_header[index], 0xf, false) ==
+            OPENENOC_ENDPOINT_STATUS_NOT_READY) {
         }
     }
 }
 
-static bool receive_header(volatile csr__endpoint_interface__axis_if_t *axis_if) {
+static bool receive_header(volatile csr__endpoint_interface_t *endpoint) {
     for (unsigned index = 0; index < sizeof(frame_header) / sizeof(frame_header[0]); ++index) {
         uint32_t data;
         uint8_t keep;
         bool last;
 
-        while (openenoc_endpoint_axis_receive(axis_if, &data, &keep, &last) ==
-            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+        while (openenoc_endpoint_axis_receive(endpoint, &data, &keep, &last) ==
+            OPENENOC_ENDPOINT_STATUS_NOT_READY) {
         }
         if (data != frame_header[index] || keep != 0xf || last) {
             return false;
@@ -73,26 +73,26 @@ int main(void) {
     }
 
     if (role == INITIATOR_ROLE) {
-        send_header(&csr->endpoint_interface.axis_if);
+        send_header(&csr->endpoint_interface);
         while (openenoc_endpoint_axis_send(
-            &csr->endpoint_interface.axis_if, outgoing, 0xf, false) ==
-            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+            &csr->endpoint_interface, outgoing, 0xf, false) ==
+            OPENENOC_ENDPOINT_STATUS_NOT_READY) {
         }
         while (iss_link_release == 0) {
         }
         while (openenoc_endpoint_axis_send(
-            &csr->endpoint_interface.axis_if, REQUEST_LAST_WORD, 0xf, true) ==
-            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+            &csr->endpoint_interface, REQUEST_LAST_WORD, 0xf, true) ==
+            OPENENOC_ENDPOINT_STATUS_NOT_READY) {
         }
     }
 
-    if (!receive_header(&csr->endpoint_interface.axis_if)) {
+    if (!receive_header(&csr->endpoint_interface)) {
         iss_link_status = STATUS_FAILED;
         return 1;
     }
     while (openenoc_endpoint_axis_receive(
-        &csr->endpoint_interface.axis_if, &received, &keep, &last) ==
-        OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+        &csr->endpoint_interface, &received, &keep, &last) ==
+        OPENENOC_ENDPOINT_STATUS_NOT_READY) {
     }
     iss_link_received = received;
     if (received != expected || keep != 0xf ||
@@ -103,17 +103,17 @@ int main(void) {
 
     if (role == RESPONDER_ROLE) {
         while (openenoc_endpoint_axis_receive(
-            &csr->endpoint_interface.axis_if, &received, &keep, &last) ==
-            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+            &csr->endpoint_interface, &received, &keep, &last) ==
+            OPENENOC_ENDPOINT_STATUS_NOT_READY) {
         }
         if (received != REQUEST_LAST_WORD || keep != 0xf || !last) {
             iss_link_status = STATUS_FAILED;
             return 1;
         }
-        send_header(&csr->endpoint_interface.axis_if);
+        send_header(&csr->endpoint_interface);
         while (openenoc_endpoint_axis_send(
-            &csr->endpoint_interface.axis_if, outgoing, 0xf, true) ==
-            OPENENOC_ENDPOINT_AXIS_STATUS_NOT_READY) {
+            &csr->endpoint_interface, outgoing, 0xf, true) ==
+            OPENENOC_ENDPOINT_STATUS_NOT_READY) {
         }
     }
 

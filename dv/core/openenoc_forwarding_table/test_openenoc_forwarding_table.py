@@ -725,7 +725,7 @@ common_dir = os.path.abspath(os.path.join(tests_dir, "..", "..", "common"))
 # a table depth that is not a power of two leaves addresses inside the address
 # space that have no entry behind them, which exercises the range check
 @pytest.mark.parametrize("num_of_interfaces, table_depth", [(2, 4), (4, 8), (5, 20), (8, 32)])
-def test_openenoc_forwarding_table(request, num_of_interfaces, table_depth):
+def test_openenoc_forwarding_table(sim_build_dir, sim_trace_args, num_of_interfaces, table_depth):
     dut = "openenoc_forwarding_table"
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
@@ -743,9 +743,7 @@ def test_openenoc_forwarding_table(request, num_of_interfaces, table_depth):
 
     extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(
-        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
-    )
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -756,6 +754,7 @@ def test_openenoc_forwarding_table(request, num_of_interfaces, table_depth):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

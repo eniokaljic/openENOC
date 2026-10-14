@@ -12,9 +12,6 @@ at AXI/Ethernet widths 32/32, 64/32, 32/64, and 64/8. The fixture has two peers,
 128-byte transport FIFOs, two IRQ credits, four fragment slots, and a 64-byte
 raw-frame ceiling.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_endpoint_interface.rst).
-
 ## Test Coverage
 
 The suite covers:

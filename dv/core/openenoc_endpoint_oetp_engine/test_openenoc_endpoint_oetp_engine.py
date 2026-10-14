@@ -846,7 +846,7 @@ async def test_registered_outputs_between_clock_edges(dut):
 
 
 @pytest.mark.parametrize("local_data_w,eth_data_w", [(32, 32), (64, 8), (32, 64)])
-def test_openenoc_endpoint_oetp_engine(request, local_data_w, eth_data_w):
+def test_openenoc_endpoint_oetp_engine(sim_build_dir, sim_trace_args, local_data_w, eth_data_w):
     tests = Path(__file__).resolve().parent
     repo = tests.parents[2]
     core = repo / "hw/rtl/core"
@@ -870,5 +870,6 @@ def test_openenoc_endpoint_oetp_engine(request, local_data_w, eth_data_w):
         parameters={"LOCAL_DATA_W": local_data_w, "ETH_DATA_W": eth_data_w},
         timescale="1ns/1ps",
         extra_args=["-Wall", str(repo / "dv/common/config.vlt")],
-        sim_build=str(tests / "sim_build" / request.node.name),
+        plus_args=sim_trace_args,
+        sim_build=sim_build_dir,
     )

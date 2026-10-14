@@ -11,9 +11,6 @@ channels, and a registered peer-lookup fixture. Fifteen cases run at local/
 Ethernet widths 32/32, 64/8, and 32/64. Counter-wrap and response-at-expiry
 checks use public VPI registers; normal traffic uses the module interfaces.
 
-Component architecture and operation are described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_endpoint_oetp_engine.rst).
-
 ## Test Coverage
 
 The suite covers:

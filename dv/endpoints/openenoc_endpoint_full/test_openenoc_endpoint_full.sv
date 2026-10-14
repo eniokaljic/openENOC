@@ -13,6 +13,7 @@ module test_openenoc_endpoint_full #(
     logic clk;
     logic rst;
     logic loopback_pause;
+    logic [31:0] loopback_error_mask;
 
     openenoc_switch_if #(
         .NUM_OF_INTERFACES(openenoc_endpoint_full_csr_pkg::NUM_OF_INTERFACES),
@@ -29,7 +30,7 @@ module test_openenoc_endpoint_full #(
 
     // External Ethernet loopback: endpoint transmit is returned to receive.
     assign eth_if.a2b_axis_if.tready = eth_if.b2a_axis_if.tready && !loopback_pause;
-    assign eth_if.b2a_axis_if.tdata = eth_if.a2b_axis_if.tdata;
+    assign eth_if.b2a_axis_if.tdata = eth_if.a2b_axis_if.tdata ^ loopback_error_mask;
     assign eth_if.b2a_axis_if.tkeep = eth_if.a2b_axis_if.tkeep;
     assign eth_if.b2a_axis_if.tstrb = eth_if.a2b_axis_if.tstrb;
     assign eth_if.b2a_axis_if.tid = eth_if.a2b_axis_if.tid;
@@ -58,6 +59,9 @@ module test_openenoc_endpoint_full #(
      */
     wire logic [31:0] imem_word0 = u_openenoc_endpoint_full.u_imem.mem[0];
     wire logic [31:0] dmem_status = u_openenoc_endpoint_full.u_dmem.mem[0];
+    wire logic [31:0] dmem_checks = u_openenoc_endpoint_full.u_dmem.mem[1];
+    wire logic [31:0] dmem_failure_line = u_openenoc_endpoint_full.u_dmem.mem[2];
+    wire logic [31:0] dmem_failure_file = u_openenoc_endpoint_full.u_dmem.mem[3];
     wire logic[31:0] csr_test_value =
         u_openenoc_endpoint_full.csr_hwif_out.test_reg.test_field.value;
     wire  logic cpu_trap = u_openenoc_endpoint_full.cpu_trap;
@@ -122,12 +126,11 @@ module test_openenoc_endpoint_full #(
         && !u_openenoc_endpoint_full.s_axil_if[3].wvalid
         && !u_openenoc_endpoint_full.s_axil_if[3].arvalid;
 
-    wire logic reserved_masters_inactive = !u_openenoc_endpoint_full.endpoint_axil_if.awvalid
-        && !u_openenoc_endpoint_full.endpoint_axil_if.wvalid
-        && !u_openenoc_endpoint_full.endpoint_axil_if.arvalid
-        && !u_openenoc_endpoint_full.endpoint_axil_if.bready
-        && !u_openenoc_endpoint_full.endpoint_axil_if.rready
-        && !u_openenoc_endpoint_full.debug_axil_if.awvalid
+    wire logic dma_master_active = u_openenoc_endpoint_full.endpoint_axil_if.awvalid
+        || u_openenoc_endpoint_full.endpoint_axil_if.wvalid
+        || u_openenoc_endpoint_full.endpoint_axil_if.arvalid;
+
+    wire logic debug_master_inactive = !u_openenoc_endpoint_full.debug_axil_if.awvalid
         && !u_openenoc_endpoint_full.debug_axil_if.wvalid
         && !u_openenoc_endpoint_full.debug_axil_if.arvalid
         && !u_openenoc_endpoint_full.debug_axil_if.bready

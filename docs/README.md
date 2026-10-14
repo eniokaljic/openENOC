@@ -56,12 +56,14 @@ make html
 After the build finishes, open the generated documentation:
 
 ```bash
-xdg-open build/html/index.html
+xdg-open ../build/docs/html/index.html
 ```
 
 > **Note**
 >
-> The output HTML files are generated inside the `build/html` directory.
+> The output HTML files are generated inside `build/docs/html` at the repository
+> root. Sphinx's doctree cache, Python bytecode, and temporary files also stay
+> under `build/docs`.
 
 ## Read the Docs
 
@@ -69,7 +71,7 @@ The repository includes a `.readthedocs.yaml` file at the repository root. Read 
 
 - build on Ubuntu 24.04
 - use Python 3.11
-- load the Sphinx configuration from `docs/source/conf.py`
+- load the Sphinx configuration from `docs/src/conf.py`
 - install dependencies from `docs/requirements.txt`
 
 After importing the repository into Read the Docs, the hosted documentation will be available at a URL like:

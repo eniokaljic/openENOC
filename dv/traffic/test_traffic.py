@@ -168,7 +168,7 @@ def process_f_files(files):
 
 @pytest.mark.parametrize("data_width", [8, 16, 32, 64, 128, 256, 512])
 @pytest.mark.parametrize("pcap_in_filename", ["test1.pcap", "test2.pcap"])
-def test_traffic(request, data_width, pcap_in_filename):
+def test_traffic(sim_build_dir, sim_trace_args, data_width, pcap_in_filename):
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
 
@@ -182,9 +182,7 @@ def test_traffic(request, data_width, pcap_in_filename):
 
     verilog_sources = process_f_files(verilog_sources)
 
-    sim_build = os.path.join(
-        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
-    )
+    sim_build = sim_build_dir
 
     pcap_in_path = os.path.abspath(os.path.join(tests_dir, pcap_in_filename))
     pcap_out_path = os.path.abspath(os.path.join(sim_build, "output.pcap"))
@@ -207,6 +205,7 @@ def test_traffic(request, data_width, pcap_in_filename):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(repo_dir, "dv", "common", "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

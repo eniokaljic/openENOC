@@ -64,10 +64,13 @@ class ElfLoaderTest(unittest.TestCase):
 
     def test_preserves_startup_load_and_runtime_addresses(self):
         boot_image = load_elf(self.startup_path)
+        initialized = boot_image.symbols["startup_initialized"]
         data_segment = next(
             segment
             for segment in boot_image.segments
-            if segment.virtual_address == 0x10000000
+            if segment.virtual_address <= initialized.address
+            and initialized.address + initialized.size
+            <= segment.virtual_address + len(segment.data)
         )
 
         self.assertEqual(len(boot_image.segments), 2)
@@ -79,18 +82,29 @@ class ElfLoaderTest(unittest.TestCase):
             data_segment.virtual_address,
             boot_image.symbol_address("__data_start"),
         )
-        self.assertEqual(data_segment.data, bytes.fromhex("78563412efcdab89"))
-        self.assertEqual(len(data_segment.data), 8)
+        self.assertEqual(initialized.size, 8)
+        initialized_offset = initialized.address - data_segment.virtual_address
+        self.assertEqual(
+            data_segment.data[initialized_offset:initialized_offset + initialized.size],
+            bytes.fromhex("78563412efcdab89"),
+        )
+        self.assertEqual(
+            len(data_segment.data),
+            boot_image.symbol_address("__data_end") - data_segment.virtual_address,
+        )
         self.assertEqual(
             data_segment.memory_size,
             boot_image.symbol_address("__bss_end") - data_segment.virtual_address,
         )
-        self.assertEqual(
-            boot_image.symbol_address("startup_bss"), 0x10000008
-        )
-        self.assertEqual(
-            boot_image.symbol_address("iss_startup_status"), 0x1000000C
-        )
+        for name in ("startup_bss", "iss_startup_status"):
+            symbol = boot_image.symbols[name]
+            self.assertEqual(symbol.size, 4)
+            self.assertGreaterEqual(
+                symbol.address, boot_image.symbol_address("__bss_start")
+            )
+            self.assertLessEqual(
+                symbol.address + symbol.size, boot_image.symbol_address("__bss_end")
+            )
 
     def test_rejects_firmware_for_another_endpoint_map(self):
         memory_map = load_memory_map(os.environ["OPENENOC_MEMORY_MAP"])

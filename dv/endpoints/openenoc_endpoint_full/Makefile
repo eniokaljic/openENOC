@@ -9,6 +9,8 @@ WAVES ?= 0
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
+include ../../common/sim_paths.mk
+
 REPO_DIR = ../../..
 HW_DIR = $(REPO_DIR)/hw
 LIBS_DIR = $(REPO_DIR)/libs
@@ -81,6 +83,8 @@ VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 
 export PARAM_IMEM_INIT_FILE := $(abspath $(SW_BUILD_DIR)/imem.mem)
 
+CUSTOM_SIM_DEPS += firmware
+
 COMPILE_ARGS += '-GIMEM_INIT_FILE="$(PARAM_IMEM_INIT_FILE)"'
 EXTRA_ARGS += -Wall ../../common/config.vlt
 ifeq ($(WAVES), 1)
@@ -91,7 +95,10 @@ endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
 
+.PHONY: firmware
+firmware: | $(TMPDIR)
+	$(MAKE) -C $(REPO_DIR)/sw APP=endpoint_test EP=openenoc_endpoint_full DEBUG=1
+
 # Extended clean
 clean::
-	@rm -rf __pycache__
-	@rm -f *.pyc
+	@$(RM) -rf "$(SIM_OUTPUT)/sim_build" "$(SIM_OUTPUT)/__pycache__" "$(TMPDIR)"

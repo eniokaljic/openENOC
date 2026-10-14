@@ -367,7 +367,7 @@ common_dir = os.path.join(repo_dir, "dv", "common")
 
 
 @pytest.mark.parametrize(("s_count", "m_count"), [(1, 1), (3, 3)])
-def test_openenoc_axil_crossbar(request, s_count, m_count):
+def test_openenoc_axil_crossbar(sim_build_dir, sim_trace_args, s_count, m_count):
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
 
@@ -392,7 +392,7 @@ def test_openenoc_axil_crossbar(request, s_count, m_count):
     }
     extra_env = {f"PARAM_{name}": str(value) for name, value in parameters.items()}
 
-    sim_build = os.path.join(tests_dir, "sim_build", request.node.name)
+    sim_build = sim_build_dir
     cocotb_test.simulator.run(
         simulator="verilator",
         python_search=[tests_dir],
@@ -402,6 +402,7 @@ def test_openenoc_axil_crossbar(request, s_count, m_count):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

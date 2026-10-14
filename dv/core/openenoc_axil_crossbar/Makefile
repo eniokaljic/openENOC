@@ -9,6 +9,8 @@ WAVES ?= 0
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
 
+include ../../common/sim_paths.mk
+
 REPO_DIR = ../../..
 LIBS_DIR = $(REPO_DIR)/libs
 CORE_DIR = $(REPO_DIR)/hw/rtl/core
@@ -49,5 +51,4 @@ include $(shell cocotb-config --makefiles)/Makefile.sim
 
 # Extended clean
 clean::
-	@rm -rf __pycache__
-	@rm -f *.pyc
+	@$(RM) -rf "$(SIM_OUTPUT)/sim_build" "$(SIM_OUTPUT)/__pycache__" "$(TMPDIR)"

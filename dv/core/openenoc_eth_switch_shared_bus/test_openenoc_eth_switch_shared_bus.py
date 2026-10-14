@@ -900,7 +900,8 @@ hal_rtl_dir = os.path.join(repo_dir, "build", "hal", "rtl")
     ],
 )
 def test_openenoc_eth_switch_shared_bus(
-    request,
+    sim_build_dir,
+    sim_trace_args,
     num_interfaces,
     data_w,
     fabric_data_w,
@@ -945,11 +946,7 @@ def test_openenoc_eth_switch_shared_bus(
     }
 
     extra_env = {f"PARAM_{key}": str(value) for key, value in parameters.items()}
-    sim_build = os.path.join(
-        tests_dir,
-        "sim_build",
-        request.node.name.replace("[", "-").replace("]", ""),
-    )
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -958,6 +955,7 @@ def test_openenoc_eth_switch_shared_bus(
         toplevel=module,
         module=module,
         parameters=parameters,
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
         timescale="1ns/1ps",

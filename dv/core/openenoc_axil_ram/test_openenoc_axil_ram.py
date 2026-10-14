@@ -539,7 +539,7 @@ CONFIGURATIONS = [
         for data_w, pipeline_output, use_init_file in CONFIGURATIONS
     ],
 )
-def test_openenoc_axil_ram(request, data_w, pipeline_output, use_init_file):
+def test_openenoc_axil_ram(sim_build_dir, sim_trace_args, data_w, pipeline_output, use_init_file):
     dut = "openenoc_axil_ram"
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
@@ -563,11 +563,7 @@ def test_openenoc_axil_ram(request, data_w, pipeline_output, use_init_file):
 
     extra_env = {f"PARAM_{key}": str(value).strip('"') for key, value in parameters.items()}
 
-    sim_build = os.path.join(
-        tests_dir,
-        "sim_build",
-        request.node.name.replace("[", "-").replace("]", ""),
-    )
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -578,6 +574,7 @@ def test_openenoc_axil_ram(request, data_w, pipeline_output, use_init_file):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

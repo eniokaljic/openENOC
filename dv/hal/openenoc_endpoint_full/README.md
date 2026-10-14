@@ -17,11 +17,6 @@ Generate the RTL and register model from the repository root before running:
 make -C hal all
 ```
 
-Register-bank operation is described in the
-[RTL Reference](../../../docs/src/rtl/openenoc_endpoint_full_csr.rst), and the
-callback/backend arrangement in
-[Verification Infrastructure](../../../docs/src/verification.rst).
-
 ## Test Coverage
 
 The suite covers:
@@ -36,20 +31,34 @@ The suite covers:
 
 ## Running Tests
 
-Run the full CSR RTL suite:
+From this directory, run the full CSR RTL suite and generate an FST waveform:
 
 ```bash
 make
 ```
 
-Run the default configuration and generate an FST waveform:
+After simulation, open the generated FST in GTKWave:
 
 ```bash
-make
+make wave
 ```
+
+Run the two basic register checks through the hardware-oriented entry point:
+
+```bash
+make hwtest
+```
+
+This entry currently uses the generated simulator model through
+`HardwareInterface`; it does not access a physical board.
 
 Remove generated simulation artifacts:
 
 ```bash
 make clean
 ```
+
+Simulation builds, `results.xml`, and `dump.fst` are stored under
+`build/dv/hal/openenoc_endpoint_full/sim_build/`. `make wave` opens this
+FST in GTKWave. Python bytecode and temporary files use the same component's
+build directory; see the [shared output layout](../../README.md#generated-artifacts).

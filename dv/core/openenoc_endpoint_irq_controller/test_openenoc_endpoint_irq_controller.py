@@ -600,7 +600,8 @@ async def test_initiator_and_responder_share_peer_event_source(dut):
     ],
 )
 def test_openenoc_endpoint_irq_controller(
-    request,
+    sim_build_dir,
+    sim_trace_args,
     event_ports,
     fifo_depth,
     peer_idx_w,
@@ -614,11 +615,7 @@ def test_openenoc_endpoint_irq_controller(
         "SEQUENCE_W": sequence_w,
     }
     extra_env = {f"PARAM_{key}": str(value) for key, value in parameters.items()}
-    sim_build = os.path.join(
-        tests_dir,
-        "sim_build",
-        request.node.name.replace("[", "-").replace("]", ""),
-    )
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -637,6 +634,7 @@ def test_openenoc_endpoint_irq_controller(
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

@@ -7,8 +7,7 @@
 
 This cocotb suite verifies `openenoc_axil_cpuif_adapter` in isolation with
 native CPUIF and AXI4-Lite bus fixtures. The default fixture uses 32-bit
-addresses and data. Component architecture and operation are described in
-the [RTL Reference](../../../docs/src/rtl/openenoc_axil_cpuif_adapter.rst).
+addresses and data.
 
 ## Test Coverage
 

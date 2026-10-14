@@ -3,11 +3,13 @@
 
 TOPLEVEL_LANG = verilog
 
-SIM ?= verilator
+override SIM := verilator
 WAVES ?= 0
 
 COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ps
+
+include ../../../common/sim_paths.mk
 
 REPO_DIR = ../../../..
 ISS_DIR = ../..
@@ -81,23 +83,30 @@ VERILOG_SOURCES += test_openenoc_iss.sv
 
 export PYTHONPATH := $(abspath $(ISS_DIR)/python):$(PYTHONPATH)
 export OPENENOC_ISS_LIBRARY := $(abspath $(REPO_DIR)/build/dv/iss/lib/libopenenoc_iss.so)
-export OPENENOC_FIRMWARE_ELF := $(abspath $(REPO_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.elf)
-export OPENENOC_IRQ_FIRMWARE_ELF := $(abspath $(REPO_DIR)/build/dv/iss/irq-firmware/openenoc_endpoint_full/csr_smoke.elf)
-export OPENENOC_LINK_FIRMWARE_ELF := $(abspath $(REPO_DIR)/build/dv/iss/firmware/openenoc_endpoint_full/iss_link.elf)
-export OPENENOC_STARTUP_FIRMWARE_ELF := $(abspath $(REPO_DIR)/build/dv/iss/firmware/openenoc_endpoint_full/iss_startup.elf)
+export OPENENOC_FIRMWARE_ELF := \
+	$(abspath $(REPO_DIR)/build/sw/openenoc_endpoint_full/csr_smoke.elf)
+export OPENENOC_IRQ_FIRMWARE_ELF := \
+	$(abspath $(REPO_DIR)/build/dv/iss/irq-firmware/openenoc_endpoint_full/csr_smoke.elf)
+export OPENENOC_LINK_FIRMWARE_ELF := \
+	$(abspath $(REPO_DIR)/build/dv/iss/firmware/openenoc_endpoint_full/iss_link.elf)
+export OPENENOC_STARTUP_FIRMWARE_ELF := \
+	$(abspath $(REPO_DIR)/build/dv/iss/firmware/openenoc_endpoint_full/iss_startup.elf)
 
-ifeq ($(SIM), verilator)
-	ifneq ($(TWO_ENDPOINTS),)
-		COMPILE_ARGS += -GTWO_ENDPOINTS=$(TWO_ENDPOINTS)
-	endif
-	ifneq ($(DUAL_LOOPBACK),)
-		COMPILE_ARGS += -GDUAL_LOOPBACK=$(DUAL_LOOPBACK)
-	endif
-	EXTRA_ARGS += -Wall $(REPO_DIR)/dv/common/config.vlt
-	ifeq ($(WAVES), 1)
-		EXTRA_ARGS += --trace
-		EXTRA_ARGS += --trace-fst
-	endif
+ifneq ($(TWO_ENDPOINTS),)
+	COMPILE_ARGS += -GTWO_ENDPOINTS=$(TWO_ENDPOINTS)
+endif
+ifneq ($(DUAL_LOOPBACK),)
+	COMPILE_ARGS += -GDUAL_LOOPBACK=$(DUAL_LOOPBACK)
+endif
+EXTRA_ARGS += -Wall ../../../common/config.vlt
+ifeq ($(WAVES), 1)
+	EXTRA_ARGS += --trace
+	EXTRA_ARGS += --trace-fst
+	EXTRA_ARGS += --trace-structs
 endif
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Extended clean
+clean::
+	@$(RM) -rf "$(SIM_OUTPUT)/sim_build" "$(SIM_OUTPUT)/__pycache__" "$(TMPDIR)"

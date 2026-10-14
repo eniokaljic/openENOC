@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import os
+import subprocess
+from pathlib import Path
 
 import pytest
 import cocotb
@@ -12,11 +14,9 @@ from cocotb.regression import TestFactory
 
 TestFactory.__test__ = False
 
-CSR_SMOKE_PATTERN = 0xA5A55A5A
-CSR_SMOKE_PASSED = 0x600D600D
-CSR_SMOKE_FAILED = 0xBAD0BAD0
-SWITCH_DEFAULT_FORWARDING = 0xA
-EXECUTION_TIMEOUT_CYCLES = 60000
+ENDPOINT_TEST_PASSED = 0x600D600D
+ENDPOINT_TEST_FAILED = 0xBAD0BAD0
+EXECUTION_TIMEOUT_CYCLES = 500000
 ENDPOINT_CPU_IRQ_MASK = 1 << 3
 AXIS_LOOPBACK_WORDS = [
     0xFFFFFFFF,
@@ -45,10 +45,8 @@ def signal_integer(signal):
     return int(signal.value)
 
 
-def assert_reserved_interfaces_inactive(dut):
-    assert signal_integer(dut.reserved_masters_inactive) == 1
-    assert signal_integer(dut.rmem_master_inactive) == 1
-    assert signal_integer(dut.endpoint_mac_lo_hwif) == 0
+def assert_debug_interface_inactive(dut):
+    assert signal_integer(dut.debug_master_inactive) == 1
 
 
 def assert_csr_bridge_connected(dut):
@@ -58,9 +56,9 @@ def assert_csr_bridge_connected(dut):
 
 
 def assert_switch_configuration(dut):
-    assert signal_integer(dut.switch_operation_mode) == 1
-    assert signal_integer(dut.switch_pause_request) == 1
-    assert signal_integer(dut.switch_default_forwarding) == SWITCH_DEFAULT_FORWARDING
+    assert signal_integer(dut.switch_operation_mode) == 0
+    assert signal_integer(dut.switch_pause_request) == 0
+    assert signal_integer(dut.switch_default_forwarding) == 0
 
 
 async def pause_loopback(dut):
@@ -75,23 +73,84 @@ async def pause_loopback(dut):
         cycle += 1
 
 
+async def corrupt_loopback_payload(dut):
+    beat_index = 0
+    raw_frame = False
+    while True:
+        await FallingEdge(dut.clk)
+        valid = signal_integer(dut.endpoint_tx_valid)
+        if valid and beat_index == 0:
+            raw_frame = signal_integer(dut.endpoint_tx_data) == AXIS_LOOPBACK_WORDS[0]
+        corrupt = valid and raw_frame and beat_index == 4
+        dut.loopback_error_mask.value = 1 if corrupt else 0
+        await RisingEdge(dut.clk)
+        if valid and signal_integer(dut.endpoint_tx_ready):
+            if corrupt:
+                await FallingEdge(dut.clk)
+                dut.loopback_error_mask.value = 0
+                return
+            beat_index = 0 if signal_integer(dut.endpoint_tx_last) else beat_index + 1
+
+
+def firmware_failure_file(dut, firmware_image):
+    address = signal_integer(dut.dmem_failure_file)
+    if not 0 < address < len(firmware_image):
+        return f"<invalid file address {address:#x}>"
+    return firmware_image[address:].split(b"\0", 1)[0].decode("ascii")
+
+
+async def assert_firmware_failure_and_trap(dut, firmware_image):
+    source_path = Path(repo_dir) / "sw/apps/endpoint_test/main.c"
+    expected_expression = (
+        "assert(axis_rx_bytes[buffer_offset + index] == axis_tx_bytes[buffer_offset + index]);"
+    )
+    expected_line = next(
+        line_number
+        for line_number, source_line in enumerate(source_path.read_text().splitlines(), 1)
+        if source_line.strip() == expected_expression
+    )
+    assert firmware_failure_file(dut, firmware_image) == str(source_path)
+    assert signal_integer(dut.dmem_failure_line) == expected_line
+    assert signal_integer(dut.dmem_checks) == 0x07
+    assert signal_integer(dut.cpu_trap) == 0, "Diagnostics were published after the trap"
+    for _ in range(1000):
+        await RisingEdge(dut.clk)
+        if signal_integer(dut.cpu_trap):
+            break
+    else:
+        raise AssertionError("Firmware recorded assertion failure without executing a trap")
+    for _ in range(10):
+        await RisingEdge(dut.clk)
+        assert signal_integer(dut.cpu_trap) == 1
+        assert signal_integer(dut.dmem_status) == ENDPOINT_TEST_FAILED
+        assert signal_integer(dut.dmem_checks) == 0x07
+        assert signal_integer(dut.dmem_failure_line) == expected_line
+        assert firmware_failure_file(dut, firmware_image) == str(source_path)
+
+
 @cocotb.test()
-async def test_csr_smoke_firmware(dut):
+async def test_endpoint_firmware(dut):
     cocotb.start_soon(Clock(dut.clk, 10, unit="ns").start())
 
     dut.rst.value = 1
     dut.loopback_pause.value = 0
+    dut.loopback_error_mask.value = 0
+    expect_assertion_failure = os.environ.get("LOOPBACK_CORRUPT_PAYLOAD", "0") == "1"
     if os.environ.get("LOOPBACK_STALLS", "0") == "1":
         cocotb.start_soon(pause_loopback(dut))
+    if expect_assertion_failure:
+        cocotb.start_soon(corrupt_loopback_payload(dut))
 
     for _ in range(5):
         await RisingEdge(dut.clk)
         assert signal_integer(dut.cpu_trap) == 0
-        assert_reserved_interfaces_inactive(dut)
+        assert_debug_interface_inactive(dut)
         assert_csr_bridge_connected(dut)
 
     with open(os.environ["PARAM_IMEM_INIT_FILE"], encoding="ascii") as source:
-        expected_first_word = int(next(line for line in source if line.strip()), 16)
+        firmware_words = [int(line, 16) for line in source if line.strip()]
+    expected_first_word = firmware_words[0]
+    firmware_image = b"".join(word.to_bytes(4, "little") for word in firmware_words)
 
     assert signal_integer(dut.imem_word0) == expected_first_word
     assert signal_integer(dut.dmem_status) == 0
@@ -107,11 +166,17 @@ async def test_csr_smoke_firmware(dut):
     previous_claim_token = 0
     previous_complete_ack = 0
     rx_available_before_tlast = False
+    raw_frame_in_progress = False
+    frame_start = True
     backpressure_cycles = 0
+    dma_cycles = 0
+    rmem_cycles = 0
 
     for execution_cycles in range(1, EXECUTION_TIMEOUT_CYCLES + 1):
         await RisingEdge(dut.clk)
 
+        dma_cycles += signal_integer(dut.dma_master_active)
+        rmem_cycles += not signal_integer(dut.rmem_master_inactive)
         if signal_integer(dut.endpoint_tx_valid) and not signal_integer(dut.endpoint_tx_ready):
             backpressure_cycles += 1
 
@@ -127,7 +192,7 @@ async def test_csr_smoke_firmware(dut):
         previous_eoi = eoi
         token = signal_integer(dut.irq_claim_token)
         if token >> 31 and (token >> 11) & 0xF == 4:
-            rx_available_before_tlast |= not any(last for _, _, last in eth_transfers)
+            rx_available_before_tlast |= raw_frame_in_progress
         complete_ack = signal_integer(dut.irq_complete_hwclr)
         if complete_ack and not previous_complete_ack:
             assert signal_integer(dut.cpu_irq_active), "Claim was completed outside the ISR"
@@ -138,6 +203,13 @@ async def test_csr_smoke_firmware(dut):
         previous_claim_token = token
 
         if signal_integer(dut.endpoint_tx_valid) and signal_integer(dut.endpoint_tx_ready):
+            if frame_start:
+                raw_frame_in_progress = (
+                    signal_integer(dut.endpoint_tx_data) == AXIS_LOOPBACK_WORDS[0]
+                )
+            frame_start = bool(signal_integer(dut.endpoint_tx_last))
+            if frame_start:
+                raw_frame_in_progress = False
             eth_transfers.append(
                 (
                     signal_integer(dut.endpoint_tx_data),
@@ -158,24 +230,30 @@ async def test_csr_smoke_firmware(dut):
                 )
             )
 
-        assert signal_integer(dut.cpu_trap) == 0, "PicoRV32 entered trap state"
-        assert_reserved_interfaces_inactive(dut)
+        assert_debug_interface_inactive(dut)
         assert_csr_bridge_connected(dut)
 
         status = signal_integer(dut.dmem_status)
-        assert status != CSR_SMOKE_FAILED, (
-            "csr_smoke firmware reported failure; "
-            f"ETH transfers={eth_transfers!r}, "
-            f"CSR sink transfers={csr_sink_transfers!r}"
+        if status == ENDPOINT_TEST_FAILED and expect_assertion_failure:
+            await assert_firmware_failure_and_trap(dut, firmware_image)
+            return
+        assert status != ENDPOINT_TEST_FAILED, (
+            "endpoint_test firmware reported failure; "
+            f"failure file={firmware_failure_file(dut, firmware_image)}, "
+            f"failure line={signal_integer(dut.dmem_failure_line)}, "
+            f"completed checks={signal_integer(dut.dmem_checks):#x}, "
+            f"Ethernet beats={len(eth_transfers)}, CSR beats={len(csr_sink_transfers)}"
         )
+        assert signal_integer(dut.cpu_trap) == 0, "PicoRV32 entered trap state"
 
-        if status == CSR_SMOKE_PASSED:
-            cocotb.log.info("csr_smoke completed in %d execution cycles", execution_cycles)
+        if status == ENDPOINT_TEST_PASSED:
+            assert not expect_assertion_failure, "Corrupted payload did not fail an assertion"
+            cocotb.log.info("endpoint_test completed in %d execution cycles", execution_cycles)
             break
     else:
-        raise AssertionError(f"csr_smoke did not finish within {EXECUTION_TIMEOUT_CYCLES} cycles")
+        raise AssertionError(f"endpoint_test did not finish within {EXECUTION_TIMEOUT_CYCLES} cycles")
 
-    assert signal_integer(dut.csr_test_value) == CSR_SMOKE_PATTERN
+    assert signal_integer(dut.csr_test_value) == 0
     assert_switch_configuration(dut)
     expected_transfers = [
         (
@@ -189,13 +267,32 @@ async def test_csr_smoke_firmware(dut):
         )
         for index, word in enumerate(AXIS_LOOPBACK_WORDS)
     ]
-    assert eth_transfers == expected_transfers
-    assert csr_sink_transfers == expected_transfers
+    frames = []
+    frame = []
+    for beat in eth_transfers:
+        frame.append(beat)
+        if beat[2]:
+            frames.append(frame)
+            frame = []
+    assert not frame, "Transmission ended in the middle of a frame"
+    raw_frames = [frame for frame in frames if frame[0][0] == AXIS_LOOPBACK_WORDS[0]]
+    protocol_frames = [frame for frame in frames if frame[0][0] != AXIS_LOOPBACK_WORDS[0]]
+    assert raw_frames == [expected_transfers] * 4
+    assert len(protocol_frames) == 22
+    assert csr_sink_transfers == expected_transfers * 3
+    assert signal_integer(dut.dmem_checks) == 0x7F
+    assert signal_integer(dut.dmem_failure_line) == 0
+    assert signal_integer(dut.dmem_failure_file) == 0
+    assert signal_integer(dut.endpoint_mac_lo_hwif) == 0x0C000001
+    assert dma_cycles > 0, "Firmware never exercised the DMA master"
+    assert rmem_cycles > 0, "Firmware never exercised the RMEM memory master"
     assert rx_available_before_tlast, "RX notification waited for the complete frame"
     assert irq_entries >= 1, "CPU never entered its IRQ handler"
-    assert [(token >> 11) & 0xF for token in completed_tokens] == [4, 3]
-    assert [(token >> 15) & 0xFFFF for token in completed_tokens] == [0, 1]
-    assert all(token & 0x7FF == 0 for token in completed_tokens)
+    sources = [(token >> 11) & 0xF for token in completed_tokens]
+    assert sorted(sources) == [0, 0, 0, 1, 2, 3, 3, 3, 4, 4, 4, 5]
+    assert [(token >> 15) & 0xFFFF for token in completed_tokens] == list(range(12))
+    assert [token & 0x7FF for token in completed_tokens if (token >> 11) & 0xF == 0] == [0, 1, 1]
+    assert all(token & 0x7FF == 0 for token in completed_tokens if (token >> 11) & 0xF != 0)
     assert signal_integer(dut.cpu_irq_active) == 0, "retirq did not return to main"
     assert signal_integer(dut.endpoint_irq) == 0
     assert signal_integer(dut.irq_fifo_level) == 0
@@ -209,10 +306,10 @@ async def test_csr_smoke_firmware(dut):
     # The firmware returns into its terminal loop; the result must remain stable.
     for _ in range(10):
         await RisingEdge(dut.clk)
-        assert signal_integer(dut.dmem_status) == CSR_SMOKE_PASSED
-        assert signal_integer(dut.csr_test_value) == CSR_SMOKE_PATTERN
+        assert signal_integer(dut.dmem_status) == ENDPOINT_TEST_PASSED
+        assert signal_integer(dut.csr_test_value) == 0
         assert signal_integer(dut.cpu_trap) == 0
-        assert_reserved_interfaces_inactive(dut)
+        assert_debug_interface_inactive(dut)
         assert_csr_bridge_connected(dut)
         assert_switch_configuration(dut)
 
@@ -252,8 +349,23 @@ def process_f_files(files):
     return list(sources.values())
 
 
-@pytest.mark.parametrize("loopback_stalls", [False, True], ids=["continuous", "stalled"])
-def test_openenoc_endpoint_full(request, loopback_stalls):
+@pytest.fixture(scope="session")
+def endpoint_test_firmware():
+    subprocess.run(["make", "-C", tests_dir, "firmware"], check=True)
+
+
+@pytest.mark.parametrize(
+    ("loopback_stalls", "corrupt_payload"),
+    [(False, False), (True, False), (False, True)],
+    ids=["continuous", "stalled", "assert_failure"],
+)
+def test_openenoc_endpoint_full(
+    sim_build_dir,
+    sim_trace_args,
+    loopback_stalls,
+    corrupt_payload,
+    endpoint_test_firmware,
+):
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
     imem_init_file = os.path.join(repo_dir, "build", "sw", "openenoc_endpoint_full", "imem.mem")
@@ -313,9 +425,10 @@ def test_openenoc_endpoint_full(request, loopback_stalls):
     extra_env = {
         "PARAM_IMEM_INIT_FILE": imem_init_file,
         "LOOPBACK_STALLS": "1" if loopback_stalls else "0",
+        "LOOPBACK_CORRUPT_PAYLOAD": "1" if corrupt_payload else "0",
     }
 
-    sim_build = os.path.join(tests_dir, "sim_build", request.node.name)
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -326,6 +439,7 @@ def test_openenoc_endpoint_full(request, loopback_stalls):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(common_dir, "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )

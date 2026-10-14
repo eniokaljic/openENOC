@@ -4,6 +4,7 @@
 .DEFAULT_GOAL := all
 
 VERBOSE ?= 0
+DEBUG ?= 0
 AWK ?= awk
 
 ifeq ($(VERBOSE),1)
@@ -61,6 +62,16 @@ COMMON_CFLAGS := \
 	-fno-common \
 	-ffunction-sections \
 	-fdata-sections
+
+ifeq ($(DEBUG),1)
+DEBUG_CPPFLAGS := -UNDEBUG
+DEBUG_CFLAGS := -g
+else ifeq ($(DEBUG),0)
+DEBUG_CPPFLAGS := -UNDEBUG -DNDEBUG
+DEBUG_CFLAGS :=
+else
+$(error DEBUG must be 0 or 1)
+endif
 
 COMMON_LDFLAGS := \
 	-march=$(MARCH) \
@@ -177,13 +188,14 @@ $(LINKER_SCRIPT): $(LINKER_SCRIPT_TEMPLATE) $(MEMORY_MAP_HEADER) | toolchain-che
 	$(LOG) 'Generating linker script:' '$@'
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(RM) $@.tmp
-	$(Q)$(CC) -E -P -x c $(COMMON_CPPFLAGS) $(CPPFLAGS) $< -o $@.tmp
+	$(Q)$(CC) -E -P -x c $(COMMON_CPPFLAGS) $(CPPFLAGS) $(DEBUG_CPPFLAGS) $< -o $@.tmp
 	$(Q)mv $@.tmp $@
 
 $(ELF): force-rebuild $(SOURCES) $(HAL_SW_HEADERS) $(LINKER_SCRIPT) | toolchain-check
 	$(LOG) 'Linking firmware ELF:' '$@'
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) $(COMMON_CPPFLAGS) $(CPPFLAGS) $(COMMON_CFLAGS) $(CFLAGS) \
+		$(DEBUG_CPPFLAGS) $(DEBUG_CFLAGS) \
 		$(COMMON_LDFLAGS) $(LDFLAGS) \
 		-Wl,-T,$(LINKER_SCRIPT),-Map,$(MAP) \
 		-o $@ $(SOURCES) $(LDLIBS) -lgcc
@@ -259,6 +271,7 @@ help:
 	$(Q)echo "  APP             Application directory name under $(APPS_DIR) (required for builds)"
 	$(Q)echo "  EP              Endpoint name derived from $(HAL_EPS_DIR)/<endpoint>.rdl (required for builds)"
 	$(Q)echo "  PLATFORM        Platform directory name under $(PLATFORMS_DIR) (default: picorv32)"
+	$(Q)echo "  DEBUG           1 enables assertions and debug symbols; 0 defines NDEBUG (default: 0)"
 	$(Q)echo "  MARCH           RISC-V ISA passed to the toolchain (default: rv32i)"
 	$(Q)echo "  MABI            RISC-V ABI passed to the toolchain (default: ilp32)"
 	$(Q)echo "  CROSS_COMPILE   GNU toolchain command prefix (default: riscv64-unknown-elf-)"

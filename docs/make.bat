@@ -2,6 +2,7 @@
 @REM SPDX-License-Identifier: CC-BY-SA-4.0
 
 @ECHO OFF
+setlocal
 
 pushd %~dp0
 
@@ -10,8 +11,13 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
-set SOURCEDIR=src
-set BUILDDIR=build
+set "SOURCEDIR=src"
+set "BUILDDIR=..\build\docs"
+set "PYTHONPYCACHEPREFIX=%CD%\%BUILDDIR%\__pycache__"
+set "TMPDIR=%CD%\%BUILDDIR%\tmp"
+set "TMP=%TMPDIR%"
+set "TEMP=%TMPDIR%"
+if not exist "%TMPDIR%" mkdir "%TMPDIR%"
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
@@ -28,11 +34,11 @@ if errorlevel 9009 (
 
 if "%1" == "" goto help
 
-%SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+%SPHINXBUILD% -M %1 "%SOURCEDIR%" "%BUILDDIR%" %SPHINXOPTS% %O%
 goto end
 
 :help
-%SPHINXBUILD% -M help %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+%SPHINXBUILD% -M help "%SOURCEDIR%" "%BUILDDIR%" %SPHINXOPTS% %O%
 
 :end
 popd

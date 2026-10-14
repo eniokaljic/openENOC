@@ -368,7 +368,7 @@ def process_f_files(files):
 @pytest.mark.parametrize("tuser_bitmap_route", [0, 1])
 @pytest.mark.parametrize("data_w", [8, 16])
 @pytest.mark.parametrize("m_count", [4, 6])
-def test_openenoc_axis_demux(request, m_count, data_w, tuser_bitmap_route):
+def test_openenoc_axis_demux(sim_build_dir, sim_trace_args, m_count, data_w, tuser_bitmap_route):
     dut = "openenoc_axis_demux"
     module = os.path.splitext(os.path.basename(__file__))[0]
     toplevel = module
@@ -403,9 +403,7 @@ def test_openenoc_axis_demux(request, m_count, data_w, tuser_bitmap_route):
 
     extra_env = {f"PARAM_{k}": str(v) for k, v in parameters.items()}
 
-    sim_build = os.path.join(
-        tests_dir, "sim_build", request.node.name.replace("[", "-").replace("]", "")
-    )
+    sim_build = sim_build_dir
 
     cocotb_test.simulator.run(
         simulator="verilator",
@@ -416,6 +414,7 @@ def test_openenoc_axis_demux(request, m_count, data_w, tuser_bitmap_route):
         parameters=parameters,
         timescale="1ns/1ps",
         extra_args=["-Wall", os.path.join(repo_dir, "dv", "common", "config.vlt")],
+        plus_args=sim_trace_args,
         sim_build=sim_build,
         extra_env=extra_env,
     )
