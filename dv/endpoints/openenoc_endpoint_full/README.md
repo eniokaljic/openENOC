@@ -9,6 +9,7 @@ This cocotb suite verifies the `openenoc_endpoint_full` SoC wrapper by booting
 `endpoint_test` PicoRV32 firmware and looping Ethernet TX back to RX. It tests
 continuous transport, periodic backpressure and assertion diagnostics after
 injected payload corruption.
+All cases use fixed 32-bit AXI, AXI4-Lite, and Ethernet data paths.
 Firmware checks are described in the
 [endpoint_test README](../../../sw/apps/endpoint_test/README.md).
 

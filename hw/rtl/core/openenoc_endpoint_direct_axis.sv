@@ -6,7 +6,9 @@
 `default_nettype none
 
 /* Direct CSR stream handshakes and IRQ events. */
-module openenoc_endpoint_direct_axis (
+module openenoc_endpoint_direct_axis #(
+    parameter logic [1:0] ROUTE_DIRECT
+) (
     input wire logic clk,
     input wire logic rst,
     input wire logic tx_frame_done,
@@ -16,7 +18,6 @@ module openenoc_endpoint_direct_axis (
     openenoc_irq_event_if.producer tx_event_if,
     openenoc_irq_event_if.producer rx_event_if
 );
-
     taxi_axis_if #(
         .DATA_W(m_axis_csr_tx.DATA_W),
         .KEEP_W(m_axis_csr_tx.KEEP_W),
@@ -125,7 +126,7 @@ module openenoc_endpoint_direct_axis (
     assign tx_payload_if.tvalid = tx_active_reg && !tx_input_done_reg && !tx_beat_pending_reg
         && tx_csr_valid;
     assign tx_payload_if.tid = '0;
-    assign tx_payload_if.tdest = {2'b10, {PEER_IDX_W{1'b0}}};
+    assign tx_payload_if.tdest = {ROUTE_DIRECT, {PEER_IDX_W{1'b0}}};
     assign tx_payload_if.tuser = '0;
     assign rx_payload_if.tready = rx_visible && rx_csr_ready;
 

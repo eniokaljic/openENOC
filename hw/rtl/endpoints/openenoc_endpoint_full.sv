@@ -16,12 +16,13 @@ module openenoc_endpoint_full #(
     openenoc_switch_if.csr switch_if,
     openenoc_eth_if eth_if
 );
-
     localparam INITIATOR_COUNT = 4;
     localparam TARGET_COUNT = 3;
     localparam AXIL_ADDR_W = 32;
-    localparam AXIL_DATA_W = openenoc_endpoint_full_pkg::OPENENOC_ENDPOINT_FULL_DATA_WIDTH;
+    localparam AXIL_DATA_W = 32;
     localparam AXIL_STRB_W = AXIL_DATA_W / 8;
+    localparam int unsigned ENDPOINT_CPU_IRQ_INDEX = 3;
+    localparam logic [31:0] ENDPOINT_CPU_IRQ_MASK = 32'd1 << ENDPOINT_CPU_IRQ_INDEX;
 
     localparam IMEM_ADDR_W = $clog2(openenoc_endpoint_full_pkg::IMEM_DEPTH * AXIL_STRB_W);
     localparam DMEM_ADDR_W = $clog2(openenoc_endpoint_full_pkg::DMEM_DEPTH * AXIL_STRB_W);
@@ -58,9 +59,23 @@ module openenoc_endpoint_full #(
     localparam AXIL_TARGET_ADDR_W = {32'(CSR_ADDR_W), 32'(IMEM_ADDR_W), 32'(DMEM_ADDR_W)};
 
     // Check generated memory-map and CSR interface parameters
+    if (openenoc_endpoint_full_pkg::OPENENOC_ENDPOINT_FULL_DATA_WIDTH
+        != AXIL_DATA_W) begin : g_endpoint_data_width_error
+        $fatal(0, "Error: endpoint data width must be 32 bits (instance %m)");
+    end
+
     if (AXIL_DATA_W != openenoc_endpoint_full_csr_pkg::OPENENOC_ENDPOINT_FULL_CSR_DATA_WIDTH) begin
         : g_csr_data_width_error
         $fatal(0, "Error: endpoint and CSR data widths do not match (instance %m)");
+    end
+
+    if (openenoc_endpoint_full_pkg::OPENENOC_ENDPOINT_FULL_MIN_ADDR_WIDTH > AXIL_ADDR_W
+        || CSR_ADDR_W > AXIL_ADDR_W) begin : g_addr_map_width_error
+        $fatal(0, "Error: endpoint address maps must fit in 32 bits (instance %m)");
+    end
+
+    if (eth_if.DATA_W != AXIL_DATA_W) begin : g_eth_data_width_error
+        $fatal(0, "Error: eth_if data width must be 32 bits (instance %m)");
     end
 
     if (2 ** $clog2(openenoc_endpoint_full_pkg::IMEM_DEPTH)
@@ -143,7 +158,7 @@ module openenoc_endpoint_full #(
 
     wire endpoint_irq;
     // PicoRV32 IRQs 0-2 are its internal timer, exception, and bus-error sources.
-    wire [31:0] cpu_irq = {28'd0, endpoint_irq, 3'd0};
+    wire [31:0] cpu_irq = endpoint_irq ? ENDPOINT_CPU_IRQ_MASK : '0;
 
     taxi_axi_axil_adapter u_dma_axil_adapter (
         .clk(clk),
@@ -220,7 +235,7 @@ module openenoc_endpoint_full #(
     openenoc_picorv32 #(
         .ENABLE_IRQ(1'b1),
         // The endpoint holds IRQ until software completes the queued claims.
-        .LATCHED_IRQ(32'hffff_fff7),
+        .LATCHED_IRQ(~ENDPOINT_CPU_IRQ_MASK),
         .PROGADDR_RESET(AXIL_ADDR_W'(openenoc_endpoint_full_pkg::IMEM_BASE_ADDR)),
         .STACKADDR(AXIL_ADDR_W'(openenoc_endpoint_full_pkg::DMEM_BASE_ADDR +
                                 openenoc_endpoint_full_pkg::DMEM_DEPTH * AXIL_STRB_W))

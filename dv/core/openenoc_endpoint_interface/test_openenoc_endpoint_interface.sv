@@ -5,10 +5,7 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-module test_openenoc_endpoint_interface #(
-    parameter int AXI_DATA_W = 32,
-    parameter int ETH_DATA_W = 32
-) ();
+module test_openenoc_endpoint_interface ();
     logic clk, rst;
     logic [31:0] tx_data;
     logic [3:0] tx_keep;
@@ -58,14 +55,14 @@ module test_openenoc_endpoint_interface #(
     );
 
     openenoc_eth_if #(
-        .DATA_W(ETH_DATA_W)
+        .DATA_W(32)
     ) eth_if (
         .clk(clk),
         .rst(rst)
     );
 
     taxi_axi_if #(
-        .DATA_W(AXI_DATA_W),
+        .DATA_W(32),
         .ADDR_W(32),
         .ID_W(8)
     ) m_axi_if();

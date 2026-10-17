@@ -17,6 +17,7 @@ interface openenoc_dma_transfer_if #(
     localparam logic DMA_OP_WRITE = 1'b1;
     localparam logic TRANSFER_KIND_DMA = 1'b0;
     localparam logic TRANSFER_KIND_RMEM = 1'b1;
+    localparam int unsigned RMEM_WORD_BYTES = 4;
     localparam int unsigned AXIS_USER_W = 2;
     localparam int unsigned AXIS_USER_LAST_BIT = 0;
     localparam int unsigned AXIS_USER_ROLE_BIT = 1;

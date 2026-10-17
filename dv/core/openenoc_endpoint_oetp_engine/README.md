@@ -7,9 +7,10 @@
 
 This cocotb suite verifies the oETP engine independently of memory, CSR, and
 IRQ implementations. The wrapper supplies Ethernet/memory streams, transaction
-channels, and a registered peer-lookup fixture. Fifteen cases run at local/
-Ethernet widths 32/32, 64/8, and 32/64. Counter-wrap and response-at-expiry
-checks use public VPI registers; normal traffic uses the module interfaces.
+channels, and a registered peer-lookup fixture. Fifteen cases use fixed 32-bit
+local and Ethernet data paths and 32-bit transfer/lookup addresses. Counter-wrap
+and response-at-expiry checks use public VPI registers; normal traffic uses the
+module interfaces.
 
 ## Test Coverage
 

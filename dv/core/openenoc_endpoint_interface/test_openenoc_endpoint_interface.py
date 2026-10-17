@@ -6,7 +6,6 @@ from itertools import cycle
 import struct
 import logging
 
-import pytest
 import cocotb
 import cocotb_test.simulator
 from cocotb.clock import Clock
@@ -690,8 +689,7 @@ async def test_error_irq_retention_under_full_fifo(dut):
     assert not int(dut.overflow.value) and not int(dut.invalid_complete.value)
 
 
-@pytest.mark.parametrize("axi_data_w,eth_data_w", [(32, 32), (64, 32), (32, 64), (64, 8)])
-def test_openenoc_endpoint_interface(sim_build_dir, sim_trace_args, axi_data_w, eth_data_w):
+def test_openenoc_endpoint_interface(sim_build_dir, sim_trace_args):
     tests = Path(__file__).resolve().parent
     repo = tests.parents[2]
     core = repo / "hw/rtl/core"
@@ -734,7 +732,6 @@ def test_openenoc_endpoint_interface(sim_build_dir, sim_trace_args, axi_data_w, 
         toplevel="test_openenoc_endpoint_interface",
         module="test_openenoc_endpoint_interface",
         python_search=[str(tests)],
-        parameters={"AXI_DATA_W": axi_data_w, "ETH_DATA_W": eth_data_w},
         timescale="1ns/1ps",
         extra_args=["-Wall", str(repo / "dv/common/config.vlt")],
         plus_args=sim_trace_args,

@@ -8,7 +8,7 @@
 This cocotb suite verifies the integrated endpoint interface without a CPU or
 generated CSR register block. It uses AXI memory and Ethernet stream models,
 an acknowledged local CPUIF fixture, and memory-error injection. Ten cases run
-at AXI/Ethernet widths 32/32, 64/32, 32/64, and 64/8. The fixture has two peers,
+with fixed 32-bit AXI and Ethernet data paths. The fixture has two peers,
 128-byte transport FIFOs, two IRQ credits, four fragment slots, and a 64-byte
 raw-frame ceiling.
 

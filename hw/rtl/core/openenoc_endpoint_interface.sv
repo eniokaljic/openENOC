@@ -25,10 +25,34 @@ module openenoc_endpoint_interface #(
     localparam int NUM_OF_PEERS = endpoint_if.NUM_OF_PEERS;
     localparam int PEER_IDX_W = NUM_OF_PEERS > 1 ? $clog2(NUM_OF_PEERS) : 1;
     localparam int AXIS_DEST_W = PEER_IDX_W + 2;
-    localparam int DATA_W = m_axi_rd.DATA_W;
+    localparam int ADDR_W = 32;
+    localparam int DATA_W = 32;
     localparam int SEQUENCE_W = 32;
     localparam int IRQ_PEER_IDX_W = 11;
+    localparam int IRQ_EVENT_PORTS = 7;
+    localparam int INITIATOR_RMEM_IRQ_PORT = 5;
+    localparam int RESPONDER_IRQ_PORT = 6;
+    localparam logic [IRQ_EVENT_PORTS-1:0] IRQ_SAMPLED_ENABLE_MASK =
+        IRQ_EVENT_PORTS'(1) << INITIATOR_RMEM_IRQ_PORT;
 
+    if (m_axi_wr.DATA_W != DATA_W) begin : g_axi_wr_data_width_error
+        $fatal(0, "Error: m_axi_wr data width must be 32 bits (instance %m)");
+    end
+    if (m_axi_rd.DATA_W != DATA_W) begin : g_axi_rd_data_width_error
+        $fatal(0, "Error: m_axi_rd data width must be 32 bits (instance %m)");
+    end
+    if (m_axi_wr.ADDR_W != ADDR_W) begin : g_axi_wr_addr_width_error
+        $fatal(0, "Error: m_axi_wr address width must be 32 bits (instance %m)");
+    end
+    if (m_axi_rd.ADDR_W != ADDR_W) begin : g_axi_rd_addr_width_error
+        $fatal(0, "Error: m_axi_rd address width must be 32 bits (instance %m)");
+    end
+    if (m_rmem_cpuif.ADDR_W != ADDR_W) begin : g_rmem_cpuif_addr_width_error
+        $fatal(0, "Error: m_rmem_cpuif address width must be 32 bits (instance %m)");
+    end
+    if (eth_if.DATA_W != DATA_W) begin : g_eth_data_width_error
+        $fatal(0, "Error: eth_if data width must be 32 bits (instance %m)");
+    end
     if (FIFO_DEPTH < MAX_RAW_FRAME_SIZE) begin : g_fifo_depth_error
         $fatal(0, {"Error: endpoint FIFO must hold the largest DMA ", "frame (instance %m)"});
     end
@@ -39,11 +63,11 @@ module openenoc_endpoint_interface #(
     openenoc_peer_lookup_if #(
         .NUM_OF_PEERS(NUM_OF_PEERS),
         .PEER_IDX_W(PEER_IDX_W),
-        .ADDR_W(32)
+        .ADDR_W(ADDR_W)
     ) peer_lookup_if[2]();
 
     openenoc_dma_transfer_if #(
-        .ADDR_W(32),
+        .ADDR_W(ADDR_W),
         .LEN_W(32),
         .PEER_IDX_W(PEER_IDX_W),
         .SEQUENCE_W(SEQUENCE_W)
@@ -53,10 +77,10 @@ module openenoc_endpoint_interface #(
 
     openenoc_irq_event_if #(
         .PEER_IDX_W(IRQ_PEER_IDX_W)
-    ) irq_event_if[7]();
+    ) irq_event_if[IRQ_EVENT_PORTS]();
 
     taxi_axis_if #(
-        .DATA_W(32),
+        .DATA_W(DATA_W),
         .KEEP_EN(1'b1),
         .LAST_EN(1'b1),
         .ID_EN(1'b1),
@@ -68,7 +92,7 @@ module openenoc_endpoint_interface #(
     ) csr_source_axis_if();
 
     taxi_axis_if #(
-        .DATA_W(32),
+        .DATA_W(DATA_W),
         .KEEP_EN(1'b1),
         .LAST_EN(1'b1),
         .ID_EN(1'b1),
@@ -116,7 +140,7 @@ module openenoc_endpoint_interface #(
     ) rx_axis_if[2]();
 
     taxi_axis_if #(
-        .DATA_W(eth_if.DATA_W),
+        .DATA_W(DATA_W),
         .KEEP_W(eth_if.KEEP_W),
         .KEEP_EN(eth_if.KEEP_EN),
         .LAST_EN(1'b1)
@@ -170,8 +194,8 @@ module openenoc_endpoint_interface #(
         .m_axi_rd(m_axi_rd),
         .m_local_cpuif(m_rmem_cpuif),
         .irq_event_if(irq_event_if[0:2]),
-        .rmem_irq_event_if(irq_event_if[5]),
-        .responder_irq_event_if(irq_event_if[6])
+        .rmem_irq_event_if(irq_event_if[INITIATOR_RMEM_IRQ_PORT]),
+        .responder_irq_event_if(irq_event_if[RESPONDER_IRQ_PORT])
     );
 
     openenoc_endpoint_oetp_engine #(
@@ -193,7 +217,9 @@ module openenoc_endpoint_interface #(
     wire direct_tx_done = oetp_tx_axis_if.tvalid && oetp_tx_axis_if.tready && oetp_tx_axis_if.tlast
         && oetp_tx_axis_if.tdest[PEER_IDX_W+:2] == initiator_if.ROUTE_DIRECT;
 
-    openenoc_endpoint_direct_axis u_direct_axis (
+    openenoc_endpoint_direct_axis #(
+        .ROUTE_DIRECT(initiator_if.ROUTE_DIRECT)
+    ) u_direct_axis (
         .clk(clk),
         .rst(rst),
         .tx_frame_done(direct_tx_done),
@@ -318,11 +344,11 @@ module openenoc_endpoint_interface #(
     );
 
     openenoc_endpoint_irq_controller #(
-        .EVENT_PORTS(7),
+        .EVENT_PORTS(IRQ_EVENT_PORTS),
         .FIFO_DEPTH(IRQ_FIFO_DEPTH),
         .PEER_IDX_W(IRQ_PEER_IDX_W),
         .SEQUENCE_W(16),
-        .SAMPLED_ENABLE_MASK(7'b0100000)
+        .SAMPLED_ENABLE_MASK(IRQ_SAMPLED_ENABLE_MASK)
     ) u_irq_controller (
         .clk(clk),
         .rst(rst),

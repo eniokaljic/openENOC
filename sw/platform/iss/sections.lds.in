@@ -1,3 +1,8 @@
+/* SPDX-FileCopyrightText: 2026 Enio Kaljic
+ * SPDX-FileCopyrightText: 2026 Kerim Bavcic
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
 #include "memory_map.h"
 
 OUTPUT_FORMAT("elf32-littleriscv")

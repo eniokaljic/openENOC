@@ -20,19 +20,79 @@ module openenoc_endpoint_oetp_engine #(
     openenoc_dma_transfer_if.executor initiator_if,
     openenoc_dma_transfer_if.requester responder_if
 );
+    localparam int ADDR_W = 32;
+    localparam int DATA_W = 32;
+    localparam int KEEP_W = 4;
+    localparam int PEER_W = peer_lookup_if.PEER_IDX_W;
+    localparam int SEQ_W = initiator_if.SEQUENCE_W;
+    localparam int DEST_W = PEER_W + 2;
+    localparam logic [15:0] OETP_ETHERTYPE = 16'h88B5;
+    localparam logic [7:0] OETP_MAGIC = 8'h0E;
+    localparam logic [23:0] OETP_HEADER_SIGNATURE = {
+        OETP_MAGIC,
+        OETP_ETHERTYPE[7:0],
+        OETP_ETHERTYPE[15:8]
+    };
+    localparam logic [3:0] ERROR_LOCAL_INVALID = 4'(initiator_if.ERROR_LOCAL_INVALID);
+    localparam logic [3:0] ERROR_LOCAL_AXIS = 4'(initiator_if.ERROR_LOCAL_AXIS);
+    localparam logic [3:0] ERROR_LOCAL_OVERFLOW = 4'(initiator_if.ERROR_LOCAL_OVERFLOW);
+    localparam logic [3:0] ERROR_TIMEOUT = 4'(initiator_if.ERROR_TIMEOUT);
+    localparam logic [3:0] ERROR_REMOTE_AXIS = 4'(initiator_if.ERROR_REMOTE_AXIS);
+    localparam logic [1:0] LOOKUP_BY_INDEX = peer_lookup_if.LOOKUP_BY_INDEX;
+    localparam logic [1:0] LOOKUP_BY_MAC = peer_lookup_if.LOOKUP_BY_MAC;
+    localparam logic [1:0] DMA_MODE_RMEM = peer_lookup_if.DMA_MODE_RMEM;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_LOCAL = peer_lookup_if.DMA_MODE_MIRROR_TO_LOCAL;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_REMOTE = peer_lookup_if.DMA_MODE_MIRROR_TO_REMOTE;
+    localparam logic [3:0] LOOKUP_RMEM_MODE_MASK = peer_lookup_if.LOOKUP_RMEM_MODE_MASK;
+    localparam logic [3:0] LOOKUP_ACTIVE_MODE_MASK = peer_lookup_if.LOOKUP_ACTIVE_MODE_MASK;
+
+    localparam int unsigned ETHERNET_HEADER_BYTES = 14;
+    localparam int unsigned OETP_WRITE_METADATA_BYTES = 14;
+    localparam int unsigned OETP_END_OF_DATA_BYTES = 4;
+    localparam int unsigned OETP_DMA_FRAME_OVERHEAD_BYTES =
+        ETHERNET_HEADER_BYTES + OETP_WRITE_METADATA_BYTES + OETP_END_OF_DATA_BYTES;
+    localparam int unsigned OETP_DATA_ALIGNMENT_BYTES = 4;
+    localparam int unsigned RMEM_WORD_BYTES = initiator_if.RMEM_WORD_BYTES;
+
+    if (s_axis_local.DATA_W != DATA_W || m_axis_local.DATA_W != DATA_W
+        || s_axis_eth.DATA_W != DATA_W || m_axis_eth.DATA_W != DATA_W) begin
+        : g_bad_data_width
+        $fatal(0, "Error: AXI stream data widths must be 32 bits (instance %m)");
+    end
+
+    if (s_axis_local.KEEP_W != KEEP_W || m_axis_local.KEEP_W != KEEP_W
+        || s_axis_eth.KEEP_W != KEEP_W || m_axis_eth.KEEP_W != KEEP_W
+        || !s_axis_local.KEEP_EN || !m_axis_local.KEEP_EN
+        || !s_axis_eth.KEEP_EN || !m_axis_eth.KEEP_EN) begin : g_bad_keep_width
+        $fatal(0, "Error: AXI streams must enable four-bit KEEP masks (instance %m)");
+    end
+
+    if (initiator_if.ADDR_W != ADDR_W || responder_if.ADDR_W != ADDR_W
+        || peer_lookup_if.ADDR_W != ADDR_W) begin : g_bad_addr_width
+        $fatal(0, "Error: transfer and lookup address widths must be 32 bits (instance %m)");
+    end
+
     taxi_axis_if #(
-        .DATA_W(s_axis_local.DATA_W),
-        .KEEP_W(s_axis_local.KEEP_W),
-        .KEEP_EN(s_axis_local.KEEP_EN),
-        .STRB_EN(s_axis_local.STRB_EN),
-        .LAST_EN(s_axis_local.LAST_EN),
-        .ID_EN(s_axis_local.ID_EN),
-        .ID_W(s_axis_local.ID_W),
-        .DEST_EN(s_axis_local.DEST_EN),
-        .DEST_W(s_axis_local.DEST_W),
-        .USER_EN(s_axis_local.USER_EN),
-        .USER_W(s_axis_local.USER_W)
-    ) local_input();
+        .DATA_W(DATA_W),
+        .KEEP_W(KEEP_W),
+        .KEEP_EN(1'b1),
+        .STRB_EN(1'b1),
+        .LAST_EN(1'b1),
+        .ID_EN(1'b1),
+        .DEST_EN(1'b1),
+        .USER_EN(1'b1),
+        .ID_W(SEQ_W),
+        .DEST_W(DEST_W),
+        .USER_W(2)
+    ) local_tx(), local_rx();
+
+    taxi_axis_if #(
+        .DATA_W(DATA_W),
+        .KEEP_W(KEEP_W),
+        .KEEP_EN(1'b1),
+        .STRB_EN(1'b1),
+        .LAST_EN(1'b1)
+    ) eth_rx(), eth_tx();
 
     taxi_axis_register #(
         .REG_TYPE(2)
@@ -40,26 +100,12 @@ module openenoc_endpoint_oetp_engine #(
         .clk(clk),
         .rst(rst),
         .s_axis(s_axis_local),
-        .m_axis(local_input)
+        .m_axis(local_tx)
     );
 
     taxi_axis_if #(
-        .DATA_W(m_axis_local.DATA_W),
-        .KEEP_W(m_axis_local.KEEP_W),
-        .KEEP_EN(m_axis_local.KEEP_EN),
-        .STRB_EN(m_axis_local.STRB_EN),
-        .LAST_EN(m_axis_local.LAST_EN),
-        .ID_EN(m_axis_local.ID_EN),
-        .ID_W(m_axis_local.ID_W),
-        .DEST_EN(m_axis_local.DEST_EN),
-        .DEST_W(m_axis_local.DEST_W),
-        .USER_EN(m_axis_local.USER_EN),
-        .USER_W(m_axis_local.USER_W)
-    ) local_output();
-
-    taxi_axis_if #(
-        .DATA_W(m_axis_local.DATA_W),
-        .KEEP_W(m_axis_local.KEEP_W),
+        .DATA_W(DATA_W),
+        .KEEP_W(KEEP_W),
         .KEEP_EN(m_axis_local.KEEP_EN),
         .STRB_EN(m_axis_local.STRB_EN),
         .LAST_EN(m_axis_local.LAST_EN),
@@ -87,23 +133,9 @@ module openenoc_endpoint_oetp_engine #(
     ) u_local_output_register (
         .clk(clk),
         .rst(rst),
-        .s_axis(local_output),
+        .s_axis(local_rx),
         .m_axis(local_registered)
     );
-
-    taxi_axis_if #(
-        .DATA_W(s_axis_eth.DATA_W),
-        .KEEP_W(s_axis_eth.KEEP_W),
-        .KEEP_EN(s_axis_eth.KEEP_EN),
-        .STRB_EN(s_axis_eth.STRB_EN),
-        .LAST_EN(s_axis_eth.LAST_EN),
-        .ID_EN(s_axis_eth.ID_EN),
-        .ID_W(s_axis_eth.ID_W),
-        .DEST_EN(s_axis_eth.DEST_EN),
-        .DEST_W(s_axis_eth.DEST_W),
-        .USER_EN(s_axis_eth.USER_EN),
-        .USER_W(s_axis_eth.USER_W)
-    ) eth_input();
 
     taxi_axis_register #(
         .REG_TYPE(2)
@@ -111,26 +143,12 @@ module openenoc_endpoint_oetp_engine #(
         .clk(clk),
         .rst(rst),
         .s_axis(s_axis_eth),
-        .m_axis(eth_input)
+        .m_axis(eth_rx)
     );
 
     taxi_axis_if #(
-        .DATA_W(m_axis_eth.DATA_W),
-        .KEEP_W(m_axis_eth.KEEP_W),
-        .KEEP_EN(m_axis_eth.KEEP_EN),
-        .STRB_EN(m_axis_eth.STRB_EN),
-        .LAST_EN(m_axis_eth.LAST_EN),
-        .ID_EN(m_axis_eth.ID_EN),
-        .ID_W(m_axis_eth.ID_W),
-        .DEST_EN(m_axis_eth.DEST_EN),
-        .DEST_W(m_axis_eth.DEST_W),
-        .USER_EN(m_axis_eth.USER_EN),
-        .USER_W(m_axis_eth.USER_W)
-    ) eth_output();
-
-    taxi_axis_if #(
-        .DATA_W(m_axis_eth.DATA_W),
-        .KEEP_W(m_axis_eth.KEEP_W),
+        .DATA_W(DATA_W),
+        .KEEP_W(KEEP_W),
         .KEEP_EN(m_axis_eth.KEEP_EN),
         .STRB_EN(m_axis_eth.STRB_EN),
         .LAST_EN(m_axis_eth.LAST_EN),
@@ -157,15 +175,14 @@ module openenoc_endpoint_oetp_engine #(
     ) u_eth_output_register (
         .clk(clk),
         .rst(rst),
-        .s_axis(eth_output),
+        .s_axis(eth_tx),
         .m_axis(eth_registered)
     );
 
-    localparam int PEER_W = peer_lookup_if.PEER_IDX_W;
-    localparam int SEQ_W = initiator_if.SEQUENCE_W;
     wire [31:0] rmem_timeout_cycles = endpoint_if.csr_to_core.config_.rmem_timeout.cycles.value;
-    localparam int DEST_W = PEER_W + 2;
-    localparam int MAX_FRAGMENT = ((MAX_RAW_FRAME_SIZE - 32) / 4) * 4;
+    localparam int MAX_FRAGMENT =
+        ((MAX_RAW_FRAME_SIZE - OETP_DMA_FRAME_OVERHEAD_BYTES) / OETP_DATA_ALIGNMENT_BYTES)
+        * OETP_DATA_ALIGNMENT_BYTES;
     localparam logic [31:0] END_OF_DATA = 32'hE0D0E0D0;
     localparam logic[7:0] RMEM_READ_REQ = 8'h10, RMEM_READ_RSP = 8'h11, RMEM_WRITE_REQ = 8'h20,
         RMEM_WRITE_RSP = 8'h21, DMA_READ_REQ = 8'h30, DMA_READ_RSP = 8'h31, DMA_WRITE_REQ = 8'h40,
@@ -175,57 +192,11 @@ module openenoc_endpoint_oetp_engine #(
         $fatal(0, "Invalid oETP frame ceiling (instance %m)");
     end
 
-    if (initiator_if.ADDR_W != 32 || initiator_if.LEN_W != 32 || responder_if.SEQUENCE_W != SEQ_W
-        || local_input.USER_W < 2 || local_output.USER_W < 2 || local_input.DEST_W != DEST_W
-        || local_output.DEST_W != DEST_W) begin : g_bad_interface
+    if (initiator_if.LEN_W != 32 || responder_if.SEQUENCE_W != SEQ_W
+        || s_axis_local.USER_W < 2 || m_axis_local.USER_W < 2 || s_axis_local.DEST_W != DEST_W
+        || m_axis_local.DEST_W != DEST_W) begin : g_bad_interface
         $fatal(0, "Incompatible oETP interfaces (instance %m)");
     end
-
-    taxi_axis_if #(
-        .DATA_W(32),
-        .KEEP_EN(1),
-        .LAST_EN(1),
-        .ID_EN(1),
-        .DEST_EN(1),
-        .USER_EN(1),
-        .ID_W(SEQ_W),
-        .DEST_W(DEST_W),
-        .USER_W(2)
-    ) local_tx(), local_rx();
-
-    taxi_axis_if #(
-        .DATA_W(32),
-        .KEEP_EN(1),
-        .LAST_EN(1)
-    ) eth_rx(), eth_tx();
-
-    taxi_axis_adapter u_local_tx (
-        .clk(clk),
-        .rst(rst),
-        .s_axis(local_input),
-        .m_axis(local_tx)
-    );
-
-    taxi_axis_adapter u_local_rx (
-        .clk(clk),
-        .rst(rst),
-        .s_axis(local_rx),
-        .m_axis(local_output)
-    );
-
-    taxi_axis_adapter u_eth_rx (
-        .clk(clk),
-        .rst(rst),
-        .s_axis(eth_input),
-        .m_axis(eth_rx)
-    );
-
-    taxi_axis_adapter u_eth_tx (
-        .clk(clk),
-        .rst(rst),
-        .s_axis(eth_tx),
-        .m_axis(eth_output)
-    );
 
     function automatic logic [31:0] byte_count(input logic [3:0] keep);
         return 32'(keep[0]) + 32'(keep[1]) + 32'(keep[2]) + 32'(keep[3]);
@@ -280,6 +251,16 @@ module openenoc_endpoint_oetp_engine #(
     function automatic logic [7:0] request_command(input logic kind, op);
         if (kind) return op ? RMEM_WRITE_REQ : RMEM_READ_REQ;
         return op ? DMA_WRITE_REQ : DMA_READ_REQ;
+    endfunction
+
+    function automatic logic [7:0] response_for_request(input logic [7:0] cmd);
+        case (cmd)
+            RMEM_READ_REQ: return RMEM_READ_RSP;
+            RMEM_WRITE_REQ: return RMEM_WRITE_RSP;
+            DMA_READ_REQ: return DMA_READ_RSP;
+            DMA_WRITE_REQ: return DMA_WRITE_RSP;
+            default: return ERROR_RSP;
+        endcase
     endfunction
 
     typedef enum logic [3:0] {
@@ -439,7 +420,7 @@ module openenoc_endpoint_oetp_engine #(
     wire[31:0] tx_source_len = tx_responder_reg ? responder_completed_len_reg
         : initiator_source_len_reg;
     wire[3:0] tx_final_error = tx_source_error != 0 ? tx_source_error : tx_fault_reg != 0
-        ? tx_fault_reg : tx_source_len != tx_length_reg ? 4'd2 : 4'd0;
+        ? tx_fault_reg : tx_source_len != tx_length_reg ? ERROR_LOCAL_AXIS : 4'd0;
     wire local_is_raw = local_tx.tdest[PEER_W+:2] != initiator_if.ROUTE_PEER;
     wire local_matches_initiator = local_tx.tvalid && !local_is_raw && !local_tx.tuser[1]
         && local_tx.tdest[PEER_W-1:0] == initiator_context_reg.peer
@@ -479,10 +460,13 @@ module openenoc_endpoint_oetp_engine #(
         tx_selected_context = tx_select_responder ? responder_context_reg : initiator_context_reg;
         tx_selected_error = tx_select_responder && responder_done_reg && responder_error_reg != 0;
         if (tx_select_responder) begin
-            if (tx_selected_error) tx_selected_cmd = ERROR_RSP;
-            else
-                tx_selected_cmd = request_command(responder_context_reg.kind,
-                        responder_context_reg.op) | 8'h01;
+            if (tx_selected_error) begin
+                tx_selected_cmd = ERROR_RSP;
+            end else begin
+                tx_selected_cmd = response_for_request(
+                    request_command(responder_context_reg.kind, responder_context_reg.op)
+                );
+            end
         end else begin
             tx_selected_cmd = request_command(initiator_context_reg.kind, initiator_context_reg.op);
         end
@@ -490,24 +474,27 @@ module openenoc_endpoint_oetp_engine #(
             && (tx_select_responder ? !tx_selected_context.op : tx_selected_context.op);
     end
 
-    wire initiator_rmem_valid = peer_lookup_if.rsp_dma_mode == 1
-        && initiator_context_reg.addr[1:0] == 0 && initiator_context_reg.len == 4;
-    wire initiator_dma_valid = peer_lookup_if.rsp_dma_mode == (initiator_context_reg.op ? 2'd3
-            : 2'd2) && initiator_context_reg.len != 0
+    wire initiator_rmem_valid = peer_lookup_if.rsp_dma_mode == DMA_MODE_RMEM
+        && initiator_context_reg.addr[1:0] == 0
+        && initiator_context_reg.len == 32'(RMEM_WORD_BYTES);
+    wire initiator_dma_valid = peer_lookup_if.rsp_dma_mode
+        == (initiator_context_reg.op ? DMA_MODE_MIRROR_TO_REMOTE : DMA_MODE_MIRROR_TO_LOCAL)
+        && initiator_context_reg.len != 0
         && initiator_context_reg.len <= 32'(MAX_FRAGMENT);
     wire initiator_lookup_valid = peer_lookup_if.rsp_hit && !initiator_context_reg.local_mac[40] &&
         (!peer_lookup_if.rsp_mac_addr[40] || initiator_context_reg.op) &&
         (initiator_context_reg.kind ? initiator_rmem_valid : initiator_dma_valid) &&
         {1'b0, initiator_context_reg.addr} + {1'b0, initiator_context_reg.len} <= 33'h100000000;
 
-    wire[7:0] expected_response_command = request_command(initiator_context_reg.kind,
-            initiator_context_reg.op) | 8'h01;
+    wire [7:0] expected_response_command = response_for_request(
+        request_command(initiator_context_reg.kind, initiator_context_reg.op)
+    );
     wire rx_response_matches = (initiator_state_reg == INITIATOR_WAIT
             || (initiator_state_reg == INITIATOR_TX && timer_active_reg)) && !rx_group
         && rx_source == initiator_context_reg.mac && rx_header_reg[4] == initiator_context_reg.id
         && (rx_cmd_reg == ERROR_RSP || rx_cmd_reg == expected_response_command);
     wire rx_protocol_header = rx_header_count_reg == 4 && rx_header_keep_reg[3][2:0] == 3'b111
-        && rx_header_reg[3][23:0] == 24'h0eb588;
+        && rx_header_reg[3][23:0] == OETP_HEADER_SIGNATURE;
     wire rx_destination_matches = rx_group ? rx_destination == rx_group_mac_reg
         : rx_destination == rx_local_mac_reg;
     wire rx_raw_admitted = rx_receive_mode_reg != 0
@@ -658,7 +645,7 @@ module openenoc_endpoint_oetp_engine #(
                 initiator_timeout_reg <= initiator_context_reg.kind ? rmem_timeout_cycles
                     : endpoint_if.csr_to_core.config_.dma_timeout.cycles.value;
                 if (!initiator_config_valid_reg) begin
-                    initiator_error_reg <= 1;
+                    initiator_error_reg <= ERROR_LOCAL_INVALID;
                 end
             end
 
@@ -667,7 +654,8 @@ module openenoc_endpoint_oetp_engine #(
                 initiator_source_len_reg <= initiator_if.tx_status_len;
                 initiator_source_error_reg <= initiator_if.tx_status_peer_idx
                     != initiator_context_reg.peer
-                    || initiator_if.tx_status_sequence != initiator_context_reg.sequence_ ? 4'd2
+                    || initiator_if.tx_status_sequence != initiator_context_reg.sequence_
+                    ? ERROR_LOCAL_AXIS
                     : 4'(initiator_if.tx_status_error_code);
             end
 
@@ -705,7 +693,7 @@ module openenoc_endpoint_oetp_engine #(
 
             if (timer_expire) begin
                 timer_active_reg <= 0;
-                initiator_error_reg <= 8;
+                initiator_error_reg <= ERROR_TIMEOUT;
                 initiator_delivered_reg <= rx_data_bytes_reg;
             end
         end
@@ -775,11 +763,11 @@ module openenoc_endpoint_oetp_engine #(
     always_ff @(posedge clk) begin : lookup_control
         peer_lookup_if.req_valid <= rst ? '0 : ((lookup_state_reg == LOOKUP_INITIATOR_REQ
                     || lookup_state_reg == LOOKUP_RX_REQ) && !(lookup_req_fire));
-        peer_lookup_if.req_type <= rst ? '0
-            : (lookup_state_reg == LOOKUP_RX_REQ ? 2'd2
-                : (initiator_context_reg.kind ? 2'd2 : 2'd0));
+        peer_lookup_if.req_type <= rst ? LOOKUP_BY_INDEX
+            : (lookup_state_reg == LOOKUP_RX_REQ ? LOOKUP_BY_MAC
+                : (initiator_context_reg.kind ? LOOKUP_BY_MAC : LOOKUP_BY_INDEX));
         peer_lookup_if.req_mode_mask <= rst ? '0 : (lookup_state_reg == LOOKUP_INITIATOR_REQ
-                && initiator_context_reg.kind ? 4'b0010 : 4'b1110);
+                && initiator_context_reg.kind ? LOOKUP_RMEM_MODE_MASK : LOOKUP_ACTIVE_MODE_MASK);
         peer_lookup_if.req_peer_idx <= rst ? '0 : initiator_context_reg.peer;
         peer_lookup_if.req_rmem_addr <= '0;
         peer_lookup_if.req_mac_addr <= rst ? '0
@@ -833,7 +821,7 @@ module openenoc_endpoint_oetp_engine #(
                     || rx_cmd_reg == DMA_WRITE_REQ));
         responder_if.req_addr <= rst ? '0 : (rx_header_reg[5]);
         responder_if.req_len <= rst ? '0 : ((rx_cmd_reg[7:4] == 1
-                    || rx_cmd_reg[7:4] == 2) ? 32'd4 : rx_length_reg);
+                    || rx_cmd_reg[7:4] == 2) ? 32'(RMEM_WORD_BYTES) : rx_length_reg);
         responder_if.req_biten <= rst ? '0 : (rx_header_reg[6]);
         responder_if.req_wdata <= rst ? '0 : (rx_header_reg[7]);
         responder_if.req_peer_idx <= rst ? '0 : rx_peer_reg;
@@ -853,7 +841,8 @@ module openenoc_endpoint_oetp_engine #(
         responder_if.rx_status_sequence <= rst ? '0 : rx_sequence_reg;
         responder_if.rx_status_len <= rst ? '0 : rx_data_bytes_reg;
         responder_if.rx_status_error_code <= rst ? '0
-            : (responder_if.ERROR_W'(rx_error_reg == 10 ? 4'd2 : rx_error_reg));
+            : (responder_if.ERROR_W'(rx_error_reg == ERROR_REMOTE_AXIS
+                ? ERROR_LOCAL_AXIS : rx_error_reg));
         responder_if.non_oetp_rx_claim_valid <= rst ? '0 : ((rx_state_reg == RX_RAW_CLAIM)
                 && !(responder_non_oetp_rx_claim_fire));
 
@@ -1029,7 +1018,7 @@ module openenoc_endpoint_oetp_engine #(
                     rx_ended_reg <= 1;
                 end
                 if (!keep_valid(eth_rx.tkeep) || (!eth_rx.tlast && eth_rx.tkeep != 4'hf)) begin
-                    rx_error_reg <= rx_bulk ? 4'd10 : 4'd2;
+                    rx_error_reg <= rx_bulk ? ERROR_REMOTE_AXIS : ERROR_LOCAL_AXIS;
                 end
             end
 
@@ -1041,7 +1030,7 @@ module openenoc_endpoint_oetp_engine #(
                 rx_frame_bytes_reg <= byte_count(eth_rx.tkeep);
                 rx_ended_reg <= eth_rx.tlast;
                 rx_error_reg <= !keep_valid(eth_rx.tkeep)
-                    || (!eth_rx.tlast && eth_rx.tkeep != 4'hf) ? 4'd2 : 4'd0;
+                    || (!eth_rx.tlast && eth_rx.tkeep != 4'hf) ? ERROR_LOCAL_AXIS : 4'd0;
                 rx_own_reg <= 0;
                 rx_request_sent_reg <= 0;
                 rx_data_bytes_reg <= 0;
@@ -1075,7 +1064,7 @@ module openenoc_endpoint_oetp_engine #(
                 rx_header_count_reg <= rx_header_count_reg + 1;
                 if (rx_state_reg == RX_META && eth_rx.tlast
                     && rx_header_count_reg + 1 < rx_meta_words_reg) begin
-                    rx_error_reg <= 2;
+                    rx_error_reg <= ERROR_LOCAL_AXIS;
                 end
             end
 
@@ -1095,24 +1084,26 @@ module openenoc_endpoint_oetp_engine #(
                 rx_length_reg <= initiator_context_reg.len;
                 if (rx_cmd_reg == DMA_READ_RSP) begin
                     rx_logical_bytes_reg <= 24 + ((initiator_context_reg.len + 3) & 32'hfffffffc);
-                    if (rx_ended_reg) rx_error_reg <= 10;
+                    if (rx_ended_reg) rx_error_reg <= ERROR_REMOTE_AXIS;
                 end
             end
 
             if (lookup_rx_rsp_fire && peer_lookup_if.rsp_hit) begin
                 rx_peer_reg <= peer_lookup_if.rsp_peer_idx;
                 rx_sequence_reg <= SEQ_W'(responder_sequence_reg);
-                rx_length_reg <= rx_is_rmem ? 32'd4 : rx_header_reg[6];
+                rx_length_reg <= rx_is_rmem ? 32'(RMEM_WORD_BYTES) : rx_header_reg[6];
                 rx_route_reg <= initiator_if.ROUTE_PEER;
                 if (rx_cmd_reg == DMA_WRITE_REQ) begin
                     rx_logical_bytes_reg <= 32 + ((rx_header_reg[6] + 3) & 32'hfffffffc);
                 end
-                if ((rx_is_rmem && (peer_lookup_if.rsp_dma_mode != 1 || rx_header_reg[5][1:0] != 0))
-                    || (!rx_is_rmem && peer_lookup_if.rsp_dma_mode != (rx_write ? 2'd2 : 2'd3))
+                if ((rx_is_rmem && (peer_lookup_if.rsp_dma_mode != DMA_MODE_RMEM
+                    || rx_header_reg[5][1:0] != 0))
+                    || (!rx_is_rmem && peer_lookup_if.rsp_dma_mode
+                        != (rx_write ? DMA_MODE_MIRROR_TO_LOCAL : DMA_MODE_MIRROR_TO_REMOTE))
                     || (!rx_is_rmem && rx_header_reg[6] == 0)) begin
-                    rx_error_reg <= 1;
+                    rx_error_reg <= ERROR_LOCAL_INVALID;
                 end else if (!rx_is_rmem && rx_header_reg[6] > 32'(MAX_FRAGMENT)) begin
-                    rx_error_reg <= 3;
+                    rx_error_reg <= ERROR_LOCAL_OVERFLOW;
                 end
             end
 
@@ -1133,7 +1124,7 @@ module openenoc_endpoint_oetp_engine #(
                 rx_hold_last_reg <= eth_rx.tlast || rx_data_bytes_reg + 4 >= rx_length_reg;
                 rx_data_bytes_reg <= rx_data_bytes_reg
                     + byte_count(eth_rx.tkeep & byte_mask(rx_length_reg - rx_data_bytes_reg));
-                if (eth_rx.tlast) rx_error_reg <= 10;
+                if (eth_rx.tlast) rx_error_reg <= ERROR_REMOTE_AXIS;
             end
 
             if ((rx_state_reg == RX_EOD || rx_state_reg == RX_TAIL || rx_state_reg == RX_VALIDATE
@@ -1148,13 +1139,13 @@ module openenoc_endpoint_oetp_engine #(
 
             if (rx_state_reg == RX_EOD && rx_input_fire
                 && (eth_rx.tdata != END_OF_DATA || eth_rx.tkeep != 4'hf)) begin
-                rx_error_reg <= 10;
+                rx_error_reg <= ERROR_REMOTE_AXIS;
             end
 
             if (rx_state_reg == RX_VALIDATE && rx_error_reg == 0
                 && (!frame_length_valid(rx_frame_bytes_reg, rx_logical_bytes_reg)
                     || rx_frame_bytes_reg > 32'(MAX_RAW_FRAME_SIZE))) begin
-                rx_error_reg <= rx_bulk ? 4'd10 : 4'd2;
+                rx_error_reg <= rx_bulk ? ERROR_REMOTE_AXIS : ERROR_LOCAL_AXIS;
             end
 
             if (rx_state_reg == RX_RAW_REPLAY && rx_output_fire) begin
@@ -1325,7 +1316,7 @@ module openenoc_endpoint_oetp_engine #(
                         tx_selected_context.local_mac[23:16],
                         tx_selected_context.local_mac[31:24]
                     };
-                    tx_header_reg[3] <= {tx_selected_cmd, 24'h0eb588};
+                    tx_header_reg[3] <= {tx_selected_cmd, OETP_HEADER_SIGNATURE};
                     tx_header_reg[4] <= tx_selected_context.id;
                     tx_header_reg[5] <= tx_select_responder ?
                         (tx_selected_error ? {28'd0, responder_error_reg} : responder_result_reg) :
@@ -1378,7 +1369,7 @@ module openenoc_endpoint_oetp_engine #(
                         && tx_data_bytes_reg + byte_count(local_tx.tkeep) != tx_length_reg)
                     || (!local_tx.tlast
                         && tx_data_bytes_reg + byte_count(local_tx.tkeep) >= tx_length_reg)) begin
-                    tx_fault_reg <= 2;
+                    tx_fault_reg <= ERROR_LOCAL_AXIS;
                 end
             end
 

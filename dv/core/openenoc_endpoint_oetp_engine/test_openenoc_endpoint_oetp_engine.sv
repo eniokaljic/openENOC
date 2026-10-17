@@ -6,8 +6,8 @@
 
 /* Isolated oETP transport wrapper. */
 module test_openenoc_endpoint_oetp_engine #(
-    parameter int LOCAL_DATA_W = 32,
-    ETH_DATA_W = 32, MAX_RAW_FRAME_SIZE = 8192) ();
+    parameter int MAX_RAW_FRAME_SIZE = 8192
+) ();
     logic clk, rst;
     logic [47:0] mac_address, multicast_address;
     logic [31:0] rmem_timeout, dma_timeout;
@@ -233,7 +233,7 @@ module test_openenoc_endpoint_oetp_engine #(
     end
 
     taxi_axis_if #(
-        .DATA_W(LOCAL_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1),
         .ID_EN(1),
@@ -245,7 +245,7 @@ module test_openenoc_endpoint_oetp_engine #(
     ) local_tx_if();
 
     taxi_axis_if #(
-        .DATA_W(LOCAL_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1),
         .ID_EN(1),
@@ -257,13 +257,13 @@ module test_openenoc_endpoint_oetp_engine #(
     ) local_rx_if();
 
     taxi_axis_if #(
-        .DATA_W(ETH_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1)
     ) eth_rx_if();
 
     taxi_axis_if #(
-        .DATA_W(ETH_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1)
     ) eth_tx_if();
