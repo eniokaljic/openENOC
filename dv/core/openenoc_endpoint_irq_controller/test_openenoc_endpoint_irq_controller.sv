@@ -72,7 +72,7 @@ module test_openenoc_endpoint_irq_controller #(
         endpoint_if.csr_to_core.irq.complete.valid.value = complete_valid;
         endpoint_if.csr_to_core.irq.complete.peer_idx.value = complete_peer_idx;
         endpoint_if.csr_to_core.irq.complete.source.value = complete_source;
-        endpoint_if.csr_to_core.irq.complete.sequence_.value = complete_sequence;
+        endpoint_if.csr_to_core.irq.complete.seq.value = complete_sequence;
     end
 
     assign clear_errors_hwclr = endpoint_if.core_to_csr.irq.control.clear_errors.hwclr;
@@ -80,7 +80,7 @@ module test_openenoc_endpoint_irq_controller #(
     assign claim_valid = endpoint_if.core_to_csr.irq.claim.valid.next;
     assign claim_peer_idx = endpoint_if.core_to_csr.irq.claim.peer_idx.next;
     assign claim_source = endpoint_if.core_to_csr.irq.claim.source.next;
-    assign claim_sequence = endpoint_if.core_to_csr.irq.claim.sequence_.next;
+    assign claim_sequence = endpoint_if.core_to_csr.irq.claim.seq.next;
     assign claim_pending = endpoint_if.core_to_csr.irq.status.claim_pending.next;
     assign credit_full = endpoint_if.core_to_csr.irq.status.credit_full.next;
     assign overflow = endpoint_if.core_to_csr.irq.status.overflow.next;

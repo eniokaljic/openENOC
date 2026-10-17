@@ -10,15 +10,15 @@ openenoc_endpoint_status_t openenoc_endpoint_get_config(
     if (endpoint == NULL || ((uintptr_t)endpoint & 3U) != 0U || config == NULL) {
         return OPENENOC_ENDPOINT_STATUS_INVALID_ARGUMENT;
     }
-    openenoc_endpoint_mac_unpack(endpoint->config.mac_address.f.lo_word,
-        endpoint->config.mac_address.f.hi_word, &config->mac_address);
-    openenoc_endpoint_mac_unpack(endpoint->config.multicast_address.f.lo_word,
-        endpoint->config.multicast_address.f.hi_word, &config->multicast_address);
+    openenoc_endpoint_mac_unpack(endpoint->conf.mac_address.f.lo_word,
+        endpoint->conf.mac_address.f.hi_word, &config->mac_address);
+    openenoc_endpoint_mac_unpack(endpoint->conf.multicast_address.f.lo_word,
+        endpoint->conf.multicast_address.f.hi_word, &config->multicast_address);
     config->receive_mode =
-        (openenoc_endpoint_receive_mode_t)endpoint->config.non_oetp_control.f.receive_mode;
-    config->rmem_timeout_cycles = endpoint->config.rmem_timeout.f.cycles;
-    config->dma_timeout_cycles = endpoint->config.dma_timeout.f.cycles;
-    config->dma_max_fragment_size_bytes = endpoint->config.dma_max_fragment_size.f.bytes;
+        (openenoc_endpoint_receive_mode_t)endpoint->conf.non_oetp_control.f.receive_mode;
+    config->rmem_timeout_cycles = endpoint->conf.rmem_timeout.f.cycles;
+    config->dma_timeout_cycles = endpoint->conf.dma_timeout.f.cycles;
+    config->dma_max_fragment_size_bytes = endpoint->conf.dma_max_fragment_size.f.bytes;
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
 
@@ -46,20 +46,20 @@ openenoc_endpoint_status_t openenoc_endpoint_set_config(
     {
         openenoc_endpoint_mac_words_t words = openenoc_endpoint_mac_pack(&config->mac_address);
 
-        endpoint->config.mac_address.f.lo_word = words.lower;
-        endpoint->config.mac_address.f.hi_word = words.upper;
+        endpoint->conf.mac_address.f.lo_word = words.lower;
+        endpoint->conf.mac_address.f.hi_word = words.upper;
     }
     {
         openenoc_endpoint_mac_words_t words =
             openenoc_endpoint_mac_pack(&config->multicast_address);
 
-        endpoint->config.multicast_address.f.lo_word = words.lower;
-        endpoint->config.multicast_address.f.hi_word = words.upper;
+        endpoint->conf.multicast_address.f.lo_word = words.lower;
+        endpoint->conf.multicast_address.f.hi_word = words.upper;
     }
-    endpoint->config.non_oetp_control.f.receive_mode = config->receive_mode;
-    endpoint->config.rmem_timeout.f.cycles = config->rmem_timeout_cycles;
-    endpoint->config.dma_timeout.f.cycles = config->dma_timeout_cycles;
-    endpoint->config.dma_max_fragment_size.f.bytes = config->dma_max_fragment_size_bytes;
+    endpoint->conf.non_oetp_control.f.receive_mode = config->receive_mode;
+    endpoint->conf.rmem_timeout.f.cycles = config->rmem_timeout_cycles;
+    endpoint->conf.dma_timeout.f.cycles = config->dma_timeout_cycles;
+    endpoint->conf.dma_max_fragment_size.f.bytes = config->dma_max_fragment_size_bytes;
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
 
@@ -72,8 +72,8 @@ openenoc_endpoint_status_t openenoc_endpoint_set_mac_address(
     {
         openenoc_endpoint_mac_words_t words = openenoc_endpoint_mac_pack(address);
 
-        endpoint->config.mac_address.f.lo_word = words.lower;
-        endpoint->config.mac_address.f.hi_word = words.upper;
+        endpoint->conf.mac_address.f.lo_word = words.lower;
+        endpoint->conf.mac_address.f.hi_word = words.upper;
     }
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
@@ -87,8 +87,8 @@ openenoc_endpoint_status_t openenoc_endpoint_set_multicast_address(
     {
         openenoc_endpoint_mac_words_t words = openenoc_endpoint_mac_pack(address);
 
-        endpoint->config.multicast_address.f.lo_word = words.lower;
-        endpoint->config.multicast_address.f.hi_word = words.upper;
+        endpoint->conf.multicast_address.f.lo_word = words.lower;
+        endpoint->conf.multicast_address.f.hi_word = words.upper;
     }
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
@@ -99,7 +99,7 @@ openenoc_endpoint_status_t openenoc_endpoint_set_receive_mode(
         (unsigned int)mode > OPENENOC_ENDPOINT_RECEIVE_PROMISCUOUS) {
         return OPENENOC_ENDPOINT_STATUS_INVALID_ARGUMENT;
     }
-    endpoint->config.non_oetp_control.f.receive_mode = mode;
+    endpoint->conf.non_oetp_control.f.receive_mode = mode;
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
 
@@ -111,7 +111,7 @@ openenoc_endpoint_status_t openenoc_endpoint_set_rmem_timeout(
     if (endpoint == NULL || ((uintptr_t)endpoint & 3U) != 0U) {
         return OPENENOC_ENDPOINT_STATUS_INVALID_ARGUMENT;
     }
-    endpoint->config.rmem_timeout.f.cycles = cycles;
+    endpoint->conf.rmem_timeout.f.cycles = cycles;
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
 
@@ -123,7 +123,7 @@ openenoc_endpoint_status_t openenoc_endpoint_set_dma_timeout(
     if (endpoint == NULL || ((uintptr_t)endpoint & 3U) != 0U) {
         return OPENENOC_ENDPOINT_STATUS_INVALID_ARGUMENT;
     }
-    endpoint->config.dma_timeout.f.cycles = cycles;
+    endpoint->conf.dma_timeout.f.cycles = cycles;
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
 
@@ -141,7 +141,7 @@ openenoc_endpoint_status_t openenoc_endpoint_set_dma_max_fragment_size(
     if (effective < 4U || effective > openenoc_endpoint_max_peer_fragment_size()) {
         return OPENENOC_ENDPOINT_STATUS_OUT_OF_RANGE;
     }
-    endpoint->config.dma_max_fragment_size.f.bytes = requested_bytes;
+    endpoint->conf.dma_max_fragment_size.f.bytes = requested_bytes;
     if (effective_bytes != NULL) {
         *effective_bytes = effective;
     }

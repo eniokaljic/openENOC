@@ -24,7 +24,7 @@ Each entry occupies 16 bytes, all words are 32-bit aligned and match the
 | `+0x0` | `mac_address.lo_word`| MAC address `[31:0]`   |
 | `+0x4` | `mac_address.hi_word`| MAC address `[47:32]`  |
 | `+0x8` | `iface.bitmap`       | destination interfaces |
-| `+0xC` | `config.enabled`     | entry valid            |
+| `+0xC` | `conf.enabled`     | entry valid            |
 
 ### Modes of operation
 

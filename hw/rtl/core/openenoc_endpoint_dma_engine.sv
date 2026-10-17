@@ -236,7 +236,7 @@ module openenoc_endpoint_dma_engine #(
             * OETP_DATA_ALIGNMENT_BYTES : 0;
     localparam int unsigned RAW_TX_READ_CHUNK_BYTES = 8188;
     wire [31:0] configured_fragment_size =
-        endpoint_if.csr_to_core.config_.dma_max_fragment_size.bytes.value;
+        endpoint_if.csr_to_core.conf.dma_max_fragment_size.bytes.value;
     wire [31:0] effective_fragment_size = {configured_fragment_size[31:2], 2'b00};
 
     // CPUIF requests are converted to scalar transport commands.

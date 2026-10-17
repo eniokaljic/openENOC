@@ -179,7 +179,7 @@ module openenoc_endpoint_oetp_engine #(
         .m_axis(eth_registered)
     );
 
-    wire [31:0] rmem_timeout_cycles = endpoint_if.csr_to_core.config_.rmem_timeout.cycles.value;
+    wire [31:0] rmem_timeout_cycles = endpoint_if.csr_to_core.conf.rmem_timeout.cycles.value;
     localparam int MAX_FRAGMENT =
         ((MAX_RAW_FRAME_SIZE - OETP_DMA_FRAME_OVERHEAD_BYTES) / OETP_DATA_ALIGNMENT_BYTES)
         * OETP_DATA_ALIGNMENT_BYTES;
@@ -622,8 +622,8 @@ module openenoc_endpoint_oetp_engine #(
                         initiator_if.req_peer_idx].mac_address.lo_word.value
                 };
                 initiator_context_reg.local_mac <= {
-                    endpoint_if.csr_to_core.config_.mac_address.hi_word.value,
-                    endpoint_if.csr_to_core.config_.mac_address.lo_word.value
+                    endpoint_if.csr_to_core.conf.mac_address.hi_word.value,
+                    endpoint_if.csr_to_core.conf.mac_address.lo_word.value
                 };
                 initiator_error_reg <= 0;
                 initiator_result_reg <= 0;
@@ -643,7 +643,7 @@ module openenoc_endpoint_oetp_engine #(
                 initiator_context_reg.id <= request_id_reg;
                 request_id_reg <= request_id_reg + 1;
                 initiator_timeout_reg <= initiator_context_reg.kind ? rmem_timeout_cycles
-                    : endpoint_if.csr_to_core.config_.dma_timeout.cycles.value;
+                    : endpoint_if.csr_to_core.conf.dma_timeout.cycles.value;
                 if (!initiator_config_valid_reg) begin
                     initiator_error_reg <= ERROR_LOCAL_INVALID;
                 end
@@ -1046,15 +1046,15 @@ module openenoc_endpoint_oetp_engine #(
                     rx_header_last_reg[n] <= 0;
                 end
                 rx_local_mac_reg <= {
-                    endpoint_if.csr_to_core.config_.mac_address.hi_word.value,
-                    endpoint_if.csr_to_core.config_.mac_address.lo_word.value
+                    endpoint_if.csr_to_core.conf.mac_address.hi_word.value,
+                    endpoint_if.csr_to_core.conf.mac_address.lo_word.value
                 };
                 rx_group_mac_reg <= {
-                    endpoint_if.csr_to_core.config_.multicast_address.hi_word.value,
-                    endpoint_if.csr_to_core.config_.multicast_address.lo_word.value
+                    endpoint_if.csr_to_core.conf.multicast_address.hi_word.value,
+                    endpoint_if.csr_to_core.conf.multicast_address.lo_word.value
                 };
                 rx_receive_mode_reg
-                    <= endpoint_if.csr_to_core.config_.non_oetp_control.receive_mode.value;
+                    <= endpoint_if.csr_to_core.conf.non_oetp_control.receive_mode.value;
             end
 
             if ((rx_state_reg == RX_HEADER || rx_state_reg == RX_META) && rx_input_fire) begin

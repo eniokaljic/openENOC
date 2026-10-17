@@ -85,14 +85,14 @@ module test_openenoc_endpoint_interface ();
     assign local_wr_biten = rmem_cpuif.wr_biten;
     always_comb begin
         endpoint_if.csr_to_core = '{default: '0};
-        endpoint_if.csr_to_core.config_.dma_max_fragment_size.bytes.value = fragment_size;
-        endpoint_if.csr_to_core.config_.mac_address.lo_word.value = mac_address[31:0];
-        endpoint_if.csr_to_core.config_.mac_address.hi_word.value = mac_address[47:32];
-        endpoint_if.csr_to_core.config_.multicast_address.lo_word.value = multicast_address[31:0];
-        endpoint_if.csr_to_core.config_.multicast_address.hi_word.value = multicast_address[47:32];
-        endpoint_if.csr_to_core.config_.non_oetp_control.receive_mode.value = receive_mode;
-        endpoint_if.csr_to_core.config_.dma_timeout.cycles.value = dma_timeout_cycles;
-        endpoint_if.csr_to_core.config_.rmem_timeout.cycles.value = rmem_timeout_cycles;
+        endpoint_if.csr_to_core.conf.dma_max_fragment_size.bytes.value = fragment_size;
+        endpoint_if.csr_to_core.conf.mac_address.lo_word.value = mac_address[31:0];
+        endpoint_if.csr_to_core.conf.mac_address.hi_word.value = mac_address[47:32];
+        endpoint_if.csr_to_core.conf.multicast_address.lo_word.value = multicast_address[31:0];
+        endpoint_if.csr_to_core.conf.multicast_address.hi_word.value = multicast_address[47:32];
+        endpoint_if.csr_to_core.conf.non_oetp_control.receive_mode.value = receive_mode;
+        endpoint_if.csr_to_core.conf.dma_timeout.cycles.value = dma_timeout_cycles;
+        endpoint_if.csr_to_core.conf.rmem_timeout.cycles.value = rmem_timeout_cycles;
         endpoint_if.csr_to_core.axis_if.source.data.tdata.value = tx_data;
         endpoint_if.csr_to_core.axis_if.source.control.tkeep.value = tx_keep;
         endpoint_if.csr_to_core.axis_if.source.control.tlast.value = tx_last;
@@ -110,7 +110,7 @@ module test_openenoc_endpoint_interface ();
             event_enable[4];
         endpoint_if.csr_to_core.irq.complete.peer_idx.value = complete[10:0];
         endpoint_if.csr_to_core.irq.complete.source.value = complete[14:11];
-        endpoint_if.csr_to_core.irq.complete.sequence_.value = complete[30:15];
+        endpoint_if.csr_to_core.irq.complete.seq.value = complete[30:15];
         endpoint_if.csr_to_core.irq.complete.valid.value = complete[31];
         endpoint_if.csr_to_core.non_oetp_dma.tx.buffer_address.base.value = non_tx_address;
         endpoint_if.csr_to_core.non_oetp_dma.tx.frame_length.bytes.value = non_tx_length;
@@ -171,7 +171,7 @@ module test_openenoc_endpoint_interface ();
     assign rmem_rd_data = endpoint_if.core_to_csr.rmem.rd_data;
     assign claim = {
         endpoint_if.core_to_csr.irq.claim.valid.next,
-        endpoint_if.core_to_csr.irq.claim.sequence_.next,
+        endpoint_if.core_to_csr.irq.claim.seq.next,
         endpoint_if.core_to_csr.irq.claim.source.next,
         endpoint_if.core_to_csr.irq.claim.peer_idx.next
     };

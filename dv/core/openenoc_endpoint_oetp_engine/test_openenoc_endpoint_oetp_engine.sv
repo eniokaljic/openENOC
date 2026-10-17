@@ -218,13 +218,13 @@ module test_openenoc_endpoint_oetp_engine #(
     assign raw_claim_valid = responder_if.non_oetp_rx_claim_valid;
     always_comb begin
         endpoint_if.csr_to_core = '{default: '0};
-        endpoint_if.csr_to_core.config_.mac_address.hi_word.value = mac_address[47:32];
-        endpoint_if.csr_to_core.config_.mac_address.lo_word.value = mac_address[31:0];
-        endpoint_if.csr_to_core.config_.multicast_address.hi_word.value = multicast_address[47:32];
-        endpoint_if.csr_to_core.config_.multicast_address.lo_word.value = multicast_address[31:0];
-        endpoint_if.csr_to_core.config_.rmem_timeout.cycles.value = rmem_timeout;
-        endpoint_if.csr_to_core.config_.dma_timeout.cycles.value = dma_timeout;
-        endpoint_if.csr_to_core.config_.non_oetp_control.receive_mode.value = receive_mode;
+        endpoint_if.csr_to_core.conf.mac_address.hi_word.value = mac_address[47:32];
+        endpoint_if.csr_to_core.conf.mac_address.lo_word.value = mac_address[31:0];
+        endpoint_if.csr_to_core.conf.multicast_address.hi_word.value = multicast_address[47:32];
+        endpoint_if.csr_to_core.conf.multicast_address.lo_word.value = multicast_address[31:0];
+        endpoint_if.csr_to_core.conf.rmem_timeout.cycles.value = rmem_timeout;
+        endpoint_if.csr_to_core.conf.dma_timeout.cycles.value = dma_timeout;
+        endpoint_if.csr_to_core.conf.non_oetp_control.receive_mode.value = receive_mode;
         for (int n = 0; n < 4; n++) begin
             endpoint_if.csr_to_core.peers.entry[n].mac_address.hi_word.value =
                 peer_mac[n*48+32+:16];

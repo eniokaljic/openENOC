@@ -94,7 +94,7 @@ No supported members.
 |Offset| Identifier |                Name               |
 |------|------------|-----------------------------------|
 | 0x000|    info    |    csr.endpoint_interface.info    |
-| 0x020|   config   |   csr.endpoint_interface.config   |
+| 0x020|    conf    |    csr.endpoint_interface.conf    |
 | 0x040|   axis_if  |   csr.endpoint_interface.axis_if  |
 | 0x060|non_oetp_dma|csr.endpoint_interface.non_oetp_dma|
 | 0x080|     irq    |     csr.endpoint_interface.irq    |
@@ -164,7 +164,7 @@ header, oETP write metadata, data-word padding and EndOfData. An 8192-byte
 frame limit permits 8160-byte memory fragments. A value of zero indicates
 that DMA is not supported.</p>
 
-## config register file
+## conf register file
 
 - Absolute Address: 0x20000820
 - Base Offset: 0x20
@@ -172,14 +172,14 @@ that DMA is not supported.</p>
 
 <p>Configuration register file for this openENOC Endpoint Interface instance.</p>
 
-|Offset|      Identifier     |                        Name                       |
-|------|---------------------|---------------------------------------------------|
-| 0x00 |     mac_address     |     csr.endpoint_interface.config.mac_address     |
-| 0x08 |  multicast_address  |  csr.endpoint_interface.config.multicast_address  |
-| 0x10 |   non_oetp_control  |   csr.endpoint_interface.config.non_oetp_control  |
-| 0x14 |     rmem_timeout    |     csr.endpoint_interface.config.rmem_timeout    |
-| 0x18 |     dma_timeout     |     csr.endpoint_interface.config.dma_timeout     |
-| 0x1C |dma_max_fragment_size|csr.endpoint_interface.config.dma_max_fragment_size|
+|Offset|      Identifier     |                       Name                      |
+|------|---------------------|-------------------------------------------------|
+| 0x00 |     mac_address     |     csr.endpoint_interface.conf.mac_address     |
+| 0x08 |  multicast_address  |  csr.endpoint_interface.conf.multicast_address  |
+| 0x10 |   non_oetp_control  |   csr.endpoint_interface.conf.non_oetp_control  |
+| 0x14 |     rmem_timeout    |     csr.endpoint_interface.conf.rmem_timeout    |
+| 0x18 |     dma_timeout     |     csr.endpoint_interface.conf.dma_timeout     |
+| 0x1C |dma_max_fragment_size|csr.endpoint_interface.conf.dma_max_fragment_size|
 
 ### mac_address register
 
@@ -190,12 +190,12 @@ that DMA is not supported.</p>
 <p>Local endpoint 48-bit unicast MAC address. The oETP engine uses this address
 as its source MAC and compares individual-addressed incoming oETP frames against
 it. The I/G bit in the first MAC octet must be zero. Group-addressed oETP frames
-are compared against config.multicast_address instead.</p>
+are compared against conf.multicast_address instead.</p>
 
-| Bits|Identifier|Access|Reset|                          Name                          |
-|-----|----------|------|-----|--------------------------------------------------------|
-| 31:0|  lo_word |  rw  | 0x0 | csr.endpoint_interface.config.mac_address.lo_word[31:0]|
-|47:32|  hi_word |  rw  | 0x0 |csr.endpoint_interface.config.mac_address.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                         Name                         |
+|-----|----------|------|-----|------------------------------------------------------|
+| 31:0|  lo_word |  rw  | 0x0 | csr.endpoint_interface.conf.mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  | 0x0 |csr.endpoint_interface.conf.mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -219,10 +219,10 @@ reset value and matches no group-addressed destination, disabling oETP group
 reception. Broadcast is accepted only when this address is all ones. This field
 does not change the separate non-oETP receive-mode policy.</p>
 
-| Bits|Identifier|Access|Reset|                             Name                             |
-|-----|----------|------|-----|--------------------------------------------------------------|
-| 31:0|  lo_word |  rw  | 0x0 | csr.endpoint_interface.config.multicast_address.lo_word[31:0]|
-|47:32|  hi_word |  rw  | 0x0 |csr.endpoint_interface.config.multicast_address.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                            Name                            |
+|-----|----------|------|-----|------------------------------------------------------------|
+| 31:0|  lo_word |  rw  | 0x0 | csr.endpoint_interface.conf.multicast_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  | 0x0 |csr.endpoint_interface.conf.multicast_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -240,9 +240,9 @@ does not change the separate non-oETP receive-mode policy.</p>
 
 <p>Receive policy for Ethernet frames that do not carry oETP traffic.</p>
 
-|Bits| Identifier |Access|Reset|                              Name                              |
-|----|------------|------|-----|----------------------------------------------------------------|
-| 1:0|receive_mode|  rw  | 0x1 |csr.endpoint_interface.config.non_oetp_control.receive_mode[1:0]|
+|Bits| Identifier |Access|Reset|                             Name                             |
+|----|------------|------|-----|--------------------------------------------------------------|
+| 1:0|receive_mode|  rw  | 0x1 |csr.endpoint_interface.conf.non_oetp_control.receive_mode[1:0]|
 
 #### receive_mode field
 
@@ -265,9 +265,9 @@ is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
 <p>Timeout configuration for transparent RMEM operations.</p>
 
-|Bits|Identifier|Access|Reset|                          Name                         |
-|----|----------|------|-----|-------------------------------------------------------|
-|31:0|  cycles  |  rw  | 0x0 |csr.endpoint_interface.config.rmem_timeout.cycles[31:0]|
+|Bits|Identifier|Access|Reset|                         Name                        |
+|----|----------|------|-----|-----------------------------------------------------|
+|31:0|  cycles  |  rw  | 0x0 |csr.endpoint_interface.conf.rmem_timeout.cycles[31:0]|
 
 #### cycles field
 
@@ -295,9 +295,9 @@ peers.entry[].dma register and may generate a separate RMEM_ERROR IRQ event.</p>
 
 <p>Common response timeout for locally initiated unicast peer DMA fragments.</p>
 
-|Bits|Identifier|Access|Reset|                         Name                         |
-|----|----------|------|-----|------------------------------------------------------|
-|31:0|  cycles  |  rw  | 0x0 |csr.endpoint_interface.config.dma_timeout.cycles[31:0]|
+|Bits|Identifier|Access|Reset|                        Name                        |
+|----|----------|------|-----|----------------------------------------------------|
+|31:0|  cycles  |  rw  | 0x0 |csr.endpoint_interface.conf.dma_timeout.cycles[31:0]|
 
 #### cycles field
 
@@ -326,9 +326,9 @@ writes, non-oETP DMA, or transparent RMEM operations.</p>
 <p>Common software-selected maximum memory fragment size for locally
 initiated peer DMA transfers. The synthesis-time frame limit remains fixed.</p>
 
-|Bits|Identifier|Access| Reset|                              Name                             |
-|----|----------|------|------|---------------------------------------------------------------|
-|31:0|   bytes  |  rw  |0x1FE0|csr.endpoint_interface.config.dma_max_fragment_size.bytes[31:0]|
+|Bits|Identifier|Access| Reset|                             Name                            |
+|----|----------|------|------|-------------------------------------------------------------|
+|31:0|   bytes  |  rw  |0x1FE0|csr.endpoint_interface.conf.dma_max_fragment_size.bytes[31:0]|
 
 #### bytes field
 
@@ -999,7 +999,7 @@ irq.complete request removes the claim.</p>
 |-----|----------|------|-----|-----------------------------------------------|
 | 10:0| peer_idx |   r  |  —  |csr.endpoint_interface.irq.claim.peer_idx[10:0]|
 |14:11|  source  |   r  |  —  |  csr.endpoint_interface.irq.claim.source[3:0] |
-|30:15| sequence |   r  |  —  |csr.endpoint_interface.irq.claim.sequence[15:0]|
+|30:15|    seq   |   r  |  —  |   csr.endpoint_interface.irq.claim.seq[15:0]  |
 |  31 |   valid  |   r  |  —  |     csr.endpoint_interface.irq.claim.valid    |
 
 #### peer_idx field
@@ -1027,7 +1027,7 @@ recorded in peers.entry[peer_idx].dma; peer_idx identifies the associated peer.<
 <p></ul>
 This field is meaningful only when valid is set.</p>
 
-#### sequence field
+#### seq field
 
 <p>Monotonically increasing event sequence number, modulo 65536. The sequence
 number distinguishes otherwise identical claims and protects against stale or
@@ -1051,7 +1051,7 @@ copying the complete 32-bit irq.claim value into this register.</p>
 |-----|----------|------|-----|--------------------------------------------------|
 | 10:0| peer_idx |  rw  | 0x0 |csr.endpoint_interface.irq.complete.peer_idx[10:0]|
 |14:11|  source  |  rw  | 0x0 |  csr.endpoint_interface.irq.complete.source[3:0] |
-|30:15| sequence |  rw  | 0x0 |csr.endpoint_interface.irq.complete.sequence[15:0]|
+|30:15|    seq   |  rw  | 0x0 |   csr.endpoint_interface.irq.complete.seq[15:0]  |
 |  31 |   valid  |  rw  | 0x0 |     csr.endpoint_interface.irq.complete.valid    |
 
 #### peer_idx field
@@ -1062,7 +1062,7 @@ copying the complete 32-bit irq.claim value into this register.</p>
 
 <p>Event-source portion of the claim token.</p>
 
-#### sequence field
+#### seq field
 
 <p>Sequence-number portion of the claim token.</p>
 
@@ -7412,7 +7412,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7451,7 +7451,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x2000108C
 - Base Offset: 0xC
@@ -7459,9 +7459,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 
@@ -7482,7 +7482,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7521,7 +7521,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x2000109C
 - Base Offset: 0xC
@@ -7529,9 +7529,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 
@@ -7552,7 +7552,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7591,7 +7591,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x200010AC
 - Base Offset: 0xC
@@ -7599,9 +7599,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 
@@ -7622,7 +7622,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7661,7 +7661,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x200010BC
 - Base Offset: 0xC
@@ -7669,9 +7669,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 
@@ -7692,7 +7692,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7731,7 +7731,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x200010CC
 - Base Offset: 0xC
@@ -7739,9 +7739,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 
@@ -7762,7 +7762,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7801,7 +7801,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x200010DC
 - Base Offset: 0xC
@@ -7809,9 +7809,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 
@@ -7832,7 +7832,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7871,7 +7871,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x200010EC
 - Base Offset: 0xC
@@ -7879,9 +7879,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 
@@ -7902,7 +7902,7 @@ peers regfile.</p>
 |------|-----------|-------------------------------------------------------------------------|
 |  0x0 |mac_address|csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -7941,7 +7941,7 @@ peers regfile.</p>
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x200010FC
 - Base Offset: 0xC
@@ -7949,9 +7949,9 @@ peers regfile.</p>
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                    Name                                    |
-|----|----------|------|-----|----------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                   Name                                   |
+|----|----------|------|-----|--------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |csr.switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 

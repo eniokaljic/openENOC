@@ -215,7 +215,7 @@ module test_openenoc_endpoint_dma_engine #(
 
     always_comb begin
         endpoint_if.csr_to_core = '{default: '0};
-        endpoint_if.csr_to_core.config_.dma_max_fragment_size.bytes.value =
+        endpoint_if.csr_to_core.conf.dma_max_fragment_size.bytes.value =
             dma_max_fragment_size_bytes;
         endpoint_if.csr_to_core.irq.event_enable.peer_dma_complete.value = event_enable[0];
         endpoint_if.csr_to_core.irq.event_enable.rmem_error.value = event_enable[5];

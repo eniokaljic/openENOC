@@ -102,21 +102,21 @@ regfile openenoc_endpoint_interface #(
         } max_dma_frame_size_bytes[63:48] = MAX_RAW_FRAME_SIZE;
     } info;
 
-    regfile config {
-        name = {INST_NAME, ".config"};
+    regfile conf {
+        name = {INST_NAME, ".conf"};
         desc = "Configuration register file for this openENOC Endpoint Interface instance.";
 
         reg mac_address {
-            name = {INST_NAME, ".config.mac_address"};
+            name = {INST_NAME, ".conf.mac_address"};
             desc = "Local endpoint 48-bit unicast MAC address. The oETP engine uses this address
                 as its source MAC and compares individual-addressed incoming oETP frames against
                 it. The I/G bit in the first MAC octet must be zero. Group-addressed oETP frames
-                are compared against config.multicast_address instead.";
+                are compared against conf.multicast_address instead.";
 
             regwidth = 64;
 
             field {
-                name = {INST_NAME, ".config.mac_address.lo_word[31:0]"};
+                name = {INST_NAME, ".conf.mac_address.lo_word[31:0]"};
                 desc = "Lower 32 bits [31:0] of the 48-bit MAC address.";
 
                 sw = rw;
@@ -124,7 +124,7 @@ regfile openenoc_endpoint_interface #(
             } lo_word[31:0] = 0;
 
             field {
-                name = {INST_NAME, ".config.mac_address.hi_word[47:32]"};
+                name = {INST_NAME, ".conf.mac_address.hi_word[47:32]"};
                 desc = "Upper 16 bits [47:32] of the 48-bit MAC address.";
 
                 sw = rw;
@@ -133,7 +133,7 @@ regfile openenoc_endpoint_interface #(
         } mac_address;
 
         reg multicast_address {
-            name = {INST_NAME, ".config.multicast_address"};
+            name = {INST_NAME, ".conf.multicast_address"};
             desc = "Local endpoint 48-bit multicast destination MAC address. For an incoming
                 oETP frame whose destination I/G bit is one, the engine accepts the destination
                 only when it exactly matches this address. All slave endpoints in a replication
@@ -145,7 +145,7 @@ regfile openenoc_endpoint_interface #(
             regwidth = 64;
 
             field {
-                name = {INST_NAME, ".config.multicast_address.lo_word[31:0]"};
+                name = {INST_NAME, ".conf.multicast_address.lo_word[31:0]"};
                 desc = "Lower 32 bits [31:0] of the 48-bit multicast MAC address.";
 
                 sw = rw;
@@ -153,7 +153,7 @@ regfile openenoc_endpoint_interface #(
             } lo_word[31:0] = 0;
 
             field {
-                name = {INST_NAME, ".config.multicast_address.hi_word[47:32]"};
+                name = {INST_NAME, ".conf.multicast_address.hi_word[47:32]"};
                 desc = "Upper 16 bits [47:32] of the 48-bit multicast MAC address.";
 
                 sw = rw;
@@ -162,11 +162,11 @@ regfile openenoc_endpoint_interface #(
         } multicast_address;
 
         reg non_oetp_control {
-            name = {INST_NAME, ".config.non_oetp_control"};
+            name = {INST_NAME, ".conf.non_oetp_control"};
             desc = "Receive policy for Ethernet frames that do not carry oETP traffic.";
 
             field {
-                name = {INST_NAME, ".config.non_oetp_control.receive_mode[1:0]"};
+                name = {INST_NAME, ".conf.non_oetp_control.receive_mode[1:0]"};
                 desc = "
                     Receive mode for non-oETP Ethernet frames:<ul>
                     <li>0: Drop all non-oETP Ethernet frames.</li>
@@ -186,11 +186,11 @@ regfile openenoc_endpoint_interface #(
         } non_oetp_control;
 
         reg rmem_timeout {
-            name = {INST_NAME, ".config.rmem_timeout"};
+            name = {INST_NAME, ".conf.rmem_timeout"};
             desc = "Timeout configuration for transparent RMEM operations.";
 
             field {
-                name = {INST_NAME, ".config.rmem_timeout.cycles[31:0]"};
+                name = {INST_NAME, ".conf.rmem_timeout.cycles[31:0]"};
                 desc = "Maximum wait for an RMEM response in endpoint clock cycles. Zero disables
                     the timeout and permits an indefinite response wait. Hardware samples this
                     value when it accepts an RMEM operation; subsequent writes apply to later
@@ -213,11 +213,11 @@ regfile openenoc_endpoint_interface #(
         } rmem_timeout;
 
         reg dma_timeout {
-            name = {INST_NAME, ".config.dma_timeout"};
+            name = {INST_NAME, ".conf.dma_timeout"};
             desc = "Common response timeout for locally initiated unicast peer DMA fragments.";
 
             field {
-                name = {INST_NAME, ".config.dma_timeout.cycles[31:0]"};
+                name = {INST_NAME, ".conf.dma_timeout.cycles[31:0]"};
                 desc = "Maximum wait for a response to one peer DMA fragment, in endpoint clock
                     cycles. This value is shared by all peers. Zero disables the timeout and
                     permits an indefinite response wait. Hardware samples this value when the
@@ -240,12 +240,12 @@ regfile openenoc_endpoint_interface #(
         } dma_timeout;
 
         reg dma_max_fragment_size {
-            name = {INST_NAME, ".config.dma_max_fragment_size"};
+            name = {INST_NAME, ".conf.dma_max_fragment_size"};
             desc = "Common software-selected maximum memory fragment size for locally
                 initiated peer DMA transfers. The synthesis-time frame limit remains fixed.";
 
             field {
-                name = {INST_NAME, ".config.dma_max_fragment_size.bytes[31:0]"};
+                name = {INST_NAME, ".conf.dma_max_fragment_size.bytes[31:0]"};
                 desc = "Maximum meaningful memory bytes in one locally initiated DMA fragment,
                     excluding Ethernet/oETP headers, word padding, EndOfData and FCS. The
                     hardware rounds the written value down to a multiple of four before
@@ -268,7 +268,7 @@ regfile openenoc_endpoint_interface #(
             } bytes[31:0] = (MAX_RAW_FRAME_SIZE > 32) ?
                 ((MAX_RAW_FRAME_SIZE - 32) / 4) * 4 : 0;
         } dma_max_fragment_size;
-    } config;
+    } conf;
 
     regfile axis_if {
         name = {INST_NAME, ".axis_if"};
@@ -923,14 +923,14 @@ regfile openenoc_endpoint_interface #(
             } source[14:11];
 
             field {
-                name = {INST_NAME, ".irq.claim.sequence[15:0]"};
+                name = {INST_NAME, ".irq.claim.seq[15:0]"};
                 desc = "Monotonically increasing event sequence number, modulo 65536. The sequence
                     number distinguishes otherwise identical claims and protects against stale or
                     repeated completion requests.";
 
                 sw = r;
                 hw = w;
-            } sequence[30:15];
+            } seq[30:15];
 
             field {
                 name = {INST_NAME, ".irq.claim.valid"};
@@ -964,12 +964,12 @@ regfile openenoc_endpoint_interface #(
             } source[14:11] = 0;
 
             field {
-                name = {INST_NAME, ".irq.complete.sequence[15:0]"};
+                name = {INST_NAME, ".irq.complete.seq[15:0]"};
                 desc = "Sequence-number portion of the claim token.";
 
                 sw = rw;
                 hw = r;
-            } sequence[30:15] = 0;
+            } seq[30:15] = 0;
 
             field {
                 name = {INST_NAME, ".irq.complete.valid"};

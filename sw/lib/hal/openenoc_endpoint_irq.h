@@ -59,7 +59,7 @@ typedef void (*openenoc_endpoint_irq_error_callback_t)(
 typedef struct {
     openenoc_endpoint_irq_source_t source;
     uint16_t peer_index;
-    uint16_t sequence;
+    uint16_t seq;
 } openenoc_endpoint_irq_claim_t;
 
 typedef void (*openenoc_endpoint_irq_callback_t)(

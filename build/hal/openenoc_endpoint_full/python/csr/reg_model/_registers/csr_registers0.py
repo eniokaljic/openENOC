@@ -44,65 +44,65 @@ from ...lib import FieldSizeProps, FieldMiscProps
 
 
 
-from .fields import csr_test_reg_test_field_0x2d10b449974b1aac_cls
-from .fields import openenoc_endpoint_interface_info_rmem_total_depth_0x1c7e4a55a4858634_cls
-from .fields import openenoc_endpoint_interface_info_num_of_peers_neg_0x5518c59f02e0f143_cls
-from .fields import openenoc_endpoint_interface_info_peer_dma_supported_neg_0xd95a983276af65f_cls
-from .fields import openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x4be54bc85b3f2c81_cls
-from .fields import openenoc_endpoint_interface_info_direct_axis_supported_neg_0x5868185a85cd4b2f_cls
-from .fields import openenoc_endpoint_interface_info_rmem_supported_0x14f76811800d8a02_cls
-from .fields import openenoc_endpoint_interface_info_irq_supported_0x6035e9c40a51546d_cls
-from .fields import openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x7c2002dfead2b04b_cls
-from .fields import openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x48b21d5256898003_cls
-from .fields import openenoc_endpoint_interface_config_mac_address_hi_word_0x5c389cda01b0a010_cls
-from .fields import openenoc_endpoint_interface_config_multicast_address_lo_word_0xa51d51e8c91ffaf_cls
-from .fields import openenoc_endpoint_interface_config_multicast_address_hi_word_0x2ab309c4ffe4e9d4_cls
-from .fields import openenoc_endpoint_interface_config_non_oetp_control_receive_mode_neg_0xd42228a8c7c937a_cls
-from .fields import openenoc_endpoint_interface_config_rmem_timeout_cycles_neg_0x21386ee83b5f90a9_cls
-from .fields import openenoc_endpoint_interface_config_dma_timeout_cycles_0x1b1c348b779c5fc_cls
-from .fields import openenoc_endpoint_interface_config_dma_max_fragment_size_bytes_0x56886a0b57a4a4fd_cls
-from .fields import openenoc_endpoint_interface_axis_if_source_data_tdata_0x17c4542c090ffd0e_cls
-from .fields import openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x267c2272d993b105_cls
-from .fields import openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x77cb31118f74f4c3_cls
-from .fields import openenoc_endpoint_interface_axis_if_source_control_tkeep_0x7eae4751b962a1c_cls
-from .fields import openenoc_endpoint_interface_axis_if_source_status_tready_0x67560cf213adb45d_cls
-from .fields import openenoc_endpoint_interface_axis_if_sink_data_tdata_0x2bdcea2731f9535_cls
-from .fields import openenoc_endpoint_interface_axis_if_sink_control_tready_0x4b7af26499667549_cls
-from .fields import openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x236d83f545db909d_cls
-from .fields import openenoc_endpoint_interface_axis_if_sink_status_tlast_0x2d9cca5e6baa0192_cls
-from .fields import openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x62a0176d39c90967_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_neg_0x28b01b54d9107f5e_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x6f39179e191d9c64_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x572b2ec04c2729a1_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_0x12df5b7087b874bd_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x2426ca7af38c78f9_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x38b21b6e94320d9f_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x36e24688106f345b_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x4154b313bb26714d_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_0x5c88bb9bca3414c_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0x65ddd3cff5827fd1_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x45d2dfc0e4c83489_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_0xdfa81fa399196fa_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x1a408665671a1e4d_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6da7c7e99a698bf5_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x5554fe7639dcbb69_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x69888afa28051618_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x27834466a0a1154b_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x2f5b737b8463ea9f_cls
-from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x62104ffbe60d6f40_cls
-from .fields import openenoc_endpoint_interface_irq_control_global_enable_neg_0x11fabf129a8cb0ac_cls
-from .fields import openenoc_endpoint_interface_irq_control_clear_errors_neg_0x2d370550f19815f7_cls
-from .fields import openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x4a570f4270edd42b_cls
-from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_0x486df9956df8d8c8_cls
-from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_0x6010eb6f58d7cb9d_cls
-from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4932758f41036931_cls
-from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_neg_0x242e0dcdd48d0d6d_cls
-from .fields import openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0xd42a525ded0713e_cls
+from .fields import csr_test_reg_test_field_0x6f032ba95bf69a98_cls
+from .fields import openenoc_endpoint_interface_info_rmem_total_depth_0x4954d9c8fb4a3a6d_cls
+from .fields import openenoc_endpoint_interface_info_num_of_peers_0x65481ce675c297da_cls
+from .fields import openenoc_endpoint_interface_info_peer_dma_supported_0x59fbf9651c1c8d48_cls
+from .fields import openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x3329e39ce98aff70_cls
+from .fields import openenoc_endpoint_interface_info_direct_axis_supported_neg_0x2bb306b0b80d324d_cls
+from .fields import openenoc_endpoint_interface_info_rmem_supported_neg_0x5d68dc712329ab72_cls
+from .fields import openenoc_endpoint_interface_info_irq_supported_0x185c69633fbe14f3_cls
+from .fields import openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x141331f5a5579c6_cls
+from .fields import openenoc_endpoint_interface_conf_mac_address_lo_word_neg_0x39e7a03ad372ae1d_cls
+from .fields import openenoc_endpoint_interface_conf_mac_address_hi_word_0x3be0e362a3477c91_cls
+from .fields import openenoc_endpoint_interface_conf_multicast_address_lo_word_neg_0xcc2ea928df26efe_cls
+from .fields import openenoc_endpoint_interface_conf_multicast_address_hi_word_neg_0x41ad67e676a2b60f_cls
+from .fields import openenoc_endpoint_interface_conf_non_oetp_control_receive_mode_neg_0x25285ab0c80b71c8_cls
+from .fields import openenoc_endpoint_interface_conf_rmem_timeout_cycles_neg_0x70d0832b71f863df_cls
+from .fields import openenoc_endpoint_interface_conf_dma_timeout_cycles_neg_0x8b21908088a8573_cls
+from .fields import openenoc_endpoint_interface_conf_dma_max_fragment_size_bytes_0x10d2931b375c3289_cls
+from .fields import openenoc_endpoint_interface_axis_if_source_data_tdata_neg_0x4200337404afbbdb_cls
+from .fields import openenoc_endpoint_interface_axis_if_source_control_tvalid_0x660d49a7122f428b_cls
+from .fields import openenoc_endpoint_interface_axis_if_source_control_tlast_0x1c04b5dfa51b2aae_cls
+from .fields import openenoc_endpoint_interface_axis_if_source_control_tkeep_neg_0x1a03c947030aa83f_cls
+from .fields import openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x581f7e9d5f5e2f1b_cls
+from .fields import openenoc_endpoint_interface_axis_if_sink_data_tdata_neg_0x19ea2d447c51524_cls
+from .fields import openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x125bfc15ab3a7ea1_cls
+from .fields import openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x273beaeaaceee30e_cls
+from .fields import openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db3c_cls
+from .fields import openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x41e9daceee55c7d9_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x7030e7e922f292a9_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f81daaff7e991_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x64e7c33beb60936_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675e833c8131f26_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfac110764e_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f5db423c53_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5abff4ff3275ca26_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x78f39c73069cb547_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0xb8b3602b59224ab_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x7b4778dcc2f5c76c_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5be936db61d3a9e5_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x2bccf9b5f5ec2565_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676aa26cd027663_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f6c2f6dcd4aac_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce5e006d24_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x6509eaa2d20f24bf_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36f3d0e68dd40db5_cls
+from .fields import openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x4ab94081c465a649_cls
+from .fields import openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_cls
+from .fields import openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cls
+from .fields import openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f89626bf3f7af85_cls
+from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x2c3b9124fdbda075_cls
+from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_neg_0x39c21b6d976dc82f_cls
+from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4e3922c0e6b057a6_cls
+from .fields import openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_0x121a7614ebc6daac_cls
+from .fields import openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0x44198ff7dedb74b6_cls
 
 # register definitions
-
-
-class csr_test_reg_neg_0x677cda965c5b4f3a_cls(RegReadWrite):
+    
+    
+class csr_test_reg_neg_0x5535581d552c04da_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -134,8 +134,8 @@ class csr_test_reg_neg_0x677cda965c5b4f3a_cls(RegReadWrite):
                          parent=parent)
 
         # build the field attributes
-
-        self.__test_field:csr_test_reg_test_field_0x2d10b449974b1aac_cls = csr_test_reg_test_field_0x2d10b449974b1aac_cls(
+        
+        self.__test_field:csr_test_reg_test_field_0x6f032ba95bf69a98_cls = csr_test_reg_test_field_0x6f032ba95bf69a98_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -156,12 +156,12 @@ class csr_test_reg_neg_0x677cda965c5b4f3a_cls(RegReadWrite):
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def test_field(self) -> csr_test_reg_test_field_0x2d10b449974b1aac_cls:
+    def test_field(self) -> csr_test_reg_test_field_0x6f032ba95bf69a98_cls:
         """
         Property to access test_field field of the register
 
@@ -180,29 +180,29 @@ class csr_test_reg_neg_0x677cda965c5b4f3a_cls(RegReadWrite):
         """
         return self.__test_field
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'test_field':'test_field',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'csr_test_reg_test_field_0x2d10b449974b1aac_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'csr_test_reg_test_field_0x6f032ba95bf69a98_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -210,25 +210,25 @@ class csr_test_reg_neg_0x677cda965c5b4f3a_cls(RegReadWrite):
     @property
     def rdl_desc(self) -> str:
         return "Test register"
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.test_field
+        
+        
+    
 
-
-
-
-
-
-class csr_regB_neg_0x1c6020bc076fddb_cls(RegReadWrite):
+    
+    
+class csr_regB_0x18090de868c4798_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
-
+    
     """
 
     __slots__ : list[str] = ['__f0', '__f1', '__f2', '__f3']
@@ -245,7 +245,7 @@ class csr_regB_neg_0x1c6020bc076fddb_cls(RegReadWrite):
                          parent=parent)
 
         # build the field attributes
-
+        
         self.__f0:FieldReadWrite = FieldReadWrite(
             parent_register=self,
             size_props=FieldSizeProps(
@@ -303,16 +303,16 @@ class csr_regB_neg_0x1c6020bc076fddb_cls(RegReadWrite):
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
     def f0(self) -> FieldReadWrite:
         """
         Property to access f0 field of the register
 
-
+        
         """
         return self.__f0
     @property
@@ -320,7 +320,7 @@ class csr_regB_neg_0x1c6020bc076fddb_cls(RegReadWrite):
         """
         Property to access f1 field of the register
 
-
+        
         """
         return self.__f1
     @property
@@ -328,7 +328,7 @@ class csr_regB_neg_0x1c6020bc076fddb_cls(RegReadWrite):
         """
         Property to access f2 field of the register
 
-
+        
         """
         return self.__f2
     @property
@@ -336,71 +336,71 @@ class csr_regB_neg_0x1c6020bc076fddb_cls(RegReadWrite):
         """
         Property to access f3 field of the register
 
-
+        
         """
         return self.__f3
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'f0':'f0','f1':'f1','f2':'f2','f3':'f3',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:4
-
+                
     @overload
     def get_child_by_system_rdl_name(self, name: Literal["f0"]) -> 'FieldReadWrite': ...
-
-
+                
+                
     @overload
     def get_child_by_system_rdl_name(self, name: Literal["f1"]) -> 'FieldReadWrite': ...
-
-
+                
+                
     @overload
     def get_child_by_system_rdl_name(self, name: Literal["f2"]) -> 'FieldReadWrite': ...
-
-
+                
+                
     @overload
     def get_child_by_system_rdl_name(self, name: Literal["f3"]) -> 'FieldReadWrite': ...
-
+                
 
     @overload
     def get_child_by_system_rdl_name(self, name: str) -> Union['FieldReadWrite', 'FieldReadWrite', 'FieldReadWrite', 'FieldReadWrite', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
+    
+    
 
+    
+    
 
-
-
-
-
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.f0
         yield self.f1
         yield self.f2
         yield self.f3
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
+    
+    
+class openenoc_endpoint_interface_info_neg_0x41f070dfe2c8dbd_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -433,8 +433,8 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
                          parent=parent)
 
         # build the field attributes
-
-        self.__rmem_total_depth:openenoc_endpoint_interface_info_rmem_total_depth_0x1c7e4a55a4858634_cls = openenoc_endpoint_interface_info_rmem_total_depth_0x1c7e4a55a4858634_cls(
+        
+        self.__rmem_total_depth:openenoc_endpoint_interface_info_rmem_total_depth_0x4954d9c8fb4a3a6d_cls = openenoc_endpoint_interface_info_rmem_total_depth_0x4954d9c8fb4a3a6d_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -446,7 +446,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
             logger_handle=logger_handle+'.rmem_total_depth',
             inst_name='rmem_total_depth',
             field_type=int)
-        self.__num_of_peers:openenoc_endpoint_interface_info_num_of_peers_neg_0x5518c59f02e0f143_cls = openenoc_endpoint_interface_info_num_of_peers_neg_0x5518c59f02e0f143_cls(
+        self.__num_of_peers:openenoc_endpoint_interface_info_num_of_peers_0x65481ce675c297da_cls = openenoc_endpoint_interface_info_num_of_peers_0x65481ce675c297da_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=11,
@@ -458,7 +458,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
             logger_handle=logger_handle+'.num_of_peers',
             inst_name='num_of_peers',
             field_type=int)
-        self.__peer_dma_supported:openenoc_endpoint_interface_info_peer_dma_supported_neg_0xd95a983276af65f_cls = openenoc_endpoint_interface_info_peer_dma_supported_neg_0xd95a983276af65f_cls(
+        self.__peer_dma_supported:openenoc_endpoint_interface_info_peer_dma_supported_0x59fbf9651c1c8d48_cls = openenoc_endpoint_interface_info_peer_dma_supported_0x59fbf9651c1c8d48_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -470,7 +470,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
             logger_handle=logger_handle+'.peer_dma_supported',
             inst_name='peer_dma_supported',
             field_type=int)
-        self.__non_oetp_dma_supported:openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x4be54bc85b3f2c81_cls = openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x4be54bc85b3f2c81_cls(
+        self.__non_oetp_dma_supported:openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x3329e39ce98aff70_cls = openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x3329e39ce98aff70_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -482,7 +482,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
             logger_handle=logger_handle+'.non_oetp_dma_supported',
             inst_name='non_oetp_dma_supported',
             field_type=int)
-        self.__direct_axis_supported:openenoc_endpoint_interface_info_direct_axis_supported_neg_0x5868185a85cd4b2f_cls = openenoc_endpoint_interface_info_direct_axis_supported_neg_0x5868185a85cd4b2f_cls(
+        self.__direct_axis_supported:openenoc_endpoint_interface_info_direct_axis_supported_neg_0x2bb306b0b80d324d_cls = openenoc_endpoint_interface_info_direct_axis_supported_neg_0x2bb306b0b80d324d_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -494,7 +494,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
             logger_handle=logger_handle+'.direct_axis_supported',
             inst_name='direct_axis_supported',
             field_type=int)
-        self.__rmem_supported:openenoc_endpoint_interface_info_rmem_supported_0x14f76811800d8a02_cls = openenoc_endpoint_interface_info_rmem_supported_0x14f76811800d8a02_cls(
+        self.__rmem_supported:openenoc_endpoint_interface_info_rmem_supported_neg_0x5d68dc712329ab72_cls = openenoc_endpoint_interface_info_rmem_supported_neg_0x5d68dc712329ab72_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -506,7 +506,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
             logger_handle=logger_handle+'.rmem_supported',
             inst_name='rmem_supported',
             field_type=int)
-        self.__irq_supported:openenoc_endpoint_interface_info_irq_supported_0x6035e9c40a51546d_cls = openenoc_endpoint_interface_info_irq_supported_0x6035e9c40a51546d_cls(
+        self.__irq_supported:openenoc_endpoint_interface_info_irq_supported_0x185c69633fbe14f3_cls = openenoc_endpoint_interface_info_irq_supported_0x185c69633fbe14f3_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -518,7 +518,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
             logger_handle=logger_handle+'.irq_supported',
             inst_name='irq_supported',
             field_type=int)
-        self.__max_dma_frame_size_bytes:openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x7c2002dfead2b04b_cls = openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x7c2002dfead2b04b_cls(
+        self.__max_dma_frame_size_bytes:openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x141331f5a5579c6_cls = openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x141331f5a5579c6_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=16,
@@ -539,12 +539,12 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def rmem_total_depth(self) -> openenoc_endpoint_interface_info_rmem_total_depth_0x1c7e4a55a4858634_cls:
+    def rmem_total_depth(self) -> openenoc_endpoint_interface_info_rmem_total_depth_0x4954d9c8fb4a3a6d_cls:
         """
         Property to access rmem_total_depth field of the register
 
@@ -564,7 +564,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__rmem_total_depth
     @property
-    def num_of_peers(self) -> openenoc_endpoint_interface_info_num_of_peers_neg_0x5518c59f02e0f143_cls:
+    def num_of_peers(self) -> openenoc_endpoint_interface_info_num_of_peers_0x65481ce675c297da_cls:
         """
         Property to access num_of_peers field of the register
 
@@ -585,7 +585,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__num_of_peers
     @property
-    def peer_dma_supported(self) -> openenoc_endpoint_interface_info_peer_dma_supported_neg_0xd95a983276af65f_cls:
+    def peer_dma_supported(self) -> openenoc_endpoint_interface_info_peer_dma_supported_0x59fbf9651c1c8d48_cls:
         """
         Property to access peer_dma_supported field of the register
 
@@ -605,7 +605,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__peer_dma_supported
     @property
-    def non_oetp_dma_supported(self) -> openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x4be54bc85b3f2c81_cls:
+    def non_oetp_dma_supported(self) -> openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x3329e39ce98aff70_cls:
         """
         Property to access non_oetp_dma_supported field of the register
 
@@ -625,7 +625,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__non_oetp_dma_supported
     @property
-    def direct_axis_supported(self) -> openenoc_endpoint_interface_info_direct_axis_supported_neg_0x5868185a85cd4b2f_cls:
+    def direct_axis_supported(self) -> openenoc_endpoint_interface_info_direct_axis_supported_neg_0x2bb306b0b80d324d_cls:
         """
         Property to access direct_axis_supported field of the register
 
@@ -645,7 +645,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__direct_axis_supported
     @property
-    def rmem_supported(self) -> openenoc_endpoint_interface_info_rmem_supported_0x14f76811800d8a02_cls:
+    def rmem_supported(self) -> openenoc_endpoint_interface_info_rmem_supported_neg_0x5d68dc712329ab72_cls:
         """
         Property to access rmem_supported field of the register
 
@@ -665,7 +665,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__rmem_supported
     @property
-    def irq_supported(self) -> openenoc_endpoint_interface_info_irq_supported_0x6035e9c40a51546d_cls:
+    def irq_supported(self) -> openenoc_endpoint_interface_info_irq_supported_0x185c69633fbe14f3_cls:
         """
         Property to access irq_supported field of the register
 
@@ -685,7 +685,7 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__irq_supported
     @property
-    def max_dma_frame_size_bytes(self) -> openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x7c2002dfead2b04b_cls:
+    def max_dma_frame_size_bytes(self) -> openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x141331f5a5579c6_cls:
         """
         Property to access max_dma_frame_size_bytes field of the register
 
@@ -711,64 +711,64 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         """
         return self.__max_dma_frame_size_bytes
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'rmem_total_depth':'rmem_total_depth','num_of_peers':'num_of_peers','peer_dma_supported':'peer_dma_supported','non_oetp_dma_supported':'non_oetp_dma_supported','direct_axis_supported':'direct_axis_supported','rmem_supported':'rmem_supported','irq_supported':'irq_supported','max_dma_frame_size_bytes':'max_dma_frame_size_bytes',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:8
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["rmem_total_depth"]) -> 'openenoc_endpoint_interface_info_rmem_total_depth_0x4954d9c8fb4a3a6d_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["num_of_peers"]) -> 'openenoc_endpoint_interface_info_num_of_peers_0x65481ce675c297da_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["peer_dma_supported"]) -> 'openenoc_endpoint_interface_info_peer_dma_supported_0x59fbf9651c1c8d48_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_dma_supported"]) -> 'openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x3329e39ce98aff70_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["direct_axis_supported"]) -> 'openenoc_endpoint_interface_info_direct_axis_supported_neg_0x2bb306b0b80d324d_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["rmem_supported"]) -> 'openenoc_endpoint_interface_info_rmem_supported_neg_0x5d68dc712329ab72_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["irq_supported"]) -> 'openenoc_endpoint_interface_info_irq_supported_0x185c69633fbe14f3_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["max_dma_frame_size_bytes"]) -> 'openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x141331f5a5579c6_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["rmem_total_depth"]) -> 'openenoc_endpoint_interface_info_rmem_total_depth_0x1c7e4a55a4858634_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["num_of_peers"]) -> 'openenoc_endpoint_interface_info_num_of_peers_neg_0x5518c59f02e0f143_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["peer_dma_supported"]) -> 'openenoc_endpoint_interface_info_peer_dma_supported_neg_0xd95a983276af65f_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_dma_supported"]) -> 'openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x4be54bc85b3f2c81_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["direct_axis_supported"]) -> 'openenoc_endpoint_interface_info_direct_axis_supported_neg_0x5868185a85cd4b2f_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["rmem_supported"]) -> 'openenoc_endpoint_interface_info_rmem_supported_0x14f76811800d8a02_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["irq_supported"]) -> 'openenoc_endpoint_interface_info_irq_supported_0x6035e9c40a51546d_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["max_dma_frame_size_bytes"]) -> 'openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x7c2002dfead2b04b_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_info_rmem_total_depth_0x1c7e4a55a4858634_cls', 'openenoc_endpoint_interface_info_num_of_peers_neg_0x5518c59f02e0f143_cls', 'openenoc_endpoint_interface_info_peer_dma_supported_neg_0xd95a983276af65f_cls', 'openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x4be54bc85b3f2c81_cls', 'openenoc_endpoint_interface_info_direct_axis_supported_neg_0x5868185a85cd4b2f_cls', 'openenoc_endpoint_interface_info_rmem_supported_0x14f76811800d8a02_cls', 'openenoc_endpoint_interface_info_irq_supported_0x6035e9c40a51546d_cls', 'openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x7c2002dfead2b04b_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_info_rmem_total_depth_0x4954d9c8fb4a3a6d_cls', 'openenoc_endpoint_interface_info_num_of_peers_0x65481ce675c297da_cls', 'openenoc_endpoint_interface_info_peer_dma_supported_0x59fbf9651c1c8d48_cls', 'openenoc_endpoint_interface_info_non_oetp_dma_supported_neg_0x3329e39ce98aff70_cls', 'openenoc_endpoint_interface_info_direct_axis_supported_neg_0x2bb306b0b80d324d_cls', 'openenoc_endpoint_interface_info_rmem_supported_neg_0x5d68dc712329ab72_cls', 'openenoc_endpoint_interface_info_irq_supported_0x185c69633fbe14f3_cls', 'openenoc_endpoint_interface_info_max_dma_frame_size_bytes_0x141331f5a5579c6_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -776,13 +776,13 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
     @property
     def rdl_desc(self) -> str:
         return "Read-only information register for this openENOC Endpoint Interface instance."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.rmem_total_depth
         yield self.num_of_peers
         yield self.peer_dma_supported
@@ -791,13 +791,13 @@ class openenoc_endpoint_interface_info_0x3817de09ce506118_cls(RegReadOnly):
         yield self.rmem_supported
         yield self.irq_supported
         yield self.max_dma_frame_size_bytes
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_conf_mac_address_neg_0x2b43e4939763c59b_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -807,7 +807,7 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.config.mac_address                          |
+    |              |      csr.endpoint_interface.conf.mac_address                            |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
@@ -815,7 +815,7 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
     |              |      this address as its source MAC and compares individual-addressed   |
     |              |      incoming oETP frames against it. The I/G bit in the first MAC      |
     |              |      octet must be zero. Group-addressed oETP frames are compared       |
-    |              |      against config.multicast_address instead.</p>                      |
+    |              |      against conf.multicast_address instead.</p>                        |
     +--------------+-------------------------------------------------------------------------+
     """
 
@@ -833,8 +833,8 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
                          parent=parent)
 
         # build the field attributes
-
-        self.__lo_word:openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x48b21d5256898003_cls = openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x48b21d5256898003_cls(
+        
+        self.__lo_word:openenoc_endpoint_interface_conf_mac_address_lo_word_neg_0x39e7a03ad372ae1d_cls = openenoc_endpoint_interface_conf_mac_address_lo_word_neg_0x39e7a03ad372ae1d_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -846,7 +846,7 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
             logger_handle=logger_handle+'.lo_word',
             inst_name='lo_word',
             field_type=int)
-        self.__hi_word:openenoc_endpoint_interface_config_mac_address_hi_word_0x5c389cda01b0a010_cls = openenoc_endpoint_interface_config_mac_address_hi_word_0x5c389cda01b0a010_cls(
+        self.__hi_word:openenoc_endpoint_interface_conf_mac_address_hi_word_0x3be0e362a3477c91_cls = openenoc_endpoint_interface_conf_mac_address_hi_word_0x3be0e362a3477c91_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=16,
@@ -867,12 +867,12 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def lo_word(self) -> openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x48b21d5256898003_cls:
+    def lo_word(self) -> openenoc_endpoint_interface_conf_mac_address_lo_word_neg_0x39e7a03ad372ae1d_cls:
         """
         Property to access lo_word field of the register
 
@@ -882,7 +882,7 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.mac_address.lo_word[31:0]            |
+        |              |      csr.endpoint_interface.conf.mac_address.lo_word[31:0]              |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -891,7 +891,7 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
         """
         return self.__lo_word
     @property
-    def hi_word(self) -> openenoc_endpoint_interface_config_mac_address_hi_word_0x5c389cda01b0a010_cls:
+    def hi_word(self) -> openenoc_endpoint_interface_conf_mac_address_hi_word_0x3be0e362a3477c91_cls:
         """
         Property to access hi_word field of the register
 
@@ -901,7 +901,7 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.mac_address.hi_word[47:32]           |
+        |              |      csr.endpoint_interface.conf.mac_address.hi_word[47:32]             |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -910,63 +910,63 @@ class openenoc_endpoint_interface_config_mac_address_neg_0x3801b58d64d1a9d_cls(R
         """
         return self.__hi_word
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'lo_word':'lo_word','hi_word':'hi_word',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:2
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_endpoint_interface_conf_mac_address_lo_word_neg_0x39e7a03ad372ae1d_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_endpoint_interface_conf_mac_address_hi_word_0x3be0e362a3477c91_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x48b21d5256898003_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_endpoint_interface_config_mac_address_hi_word_0x5c389cda01b0a010_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_config_mac_address_lo_word_neg_0x48b21d5256898003_cls', 'openenoc_endpoint_interface_config_mac_address_hi_word_0x5c389cda01b0a010_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_conf_mac_address_lo_word_neg_0x39e7a03ad372ae1d_cls', 'openenoc_endpoint_interface_conf_mac_address_hi_word_0x3be0e362a3477c91_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.config.mac_address"
+        return "csr.endpoint_interface.conf.mac_address"
     @property
     def rdl_desc(self) -> str:
-        return "Local endpoint 48-bit unicast MAC address. The oETP engine uses this address\nas its source MAC and compares individual-addressed incoming oETP frames against\nit. The I/G bit in the first MAC octet must be zero. Group-addressed oETP frames\nare compared against config.multicast_address instead."
+        return "Local endpoint 48-bit unicast MAC address. The oETP engine uses this address\nas its source MAC and compares individual-addressed incoming oETP frames against\nit. The I/G bit in the first MAC octet must be zero. Group-addressed oETP frames\nare compared against conf.multicast_address instead."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.lo_word
         yield self.hi_word
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_conf_multicast_address_neg_0x16f94bec702830f2_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -976,7 +976,7 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.config.multicast_address                    |
+    |              |      csr.endpoint_interface.conf.multicast_address                      |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
@@ -1006,8 +1006,8 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
                          parent=parent)
 
         # build the field attributes
-
-        self.__lo_word:openenoc_endpoint_interface_config_multicast_address_lo_word_0xa51d51e8c91ffaf_cls = openenoc_endpoint_interface_config_multicast_address_lo_word_0xa51d51e8c91ffaf_cls(
+        
+        self.__lo_word:openenoc_endpoint_interface_conf_multicast_address_lo_word_neg_0xcc2ea928df26efe_cls = openenoc_endpoint_interface_conf_multicast_address_lo_word_neg_0xcc2ea928df26efe_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -1019,7 +1019,7 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
             logger_handle=logger_handle+'.lo_word',
             inst_name='lo_word',
             field_type=int)
-        self.__hi_word:openenoc_endpoint_interface_config_multicast_address_hi_word_0x2ab309c4ffe4e9d4_cls = openenoc_endpoint_interface_config_multicast_address_hi_word_0x2ab309c4ffe4e9d4_cls(
+        self.__hi_word:openenoc_endpoint_interface_conf_multicast_address_hi_word_neg_0x41ad67e676a2b60f_cls = openenoc_endpoint_interface_conf_multicast_address_hi_word_neg_0x41ad67e676a2b60f_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=16,
@@ -1040,12 +1040,12 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def lo_word(self) -> openenoc_endpoint_interface_config_multicast_address_lo_word_0xa51d51e8c91ffaf_cls:
+    def lo_word(self) -> openenoc_endpoint_interface_conf_multicast_address_lo_word_neg_0xcc2ea928df26efe_cls:
         """
         Property to access lo_word field of the register
 
@@ -1055,7 +1055,7 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.multicast_address.lo_word[31:0]      |
+        |              |      csr.endpoint_interface.conf.multicast_address.lo_word[31:0]        |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -1064,7 +1064,7 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
         """
         return self.__lo_word
     @property
-    def hi_word(self) -> openenoc_endpoint_interface_config_multicast_address_hi_word_0x2ab309c4ffe4e9d4_cls:
+    def hi_word(self) -> openenoc_endpoint_interface_conf_multicast_address_hi_word_neg_0x41ad67e676a2b60f_cls:
         """
         Property to access hi_word field of the register
 
@@ -1074,7 +1074,7 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.multicast_address.hi_word[47:32]     |
+        |              |      csr.endpoint_interface.conf.multicast_address.hi_word[47:32]       |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -1083,63 +1083,63 @@ class openenoc_endpoint_interface_config_multicast_address_0x7ddf0f74585cdef8_cl
         """
         return self.__hi_word
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'lo_word':'lo_word','hi_word':'hi_word',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:2
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_endpoint_interface_conf_multicast_address_lo_word_neg_0xcc2ea928df26efe_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_endpoint_interface_conf_multicast_address_hi_word_neg_0x41ad67e676a2b60f_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["lo_word"]) -> 'openenoc_endpoint_interface_config_multicast_address_lo_word_0xa51d51e8c91ffaf_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["hi_word"]) -> 'openenoc_endpoint_interface_config_multicast_address_hi_word_0x2ab309c4ffe4e9d4_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_config_multicast_address_lo_word_0xa51d51e8c91ffaf_cls', 'openenoc_endpoint_interface_config_multicast_address_hi_word_0x2ab309c4ffe4e9d4_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_conf_multicast_address_lo_word_neg_0xcc2ea928df26efe_cls', 'openenoc_endpoint_interface_conf_multicast_address_hi_word_neg_0x41ad67e676a2b60f_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.config.multicast_address"
+        return "csr.endpoint_interface.conf.multicast_address"
     @property
     def rdl_desc(self) -> str:
         return "Local endpoint 48-bit multicast destination MAC address. For an incoming\noETP frame whose destination I/G bit is one, the engine accepts the destination\nonly when it exactly matches this address. All slave endpoints in a replication\ngroup use the same value. This address is not used as a source MAC. Zero is the\nreset value and matches no group-addressed destination, disabling oETP group\nreception. Broadcast is accepted only when this address is all ones. This field\ndoes not change the separate non-oETP receive-mode policy."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.lo_word
         yield self.hi_word
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_config_non_oetp_control_neg_0xa4dc5f32d81fa0c_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_conf_non_oetp_control_neg_0x427469fbc5040c46_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1149,7 +1149,7 @@ class openenoc_endpoint_interface_config_non_oetp_control_neg_0xa4dc5f32d81fa0c_
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.config.non_oetp_control                     |
+    |              |      csr.endpoint_interface.conf.non_oetp_control                       |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
@@ -1172,8 +1172,8 @@ class openenoc_endpoint_interface_config_non_oetp_control_neg_0xa4dc5f32d81fa0c_
                          parent=parent)
 
         # build the field attributes
-
-        self.__receive_mode:openenoc_endpoint_interface_config_non_oetp_control_receive_mode_neg_0xd42228a8c7c937a_cls = openenoc_endpoint_interface_config_non_oetp_control_receive_mode_neg_0xd42228a8c7c937a_cls(
+        
+        self.__receive_mode:openenoc_endpoint_interface_conf_non_oetp_control_receive_mode_neg_0x25285ab0c80b71c8_cls = openenoc_endpoint_interface_conf_non_oetp_control_receive_mode_neg_0x25285ab0c80b71c8_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=2,
@@ -1194,12 +1194,12 @@ class openenoc_endpoint_interface_config_non_oetp_control_neg_0xa4dc5f32d81fa0c_
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def receive_mode(self) -> openenoc_endpoint_interface_config_non_oetp_control_receive_mode_neg_0xd42228a8c7c937a_cls:
+    def receive_mode(self) -> openenoc_endpoint_interface_conf_non_oetp_control_receive_mode_neg_0x25285ab0c80b71c8_cls:
         """
         Property to access receive_mode field of the register
 
@@ -1209,7 +1209,7 @@ class openenoc_endpoint_interface_config_non_oetp_control_neg_0xa4dc5f32d81fa0c_
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.non_oetp_control.receive_mode[1:0]   |
+        |              |      csr.endpoint_interface.conf.non_oetp_control.receive_mode[1:0]     |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -1226,51 +1226,51 @@ class openenoc_endpoint_interface_config_non_oetp_control_neg_0xa4dc5f32d81fa0c_
         """
         return self.__receive_mode
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'receive_mode':'receive_mode',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_config_non_oetp_control_receive_mode_neg_0xd42228a8c7c937a_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_conf_non_oetp_control_receive_mode_neg_0x25285ab0c80b71c8_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.config.non_oetp_control"
+        return "csr.endpoint_interface.conf.non_oetp_control"
     @property
     def rdl_desc(self) -> str:
         return "Receive policy for Ethernet frames that do not carry oETP traffic."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.receive_mode
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_config_rmem_timeout_neg_0x766b0dfacf10491f_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_conf_rmem_timeout_0x7e8cc30c512c9d05_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1280,7 +1280,7 @@ class openenoc_endpoint_interface_config_rmem_timeout_neg_0x766b0dfacf10491f_cls
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.config.rmem_timeout                         |
+    |              |      csr.endpoint_interface.conf.rmem_timeout                           |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
@@ -1302,8 +1302,8 @@ class openenoc_endpoint_interface_config_rmem_timeout_neg_0x766b0dfacf10491f_cls
                          parent=parent)
 
         # build the field attributes
-
-        self.__cycles:openenoc_endpoint_interface_config_rmem_timeout_cycles_neg_0x21386ee83b5f90a9_cls = openenoc_endpoint_interface_config_rmem_timeout_cycles_neg_0x21386ee83b5f90a9_cls(
+        
+        self.__cycles:openenoc_endpoint_interface_conf_rmem_timeout_cycles_neg_0x70d0832b71f863df_cls = openenoc_endpoint_interface_conf_rmem_timeout_cycles_neg_0x70d0832b71f863df_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -1324,12 +1324,12 @@ class openenoc_endpoint_interface_config_rmem_timeout_neg_0x766b0dfacf10491f_cls
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def cycles(self) -> openenoc_endpoint_interface_config_rmem_timeout_cycles_neg_0x21386ee83b5f90a9_cls:
+    def cycles(self) -> openenoc_endpoint_interface_conf_rmem_timeout_cycles_neg_0x70d0832b71f863df_cls:
         """
         Property to access cycles field of the register
 
@@ -1339,7 +1339,7 @@ class openenoc_endpoint_interface_config_rmem_timeout_neg_0x766b0dfacf10491f_cls
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.rmem_timeout.cycles[31:0]            |
+        |              |      csr.endpoint_interface.conf.rmem_timeout.cycles[31:0]              |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -1365,51 +1365,51 @@ class openenoc_endpoint_interface_config_rmem_timeout_neg_0x766b0dfacf10491f_cls
         """
         return self.__cycles
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'cycles':'cycles',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_config_rmem_timeout_cycles_neg_0x21386ee83b5f90a9_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_conf_rmem_timeout_cycles_neg_0x70d0832b71f863df_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.config.rmem_timeout"
+        return "csr.endpoint_interface.conf.rmem_timeout"
     @property
     def rdl_desc(self) -> str:
         return "Timeout configuration for transparent RMEM operations."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.cycles
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_config_dma_timeout_0x92a634521450797_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_conf_dma_timeout_neg_0x735dacb7e3628499_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1419,7 +1419,7 @@ class openenoc_endpoint_interface_config_dma_timeout_0x92a634521450797_cls(RegRe
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.config.dma_timeout                          |
+    |              |      csr.endpoint_interface.conf.dma_timeout                            |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
@@ -1442,8 +1442,8 @@ class openenoc_endpoint_interface_config_dma_timeout_0x92a634521450797_cls(RegRe
                          parent=parent)
 
         # build the field attributes
-
-        self.__cycles:openenoc_endpoint_interface_config_dma_timeout_cycles_0x1b1c348b779c5fc_cls = openenoc_endpoint_interface_config_dma_timeout_cycles_0x1b1c348b779c5fc_cls(
+        
+        self.__cycles:openenoc_endpoint_interface_conf_dma_timeout_cycles_neg_0x8b21908088a8573_cls = openenoc_endpoint_interface_conf_dma_timeout_cycles_neg_0x8b21908088a8573_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -1464,12 +1464,12 @@ class openenoc_endpoint_interface_config_dma_timeout_0x92a634521450797_cls(RegRe
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def cycles(self) -> openenoc_endpoint_interface_config_dma_timeout_cycles_0x1b1c348b779c5fc_cls:
+    def cycles(self) -> openenoc_endpoint_interface_conf_dma_timeout_cycles_neg_0x8b21908088a8573_cls:
         """
         Property to access cycles field of the register
 
@@ -1479,7 +1479,7 @@ class openenoc_endpoint_interface_config_dma_timeout_0x92a634521450797_cls(RegRe
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.dma_timeout.cycles[31:0]             |
+        |              |      csr.endpoint_interface.conf.dma_timeout.cycles[31:0]               |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -1504,51 +1504,51 @@ class openenoc_endpoint_interface_config_dma_timeout_0x92a634521450797_cls(RegRe
         """
         return self.__cycles
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'cycles':'cycles',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_config_dma_timeout_cycles_0x1b1c348b779c5fc_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_conf_dma_timeout_cycles_neg_0x8b21908088a8573_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.config.dma_timeout"
+        return "csr.endpoint_interface.conf.dma_timeout"
     @property
     def rdl_desc(self) -> str:
         return "Common response timeout for locally initiated unicast peer DMA fragments."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.cycles
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_config_dma_max_fragment_size_0x50c768680d18b7f_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_conf_dma_max_fragment_size_neg_0x2459da277b4ad46_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1558,7 +1558,7 @@ class openenoc_endpoint_interface_config_dma_max_fragment_size_0x50c768680d18b7f
     +==============+=========================================================================+
     | Name         | .. raw:: html                                                           |
     |              |                                                                         |
-    |              |      csr.endpoint_interface.config.dma_max_fragment_size                |
+    |              |      csr.endpoint_interface.conf.dma_max_fragment_size                  |
     +--------------+-------------------------------------------------------------------------+
     | Description  | .. raw:: html                                                           |
     |              |                                                                         |
@@ -1582,8 +1582,8 @@ class openenoc_endpoint_interface_config_dma_max_fragment_size_0x50c768680d18b7f
                          parent=parent)
 
         # build the field attributes
-
-        self.__bytes:openenoc_endpoint_interface_config_dma_max_fragment_size_bytes_0x56886a0b57a4a4fd_cls = openenoc_endpoint_interface_config_dma_max_fragment_size_bytes_0x56886a0b57a4a4fd_cls(
+        
+        self.__bytes:openenoc_endpoint_interface_conf_dma_max_fragment_size_bytes_0x10d2931b375c3289_cls = openenoc_endpoint_interface_conf_dma_max_fragment_size_bytes_0x10d2931b375c3289_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -1604,12 +1604,12 @@ class openenoc_endpoint_interface_config_dma_max_fragment_size_0x50c768680d18b7f
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def bytes(self) -> openenoc_endpoint_interface_config_dma_max_fragment_size_bytes_0x56886a0b57a4a4fd_cls:
+    def bytes(self) -> openenoc_endpoint_interface_conf_dma_max_fragment_size_bytes_0x10d2931b375c3289_cls:
         """
         Property to access bytes field of the register
 
@@ -1619,7 +1619,7 @@ class openenoc_endpoint_interface_config_dma_max_fragment_size_0x50c768680d18b7f
         +==============+=========================================================================+
         | Name         | .. raw:: html                                                           |
         |              |                                                                         |
-        |              |      csr.endpoint_interface.config.dma_max_fragment_size.bytes[31:0]    |
+        |              |      csr.endpoint_interface.conf.dma_max_fragment_size.bytes[31:0]      |
         +--------------+-------------------------------------------------------------------------+
         | Description  | .. raw:: html                                                           |
         |              |                                                                         |
@@ -1645,51 +1645,51 @@ class openenoc_endpoint_interface_config_dma_max_fragment_size_0x50c768680d18b7f
         """
         return self.__bytes
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'bytes':'bytes',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_config_dma_max_fragment_size_bytes_0x56886a0b57a4a4fd_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_conf_dma_max_fragment_size_bytes_0x10d2931b375c3289_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
-        return "csr.endpoint_interface.config.dma_max_fragment_size"
+        return "csr.endpoint_interface.conf.dma_max_fragment_size"
     @property
     def rdl_desc(self) -> str:
         return "Common software-selected maximum memory fragment size for locally\ninitiated peer DMA transfers. The synthesis-time frame limit remains fixed."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.bytes
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_axis_if_source_data_0x6f3814e57b96a795_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_axis_if_source_data_neg_0x6c87abaf118b42b1_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1721,8 +1721,8 @@ class openenoc_endpoint_interface_axis_if_source_data_0x6f3814e57b96a795_cls(Reg
                          parent=parent)
 
         # build the field attributes
-
-        self.__tdata:openenoc_endpoint_interface_axis_if_source_data_tdata_0x17c4542c090ffd0e_cls = openenoc_endpoint_interface_axis_if_source_data_tdata_0x17c4542c090ffd0e_cls(
+        
+        self.__tdata:openenoc_endpoint_interface_axis_if_source_data_tdata_neg_0x4200337404afbbdb_cls = openenoc_endpoint_interface_axis_if_source_data_tdata_neg_0x4200337404afbbdb_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -1743,12 +1743,12 @@ class openenoc_endpoint_interface_axis_if_source_data_0x6f3814e57b96a795_cls(Reg
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def tdata(self) -> openenoc_endpoint_interface_axis_if_source_data_tdata_0x17c4542c090ffd0e_cls:
+    def tdata(self) -> openenoc_endpoint_interface_axis_if_source_data_tdata_neg_0x4200337404afbbdb_cls:
         """
         Property to access tdata field of the register
 
@@ -1767,29 +1767,29 @@ class openenoc_endpoint_interface_axis_if_source_data_0x6f3814e57b96a795_cls(Reg
         """
         return self.__tdata
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'tdata':'tdata',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_source_data_tdata_0x17c4542c090ffd0e_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_source_data_tdata_neg_0x4200337404afbbdb_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -1797,21 +1797,21 @@ class openenoc_endpoint_interface_axis_if_source_data_0x6f3814e57b96a795_cls(Reg
     @property
     def rdl_desc(self) -> str:
         return "Data register for the AXI4-Stream source interface."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.tdata
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_axis_if_source_control_neg_0x76a0bd25b2bcfaf4_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -1843,8 +1843,8 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
                          parent=parent)
 
         # build the field attributes
-
-        self.__tvalid:openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x267c2272d993b105_cls = openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x267c2272d993b105_cls(
+        
+        self.__tvalid:openenoc_endpoint_interface_axis_if_source_control_tvalid_0x660d49a7122f428b_cls = openenoc_endpoint_interface_axis_if_source_control_tvalid_0x660d49a7122f428b_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -1856,7 +1856,7 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
             logger_handle=logger_handle+'.tvalid',
             inst_name='tvalid',
             field_type=int)
-        self.__tlast:openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x77cb31118f74f4c3_cls = openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x77cb31118f74f4c3_cls(
+        self.__tlast:openenoc_endpoint_interface_axis_if_source_control_tlast_0x1c04b5dfa51b2aae_cls = openenoc_endpoint_interface_axis_if_source_control_tlast_0x1c04b5dfa51b2aae_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -1868,7 +1868,7 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
             logger_handle=logger_handle+'.tlast',
             inst_name='tlast',
             field_type=int)
-        self.__tkeep:openenoc_endpoint_interface_axis_if_source_control_tkeep_0x7eae4751b962a1c_cls = openenoc_endpoint_interface_axis_if_source_control_tkeep_0x7eae4751b962a1c_cls(
+        self.__tkeep:openenoc_endpoint_interface_axis_if_source_control_tkeep_neg_0x1a03c947030aa83f_cls = openenoc_endpoint_interface_axis_if_source_control_tkeep_neg_0x1a03c947030aa83f_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=4,
@@ -1889,12 +1889,12 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def tvalid(self) -> openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x267c2272d993b105_cls:
+    def tvalid(self) -> openenoc_endpoint_interface_axis_if_source_control_tvalid_0x660d49a7122f428b_cls:
         """
         Property to access tvalid field of the register
 
@@ -1915,7 +1915,7 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
         """
         return self.__tvalid
     @property
-    def tlast(self) -> openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x77cb31118f74f4c3_cls:
+    def tlast(self) -> openenoc_endpoint_interface_axis_if_source_control_tlast_0x1c04b5dfa51b2aae_cls:
         """
         Property to access tlast field of the register
 
@@ -1935,7 +1935,7 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
         """
         return self.__tlast
     @property
-    def tkeep(self) -> openenoc_endpoint_interface_axis_if_source_control_tkeep_0x7eae4751b962a1c_cls:
+    def tkeep(self) -> openenoc_endpoint_interface_axis_if_source_control_tkeep_neg_0x1a03c947030aa83f_cls:
         """
         Property to access tkeep field of the register
 
@@ -1955,44 +1955,44 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
         """
         return self.__tkeep
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'tvalid':'tvalid','tlast':'tlast','tkeep':'tkeep',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:3
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["tvalid"]) -> 'openenoc_endpoint_interface_axis_if_source_control_tvalid_0x660d49a7122f428b_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["tlast"]) -> 'openenoc_endpoint_interface_axis_if_source_control_tlast_0x1c04b5dfa51b2aae_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["tkeep"]) -> 'openenoc_endpoint_interface_axis_if_source_control_tkeep_neg_0x1a03c947030aa83f_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["tvalid"]) -> 'openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x267c2272d993b105_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["tlast"]) -> 'openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x77cb31118f74f4c3_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["tkeep"]) -> 'openenoc_endpoint_interface_axis_if_source_control_tkeep_0x7eae4751b962a1c_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_axis_if_source_control_tvalid_neg_0x267c2272d993b105_cls', 'openenoc_endpoint_interface_axis_if_source_control_tlast_neg_0x77cb31118f74f4c3_cls', 'openenoc_endpoint_interface_axis_if_source_control_tkeep_0x7eae4751b962a1c_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_axis_if_source_control_tvalid_0x660d49a7122f428b_cls', 'openenoc_endpoint_interface_axis_if_source_control_tlast_0x1c04b5dfa51b2aae_cls', 'openenoc_endpoint_interface_axis_if_source_control_tkeep_neg_0x1a03c947030aa83f_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -2000,23 +2000,23 @@ class openenoc_endpoint_interface_axis_if_source_control_0x1457d36a2a537ffd_cls(
     @property
     def rdl_desc(self) -> str:
         return "Control register for the AXI4-Stream source interface."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.tvalid
         yield self.tlast
         yield self.tkeep
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_axis_if_source_status_0x68db7e29de1dafb9_cls(RegReadOnly):
+    
+    
+class openenoc_endpoint_interface_axis_if_source_status_neg_0x4b9473662e13ce58_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -2048,8 +2048,8 @@ class openenoc_endpoint_interface_axis_if_source_status_0x68db7e29de1dafb9_cls(R
                          parent=parent)
 
         # build the field attributes
-
-        self.__tready:openenoc_endpoint_interface_axis_if_source_status_tready_0x67560cf213adb45d_cls = openenoc_endpoint_interface_axis_if_source_status_tready_0x67560cf213adb45d_cls(
+        
+        self.__tready:openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x581f7e9d5f5e2f1b_cls = openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x581f7e9d5f5e2f1b_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2070,12 +2070,12 @@ class openenoc_endpoint_interface_axis_if_source_status_0x68db7e29de1dafb9_cls(R
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def tready(self) -> openenoc_endpoint_interface_axis_if_source_status_tready_0x67560cf213adb45d_cls:
+    def tready(self) -> openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x581f7e9d5f5e2f1b_cls:
         """
         Property to access tready field of the register
 
@@ -2095,29 +2095,29 @@ class openenoc_endpoint_interface_axis_if_source_status_0x68db7e29de1dafb9_cls(R
         """
         return self.__tready
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'tready':'tready',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_source_status_tready_0x67560cf213adb45d_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_source_status_tready_neg_0x581f7e9d5f5e2f1b_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -2125,21 +2125,21 @@ class openenoc_endpoint_interface_axis_if_source_status_0x68db7e29de1dafb9_cls(R
     @property
     def rdl_desc(self) -> str:
         return "Status register for the AXI4-Stream source interface."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.tready
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_axis_if_sink_data_neg_0x3d1755264fd08754_cls(RegReadOnly):
+    
+    
+class openenoc_endpoint_interface_axis_if_sink_data_neg_0x72cc313627b905d9_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -2171,8 +2171,8 @@ class openenoc_endpoint_interface_axis_if_sink_data_neg_0x3d1755264fd08754_cls(R
                          parent=parent)
 
         # build the field attributes
-
-        self.__tdata:openenoc_endpoint_interface_axis_if_sink_data_tdata_0x2bdcea2731f9535_cls = openenoc_endpoint_interface_axis_if_sink_data_tdata_0x2bdcea2731f9535_cls(
+        
+        self.__tdata:openenoc_endpoint_interface_axis_if_sink_data_tdata_neg_0x19ea2d447c51524_cls = openenoc_endpoint_interface_axis_if_sink_data_tdata_neg_0x19ea2d447c51524_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -2193,12 +2193,12 @@ class openenoc_endpoint_interface_axis_if_sink_data_neg_0x3d1755264fd08754_cls(R
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def tdata(self) -> openenoc_endpoint_interface_axis_if_sink_data_tdata_0x2bdcea2731f9535_cls:
+    def tdata(self) -> openenoc_endpoint_interface_axis_if_sink_data_tdata_neg_0x19ea2d447c51524_cls:
         """
         Property to access tdata field of the register
 
@@ -2217,29 +2217,29 @@ class openenoc_endpoint_interface_axis_if_sink_data_neg_0x3d1755264fd08754_cls(R
         """
         return self.__tdata
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'tdata':'tdata',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_sink_data_tdata_0x2bdcea2731f9535_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_sink_data_tdata_neg_0x19ea2d447c51524_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -2247,21 +2247,21 @@ class openenoc_endpoint_interface_axis_if_sink_data_neg_0x3d1755264fd08754_cls(R
     @property
     def rdl_desc(self) -> str:
         return "Data register for the AXI4-Stream sink interface."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.tdata
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_axis_if_sink_control_neg_0x81b537506a011cb_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_axis_if_sink_control_0x978023cd7a0e233_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -2293,8 +2293,8 @@ class openenoc_endpoint_interface_axis_if_sink_control_neg_0x81b537506a011cb_cls
                          parent=parent)
 
         # build the field attributes
-
-        self.__tready:openenoc_endpoint_interface_axis_if_sink_control_tready_0x4b7af26499667549_cls = openenoc_endpoint_interface_axis_if_sink_control_tready_0x4b7af26499667549_cls(
+        
+        self.__tready:openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x125bfc15ab3a7ea1_cls = openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x125bfc15ab3a7ea1_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2315,12 +2315,12 @@ class openenoc_endpoint_interface_axis_if_sink_control_neg_0x81b537506a011cb_cls
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def tready(self) -> openenoc_endpoint_interface_axis_if_sink_control_tready_0x4b7af26499667549_cls:
+    def tready(self) -> openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x125bfc15ab3a7ea1_cls:
         """
         Property to access tready field of the register
 
@@ -2341,29 +2341,29 @@ class openenoc_endpoint_interface_axis_if_sink_control_neg_0x81b537506a011cb_cls
         """
         return self.__tready
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'tready':'tready',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_sink_control_tready_0x4b7af26499667549_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_axis_if_sink_control_tready_neg_0x125bfc15ab3a7ea1_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -2371,21 +2371,21 @@ class openenoc_endpoint_interface_axis_if_sink_control_neg_0x81b537506a011cb_cls
     @property
     def rdl_desc(self) -> str:
         return "Control register for the AXI4-Stream sink interface."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.tready
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegReadOnly):
+    
+    
+class openenoc_endpoint_interface_axis_if_sink_status_0x3558eb7e7ea161cc_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -2417,8 +2417,8 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
                          parent=parent)
 
         # build the field attributes
-
-        self.__tvalid:openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x236d83f545db909d_cls = openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x236d83f545db909d_cls(
+        
+        self.__tvalid:openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x273beaeaaceee30e_cls = openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x273beaeaaceee30e_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2430,7 +2430,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
             logger_handle=logger_handle+'.tvalid',
             inst_name='tvalid',
             field_type=int)
-        self.__tlast:openenoc_endpoint_interface_axis_if_sink_status_tlast_0x2d9cca5e6baa0192_cls = openenoc_endpoint_interface_axis_if_sink_status_tlast_0x2d9cca5e6baa0192_cls(
+        self.__tlast:openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db3c_cls = openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db3c_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2442,7 +2442,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
             logger_handle=logger_handle+'.tlast',
             inst_name='tlast',
             field_type=int)
-        self.__tkeep:openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x62a0176d39c90967_cls = openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x62a0176d39c90967_cls(
+        self.__tkeep:openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_cls = openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=4,
@@ -2463,12 +2463,12 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def tvalid(self) -> openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x236d83f545db909d_cls:
+    def tvalid(self) -> openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x273beaeaaceee30e_cls:
         """
         Property to access tvalid field of the register
 
@@ -2488,7 +2488,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
         """
         return self.__tvalid
     @property
-    def tlast(self) -> openenoc_endpoint_interface_axis_if_sink_status_tlast_0x2d9cca5e6baa0192_cls:
+    def tlast(self) -> openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db3c_cls:
         """
         Property to access tlast field of the register
 
@@ -2508,7 +2508,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
         """
         return self.__tlast
     @property
-    def tkeep(self) -> openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x62a0176d39c90967_cls:
+    def tkeep(self) -> openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_cls:
         """
         Property to access tkeep field of the register
 
@@ -2528,44 +2528,44 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
         """
         return self.__tkeep
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'tvalid':'tvalid','tlast':'tlast','tkeep':'tkeep',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:3
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["tvalid"]) -> 'openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x273beaeaaceee30e_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["tlast"]) -> 'openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db3c_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["tkeep"]) -> 'openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["tvalid"]) -> 'openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x236d83f545db909d_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["tlast"]) -> 'openenoc_endpoint_interface_axis_if_sink_status_tlast_0x2d9cca5e6baa0192_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["tkeep"]) -> 'openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x62a0176d39c90967_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x236d83f545db909d_cls', 'openenoc_endpoint_interface_axis_if_sink_status_tlast_0x2d9cca5e6baa0192_cls', 'openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x62a0176d39c90967_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_axis_if_sink_status_tvalid_neg_0x273beaeaaceee30e_cls', 'openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db3c_cls', 'openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -2573,23 +2573,23 @@ class openenoc_endpoint_interface_axis_if_sink_status_0x7a844e119be9fac_cls(RegR
     @property
     def rdl_desc(self) -> str:
         return "Status register for the AXI4-Stream sink interface."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.tvalid
         yield self.tlast
         yield self.tkeep
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_0x3ba96c880fb6c736_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_0x40874546642f78b4_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -2622,8 +2622,8 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_0x3ba96c880fb6c
                          parent=parent)
 
         # build the field attributes
-
-        self.__base:openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_neg_0x28b01b54d9107f5e_cls = openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_neg_0x28b01b54d9107f5e_cls(
+        
+        self.__base:openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x41e9daceee55c7d9_cls = openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x41e9daceee55c7d9_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -2644,12 +2644,12 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_0x3ba96c880fb6c
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def base(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_neg_0x28b01b54d9107f5e_cls:
+    def base(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x41e9daceee55c7d9_cls:
         """
         Property to access base field of the register
 
@@ -2669,29 +2669,29 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_0x3ba96c880fb6c
         """
         return self.__base
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'base':'base',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_neg_0x28b01b54d9107f5e_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x41e9daceee55c7d9_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -2699,21 +2699,21 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_0x3ba96c880fb6c
     @property
     def rdl_desc(self) -> str:
         return "Local memory address of the non-oETP Ethernet frame to transmit."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.base
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_0x54623fb834a02104_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_neg_0x6e41186bfbb8b12a_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -2745,8 +2745,8 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_0x54623fb834a0210
                          parent=parent)
 
         # build the field attributes
-
-        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x6f39179e191d9c64_cls = openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x6f39179e191d9c64_cls(
+        
+        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x7030e7e922f292a9_cls = openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x7030e7e922f292a9_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -2767,12 +2767,12 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_0x54623fb834a0210
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x6f39179e191d9c64_cls:
+    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x7030e7e922f292a9_cls:
         """
         Property to access bytes field of the register
 
@@ -2792,29 +2792,29 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_0x54623fb834a0210
         """
         return self.__bytes
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'bytes':'bytes',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x6f39179e191d9c64_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x7030e7e922f292a9_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -2822,21 +2822,21 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_0x54623fb834a0210
     @property
     def rdl_desc(self) -> str:
         return "Length of the complete non-oETP Ethernet frame to transmit."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.bytes
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b3e0b110_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x5bef98d717c47f89_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -2869,8 +2869,8 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
                          parent=parent)
 
         # build the field attributes
-
-        self.__request:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x572b2ec04c2729a1_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x572b2ec04c2729a1_cls(
+        
+        self.__request:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f81daaff7e991_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f81daaff7e991_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2882,7 +2882,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
             logger_handle=logger_handle+'.request',
             inst_name='request',
             field_type=int)
-        self.__clear_errors:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_0x12df5b7087b874bd_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_0x12df5b7087b874bd_cls(
+        self.__clear_errors:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x64e7c33beb60936_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x64e7c33beb60936_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2894,7 +2894,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
             logger_handle=logger_handle+'.clear_errors',
             inst_name='clear_errors',
             field_type=int)
-        self.__idle:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x2426ca7af38c78f9_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x2426ca7af38c78f9_cls(
+        self.__idle:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675e833c8131f26_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675e833c8131f26_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2906,7 +2906,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
             logger_handle=logger_handle+'.idle',
             inst_name='idle',
             field_type=int)
-        self.__done:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x38b21b6e94320d9f_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x38b21b6e94320d9f_cls(
+        self.__done:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfac110764e_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfac110764e_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2918,7 +2918,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
             logger_handle=logger_handle+'.done',
             inst_name='done',
             field_type=int)
-        self.__error:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x36e24688106f345b_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x36e24688106f345b_cls(
+        self.__error:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f5db423c53_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f5db423c53_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -2930,7 +2930,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
             logger_handle=logger_handle+'.error',
             inst_name='error',
             field_type=int)
-        self.__error_code:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x4154b313bb26714d_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x4154b313bb26714d_cls(
+        self.__error_code:openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5abff4ff3275ca26_cls = openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5abff4ff3275ca26_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=4,
@@ -2951,12 +2951,12 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def request(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x572b2ec04c2729a1_cls:
+    def request(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f81daaff7e991_cls:
         """
         Property to access request field of the register
 
@@ -2981,7 +2981,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
         """
         return self.__request
     @property
-    def clear_errors(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_0x12df5b7087b874bd_cls:
+    def clear_errors(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x64e7c33beb60936_cls:
         """
         Property to access clear_errors field of the register
 
@@ -3005,7 +3005,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
         """
         return self.__clear_errors
     @property
-    def idle(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x2426ca7af38c78f9_cls:
+    def idle(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675e833c8131f26_cls:
         """
         Property to access idle field of the register
 
@@ -3026,7 +3026,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
         """
         return self.__idle
     @property
-    def done(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x38b21b6e94320d9f_cls:
+    def done(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfac110764e_cls:
         """
         Property to access done field of the register
 
@@ -3047,7 +3047,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
         """
         return self.__done
     @property
-    def error(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x36e24688106f345b_cls:
+    def error(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f5db423c53_cls:
         """
         Property to access error field of the register
 
@@ -3069,7 +3069,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
         """
         return self.__error
     @property
-    def error_code(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x4154b313bb26714d_cls:
+    def error_code(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5abff4ff3275ca26_cls:
         """
         Property to access error_code field of the register
 
@@ -3100,56 +3100,56 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
         """
         return self.__error_code
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'request':'request','clear_errors':'clear_errors','idle':'idle','done':'done','error':'error','error_code':'error_code',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:6
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["request"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f81daaff7e991_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["clear_errors"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x64e7c33beb60936_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["idle"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675e833c8131f26_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["done"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfac110764e_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["error"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f5db423c53_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["error_code"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5abff4ff3275ca26_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["request"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x572b2ec04c2729a1_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["clear_errors"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_0x12df5b7087b874bd_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["idle"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x2426ca7af38c78f9_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["done"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x38b21b6e94320d9f_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["error"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x36e24688106f345b_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["error_code"]) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x4154b313bb26714d_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x572b2ec04c2729a1_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_0x12df5b7087b874bd_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x2426ca7af38c78f9_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x38b21b6e94320d9f_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_neg_0x36e24688106f345b_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x4154b313bb26714d_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f81daaff7e991_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x64e7c33beb60936_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675e833c8131f26_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfac110764e_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f5db423c53_cls', 'openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5abff4ff3275ca26_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -3157,26 +3157,26 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_neg_0x6f7f3587b
     @property
     def rdl_desc(self) -> str:
         return "Command and completion status for the non-oETP transmit DMA channel."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.request
         yield self.clear_errors
         yield self.idle
         yield self.done
         yield self.error
         yield self.error_code
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_0x7625b94e878299c7_cls(RegReadOnly):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_neg_0x236dec929f614dc_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -3209,8 +3209,8 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_0x7625b94e8
                          parent=parent)
 
         # build the field attributes
-
-        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_0x5c88bb9bca3414c_cls = openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_0x5c88bb9bca3414c_cls(
+        
+        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x78f39c73069cb547_cls = openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x78f39c73069cb547_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -3231,12 +3231,12 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_0x7625b94e8
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_0x5c88bb9bca3414c_cls:
+    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x78f39c73069cb547_cls:
         """
         Property to access bytes field of the register
 
@@ -3257,29 +3257,29 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_0x7625b94e8
         """
         return self.__bytes
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'bytes':'bytes',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_0x5c88bb9bca3414c_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x78f39c73069cb547_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -3287,21 +3287,21 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_0x7625b94e8
     @property
     def rdl_desc(self) -> str:
         return "Number of bytes transferred for the most recently accepted transmit\nrequest."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.bytes
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_neg_0x3f8cc87b2d6147cc_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_neg_0x7d224c93123f746b_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -3334,8 +3334,8 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_neg_0x3f8cc87b2
                          parent=parent)
 
         # build the field attributes
-
-        self.__base:openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0x65ddd3cff5827fd1_cls = openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0x65ddd3cff5827fd1_cls(
+        
+        self.__base:openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0xb8b3602b59224ab_cls = openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0xb8b3602b59224ab_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -3356,12 +3356,12 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_neg_0x3f8cc87b2
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def base(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0x65ddd3cff5827fd1_cls:
+    def base(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0xb8b3602b59224ab_cls:
         """
         Property to access base field of the register
 
@@ -3381,29 +3381,29 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_neg_0x3f8cc87b2
         """
         return self.__base
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'base':'base',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0x65ddd3cff5827fd1_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0xb8b3602b59224ab_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -3411,21 +3411,21 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_neg_0x3f8cc87b2
     @property
     def rdl_desc(self) -> str:
         return "Local memory address of the receive buffer for a non-oETP Ethernet frame."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.base
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_neg_0x60c0e4f2a27338ae_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_0x62c07a5dc17a9a2_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -3458,8 +3458,8 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_neg_0x60c0e4f2
                          parent=parent)
 
         # build the field attributes
-
-        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x45d2dfc0e4c83489_cls = openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x45d2dfc0e4c83489_cls(
+        
+        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x7b4778dcc2f5c76c_cls = openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x7b4778dcc2f5c76c_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -3480,12 +3480,12 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_neg_0x60c0e4f2
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x45d2dfc0e4c83489_cls:
+    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x7b4778dcc2f5c76c_cls:
         """
         Property to access bytes field of the register
 
@@ -3505,29 +3505,29 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_neg_0x60c0e4f2
         """
         return self.__bytes
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'bytes':'bytes',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x45d2dfc0e4c83489_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x7b4778dcc2f5c76c_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -3535,21 +3535,21 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_neg_0x60c0e4f2
     @property
     def rdl_desc(self) -> str:
         return "Capacity of the receive buffer for one complete non-oETP Ethernet frame."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.bytes
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040765_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_neg_0x7cbcde818b980f20_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -3582,8 +3582,8 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
                          parent=parent)
 
         # build the field attributes
-
-        self.__request:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_0xdfa81fa399196fa_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_0xdfa81fa399196fa_cls(
+        
+        self.__request:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5be936db61d3a9e5_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5be936db61d3a9e5_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -3595,7 +3595,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
             logger_handle=logger_handle+'.request',
             inst_name='request',
             field_type=int)
-        self.__clear_errors:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x1a408665671a1e4d_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x1a408665671a1e4d_cls(
+        self.__clear_errors:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x2bccf9b5f5ec2565_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x2bccf9b5f5ec2565_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -3607,7 +3607,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
             logger_handle=logger_handle+'.clear_errors',
             inst_name='clear_errors',
             field_type=int)
-        self.__idle:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6da7c7e99a698bf5_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6da7c7e99a698bf5_cls(
+        self.__idle:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676aa26cd027663_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676aa26cd027663_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -3619,7 +3619,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
             logger_handle=logger_handle+'.idle',
             inst_name='idle',
             field_type=int)
-        self.__armed:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x5554fe7639dcbb69_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x5554fe7639dcbb69_cls(
+        self.__armed:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f6c2f6dcd4aac_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f6c2f6dcd4aac_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -3631,7 +3631,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
             logger_handle=logger_handle+'.armed',
             inst_name='armed',
             field_type=int)
-        self.__done:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x69888afa28051618_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x69888afa28051618_cls(
+        self.__done:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce5e006d24_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce5e006d24_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -3643,7 +3643,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
             logger_handle=logger_handle+'.done',
             inst_name='done',
             field_type=int)
-        self.__error:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x27834466a0a1154b_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x27834466a0a1154b_cls(
+        self.__error:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x6509eaa2d20f24bf_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x6509eaa2d20f24bf_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -3655,7 +3655,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
             logger_handle=logger_handle+'.error',
             inst_name='error',
             field_type=int)
-        self.__error_code:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x2f5b737b8463ea9f_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x2f5b737b8463ea9f_cls(
+        self.__error_code:openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36f3d0e68dd40db5_cls = openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36f3d0e68dd40db5_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=4,
@@ -3676,12 +3676,12 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def request(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_0xdfa81fa399196fa_cls:
+    def request(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5be936db61d3a9e5_cls:
         """
         Property to access request field of the register
 
@@ -3706,7 +3706,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         """
         return self.__request
     @property
-    def clear_errors(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x1a408665671a1e4d_cls:
+    def clear_errors(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x2bccf9b5f5ec2565_cls:
         """
         Property to access clear_errors field of the register
 
@@ -3730,7 +3730,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         """
         return self.__clear_errors
     @property
-    def idle(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6da7c7e99a698bf5_cls:
+    def idle(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676aa26cd027663_cls:
         """
         Property to access idle field of the register
 
@@ -3752,7 +3752,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         """
         return self.__idle
     @property
-    def armed(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x5554fe7639dcbb69_cls:
+    def armed(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f6c2f6dcd4aac_cls:
         """
         Property to access armed field of the register
 
@@ -3777,7 +3777,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         """
         return self.__armed
     @property
-    def done(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x69888afa28051618_cls:
+    def done(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce5e006d24_cls:
         """
         Property to access done field of the register
 
@@ -3798,7 +3798,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         """
         return self.__done
     @property
-    def error(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x27834466a0a1154b_cls:
+    def error(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x6509eaa2d20f24bf_cls:
         """
         Property to access error field of the register
 
@@ -3820,7 +3820,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         """
         return self.__error
     @property
-    def error_code(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x2f5b737b8463ea9f_cls:
+    def error_code(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36f3d0e68dd40db5_cls:
         """
         Property to access error_code field of the register
 
@@ -3850,60 +3850,60 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         """
         return self.__error_code
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'request':'request','clear_errors':'clear_errors','idle':'idle','armed':'armed','done':'done','error':'error','error_code':'error_code',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:7
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["request"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5be936db61d3a9e5_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["clear_errors"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x2bccf9b5f5ec2565_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["idle"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676aa26cd027663_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["armed"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f6c2f6dcd4aac_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["done"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce5e006d24_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["error"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x6509eaa2d20f24bf_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["error_code"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36f3d0e68dd40db5_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["request"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_0xdfa81fa399196fa_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["clear_errors"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x1a408665671a1e4d_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["idle"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6da7c7e99a698bf5_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["armed"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x5554fe7639dcbb69_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["done"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x69888afa28051618_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["error"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x27834466a0a1154b_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["error_code"]) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x2f5b737b8463ea9f_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_0xdfa81fa399196fa_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x1a408665671a1e4d_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6da7c7e99a698bf5_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x5554fe7639dcbb69_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_neg_0x69888afa28051618_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x27834466a0a1154b_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x2f5b737b8463ea9f_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5be936db61d3a9e5_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x2bccf9b5f5ec2565_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676aa26cd027663_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f6c2f6dcd4aac_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce5e006d24_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x6509eaa2d20f24bf_cls', 'openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36f3d0e68dd40db5_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -3911,13 +3911,13 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
     @property
     def rdl_desc(self) -> str:
         return "Command and completion status for the non-oETP receive DMA channel."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.request
         yield self.clear_errors
         yield self.idle
@@ -3925,13 +3925,13 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_0x4656e808a3040
         yield self.done
         yield self.error
         yield self.error_code
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_neg_0x1263f1c7107a03ec_cls(RegReadOnly):
+    
+    
+class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_0x498e690e6db152e6_cls(RegReadOnly):
     """
     Class to represent a register in the register model
 
@@ -3964,8 +3964,8 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_neg_0x1263f1c7
                          parent=parent)
 
         # build the field attributes
-
-        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x62104ffbe60d6f40_cls = openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x62104ffbe60d6f40_cls(
+        
+        self.__bytes:openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x4ab94081c465a649_cls = openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x4ab94081c465a649_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=32,
@@ -3986,12 +3986,12 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_neg_0x1263f1c7
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x62104ffbe60d6f40_cls:
+    def bytes(self) -> openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x4ab94081c465a649_cls:
         """
         Property to access bytes field of the register
 
@@ -4011,29 +4011,29 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_neg_0x1263f1c7
         """
         return self.__bytes
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'bytes':'bytes',
             }
 
-
-
-
-
-
-
-
-    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x62104ffbe60d6f40_cls':
+    
+    
+    
+    
+    
+    
+                
+    def get_child_by_system_rdl_name(self, name: Any) -> 'openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x4ab94081c465a649_cls':
         return super().get_child_by_system_rdl_name(name)
+                
+    
 
 
+    
 
-
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -4041,21 +4041,21 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_neg_0x1263f1c7
     @property
     def rdl_desc(self) -> str:
         return "Length of the most recently received non-oETP Ethernet frame."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.bytes
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_irq_control_neg_0x3bc98f7c2b3747ac_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_irq_control_0x62d3e9bb61eeb301_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -4088,8 +4088,8 @@ class openenoc_endpoint_interface_irq_control_neg_0x3bc98f7c2b3747ac_cls(RegRead
                          parent=parent)
 
         # build the field attributes
-
-        self.__global_enable:openenoc_endpoint_interface_irq_control_global_enable_neg_0x11fabf129a8cb0ac_cls = openenoc_endpoint_interface_irq_control_global_enable_neg_0x11fabf129a8cb0ac_cls(
+        
+        self.__global_enable:openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_cls = openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4101,7 +4101,7 @@ class openenoc_endpoint_interface_irq_control_neg_0x3bc98f7c2b3747ac_cls(RegRead
             logger_handle=logger_handle+'.global_enable',
             inst_name='global_enable',
             field_type=int)
-        self.__clear_errors:openenoc_endpoint_interface_irq_control_clear_errors_neg_0x2d370550f19815f7_cls = openenoc_endpoint_interface_irq_control_clear_errors_neg_0x2d370550f19815f7_cls(
+        self.__clear_errors:openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cls = openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4122,12 +4122,12 @@ class openenoc_endpoint_interface_irq_control_neg_0x3bc98f7c2b3747ac_cls(RegRead
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def global_enable(self) -> openenoc_endpoint_interface_irq_control_global_enable_neg_0x11fabf129a8cb0ac_cls:
+    def global_enable(self) -> openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_cls:
         """
         Property to access global_enable field of the register
 
@@ -4149,7 +4149,7 @@ class openenoc_endpoint_interface_irq_control_neg_0x3bc98f7c2b3747ac_cls(RegRead
         """
         return self.__global_enable
     @property
-    def clear_errors(self) -> openenoc_endpoint_interface_irq_control_clear_errors_neg_0x2d370550f19815f7_cls:
+    def clear_errors(self) -> openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cls:
         """
         Property to access clear_errors field of the register
 
@@ -4170,40 +4170,40 @@ class openenoc_endpoint_interface_irq_control_neg_0x3bc98f7c2b3747ac_cls(RegRead
         """
         return self.__clear_errors
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'global_enable':'global_enable','clear_errors':'clear_errors',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:2
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["global_enable"]) -> 'openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["clear_errors"]) -> 'openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["global_enable"]) -> 'openenoc_endpoint_interface_irq_control_global_enable_neg_0x11fabf129a8cb0ac_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["clear_errors"]) -> 'openenoc_endpoint_interface_irq_control_clear_errors_neg_0x2d370550f19815f7_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_irq_control_global_enable_neg_0x11fabf129a8cb0ac_cls', 'openenoc_endpoint_interface_irq_control_clear_errors_neg_0x2d370550f19815f7_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_cls', 'openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -4211,22 +4211,22 @@ class openenoc_endpoint_interface_irq_control_neg_0x3bc98f7c2b3747ac_cls(RegRead
     @property
     def rdl_desc(self) -> str:
         return "Global interrupt-output control and interrupt-controller maintenance requests."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.global_enable
         yield self.clear_errors
+        
+        
+    
 
-
-
-
-
-
-class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(RegReadWrite):
+    
+    
+class openenoc_endpoint_interface_irq_event_enable_neg_0x614c63391aaa61e6_cls(RegReadWrite):
     """
     Class to represent a register in the register model
 
@@ -4260,8 +4260,8 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
                          parent=parent)
 
         # build the field attributes
-
-        self.__peer_dma_complete:openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x4a570f4270edd42b_cls = openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x4a570f4270edd42b_cls(
+        
+        self.__peer_dma_complete:openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f89626bf3f7af85_cls = openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f89626bf3f7af85_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4273,7 +4273,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
             logger_handle=logger_handle+'.peer_dma_complete',
             inst_name='peer_dma_complete',
             field_type=int)
-        self.__non_oetp_dma_tx_complete:openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_0x486df9956df8d8c8_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_0x486df9956df8d8c8_cls(
+        self.__non_oetp_dma_tx_complete:openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x2c3b9124fdbda075_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x2c3b9124fdbda075_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4285,7 +4285,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
             logger_handle=logger_handle+'.non_oetp_dma_tx_complete',
             inst_name='non_oetp_dma_tx_complete',
             field_type=int)
-        self.__non_oetp_dma_rx_complete:openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_0x6010eb6f58d7cb9d_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_0x6010eb6f58d7cb9d_cls(
+        self.__non_oetp_dma_rx_complete:openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_neg_0x39c21b6d976dc82f_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_neg_0x39c21b6d976dc82f_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4297,7 +4297,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
             logger_handle=logger_handle+'.non_oetp_dma_rx_complete',
             inst_name='non_oetp_dma_rx_complete',
             field_type=int)
-        self.__non_oetp_direct_tx_complete:openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4932758f41036931_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4932758f41036931_cls(
+        self.__non_oetp_direct_tx_complete:openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4e3922c0e6b057a6_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4e3922c0e6b057a6_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4309,7 +4309,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
             logger_handle=logger_handle+'.non_oetp_direct_tx_complete',
             inst_name='non_oetp_direct_tx_complete',
             field_type=int)
-        self.__non_oetp_direct_rx_available:openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_neg_0x242e0dcdd48d0d6d_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_neg_0x242e0dcdd48d0d6d_cls(
+        self.__non_oetp_direct_rx_available:openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_0x121a7614ebc6daac_cls = openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_0x121a7614ebc6daac_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4321,7 +4321,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
             logger_handle=logger_handle+'.non_oetp_direct_rx_available',
             inst_name='non_oetp_direct_rx_available',
             field_type=int)
-        self.__rmem_error:openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0xd42a525ded0713e_cls = openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0xd42a525ded0713e_cls(
+        self.__rmem_error:openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0x44198ff7dedb74b6_cls = openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0x44198ff7dedb74b6_cls(
             parent_register=self,
             size_props=FieldSizeProps(
                 width=1,
@@ -4342,12 +4342,12 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
     def accesswidth(self) -> int:
         return 32
 
-
+    
 
     # build the properties for the fields
-
+    
     @property
-    def peer_dma_complete(self) -> openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x4a570f4270edd42b_cls:
+    def peer_dma_complete(self) -> openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f89626bf3f7af85_cls:
         """
         Property to access peer_dma_complete field of the register
 
@@ -4374,7 +4374,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
         """
         return self.__peer_dma_complete
     @property
-    def non_oetp_dma_tx_complete(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_0x486df9956df8d8c8_cls:
+    def non_oetp_dma_tx_complete(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x2c3b9124fdbda075_cls:
         """
         Property to access non_oetp_dma_tx_complete field of the register
 
@@ -4394,7 +4394,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
         """
         return self.__non_oetp_dma_tx_complete
     @property
-    def non_oetp_dma_rx_complete(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_0x6010eb6f58d7cb9d_cls:
+    def non_oetp_dma_rx_complete(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_neg_0x39c21b6d976dc82f_cls:
         """
         Property to access non_oetp_dma_rx_complete field of the register
 
@@ -4414,7 +4414,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
         """
         return self.__non_oetp_dma_rx_complete
     @property
-    def non_oetp_direct_tx_complete(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4932758f41036931_cls:
+    def non_oetp_direct_tx_complete(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4e3922c0e6b057a6_cls:
         """
         Property to access non_oetp_direct_tx_complete field of the register
 
@@ -4439,7 +4439,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
         """
         return self.__non_oetp_direct_tx_complete
     @property
-    def non_oetp_direct_rx_available(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_neg_0x242e0dcdd48d0d6d_cls:
+    def non_oetp_direct_rx_available(self) -> openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_0x121a7614ebc6daac_cls:
         """
         Property to access non_oetp_direct_rx_available field of the register
 
@@ -4465,7 +4465,7 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
         """
         return self.__non_oetp_direct_rx_available
     @property
-    def rmem_error(self) -> openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0xd42a525ded0713e_cls:
+    def rmem_error(self) -> openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0x44198ff7dedb74b6_cls:
         """
         Property to access rmem_error field of the register
 
@@ -4492,56 +4492,56 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
         """
         return self.__rmem_error
 
-
+    
     @property
     def systemrdl_python_child_name_map(self) -> dict[str, str]:
         return {'peer_dma_complete':'peer_dma_complete','non_oetp_dma_tx_complete':'non_oetp_dma_tx_complete','non_oetp_dma_rx_complete':'non_oetp_dma_rx_complete','non_oetp_direct_tx_complete':'non_oetp_direct_tx_complete','non_oetp_direct_rx_available':'non_oetp_direct_rx_available','rmem_error':'rmem_error',
             }
 
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
     # nodes:6
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["peer_dma_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f89626bf3f7af85_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_dma_tx_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x2c3b9124fdbda075_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_dma_rx_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_neg_0x39c21b6d976dc82f_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_direct_tx_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4e3922c0e6b057a6_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_direct_rx_available"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_0x121a7614ebc6daac_cls': ...
+                
+                
+    @overload
+    def get_child_by_system_rdl_name(self, name: Literal["rmem_error"]) -> 'openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0x44198ff7dedb74b6_cls': ...
+                
 
     @overload
-    def get_child_by_system_rdl_name(self, name: Literal["peer_dma_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x4a570f4270edd42b_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_dma_tx_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_0x486df9956df8d8c8_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_dma_rx_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_0x6010eb6f58d7cb9d_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_direct_tx_complete"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4932758f41036931_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["non_oetp_direct_rx_available"]) -> 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_neg_0x242e0dcdd48d0d6d_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: Literal["rmem_error"]) -> 'openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0xd42a525ded0713e_cls': ...
-
-
-    @overload
-    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x4a570f4270edd42b_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_0x486df9956df8d8c8_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_0x6010eb6f58d7cb9d_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4932758f41036931_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_neg_0x242e0dcdd48d0d6d_cls', 'openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0xd42a525ded0713e_cls', ]: ...
+    def get_child_by_system_rdl_name(self, name: str) -> Union['openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f89626bf3f7af85_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x2c3b9124fdbda075_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_rx_complete_neg_0x39c21b6d976dc82f_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_tx_complete_neg_0x4e3922c0e6b057a6_cls', 'openenoc_endpoint_interface_irq_event_enable_non_oetp_direct_rx_available_0x121a7614ebc6daac_cls', 'openenoc_endpoint_interface_irq_event_enable_rmem_error_neg_0x44198ff7dedb74b6_cls', ]: ...
 
     def get_child_by_system_rdl_name(self, name: Any) -> Any:
         return super().get_child_by_system_rdl_name(name)
+    
 
 
+    
 
-
-
-
-
+    
+    
 
     @property
     def rdl_name(self) -> str:
@@ -4549,22 +4549,22 @@ class openenoc_endpoint_interface_irq_event_enable_neg_0x22d2c02df8f5fa44_cls(Re
     @property
     def rdl_desc(self) -> str:
         return "Enables generation of individual endpoint IRQ event classes. These fields\ncontrol event capture; irq.control.global_enable only masks the physical\nIRQ output."
+    
+    
 
-
-
-
+    
     def __iter__(self) -> Iterator[Union[FieldReadOnly,FieldWriteOnly,FieldReadWrite]]:
-
-
+        
+        
         yield self.peer_dma_complete
         yield self.non_oetp_dma_tx_complete
         yield self.non_oetp_dma_rx_complete
         yield self.non_oetp_direct_tx_complete
         yield self.non_oetp_direct_rx_available
         yield self.rmem_error
-
-
-
+        
+        
+    
 
 
 if __name__ == '__main__':

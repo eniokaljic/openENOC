@@ -20,47 +20,47 @@ def test2(csr):
 
 
 def test_rmem_timeout_cycles(csr):
-    config = csr.endpoint_interface.config
-    assert config.rmem_timeout.cycles.read() == 0
+    conf = csr.endpoint_interface.conf
+    assert conf.rmem_timeout.cycles.read() == 0
     for cycles in [1, 1024, 0xA5A55A5A, 0xFFFFFFFF, 0]:
-        config.rmem_timeout.cycles.write(cycles)
-        assert config.rmem_timeout.cycles.read() == cycles
-        assert config.non_oetp_control.receive_mode.read() == 1
-        assert config.mac_address.lo_word.read() == 0
-        assert config.mac_address.hi_word.read() == 0
-        assert config.multicast_address.lo_word.read() == 0
-        assert config.multicast_address.hi_word.read() == 0
-        assert config.dma_timeout.cycles.read() == 0
+        conf.rmem_timeout.cycles.write(cycles)
+        assert conf.rmem_timeout.cycles.read() == cycles
+        assert conf.non_oetp_control.receive_mode.read() == 1
+        assert conf.mac_address.lo_word.read() == 0
+        assert conf.mac_address.hi_word.read() == 0
+        assert conf.multicast_address.lo_word.read() == 0
+        assert conf.multicast_address.hi_word.read() == 0
+        assert conf.dma_timeout.cycles.read() == 0
 
 
 def test_config_mac_and_timeouts(csr):
-    config = csr.endpoint_interface.config
-    assert config.multicast_address.read() == 0
-    assert config.dma_timeout.cycles.read() == 0
+    conf = csr.endpoint_interface.conf
+    assert conf.multicast_address.read() == 0
+    assert conf.dma_timeout.cycles.read() == 0
 
-    config.mac_address.write(0x020E0C000001)
-    config.multicast_address.write(0x030E0C000010)
-    config.non_oetp_control.receive_mode.write(2)
-    config.rmem_timeout.cycles.write(1024)
+    conf.mac_address.write(0x020E0C000001)
+    conf.multicast_address.write(0x030E0C000010)
+    conf.non_oetp_control.receive_mode.write(2)
+    conf.rmem_timeout.cycles.write(1024)
 
     for cycles in [1, 0xA5A55A5A, 0xFFFFFFFF, 0]:
-        config.dma_timeout.cycles.write(cycles)
-        assert config.dma_timeout.cycles.read() == cycles
-        assert config.rmem_timeout.cycles.read() == 1024
-        assert config.mac_address.read() == 0x020E0C000001
-        assert config.multicast_address.read() == 0x030E0C000010
-        assert config.non_oetp_control.receive_mode.read() == 2
+        conf.dma_timeout.cycles.write(cycles)
+        assert conf.dma_timeout.cycles.read() == cycles
+        assert conf.rmem_timeout.cycles.read() == 1024
+        assert conf.mac_address.read() == 0x020E0C000001
+        assert conf.multicast_address.read() == 0x030E0C000010
+        assert conf.non_oetp_control.receive_mode.read() == 2
 
-    config.multicast_address.write(0xFFFFFFFFFFFF)
-    assert config.multicast_address.read() == 0xFFFFFFFFFFFF
-    config.multicast_address.write(0)
-    assert config.multicast_address.read() == 0
-    assert config.mac_address.read() == 0x020E0C000001
-    assert config.rmem_timeout.cycles.read() == 1024
+    conf.multicast_address.write(0xFFFFFFFFFFFF)
+    assert conf.multicast_address.read() == 0xFFFFFFFFFFFF
+    conf.multicast_address.write(0)
+    assert conf.multicast_address.read() == 0
+    assert conf.mac_address.read() == 0x020E0C000001
+    assert conf.rmem_timeout.cycles.read() == 1024
 
-    config.mac_address.write(0x020E0C000002)
-    assert config.mac_address.read() == 0x020E0C000002
-    assert config.multicast_address.read() == 0
+    conf.mac_address.write(0x020E0C000002)
+    assert conf.mac_address.read() == 0x020E0C000002
+    assert conf.multicast_address.read() == 0
 
     for peer in csr.endpoint_interface.peers.entry:
         assert peer.dma.error.read() == 0
@@ -76,13 +76,13 @@ def test_config_mac_and_timeouts(csr):
 
 def test_dma_max_fragment_size_bytes(csr):
     endpoint = csr.endpoint_interface
-    config = endpoint.config
-    register = config.dma_max_fragment_size
+    conf = endpoint.conf
+    register = conf.dma_max_fragment_size
     maximum = ((endpoint.info.max_dma_frame_size_bytes.read() - 32) // 4) * 4
     assert maximum == 8160
     assert register.bytes.read() == maximum
-    assert register.address == config.dma_timeout.address + 4
-    config.dma_timeout.cycles.write(0x12345678)
+    assert register.address == conf.dma_timeout.address + 4
+    conf.dma_timeout.cycles.write(0x12345678)
     endpoint.axis_if.source.data.tdata.write(0xA5A55A5A)
     for value in (
         0,
@@ -103,6 +103,6 @@ def test_dma_max_fragment_size_bytes(csr):
     ):
         register.bytes.write(value)
         assert register.bytes.read() == value
-        assert config.dma_timeout.cycles.read() == 0x12345678
+        assert conf.dma_timeout.cycles.read() == 0x12345678
         assert endpoint.axis_if.source.data.tdata.read() == 0xA5A55A5A
     register.bytes.write(maximum)

@@ -22,7 +22,7 @@ openenoc_switch_status_t openenoc_switch_table_get_entry(
         switch_interface->forwarding_table.entry[entry_index].mac_address.f.hi_word,
         &entry->mac_address);
     entry->interface_bitmap = switch_interface->forwarding_table.entry[entry_index].iface.f.bitmap;
-    entry->enabled = switch_interface->forwarding_table.entry[entry_index].config.f.enabled != 0U;
+    entry->enabled = switch_interface->forwarding_table.entry[entry_index].conf.f.enabled != 0U;
     return OPENENOC_SWITCH_STATUS_OK;
 }
 
@@ -43,11 +43,11 @@ openenoc_switch_status_t openenoc_switch_table_set_entry(
         return status;
     }
     words = openenoc_switch_mac_pack(&entry->mac_address);
-    switch_interface->forwarding_table.entry[entry_index].config.f.enabled = 0U;
+    switch_interface->forwarding_table.entry[entry_index].conf.f.enabled = 0U;
     switch_interface->forwarding_table.entry[entry_index].mac_address.f.lo_word = words.lower;
     switch_interface->forwarding_table.entry[entry_index].mac_address.f.hi_word = words.upper;
     switch_interface->forwarding_table.entry[entry_index].iface.f.bitmap = entry->interface_bitmap;
-    switch_interface->forwarding_table.entry[entry_index].config.f.enabled = entry->enabled;
+    switch_interface->forwarding_table.entry[entry_index].conf.f.enabled = entry->enabled;
     return OPENENOC_SWITCH_STATUS_OK;
 }
 
@@ -65,7 +65,7 @@ openenoc_switch_status_t openenoc_switch_table_set_entry_enabled(
     if (status != OPENENOC_SWITCH_STATUS_OK) {
         return status;
     }
-    switch_interface->forwarding_table.entry[entry_index].config.f.enabled = enabled;
+    switch_interface->forwarding_table.entry[entry_index].conf.f.enabled = enabled;
     return OPENENOC_SWITCH_STATUS_OK;
 }
 
@@ -81,7 +81,7 @@ openenoc_switch_status_t openenoc_switch_table_clear(
         return status;
     }
     for (uint32_t entry_index = 0; entry_index < CSR__TABLE_DEPTH; ++entry_index) {
-        switch_interface->forwarding_table.entry[entry_index].config.f.enabled = 0U;
+        switch_interface->forwarding_table.entry[entry_index].conf.f.enabled = 0U;
     }
     return OPENENOC_SWITCH_STATUS_OK;
 }
