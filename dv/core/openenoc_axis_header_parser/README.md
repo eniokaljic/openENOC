@@ -3,25 +3,6 @@
 
 # openENOC Axis Header Parser Test Suite
 
-## Overview
-
-This test suite validates the `openenoc_axis_header_parser` module, which snoops
-the first 16 bytes of every AXI Stream frame and presents them as a stable
-128-bit header on `m_axis.tuser`. The frame payload (`tdata`) passes through
-unchanged, delayed by the header so that `tuser` is valid from the first output
-beat. No field splitting is performed — the raw 128-bit header is exposed on
-`tuser` for a later block to parse.
-
-Header layout (byte 0 = first byte on the wire = MSB of `tuser`):
-
-| Field           | Bits           |
-| --------------- | -------------- |
-| Destination MAC | `tuser[127:80]` |
-| Source MAC      | `tuser[79:32]`  |
-| EtherType       | `tuser[31:16]`  |
-| oETP Magic      | `tuser[15:8]`   |
-| oETP Cmd        | `tuser[7:0]`    |
-
 ## Configuration
 
 Edit `Makefile` to configure parameters.
@@ -63,17 +44,3 @@ Builds and runs simulation with waveform dumping enabled.
 ```bash
 ./run_tests.sh waves
 ```
-
-## Test Coverage
-
-**Functional checks (per frame):**
-- Payload (`tdata`) passes through unchanged
-- 128-bit header is correct and stable on `tuser` for the whole frame
-
-**Scenarios (TestFactory):**
-- Multiple payload sizes, including header-only frames (0-byte payload)
-- Back-to-back frames with distinct headers (header alignment under overlap)
-- Idle insertion and backpressure combinations
-
-**Parameter sweep (pytest):**
-- `DATA_W` in {8, 16, 32, 64}

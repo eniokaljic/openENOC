@@ -22,7 +22,7 @@ from ....lib import FieldReadOnly, FieldWriteOnly, FieldReadWrite, Field
 # field definitions
     
     
-class openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db3c_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_status_tlast_0x3b426504f41ef1e4_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -59,7 +59,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_tlast_neg_0x2edb69789bf4db
 
     
     
-class openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_cls(FieldReadOnly):
+class openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x7e492e51bbdc70f0_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -96,7 +96,7 @@ class openenoc_endpoint_interface_axis_if_sink_status_tkeep_0x43c9e11e7bdf9c93_c
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x41e9daceee55c7d9_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x316f224fde79e5c9_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -133,7 +133,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_buffer_address_base_0x41e9dace
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x7030e7e922f292a9_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_neg_0x14b3e3f0985ea632_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -170,7 +170,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_frame_length_bytes_0x7030e7e92
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f81daaff7e991_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x48acddd5c2bf5568_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -212,7 +212,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_request_0x6e9f8
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x64e7c33beb60936_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_neg_0x43ca95dca7b23e0e_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -253,7 +253,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_clear_errors_ne
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675e833c8131f26_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4ae9454cc3382ee7_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -291,7 +291,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_idle_neg_0x4675
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfac110764e_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_neg_0x6f2ae9be14a55c2a_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -329,7 +329,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_done_0x584ddcfa
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f5db423c53_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x7ba295254e957e32_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -368,7 +368,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_0x709256f
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5abff4ff3275ca26_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_neg_0x49d7b143d3d3fd71_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -416,7 +416,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_command_status_error_code_0x5a
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x78f39c73069cb547_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0x6f5eb4ed68091314_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -454,7 +454,7 @@ class openenoc_endpoint_interface_non_oetp_dma_tx_transferred_length_bytes_neg_0
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0xb8b3602b59224ab_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_neg_0x1decd97de90f61ba_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -491,7 +491,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_address_base_0xb8b3602b
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x7b4778dcc2f5c76c_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_0x3974953fec233ee4_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -528,7 +528,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_buffer_capacity_bytes_neg_0x7b
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5be936db61d3a9e5_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x6268784545110c5e_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -570,7 +570,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_request_neg_0x5
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_neg_0x2bccf9b5f5ec2565_cls(FieldReadWrite):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_0x608c43f867bb9bb7_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -611,7 +611,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_clear_errors_ne
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676aa26cd027663_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_0x7da85d1bad18983e_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -650,7 +650,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_idle_neg_0x6676
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f6c2f6dcd4aac_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0x2c0b223e00a36e40_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -692,7 +692,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_armed_neg_0xf1f
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce5e006d24_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x5f1c5a527c3b6667_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -730,7 +730,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_done_0x4aa98dce
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x6509eaa2d20f24bf_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_0x77080ef7c282c0da_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -769,7 +769,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_neg_0x650
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36f3d0e68dd40db5_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_neg_0x7a111573880a558c_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -816,7 +816,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_command_status_error_code_0x36
 
     
     
-class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x4ab94081c465a649_cls(FieldReadOnly):
+class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x391008104b1cfd7b_cls(FieldReadOnly):
     """
     Class to represent a register field in the register model
 
@@ -853,7 +853,7 @@ class openenoc_endpoint_interface_non_oetp_dma_rx_received_length_bytes_0x4ab940
 
     
     
-class openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_control_global_enable_0x1e2758b264f35202_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -892,7 +892,7 @@ class openenoc_endpoint_interface_irq_control_global_enable_0x7f5da6b01bd1e1cd_c
 
     
     
-class openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_control_clear_errors_neg_0x2b2f2e6d2f1737d9_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -930,7 +930,7 @@ class openenoc_endpoint_interface_irq_control_clear_errors_0x7569d412ef907028_cl
 
     
     
-class openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f89626bf3f7af85_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x5dcaf7a5801af46e_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 
@@ -974,7 +974,7 @@ class openenoc_endpoint_interface_irq_event_enable_peer_dma_complete_neg_0x3f896
 
     
     
-class openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x2c3b9124fdbda075_cls(FieldReadWrite):
+class openenoc_endpoint_interface_irq_event_enable_non_oetp_dma_tx_complete_neg_0x5855ff94815aad5_cls(FieldReadWrite):
     """
     Class to represent a register field in the register model
 

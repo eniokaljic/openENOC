@@ -331,8 +331,18 @@ regfile openenoc_endpoint_interface #(
 
                 field {
                     name = {INST_NAME, ".axis_if.source.status.tready"};
-                    desc = "Indicates that the destination AXI4-Stream interface is ready to
-                        receive data.";
+                    desc = "Registered readiness at the input of the direct TX AXI4-Stream
+                        register slice. With the non_oetp_direct_tx_complete event disabled,
+                        follows downstream backpressure through the slice's registered READY
+                        path; CSR acknowledgements and frame boundaries do not force it low.
+                        With the event enabled, additionally requires frame admission, which
+                        reserves space for the TX completion event. Acceptance of the final
+                        word (tlast) into the slice deasserts this field until the next frame
+                        receives admission. Writing the first word and setting
+                        source.control.tvalid requests admission even while this field is low.
+                        The active frame retains its admission decision if event_enable changes.
+                        Software must retain data, KEEP and LAST until source.control.tvalid
+                        is cleared by hardware, independently of this readiness status.";
 
                     sw = r;
                     hw = w;

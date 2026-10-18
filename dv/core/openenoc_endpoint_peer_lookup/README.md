@@ -3,28 +3,6 @@
 
 # openENOC Endpoint Peer Lookup Test Suite
 
-## Overview
-
-This cocotb suite verifies peer lookup with the generated CSR block and bridge.
-All peer configuration uses AXI4-Lite transactions. Five cases run with two
-clients, four peers, two-bit peer indices, and 32-bit addresses.
-
-## Test Coverage
-
-The suite covers:
-
-- generated CSR configuration, readback, and complete coherent peer snapshots;
-- index, RMEM-address, and MAC-address lookup with DMA-mode filtering;
-- disabled entries, mode masks, deterministic misses, and lowest-index match
-  priority;
-- half-open and zero-sized regions, overlaps, and address-wrap protection;
-- registered grants, round-robin arbitration, and sustained one-response-per-
-  cycle traffic;
-- two buffered responses, stable backpressured data, and same-cycle
-  replacement;
-- configuration changes after acceptance and output stability between clock
-  edges.
-
 ## Running Tests
 
 Run the full pytest parameter sweep:
