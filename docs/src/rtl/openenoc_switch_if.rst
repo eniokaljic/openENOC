@@ -6,6 +6,9 @@
 Switch CSR/core interface -- openenoc_switch_if
 ===============================================
 
+.. index::
+   single: openenoc_switch_if
+
 Defines the structured configuration and status boundary for switch hardware
 and its register bank.
 
@@ -18,7 +21,7 @@ Parameters
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 24 18 20 38
 
    * - Name
      - Default value
@@ -42,7 +45,7 @@ present, observes signals as inputs and does not drive them.
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 20 20 17 43
 
    * - Name
      - Type
@@ -75,12 +78,15 @@ default forwarding bitmap, and external forwarding-table CPUIF signals.
 port-bitmap width. The switch consumes the ``core`` view; the endpoint's
 generated bridge drives the ``csr`` view.
 
-Functional scenarios
---------------------
+Shared-bus and crossbar switches use the same configuration and status fields:
+``forwarding_control.operation_mode`` selects managed or unmanaged operation,
+``default_forwarding.bitmap`` supplies the destination set for a table miss,
+and ``forwarding_table`` exposes one common table through CPUIF. Table entries
+and the default route both use egress-port bitmaps, including multicast sets.
+``forwarding_control.pause_request`` and ``pause_done`` coordinate forwarding
+pause. Arbitration of the crossbar's per-ingress lookup and learning requests
+is internal and adds no per-engine software table or control port.
 
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
-
-* Forwarding mode and default-bitmap configuration.
-* Pause request and completed drain.
-* External forwarding-table register accesses.
+The hardware architecture is selected by ``SWITCH_TYPE`` on
+:ref:`rtl-eth-switch` at elaboration, independently of the runtime operation
+mode exposed here.

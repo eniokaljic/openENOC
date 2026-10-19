@@ -12,16 +12,18 @@ requirements that remain to be implemented.
 
 The reference covers every project module and interface under ``hw/rtl``,
 alongside the generated HAL interfaces, CSR modules, and packages. Each block
-has its own RST file, named after its SV source. Each page begins with a brief
-component description, followed by parameter and signal tables, architecture
-and operation, and a functional-scenario outline. Parameter tables include
-defaults and allowed values; signal tables include types and directions or
-modport roles. Packages list generated constants and have no runtime signals.
-Scenario outlines reserve space for WaveDrom timing diagrams and detailed
-examples as each block evolves.
-Implementation plans are kept here as explicitly marked TODO items; they do not
-describe functionality already present in RTL. Testbench wrappers are described
-in :doc:`verification`; third-party TAXI and PicoRV32 sources remain dependencies.
+has its own RTL Reference page, named after its SV source. Each page begins with a brief
+component description, followed by parameter and signal tables and architecture
+and operation. Handwritten runtime blocks and interfaces also include
+functional scenarios. Parameter tables include defaults and allowed values;
+signal tables include types and directions or modport roles.  Packages list generated constants
+and have no runtime signals.
+
+Components with a dedicated DV suite describe only their own testbench and coverage in a
+Verification section after the functional scenarios, while the suite README files provide
+configuration and test-running instructions. The shared verification framework
+is described in :doc:`verification`; third-party TAXI and PicoRV32 sources remain
+dependencies.
 
 .. _rtl-interfaces:
 
@@ -48,7 +50,6 @@ Endpoint blocks
    :titlesonly:
 
    rtl/openenoc_endpoint_interface
-   rtl/openenoc_endpoint_full
    rtl/openenoc_endpoint_direct_axis
    rtl/openenoc_endpoint_peer_lookup
    rtl/openenoc_endpoint_irq_controller
@@ -116,5 +117,12 @@ by hand. The software-visible register specification remains in :doc:`hal`.
 
 ``hal/tools/`` unit tests cover the exporters; ``dv/hal/openenoc_endpoint_full/``
 checks the generated CSR model against RTL, and endpoint tests cover wiring.
-Future reference additions should show generation dependencies and field
-ownership at the bridge boundary, without maintaining a duplicate register map.
+
+Endpoints
+---------
+
+.. toctree::
+   :maxdepth: 1
+   :titlesonly:
+
+   rtl/openenoc_endpoint_full

@@ -12,15 +12,27 @@
 project = 'openENOC'
 copyright = '2026, openENOC\'s contributors. For detailed authorship, please refer to the SPDX headers in the source code of individual files'
 author = 'openENOC\'s contributors'
-release = '0.2.2'
+release = '0.3.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+import sys
+from pathlib import Path
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
+
 extensions = [
     "sphinx_copybutton",
     "myst_parser",
+    "sphinxcontrib.wavedrom",
+    "openenoc_wavedrom",
 ]
+
+# Render timing diagrams at build time without browser JavaScript or Node.js.
+wavedrom_html_jsinline = False
+render_using_wavedrompy = True
 
 source_suffix = {
     ".rst": "restructuredtext",

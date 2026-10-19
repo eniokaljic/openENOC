@@ -7,6 +7,9 @@ System Architecture
 Introduction
 ------------
 
+.. index::
+   single: NoC
+
 The proposed openENOC system architecture is motivated by the need for a scalable and modular communication substrate for modern MPSoC platforms. As the number of integrated processing elements, accelerators, memories, and peripherals continues to grow, traditional shared buses and point-to-point interconnects become increasingly difficult to scale in terms of bandwidth, latency, and design complexity. For this reason, the Network-on-Chip (NoC) paradigm has become a widely adopted architectural direction for complex SoCs, replacing ad hoc global wiring with structured packet-switched communication and better supporting system expansion and integration [1]_.
 
 The openENOC architecture is based on an Ethernet-inspired Network-on-Chip (NoC) that uses Layer-2 Ethernet frame switching to interconnect CPUs, accelerators, peripherals, and memories within scalable MPSoC systems through a uniform communication model. This approach allows both on-chip and off-chip communication to be handled in a consistent way, making the architecture modular, extensible, and well suited for heterogeneous computing platforms targeting cryptography, AI, and edge workloads.
@@ -29,37 +32,119 @@ The architecture illustrated above is built around four main building blocks: th
 
 This chapter presents a system-level architectural overview of openENOC and introduces the major architectural components and their relationships. Detailed implementation and protocol specifications are provided in subsequent chapters.
 
-.. index:: Switch
-
 openENOC Switch
 ---------------
 
+.. index::
+   single: openENOC Switch
+
 The openENOC Switch is the central frame-switching element of the openENOC architecture that connects processors, accelerators, peripherals, and memories through the openENOC Endpoint Interface. It supports an arbitrary number of ports and provides Layer-2 forwarding between attached components using Ethernet frame semantics. In this role, the switch forms the communication backbone of the openENOC architecture and establishes the substrate over which higher-level communication behavior can be built.
 
-The switch can operate in two modes:
+.. index::
+   single: Shared-bus architecture
+   single: Crossbar architecture
+
+Two switch architectures are supported: **shared-bus** and **crossbar**. They
+provide the same Ethernet frame semantics, endpoint connectivity, and switch
+control interface, allowing each switch instance to balance hardware resources
+against the concurrency required by its traffic. The choice concerns the internal
+frame transport within a switch; the Ethernet-based NoC communication model and
+the oETP transport semantics remain common to both. Both architectures support
+unicast forwarding and multicast replication.
+
+In the **shared-bus architecture**, incoming frames share one forwarding engine
+and one internal data path. A common forwarding table determines the output
+ports and supports source-address learning for autonomous operation.
+
+.. figure:: ../images/openENOC-Switch-SharedBus.svg
+   :align: center
+   :width: 80%
+   :alt: Shared-bus switch with one forwarding engine between ingress arbitration and egress fanout.
+
+   openENOC Switch with shared-bus architecture
+
+Sharing the forwarding engine and data path limits hardware duplication and
+interconnect complexity. This makes the shared-bus model suitable for compact
+FPGA implementations, peripheral subnetworks, and workloads with modest aggregate
+traffic. Its main limitation is that all ingress streams share the capacity of
+one internal path, even when their frames target different outputs. Increasing
+the number of ports therefore increases competition for that path. Once output
+buffering is exhausted, backpressure from a selected destination can stall the
+shared path and delay unrelated traffic.
+
+In the **crossbar architecture**, each ingress has its own forwarding engine,
+while forwarding information remains shared. The internal fabric allows frames
+from different ingresses to advance concurrently when their destination sets
+do not overlap.
+
+.. figure:: ../images/openENOC-Switch-Crossbar.svg
+   :align: center
+   :width: 80%
+   :alt: Crossbar switch with per-ingress forwarding engines, a shared table, and multicast AXIS fabric.
+
+   openENOC Switch with crossbar architecture
+
+The crossbar model can provide higher aggregate throughput and reduce interference
+between independent streams, making it suitable for accelerator clusters and
+concurrent DMA or streaming transfers. This parallelism requires more forwarding
+logic and a larger interconnect, increasing FPGA resource use and implementation
+complexity as the port count grows. Frames competing for the same output still
+share that output's bandwidth, and lookup and learning remain subject to shared
+table arbitration. Multicast traffic can also increase interference between
+streams that share destinations, while independent paths can continue.
+
+The architecture is selected when the hardware is built. A common switch
+interface separates the surrounding NoC from the selected implementation.
+Future application-specific switch architectures can therefore be introduced
+without modifying the existing NoC topology, endpoint connections, or management
+integration, provided they preserve the common interface contract and Ethernet
+forwarding semantics.
+
+Each switch in a hierarchical or multi-FPGA deployment
+may use the model appropriate to its own traffic profile. For example, the
+dedicated peripheral subnet described later in this chapter can use shared-bus
+switching to conserve resources, while a high-bandwidth accelerator subnet can
+use crossbar switching to carry independent transfers concurrently. A shared
+memory endpoint remains a common output bottleneck when all accelerators target
+it, so crossbar parallelism alone does not remove that bandwidth limit.
+
+.. index::
+   single: Managed mode
+   single: Unmanaged mode
+
+Independently of this hardware choice, both architectures can operate in two
+control modes:
 
 * **Unmanaged mode**: the switch operates autonomously and passively learns forwarding table entries from the traffic passing through it. This functionality is implemented by an integrated RTL controller that updates the forwarding state dynamically based on observed frames.
 * **Managed mode**: the switch is configured by an external processor connected through the openENOC Switch Interface. In this mode, MAC learning and forwarding behavior can be controlled using software-visible configuration mechanisms.
 
 In addition to on-chip connectivity, switch ports may also be connected to Ethernet MAC & PHY controllers to extend communication beyond the chip boundary. This allows openENOC-based systems to scale from purely on-chip communication fabrics toward distributed multi-FPGA systems while preserving the same Ethernet-based forwarding model. As a result, the switch is not only the core of local communication, but also the bridge toward larger multi-device deployments.
 
-.. index:: Switch Interface
-
 openENOC Switch Interface
 --------------------------
+
+.. index::
+   single: openENOC Switch Interface
 
 The openENOC Switch Interface is a memory-mapped interface used to configure and monitor the openENOC Switch. It exposes configuration and status registers (CSRs), the forwarding table, and related control structures required for managed operation. Through this interface, software can observe and influence the behavior of the switching fabric without changing the data-plane abstraction presented to the rest of the system.
 
 When the switch operates in managed mode, a processor accesses this interface to define forwarding behavior, populate or update entries in the forwarding table, inspect switch state, and react to network events or topology-specific requirements. This enables software-defined traffic management while keeping the forwarding substrate modular and reusable.
 
+Both shared-bus and crossbar switches expose the same management model.
+Software manages one forwarding table and one switch control interface in
+either case, independently of internal traffic arbitration and replication.
+The hardware architecture is fixed when the hardware is built, while managed
+and unmanaged operation can be selected at runtime.
+
 In architectural terms, the switch interface complements the switch by separating control-plane responsibilities from frame forwarding. This distinction becomes especially important in systems where only selected endpoints require authority over the communication domain, while the remaining components interact with the network strictly through data exchange.
 
 Systems that rely exclusively on autonomous switching behavior may omit the switch interface entirely and operate the switch in unmanaged mode.
 
-.. index:: Endpoint Interface
-
 openENOC Endpoint Interface
 ---------------------------
+
+.. index::
+   single: openENOC Endpoint Interface
 
 The openENOC Endpoint Interface is the termination point for Ethernet communication arriving from the openENOC Switch. Every resource attached to the openENOC fabric, including processors, accelerators, memories, and peripherals, is represented on the network through an openENOC Endpoint Interface. It provides both *memory-mapped* and *streaming* integration models, allowing different classes of compute and memory resources to connect to the common network in a manner appropriate to their communication style. On the local side, integration with processors, accelerators, and memory-mapped resources is provided through AXI4-Lite interface.
 
@@ -73,6 +158,10 @@ The internal structure of the openENOC Endpoint Interface is illustrated in the 
 
 Individual endpoint implementations may configure, specialize, or extend these internal blocks depending on the attached resource. For example, an endpoint connected to memory may use DMA functionality and local buffering for bulk data movement, while an endpoint connected to an accelerator may rely more heavily on protocol adaptation, streaming access, or application-specific processing logic. The endpoint abstraction therefore represents a generic attachment mechanism rather than a single fixed communication engine.
 
+.. index::
+   single: Standalone mode
+   single: Non-standalone mode
+
 For memory-oriented deployments, endpoint implementations may operate in two common modes:
 
 * **Standalone mode**: the integrated controller autonomously handles DMA transfer coordination, memory range mapping, and data replication and synchronization.
@@ -85,13 +174,20 @@ This makes the endpoint suitable both for memory-centric communication and for l
 openENOC Transport Protocol
 ---------------------------
 
+.. index::
+   single: oETP
+
 The openENOC Transport Protocol (oETP) defines the transport-layer semantics of the architecture. It supports communication patterns such as remote memory access, processor-to-processor communication, accelerator integration, and transparent interconnection across multi-FPGA systems. While the openENOC Switch, openENOC Switch Interface, and openENOC Endpoint Interface define how components are connected and managed, oETP defines how memory-oriented transactions and related transport semantics are expressed over that Ethernet-based communication substrate.
 
 Existing RDMA-over-Ethernet technologies, most notably RoCEv1, provide a natural starting point for Ethernet-based memory-centric communication. However, these protocols were originally designed for datacenter environments and inherit a significant portion of the InfiniBand transport model, including Queue Pair (QP) abstractions, work request management, connection state tracking, completion queues, and memory registration mechanisms [6]_. Furthermore, RoCEv1 assumes a lossless Ethernet fabric and relies on Priority Flow Control (PFC) to prevent packet loss [7]_. Multiple studies have shown that PFC can introduce head-of-line blocking, congestion propagation, and deadlock scenarios, increasing the complexity of both network infrastructure and endpoint implementations [8]_. Such mechanisms are difficult to justify in Network-on-Chip environments, where buffering resources are limited and implementation simplicity is a primary design objective.
 
 To address these limitations, the openENOC project introduces oETP, a lightweight transport protocol specifically designed for Ethernet-based NoC systems. Rather than adopting the complete RDMA transport stack, oETP focuses on a minimal set of communication primitives required in hardware-centric MPSoC environments. The protocol employs compact message headers optimized for the small transactions typical of NoC workloads, reducing communication overhead and hardware resource consumption.
 
-The message structure used by oETP is illustrated in the figure below. The protocol is encapsulated directly within a standard Ethernet frame using EtherType value 0x88B5, which IEEE Std 802 reserves for local experimental use. This designation enables protocol development and evaluation without requiring allocation of a vendor-specific or standards-assigned EtherType value while remaining fully compatible with standard Ethernet framing.
+The message structure used by oETP is illustrated in the figure below. The
+protocol is encapsulated directly within a standard Ethernet frame using an
+EtherType reserved for local experimental use. This enables protocol development
+and evaluation while retaining the Ethernet framing model used throughout the
+fabric.
 
 .. figure:: ../images/openENOC-oETP-PDU.svg
    :align: center
@@ -99,48 +195,29 @@ The message structure used by oETP is illustrated in the figure below. The proto
 
    oETP PDU Encapsulation
 
-Although oETP does not mandate any particular MAC address allocation scheme for use within openENOC systems, all examples presented throughout this documentation follow a common convention. Unicast Ethernet frames are assumed to use locally administered MAC addresses with the OUI-like prefix 02:0E:0C, while multicast Ethernet frames use the prefix 03:0E:0C. This convention ensures that the locally administered address bit is set in accordance with IEEE addressing rules and that the unicast or multicast nature of the address is correctly encoded in the least significant bit of the first octet. In addition, the 0E:0C identifier provides a recognizable address space associated with the openENOC ecosystem while avoiding conflicts with globally assigned vendor OUIs.
-
 oETP retains the most valuable aspect of the RDMA programming model by supporting one-sided memory operations, including remote read and remote write transactions, while eliminating Queue Pair infrastructure and other InfiniBand-specific transport semantics. Its two memory access classes are transparent 32-bit Remote Memory (RMEM) operations and bulk DMA operations over byte-addressed memory regions.
 
-Frame format and encoding
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Frame structure
+~~~~~~~~~~~~~~~
 
-Each oETP PDU begins with a one-byte Magic field, ``0x0E``, followed by a
-one-byte Cmd field. The remaining parameters are four-byte words in the order
-defined by the command. All 32-bit parameters use little-endian encoding;
-for example, ``0x11223344`` is transmitted as ``44 33 22 11``. Ethernet MAC
-octet order and EtherType encoding are unchanged: ``0x88B5`` is transmitted
-as ``88 B5``. The initial format uses untagged Ethernet frames.
+An oETP PDU begins with a one-byte Magic field, followed by a one-byte Cmd
+field that identifies the operation. The remaining parameters are four-byte
+words whose meanings depend on the command. They identify the request and carry
+addresses, lengths, write masks, or memory data as required. Ethernet framing
+supplies the source and destination addresses, allowing the same transport
+format to serve on-chip and off-chip links.
 
-The maximum Ethernet frame length is **8192 bytes without FCS**, counted from
-Destination MAC through the final payload or Ethernet padding byte. The
-14-byte Ethernet header leaves an **8178-byte oETP PDU budget**. With
-``L_PDU = 2 + 4*N``, the PDU envelope is 6..8178 bytes. The FCS shown in the
-figure is generated and verified by an external Ethernet MAC and is absent
-on on-chip openENOC links; preamble and SFD are also outside this frame budget.
+Supported commands
+~~~~~~~~~~~~~~~~~~
 
-Bulk data is transmitted in increasing memory-address order. A block of B
-bytes occupies ``ceil(B/4)`` data parameters; unused bytes in the last word
-are zero on transmit, ignored on receive, and never written to memory.
-Ethernet padding follows the logical PDU and is also excluded from the memory
-transfer. The oETP engine does not add Ethernet minimum-frame padding: on-chip
-frames carry the logical PDU, and an external MAC pads a frame when it leaves
-the chip. Receive-side Ethernet padding values are ignored. This is separate
-from the final four-byte data parameter's unused bytes. The command layout,
-Length, or saved read-request context determines
-the logical PDU length independently of minimum-frame Ethernet padding.
+The protocol provides request-response pairs for single-word RMEM reads and
+writes and for bulk DMA reads and writes, together with a common error response.
+The following table summarizes their codes, parameter order, and purpose.
 
-Command specification
-~~~~~~~~~~~~~~~~~~~~~
-
-The command codes below are assigned. The parameter lists describe the current
-design layouts; each parameter occupies four bytes, including each Data word.
-Wire Error Code values 1..7 identify the causes summarized below.
-
-.. list-table:: oETP command codes and parameter layouts
+.. list-table:: oETP commands and parameter layouts
+   :class: documentation-table
    :header-rows: 1
-   :widths: 22 10 43 25
+   :widths: 24 12 36 28
 
    * - Command
      - Cmd
@@ -148,15 +225,20 @@ Wire Error Code values 1..7 identify the causes summarized below.
      - Operation
    * - RMEM_READ_REQ
      - ``0x10``
-     - Request ID, Address
+     - | Request ID
+       | Address
      - Read one aligned 32-bit word.
    * - RMEM_READ_RSP
      - ``0x11``
-     - Request ID, Data
+     - | Request ID
+       | Data
      - Return the complete word on success.
    * - RMEM_WRITE_REQ
      - ``0x20``
-     - Request ID, Address, BitEnable, Data
+     - | Request ID
+       | Address
+       | BitEnable
+       | Data
      - Write selected bits of one aligned word.
    * - RMEM_WRITE_RSP
      - ``0x21``
@@ -164,15 +246,23 @@ Wire Error Code values 1..7 identify the causes summarized below.
      - Acknowledge a completed unicast write.
    * - DMA_READ_REQ
      - ``0x30``
-     - Request ID, Address, Length
+     - | Request ID
+       | Address
+       | Length
      - Read one remote memory fragment.
    * - DMA_READ_RSP
      - ``0x31``
-     - Request ID, Data[ceil(ExpectedLength/4)], EndOfData
+     - | Request ID
+       | Data words
+       | EndOfData
      - Return the requested fragment on success.
    * - DMA_WRITE_REQ
      - ``0x40``
-     - Request ID, Address, Length, Data[ceil(Length/4)], EndOfData
+     - | Request ID
+       | Address
+       | Length
+       | Data words
+       | EndOfData
      - Write one remote memory fragment.
    * - DMA_WRITE_RSP
      - ``0x41``
@@ -180,181 +270,44 @@ Wire Error Code values 1..7 identify the causes summarized below.
      - Acknowledge a completed unicast fragment write.
    * - ERROR_RSP
      - ``0xFF``
-     - Request ID, Error Code
+     - | Request ID
+       | Error Code
      - Report failure instead of a success response.
 
-All other Cmd values are reserved. The four memory operation pairs use a
-request code ending in 0 and a success response code ending in 1. ERROR_RSP
-is their common error response; successful responses have no Status field.
-There are no wire Sequence or Control fields. Request ID selects the request
-context, while sequencing and whole-block completion remain local to the
-initiator.
-
-Address and Length are unsigned 32-bit byte quantities. RMEM accesses one
-four-byte word at a word-aligned address. BitEnable is present only on RMEM writes: bit i enables
-Data bit i and maps directly to CPUIF ``wr_biten``. A zero mask is a successful
-no-op after normal validation. RMEM reads return the complete word without
-a mask. Bulk DMA supports unaligned byte ranges and partial final words;
-Length must be positive. The initiator translates Address once into the
-responder's address space, where the complete permitted range is validated.
-
-DMA_READ_RSP obtains ExpectedLength from the saved request rather than a wire
-Length parameter. A successful response covers the complete requested
-operation; a write response follows target-memory completion. An error does
-not imply rollback of any memory bytes already modified.
-
-DMA_WRITE_REQ and DMA_READ_RSP append a four-byte EndOfData parameter,
-``0xE0D0E0D0`` (octets ``D0 E0 D0 E0``), after the complete Data parameter
-array. The receiver checks it only at the position determined by Length or
-the saved ExpectedLength; the same bit pattern inside memory data has no
-special meaning. EndOfData is excluded from memory data and both forms of
-padding. MAC-generated Ethernet padding is zero, so it cannot substitute for
-the marker in a prematurely terminated frame.
-
-Bulk payload is forwarded to the DMA engine as it arrives, after checking the
-command metadata and permitted address range. There is no full-frame buffering
-requirement before memory access. Payload length and framing are checked during
-reception; a late error can leave a partially modified destination, including
-the initiator's local destination for a DMA_READ_RSP. A successful unicast
-write response waits for both receive-frame completion and successful memory
-completion. Buffer synchronization, consistency, and recovery belong to
-software above oETP.
-
-Small internal buffers may synchronize the streaming pipeline and align data
-with control. They do not introduce a full-frame buffering requirement.
-
-TX also streams without a store-and-forward barrier between DMA and oETP.
-The first AXIS TVALID for the fragment starts preparation of the Ethernet/oETP
-frame. EndOfData is emitted only after all data and a successful local read
-completion. A later local read error ends the frame early without EndOfData;
-the receiver records remote stream error **10**, even when zero Ethernet
-padding makes the apparent data length sufficient. Already written bytes are
-not restored. For an incomplete unicast DMA_WRITE_REQ, the receiver returns
-ERROR_RSP cause 2; an incomplete DMA_READ_RSP is never answered with ERROR_RSP.
-
-Every started stream frame is assumed to end with TLAST, including shortened
-frames after an operation error. Version 1 does not infer frame boundaries or
-provide a separate missing-TLAST watchdog. If a subsequent frame continues an
-unterminated DMA frame, excess length or a missing/incorrect EndOfData at the
-expected position can reveal the malformed transfer; the receiver drains to
-the eventual TLAST without reconstructing the lost boundary.
-
-A DMA_WRITE_REQ has PDU length ``18 + 4*ceil(Length/4)``. The common bulk
-fragment limit is therefore **8160 data bytes** at the 8192-byte frame limit.
-Both DMA directions use this bound; a smaller path MTU requires a smaller
-fragment. The raw non-oETP frame limit and oETP memory-data limit are distinct.
-
-The raw frame ceiling is selected at synthesis through the RDL parameter
-``MAX_RAW_FRAME_SIZE``, defaulting to 8192 bytes without FCS. Software may
-select a smaller maximum for locally initiated DMA fragments through the
-global ``config.dma_max_fragment_size.bytes`` CSR, which resets to the
-derived 8160-byte ceiling. The setting is saved for the whole DMA block when
-its request is accepted, after rounding down to a multiple of four and checking
-the effective minimum of four bytes. The final fragment retains the exact
-remaining byte length. Received requests remain bounded by the synthesized
-ceiling, independently of the receiver's local fragmentation preference.
+RMEM operations access one aligned 32-bit word; writes can select individual
+bits through BitEnable. Bulk DMA operates on byte-addressed memory regions and
+can divide a larger transfer into fragments. A DMA read response uses the
+length saved with its request. EndOfData marks the end of successfully emitted
+bulk data in DMA write requests and DMA read responses.
 
 Request sequencing and recovery
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Version 1 uses sequential request-response transactions with at most one
-active locally initiated unicast request per endpoint, shared by RMEM and
-peer DMA. A DMA block advances one fragment at a time, after both the response
-and local completion. Incoming requests and their responses remain serviceable
-while an endpoint waits for its own response. There are no wire credits or
-automatic retransmissions.
+Version 1 uses sequential request-response transactions. A bulk transfer advances
+one fragment at a time after the current fragment completes. Each request has a
+Request ID that associates its response with the initiating operation. Endpoints
+continue servicing incoming requests while awaiting their own responses,
+supporting communication in both directions.
 
-When no responder context is available, a new incoming request is discarded
-through TLAST without memory access or a response. The RX parser does not wait
-for that context, so responses to this endpoint's own request can still arrive.
-The discarded request's initiator relies on its configured timeout; group
-writes remain best effort.
-
-RMEM has priority over the next bulk fragment, without interrupting an active
-frame or request. Responses to received requests have transmit priority;
-fair arbitration must also allow non-oETP traffic to progress.
-
-Each RMEM operation or DMA fragment receives a 32-bit Request ID; unicast
-responses echo it and must match the expected source MAC and response command.
-Unmatched or late responses are discarded. A recognized response for the active
-request from the expected peer, with an invalid length, terminates the request
-with an error instead of waiting for timeout. Recognized unicast requests from
-known peers with a trustworthy Request ID receive ERROR_RSP when validation
-fails; unparseable frames are discarded and multicast writes receive no reply.
-The allocation counter increments
-modulo 2^32 and resets only on engine/endpoint ``rst``. Reusing an ID that still
-belongs to an outstanding request first invalidates that older request with a
-timeout outcome, even when its configured timer is disabled. Version 1 has no
-session field or duplicate-execution protection. Hard reset clears all local
-FIFOs and outstanding contexts, giving the engine its power-on state; frames
-subsequently arriving from outside that reset domain cannot be identified as
-pre-reset traffic by Request ID alone.
-
-Two shared 32-bit CSRs specify response waits in endpoint clock cycles:
-``config.rmem_timeout.cycles`` for unicast RMEM and
-``config.dma_timeout.cycles`` separately for each unicast DMA fragment.
-Zero disables the corresponding timer and permits an indefinite wait. A timer
-is sampled when the operation is accepted and starts after the complete request
-frame is accepted by the Ethernet-facing transmit stream. It stops after the
-complete matching response has been received and validated through Ethernet
-TLAST, including EndOfData where present; RX backpressure counts toward the
-timeout. Remaining local memory completion is outside that timer. A valid
-response completing on the same edge as expiry takes priority, including a
-valid ERROR_RSP with its reported cause. There is no whole-block DMA timer.
-A fragment timeout stops the remaining fragments and
-reports local CSR error code **8 (TIMEOUT)**; software controls recovery and
-any deliberate retransmission.
-
-An RMEM failure releases the initiating access through the existing ACK-only
-boundary: a failed read returns ``0xFFFFFFFF`` with ``cpuif_rd_ack``, and a
-failed write asserts ``cpuif_wr_ack``. RMEM and bulk DMA share the peer's
-``dma.error`` and ``dma.error_code`` records, cleared explicitly by
-``dma.clear_error``. RMEM_ERROR remains a separate IRQ source from bulk DMA
-completion. Local causes use CSR codes 1..7: invalid parameters, stream/PDU
-length errors, size/capacity overflow, AXI read SLVERR/DECERR, and AXI write
-SLVERR/DECERR respectively. A valid ERROR_RSP carries one of those 32-bit
-causes and maps to the remote CSR range 9..15 as ``CSR code = 8 + wire code``.
-Values outside 1..7 are invalid response parameters and report local code 1.
-TIMEOUT remains local CSR code 8 and is not sent as a wire error cause.
-Remote code 10 also directly identifies an incomplete received DMA_WRITE_REQ
-or DMA_READ_RSP, including a missing or incorrect EndOfData; this classification
-does not require receiving ERROR_RSP first.
-
-An external MAC uses RX store-and-forward with ``RX_DROP_BAD_FRAME`` enabled.
-Frames with invalid FCS are discarded before entering oETP. Internally streamed
-frames retain the confirmed reception policy without full-frame buffering.
-
-Failure reporting is bilateral for configured peers. A responder identifies
-the initiating peer by the source MAC and records its own local failure before
-sending ERROR_RSP. The initiator records the mapped remote cause. For example,
-an AXI write SLVERR records code 6 at the receiving endpoint and code 14 at the
-initiating endpoint. Each endpoint can independently generate PEER_DMA_COMPLETE
-when its per-peer ``dma.irq_enable`` and global
-``irq.event_enable.peer_dma_complete`` permit it; RMEM failures retain the
-separate RMEM_ERROR source. Received failures do not change the responder's
-locally initiated ``dma.request``, ``idle``, or ``done`` state. A failed write
-can leave partially modified memory, so both sides can initiate software
-recovery. Successful incoming requests generate no completion IRQ.
-Multicast receivers retain local error records and enabled IRQs while
-suppressing ERROR_RSP. IRQ delivery does not gate the error response.
+Unicast success confirms completion of the requested operation at the receiving
+endpoint. Failures are reported locally, and configurable response timeouts
+can bound waits for missing unicast responses. Software can use status and
+interrupt notifications to select recovery. Streaming memory transfers may leave
+partially updated buffers after an error; oETP does not provide rollback or
+whole-block atomicity. Software owns buffer synchronization and any deliberate
+retransmission. Version 1 has no automatic retransmissions or wire credits.
 
 Multicast writes
 ~~~~~~~~~~~~~~~~
 
-RMEM_WRITE_REQ and DMA_WRITE_REQ support multicast destinations for
-one-to-N memory replication. The destination MAC's group bit selects response
-suppression: the sender completes after successful local frame emission,
-and receivers send neither a success response nor ERROR_RSP. Multicast is
-best effort, does not run a response timer, and provides no confirmation of
-individual receiver completion. Read requests use unicast destinations.
+RMEM and DMA writes can use multicast destinations for one-to-N memory
+replication. Each receiver applies its own access policy before updating local
+memory. Read operations use unicast destinations.
 
-Incoming individual destinations are compared with ``config.mac_address``;
-group destinations are compared with ``config.multicast_address``. All members
-of a replication group configure the same multicast address while retaining
-individual unicast identities. Outgoing Source MAC uses the unicast address.
-A zero multicast address disables group reception; broadcast is accepted only
-when that register contains the broadcast address. Receivers still identify
-the source peer and validate its permissions and the complete memory range.
+Multicast writes are best effort: receivers send no success or error responses,
+and sender completion confirms local emission rather than completion at every
+receiver. Group members share a multicast destination while retaining individual
+unicast identities for ordinary transactions and peer identification.
 
 By combining Ethernet framing, sequential request-response transactions, and RDMA-style one-sided memory operations, oETP targets tightly coupled hardware systems rather than distributed datacenter infrastructure. Within openENOC, the protocol is intended to operate over both on-chip Ethernet links inside a single MPSoC or FPGA system and off-chip Ethernet links connecting multiple FPGA-based domains through external MAC & PHY components. This allows the same transport model to span both local and multi-FPGA deployments while preserving a consistent programming and communication model across the entire Ethernet-based architecture.
 
@@ -440,11 +393,11 @@ The openENOC project is designed around a model-driven development workflow that
 
    openENOC Development and Integration Flow
 
-The process begins with the development of openENOC hardware and software components alongside a `SystemRDL <https://github.com/systemrdl>`_ specification for the Control and Status Register (CSR) interface, serving as the single source of truth for the register map and enabling automatic generation of implementation and verification artefacts using `PeakRDL <https://github.com/SystemRDL/PeakRDL>`_.
+The process begins with the development of openENOC hardware and software components alongside a SystemRDL [9]_ specification for the Control and Status Register (CSR) interface, serving as the single source of truth for the register map and enabling automatic generation of implementation and verification artefacts using PeakRDL [10]_.
 
 From the SystemRDL specification, the build system generates synthesizable CSR RTL, software-accessible CSR APIs, a Python register model, and associated documentation. This approach ensures consistency between hardware, software, and verification environments while significantly reducing manual maintenance effort.
 
-The generated Python register model is integrated into the verification framework, which is based on `cocotb <https://www.cocotb.org/>`_ and `Verilator <https://www.veripool.org/verilator/>`_. Together with simulator interfaces, hardware interfaces, and automated test suites, this environment enables functional verification of individual openENOC components as well as complete subsystem configurations. By deriving verification artefacts from the same register specification used by hardware and software, the risk of inconsistencies between implementation and test environments is minimized.
+The generated Python register model is integrated into the verification framework, which is based on cocotb [11]_ and Verilator [12]_. Together with simulator interfaces, hardware interfaces, and automated test suites, this environment enables functional verification of individual openENOC components as well as complete subsystem configurations. By deriving verification artefacts from the same register specification used by hardware and software, the risk of inconsistencies between implementation and test environments is minimized.
 
 To support continuous validation of the design, the verification infrastructure is intended to be integrated into a Continuous Integration (CI) workflow. Automated execution of simulation, verification, and build tasks enables functional regressions to be detected early and ensures that modifications to RTL, software components, register definitions, or verification infrastructure do not introduce unintended behavior. While GitHub Actions currently serves as the primary CI platform, the underlying procedures are designed to remain platform-independent. Verification and build workflows are implemented using portable scripts and standardized tooling interfaces, allowing them to be executed in alternative CI environments such as GitLab CI, Jenkins, Buildbot, or self-hosted automation systems without modification to the overall methodology.
 
@@ -491,3 +444,15 @@ References
 
 .. [8] R. Mittal, A. Shpiner, A. Panda, E. Zahavi, A. Krishnamurthy, S. Ratnasamy and S. Shenker, "Revisiting Network Support for RDMA," in *Proceedings of the ACM SIGCOMM Conference*, 2018.
    `(link) <https://arxiv.org/abs/1806.08159>`_
+
+.. [9] Accellera Systems Initiative, *SystemRDL Standard*.
+   `(link) <https://www.accellera.org/downloads/standards/systemrdl>`_
+
+.. [10] SystemRDL, *PeakRDL register-description toolchain*.
+   `(link) <https://github.com/SystemRDL/PeakRDL>`_
+
+.. [11] cocotb, *Coroutine-based cosimulation testbench environment*.
+   `(link) <https://www.cocotb.org/>`_
+
+.. [12] Veripool, *Verilator*.
+   `(link) <https://www.veripool.org/verilator/>`_

@@ -6,6 +6,9 @@
 Endpoint configuration package -- openenoc_endpoint_full_pkg
 ============================================================
 
+.. index::
+   single: openenoc_endpoint_full_pkg
+
 Defines the generated memory map and configuration types for the reference
 endpoint.
 
@@ -20,7 +23,7 @@ the RDL and regenerate the package to change their values.
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 45 17 19 19
 
    * - Name
      - Default value
@@ -65,7 +68,7 @@ Signals
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 12 18 20 50
 
    * - Name
      - Type
@@ -84,16 +87,30 @@ and elaborated configuration parameters. :ref:`rtl-endpoint-full` consumes
 these constants to construct the memory map and synthesize infrastructure.
 It has no runtime state. Compile it before the endpoint module.
 
-``OPENENOC_ENDPOINT_FULL_DATA_WIDTH`` sets the memory data width.
-``IMEM_DEPTH`` and ``DMEM_DEPTH`` count memory words; multiplying by the data
-width in bytes gives each RAM aperture. ``IMEM_BASE_ADDR``, ``DMEM_BASE_ADDR``,
-and ``CSR_BASE_ADDR`` set the crossbar target bases. Endpoint sizing follows
-``OPENENOC_ENDPOINT_FULL_MIN_ADDR_WIDTH`` and ``OPENENOC_ENDPOINT_FULL_SIZE``.
+SystemRDL allows register ``accesswidth`` and memory-map organization to be
+configured. PeakRDL derives the generated CPUIF data width from the largest
+register ``accesswidth`` in the scope it exports. This top-level map contains
+only external IMEM, DMEM, and CSR blocks, so PeakRDL cannot infer the width
+from their registers and defaults ``OPENENOC_ENDPOINT_FULL_DATA_WIDTH`` to 32.
+
+The current endpoint components and oETP protocol implementation require
+32-bit data and address buses. The full endpoint checks that the generated
+endpoint and CSR data widths equal 32 and that both address maps fit within
+the 32-bit address space. RDL configurations used with these components must
+respect those constraints.
+
+``IMEM_DEPTH`` and ``DMEM_DEPTH`` count 32-bit memory words; multiplying by
+four gives each RAM aperture in bytes. ``IMEM_BASE_ADDR``, ``DMEM_BASE_ADDR``,
+and ``CSR_BASE_ADDR`` set the crossbar target bases.
+``OPENENOC_ENDPOINT_FULL_MIN_ADDR_WIDTH`` describes the minimum address width
+needed for the map, and ``OPENENOC_ENDPOINT_FULL_SIZE`` gives its byte span.
+The current minimum is 30 bits; the AXI and AXI4-Lite address buses remain
+fixed at 32 bits.
 
 .. list-table:: Exported configuration types
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 45 55
+   :widths: 34 66
 
    * - Type
      - Description
@@ -106,13 +123,3 @@ Per-region ``__imem__*``, ``__dmem__*``, and ``__csr__*`` types compose these
 structures. Their address widths come from the generated memory apertures.
 The current AXI4-Lite wrapper consumes the constants directly rather than
 using these aggregate native request/response structures as runtime ports.
-
-Functional scenarios
---------------------
-
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
-
-* Compilation before the endpoint wrapper.
-* Instruction/data memory sizing and base-address selection.
-* Regeneration after changes to the endpoint RDL.

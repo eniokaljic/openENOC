@@ -6,6 +6,9 @@
 Endpoint CSR/core interface -- openenoc_endpoint_if
 ===================================================
 
+.. index::
+   single: openenoc_endpoint_if
+
 Defines the structured control and status boundary between endpoint hardware
 and its register bank.
 
@@ -18,7 +21,7 @@ Parameters
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 22 18 22 38
 
    * - Name
      - Default value
@@ -42,7 +45,7 @@ present, observes signals as inputs and does not drive them.
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 20 20 17 43
 
    * - Name
      - Type
@@ -77,12 +80,26 @@ configuration, direct/raw DMA controls, IRQ state, peer fields, and the external
 RMEM request/ACK/read-data boundary. ``clk/rst`` belong to the endpoint domain.
 Each connected core block owns its assigned fields.
 
-Functional scenarios
---------------------
+.. list-table:: Error-status fields
+   :class: documentation-table
+   :header-rows: 1
+   :widths: 45 11 44
 
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
+   * - CSR field
+     - Codes
+     - Meaning
+   * - ``non_oetp_dma.tx.command_status.error_code``
+     - 0..7
+     - Raw transmit result: ``NONE`` or a local failure.
+   * - ``non_oetp_dma.rx.command_status.error_code``
+     - 0..7
+     - Raw receive result: ``NONE`` or a local failure.
+   * - ``peers.entry[n].dma.error_code``
+     - 0..15
+     - Shared peer DMA/RMEM result, including timeout and remote failures.
 
-* Configuration and per-peer control updates.
-* Direct-stream, raw-DMA, and interrupt status exchange.
-* External scalar memory request, acknowledgement, and read data.
+The complete value-to-mnemonic mapping is in
+:ref:`rtl-dma-transfer-error-codes`. The corresponding source constants use
+the ``ERROR_`` prefix; diagrams omit that prefix. A clear error flag and
+``NONE`` describe no recorded failure, independently of idle/done state.
+IRQ source encodings are listed in :ref:`rtl-irq-event-if`.

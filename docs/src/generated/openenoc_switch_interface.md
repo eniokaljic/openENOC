@@ -122,7 +122,7 @@ Don't override. Generated from: openenoc_switch_interface_top
 |------|-----------|------------------------------------------------------------------------------|
 |  0x0 |mac_address|openenoc_switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].mac_address|
 |  0x8 |   iface   |   openenoc_switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].iface   |
-|  0xC |   config  |   openenoc_switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config  |
+|  0xC |    conf   |    openenoc_switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf   |
 
 ### mac_address register
 
@@ -161,7 +161,7 @@ Don't override. Generated from: openenoc_switch_interface_top
 
 <p>Bitmap selecting the output interface or interfaces to which a matching frame is forwarded. Bit NUM_OF_INTERFACES-1, the MSB, corresponds to the first interface; bit 0 corresponds to the last interface.</p>
 
-### config register
+### conf register
 
 - Absolute Address: 0x1C
 - Base Offset: 0xC
@@ -169,9 +169,9 @@ Don't override. Generated from: openenoc_switch_interface_top
 
 <p>Configuration information associated with this forwarding table entry.</p>
 
-|Bits|Identifier|Access|Reset|                                       Name                                      |
-|----|----------|------|-----|---------------------------------------------------------------------------------|
-|  0 |  enabled |  rw  |  —  |openenoc_switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled|
+|Bits|Identifier|Access|Reset|                                      Name                                     |
+|----|----------|------|-----|-------------------------------------------------------------------------------|
+|  0 |  enabled |  rw  |  —  |openenoc_switch_interface.forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled|
 
 #### enabled field
 

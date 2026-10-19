@@ -59,8 +59,8 @@ This work package delivers the complete openENOC RTL implementation forming the 
 
 - &#x2705; [RTL1 - Core Switching Primitives](https://github.com/eniokaljic/openENOC/issues/1)
 - &#x2705; [RTL2 - Packet Processing Pipeline](https://github.com/eniokaljic/openENOC/issues/2)
-- &#x1F7E9; [RTL3 - Forwarding & DMA Engines](https://github.com/eniokaljic/openENOC/issues/3)
-- &#x2b1c; [RTL4 - Integrated NoC Fabric](https://github.com/eniokaljic/openENOC/issues/4)
+- &#x2705; [RTL3 - Forwarding & DMA Engines](https://github.com/eniokaljic/openENOC/issues/3)
+- &#x1F7E9; [RTL4 - Integrated NoC Fabric](https://github.com/eniokaljic/openENOC/issues/4)
 
 ### WP2 - Integration HAL and Software API Development
 
@@ -68,8 +68,8 @@ This work package provides the software interface layer required to configure an
 
 - &#x2705; [SW1 - HAL Architecture Specification](https://github.com/eniokaljic/openENOC/issues/5)
 - &#x2705; [SW2 - RISC-V Platform Integration](https://github.com/eniokaljic/openENOC/issues/6)
-- &#x1F7E9; [SW3 - Runtime Control API](https://github.com/eniokaljic/openENOC/issues/7)
-- &#x2b1c; [SW4 - Reference Applications](https://github.com/eniokaljic/openENOC/issues/8)
+- &#x2705; [SW3 - Runtime Control API](https://github.com/eniokaljic/openENOC/issues/7)
+- &#x1F7E9; [SW4 - Reference Applications](https://github.com/eniokaljic/openENOC/issues/8)
 
 ### WP3 - Verification Infrastructure Development
 
@@ -77,14 +77,14 @@ This work package establishes the verification infrastructure required to valida
 
 - &#x2705; [DV1 - Simulation Framework](https://github.com/eniokaljic/openENOC/issues/9)
 - &#x2705; [DV2 - Module-Level Verification](https://github.com/eniokaljic/openENOC/issues/10)
-- &#x1F7E9; [DV3 - HW/SW Co-Verification](https://github.com/eniokaljic/openENOC/issues/11)
-- &#x2b1c; [DV4 - Continuous Verification Infrastructure](https://github.com/eniokaljic/openENOC/issues/12)
+- &#x2705; [DV3 - HW/SW Co-Verification](https://github.com/eniokaljic/openENOC/issues/11)
+- &#x1F7E9; [DV4 - Continuous Verification Infrastructure](https://github.com/eniokaljic/openENOC/issues/12)
 
 ### WP4 - Demo SoCs and Educational Kits Development
 
 This work package demonstrates the practical applicability of openENOC through deployable FPGA-based systems. The first stage delivers a minimal reference SoC integrating a RISC-V core and openENOC on a low-cost FPGA board (DEM1). The second stage expands the platform with additional endpoints and external Ethernet connectivity, enabling full system demonstrations that bridge on-chip and off-chip networking (DEM2).
 
-- &#x2b1c; [DEM1 - Initial FPGA NoC Demo](https://github.com/eniokaljic/openENOC/issues/13)
+- &#x1F7E9; [DEM1 - Initial FPGA NoC Demo](https://github.com/eniokaljic/openENOC/issues/13)
 - &#x2b1c; [DEM2 - Extended FPGA Demonstration Platform](https://github.com/eniokaljic/openENOC/issues/14)
 
 ### WP5 - FOSS Synthesis & PnR Toolchains Integration
@@ -99,8 +99,8 @@ This work package ensures that openENOC can be built using a fully open-source F
 This work package produces the technical documentation and developer resources necessary to make the project accessible and reusable by the wider open hardware community. Initial architecture documentation describing the design concepts and packet model is produced first (DOC1). Detailed design documentation of RTL modules and interfaces follows (DOC2). Tutorials and developer guides are then prepared to demonstrate simulation and FPGA deployment workflows (DOC3), and the final stage documents reproducible build and verification processes (DOC4).
 
 - &#x2705; [DOC1 - Initial Architecture Documentation](https://github.com/eniokaljic/openENOC/issues/15)
-- &#x1F7E9; [DOC2 - Design Documentation](https://github.com/eniokaljic/openENOC/issues/16)
-- &#x2b1c; [DOC3 - Tutorials & Developer Guides](https://github.com/eniokaljic/openENOC/issues/17)
+- &#x2705; [DOC2 - Design Documentation](https://github.com/eniokaljic/openENOC/issues/16)
+- &#x1F7E9; [DOC3 - Tutorials & Developer Guides](https://github.com/eniokaljic/openENOC/issues/17)
 - &#x2b1c; [DOC4 - Reproducible Build & Verification Documentation](https://github.com/eniokaljic/openENOC/issues/18)
 
 ### WP7 - Results Dissemination

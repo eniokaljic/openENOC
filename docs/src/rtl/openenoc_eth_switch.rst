@@ -7,6 +7,9 @@
 Switch architecture selector -- openenoc_eth_switch
 ===================================================
 
+.. index::
+   single: openenoc_eth_switch
+
 Selects and instantiates the Ethernet switching fabric for a group of links.
 
 **Source:** :download:`openenoc_eth_switch.sv <../../../hw/rtl/core/openenoc_eth_switch.sv>`.
@@ -17,7 +20,7 @@ Parameters
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 24 18 30 28
 
    * - Name
      - Default value
@@ -26,7 +29,7 @@ Parameters
    * - ``SWITCH_TYPE``
      - ``0``
      - 0 or 1
-     - Selects shared-bus or crossbar switching architecture.
+     - ``0`` selects shared-bus; ``1`` selects crossbar switching.
    * - ``NUM_OF_INTERFACES``
      - ``4``
      - 2..32
@@ -60,7 +63,7 @@ the selected modport or stream role; member directions follow that interface.
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 30 30 17 23
 
    * - Name
      - Type
@@ -78,7 +81,8 @@ the selected modport or stream role; member directions follow that interface.
      - ``openenoc_switch_if.core``
      - bidirectional (core)
      - Switch configuration, pause status, and forwarding-table CPU access.
-   * - ``eth_if [NUM_OF_INTERFACES-1:0]``
+   * - | ``eth_if``
+       | ``[NUM_OF_INTERFACES-1:0]``
      - ``openenoc_eth_if``
      - bidirectional; PORT_SIDE per port
      - Per-port bidirectional links, each with its own clock/reset domain.
@@ -89,6 +93,9 @@ Architecture and operation
 ``SWITCH_TYPE`` selects the implementation at elaboration: 0 for
 :ref:`rtl-eth-switch-shared-bus`, 1 for :ref:`rtl-eth-switch-crossbar`.
 The public ``clk/rst``, ``switch_if``, and ``eth_if`` array are common to both.
+The selection is fixed in the synthesized hardware; it is not a CSR setting.
+Managed and unmanaged operation remain runtime choices through the common
+switch control interface.
 
 Both variants expose ``NUM_OF_INTERFACES``, ``TABLE_DEPTH``, ``FABRIC_DATA_W``,
 ``PORT_SIDE``, and ``PORT_FIFO_DEPTH``. ``PORT_SIDE[i]`` identifies whether the
@@ -96,12 +103,11 @@ switch is side A (0) or side B (1) of port i; the default is side B for every
 port. Per-port FIFO adapters bridge link domains into the fabric domain.
 Forwarding control and table access come from :ref:`rtl-switch-if`.
 
-Functional scenarios
---------------------
-
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
-
-* Shared-bus and crossbar implementations.
-* Port orientation and asynchronous link adaptation.
-* Forwarding control, table access, and pause propagation.
+Both implementations interpret a forwarding-table result as an egress-port
+bitmap. One selected port provides unicast forwarding; several selected ports
+provide multicast replication. The forwarding engine removes the ingress port
+from that set before handing the frame to the egress fabric. The shared-bus
+implementation uses one forwarding engine and a bitmap-controlled demultiplexer;
+the crossbar implementation uses one engine per ingress and a multicast-capable
+AXIS switch. These internal differences preserve the same Ethernet and CSR
+contracts at the selector boundary.

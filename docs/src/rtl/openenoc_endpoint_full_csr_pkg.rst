@@ -6,6 +6,9 @@
 CSR types package -- openenoc_endpoint_full_csr_pkg
 ===================================================
 
+.. index::
+   single: openenoc_endpoint_full_csr_pkg
+
 Defines the generated register-bank types and configuration constants used by
 its consumers.
 
@@ -20,7 +23,7 @@ the RDL and regenerate the package to change their values.
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 45 17 19 19
 
    * - Name
      - Default value
@@ -85,7 +88,7 @@ Signals
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 12 18 20 50
 
    * - Name
      - Type
@@ -113,7 +116,7 @@ configure the associated switch boundary.
 .. list-table:: Exported hardware-interface types
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 45 55
+   :widths: 38 62
 
    * - Type
      - Description
@@ -125,13 +128,3 @@ configure the associated switch boundary.
 Nested field types compose these two structures. Their field names and widths
 follow :doc:`../hal`; the generated source provides the complete type tree.
 Consumers do not instantiate the package and do not drive its constants.
-
-Functional scenarios
---------------------
-
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
-
-* Compilation before the register bank and bridge.
-* Configuration constants derived from the endpoint RDL.
-* Hardware update and software control structures used at the bridge.

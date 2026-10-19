@@ -6,6 +6,9 @@
 PicoRV32 wrapper -- openenoc_picorv32
 =====================================
 
+.. index::
+   single: openenoc_picorv32
+
 Wraps the bundled RISC-V processor with the project memory-bus adapter.
 
 **Source:** :download:`openenoc_picorv32.sv <../../../hw/rtl/core/openenoc_picorv32.sv>`.
@@ -16,7 +19,7 @@ Parameters
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 26 20 22 32
 
    * - Name
      - Default value
@@ -129,7 +132,7 @@ Signals
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 22 22 17 39
 
    * - Name
      - Type
@@ -345,6 +348,9 @@ The ``rvfi_*`` ports exist only when ``RISCV_FORMAL`` is defined.
 Architecture and operation
 --------------------------
 
+.. index::
+   single: PicoRV32
+
 The wrapper combines the bundled PicoRV32 core with the project's AXI4-Lite
 adapter. Its flattened ``mem_axi_*`` master connects to the endpoint memory
 interconnect. ``clk`` and active-low ``resetn`` drive processor state; ``trap``,
@@ -358,16 +364,6 @@ PCPI/multiply/divide, IRQ features, trace, and initial register values.
 ``LATCHED_IRQ`` define boot/interrupt configuration. The vendor core under
 ``libs/picorv32`` remains the source for its instruction/feature semantics.
 
-**Verification:** full-endpoint firmware tests and adapter-specific tests.
-The reference skeleton should grow to cover the endpoint's selected feature
-set, boot flow, and interrupt wiring.
-
-Functional scenarios
---------------------
-
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
-
-* Firmware boot and instruction/data memory accesses.
-* Interrupt entry, end-of-interrupt indication, and return.
-* Optional coprocessor, trace, and formal-observation interfaces.
+Firmware boot, memory accesses, and interrupt handling are illustrated in
+the :ref:`full endpoint <rtl-endpoint-full>` reference. Adapter timing is
+described in :ref:`rtl-picorv32-axil-adapter`.
