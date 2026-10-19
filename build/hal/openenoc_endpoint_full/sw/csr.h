@@ -108,15 +108,15 @@ typedef union {
     uint64_t w;
 } csr__endpoint_interface__info_t;
 
-// reg - csr.endpoint_interface.config.mac_address
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__LO_WORD_bm 0xffffffff
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__LO_WORD_bp 0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__LO_WORD_bw 32
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__LO_WORD_reset 0x0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__HI_WORD_bm 0xffff00000000
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__HI_WORD_bp 32
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__HI_WORD_bw 16
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MAC_ADDRESS__HI_WORD_reset 0x0
+// reg - csr.endpoint_interface.conf.mac_address
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__LO_WORD_bm 0xffffffff
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__LO_WORD_bp 0
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__LO_WORD_bw 32
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__LO_WORD_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__HI_WORD_bm 0xffff00000000
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__HI_WORD_bp 32
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__HI_WORD_bw 16
+#define CSR__ENDPOINT_INTERFACE__CONF__MAC_ADDRESS__HI_WORD_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint64_t lo_word :32;
@@ -124,17 +124,17 @@ typedef union {
         uint64_t :16;
     } f;
     uint64_t w;
-} csr__endpoint_interface__config__mac_address_t;
+} csr__endpoint_interface__conf__mac_address_t;
 
-// reg - csr.endpoint_interface.config.multicast_address
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__LO_WORD_bm 0xffffffff
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__LO_WORD_bp 0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__LO_WORD_bw 32
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__LO_WORD_reset 0x0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__HI_WORD_bm 0xffff00000000
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__HI_WORD_bp 32
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__HI_WORD_bw 16
-#define CSR__ENDPOINT_INTERFACE__CONFIG__MULTICAST_ADDRESS__HI_WORD_reset 0x0
+// reg - csr.endpoint_interface.conf.multicast_address
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__LO_WORD_bm 0xffffffff
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__LO_WORD_bp 0
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__LO_WORD_bw 32
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__LO_WORD_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__HI_WORD_bm 0xffff00000000
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__HI_WORD_bp 32
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__HI_WORD_bw 16
+#define CSR__ENDPOINT_INTERFACE__CONF__MULTICAST_ADDRESS__HI_WORD_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint64_t lo_word :32;
@@ -142,66 +142,66 @@ typedef union {
         uint64_t :16;
     } f;
     uint64_t w;
-} csr__endpoint_interface__config__multicast_address_t;
+} csr__endpoint_interface__conf__multicast_address_t;
 
-// reg - csr.endpoint_interface.config.non_oetp_control
-#define CSR__ENDPOINT_INTERFACE__CONFIG__NON_OETP_CONTROL__RECEIVE_MODE_bm 0x3
-#define CSR__ENDPOINT_INTERFACE__CONFIG__NON_OETP_CONTROL__RECEIVE_MODE_bp 0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__NON_OETP_CONTROL__RECEIVE_MODE_bw 2
-#define CSR__ENDPOINT_INTERFACE__CONFIG__NON_OETP_CONTROL__RECEIVE_MODE_reset 0x1
+// reg - csr.endpoint_interface.conf.non_oetp_control
+#define CSR__ENDPOINT_INTERFACE__CONF__NON_OETP_CONTROL__RECEIVE_MODE_bm 0x3
+#define CSR__ENDPOINT_INTERFACE__CONF__NON_OETP_CONTROL__RECEIVE_MODE_bp 0
+#define CSR__ENDPOINT_INTERFACE__CONF__NON_OETP_CONTROL__RECEIVE_MODE_bw 2
+#define CSR__ENDPOINT_INTERFACE__CONF__NON_OETP_CONTROL__RECEIVE_MODE_reset 0x1
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t receive_mode :2;
         uint32_t :30;
     } f;
     uint32_t w;
-} csr__endpoint_interface__config__non_oetp_control_t;
+} csr__endpoint_interface__conf__non_oetp_control_t;
 
-// reg - csr.endpoint_interface.config.rmem_timeout
-#define CSR__ENDPOINT_INTERFACE__CONFIG__RMEM_TIMEOUT__CYCLES_bm 0xffffffff
-#define CSR__ENDPOINT_INTERFACE__CONFIG__RMEM_TIMEOUT__CYCLES_bp 0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__RMEM_TIMEOUT__CYCLES_bw 32
-#define CSR__ENDPOINT_INTERFACE__CONFIG__RMEM_TIMEOUT__CYCLES_reset 0x0
+// reg - csr.endpoint_interface.conf.rmem_timeout
+#define CSR__ENDPOINT_INTERFACE__CONF__RMEM_TIMEOUT__CYCLES_bm 0xffffffff
+#define CSR__ENDPOINT_INTERFACE__CONF__RMEM_TIMEOUT__CYCLES_bp 0
+#define CSR__ENDPOINT_INTERFACE__CONF__RMEM_TIMEOUT__CYCLES_bw 32
+#define CSR__ENDPOINT_INTERFACE__CONF__RMEM_TIMEOUT__CYCLES_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t cycles :32;
     } f;
     uint32_t w;
-} csr__endpoint_interface__config__rmem_timeout_t;
+} csr__endpoint_interface__conf__rmem_timeout_t;
 
-// reg - csr.endpoint_interface.config.dma_timeout
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_TIMEOUT__CYCLES_bm 0xffffffff
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_TIMEOUT__CYCLES_bp 0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_TIMEOUT__CYCLES_bw 32
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_TIMEOUT__CYCLES_reset 0x0
+// reg - csr.endpoint_interface.conf.dma_timeout
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_TIMEOUT__CYCLES_bm 0xffffffff
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_TIMEOUT__CYCLES_bp 0
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_TIMEOUT__CYCLES_bw 32
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_TIMEOUT__CYCLES_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t cycles :32;
     } f;
     uint32_t w;
-} csr__endpoint_interface__config__dma_timeout_t;
+} csr__endpoint_interface__conf__dma_timeout_t;
 
-// reg - csr.endpoint_interface.config.dma_max_fragment_size
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_MAX_FRAGMENT_SIZE__BYTES_bm 0xffffffff
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_MAX_FRAGMENT_SIZE__BYTES_bp 0
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_MAX_FRAGMENT_SIZE__BYTES_bw 32
-#define CSR__ENDPOINT_INTERFACE__CONFIG__DMA_MAX_FRAGMENT_SIZE__BYTES_reset 0x1fe0
+// reg - csr.endpoint_interface.conf.dma_max_fragment_size
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_MAX_FRAGMENT_SIZE__BYTES_bm 0xffffffff
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_MAX_FRAGMENT_SIZE__BYTES_bp 0
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_MAX_FRAGMENT_SIZE__BYTES_bw 32
+#define CSR__ENDPOINT_INTERFACE__CONF__DMA_MAX_FRAGMENT_SIZE__BYTES_reset 0x1fe0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t bytes :32;
     } f;
     uint32_t w;
-} csr__endpoint_interface__config__dma_max_fragment_size_t;
+} csr__endpoint_interface__conf__dma_max_fragment_size_t;
 
-// regfile - csr.endpoint_interface.config
+// regfile - csr.endpoint_interface.conf
 typedef struct __attribute__ ((__packed__)) {
-    csr__endpoint_interface__config__mac_address_t mac_address;
-    csr__endpoint_interface__config__multicast_address_t multicast_address;
-    csr__endpoint_interface__config__non_oetp_control_t non_oetp_control;
-    csr__endpoint_interface__config__rmem_timeout_t rmem_timeout;
-    csr__endpoint_interface__config__dma_timeout_t dma_timeout;
-    csr__endpoint_interface__config__dma_max_fragment_size_t dma_max_fragment_size;
-} csr__endpoint_interface__config_t;
+    csr__endpoint_interface__conf__mac_address_t mac_address;
+    csr__endpoint_interface__conf__multicast_address_t multicast_address;
+    csr__endpoint_interface__conf__non_oetp_control_t non_oetp_control;
+    csr__endpoint_interface__conf__rmem_timeout_t rmem_timeout;
+    csr__endpoint_interface__conf__dma_timeout_t dma_timeout;
+    csr__endpoint_interface__conf__dma_max_fragment_size_t dma_max_fragment_size;
+} csr__endpoint_interface__conf_t;
 
 // reg - csr.endpoint_interface.axis_if.source.data
 #define CSR__ENDPOINT_INTERFACE__AXIS_IF__SOURCE__DATA__TDATA_bm 0xffffffff
@@ -591,9 +591,9 @@ typedef union {
 #define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SOURCE_bm 0x7800
 #define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SOURCE_bp 11
 #define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SOURCE_bw 4
-#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQUENCE_bm 0x7fff8000
-#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQUENCE_bp 15
-#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQUENCE_bw 16
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQ_bm 0x7fff8000
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQ_bp 15
+#define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__SEQ_bw 16
 #define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__VALID_bm 0x80000000
 #define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__VALID_bp 31
 #define CSR__ENDPOINT_INTERFACE__IRQ__CLAIM__VALID_bw 1
@@ -601,7 +601,7 @@ typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t peer_idx :11;
         uint32_t source :4;
-        uint32_t sequence :16;
+        uint32_t seq :16;
         uint32_t valid :1;
     } f;
     uint32_t w;
@@ -616,10 +616,10 @@ typedef union {
 #define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SOURCE_bp 11
 #define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SOURCE_bw 4
 #define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SOURCE_reset 0x0
-#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_bm 0x7fff8000
-#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_bp 15
-#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_bw 16
-#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQUENCE_reset 0x0
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQ_bm 0x7fff8000
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQ_bp 15
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQ_bw 16
+#define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__SEQ_reset 0x0
 #define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__VALID_bm 0x80000000
 #define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__VALID_bp 31
 #define CSR__ENDPOINT_INTERFACE__IRQ__COMPLETE__VALID_bw 1
@@ -628,7 +628,7 @@ typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t peer_idx :11;
         uint32_t source :4;
-        uint32_t sequence :16;
+        uint32_t seq :16;
         uint32_t valid :1;
     } f;
     uint32_t w;
@@ -784,7 +784,7 @@ typedef struct __attribute__ ((__packed__)) {
 typedef struct __attribute__ ((__packed__)) {
     csr__endpoint_interface__info_t info;
     uint8_t RESERVED_8_1f[0x18];
-    csr__endpoint_interface__config_t config;
+    csr__endpoint_interface__conf_t conf;
     csr__endpoint_interface__axis_if_t axis_if;
     uint8_t RESERVED_5c_5f[0x4];
     csr__endpoint_interface__non_oetp_dma_t non_oetp_dma;
@@ -878,23 +878,23 @@ typedef union {
     uint32_t w;
 } csr__switch_interface__forwarding_table__entryx__iface_t;
 
-// reg - csr.switch_interface.forwarding_table.entry[].config
-#define CSR__SWITCH_INTERFACE__FORWARDING_TABLE__ENTRYX__CONFIG__ENABLED_bm 0x1
-#define CSR__SWITCH_INTERFACE__FORWARDING_TABLE__ENTRYX__CONFIG__ENABLED_bp 0
-#define CSR__SWITCH_INTERFACE__FORWARDING_TABLE__ENTRYX__CONFIG__ENABLED_bw 1
+// reg - csr.switch_interface.forwarding_table.entry[].conf
+#define CSR__SWITCH_INTERFACE__FORWARDING_TABLE__ENTRYX__CONF__ENABLED_bm 0x1
+#define CSR__SWITCH_INTERFACE__FORWARDING_TABLE__ENTRYX__CONF__ENABLED_bp 0
+#define CSR__SWITCH_INTERFACE__FORWARDING_TABLE__ENTRYX__CONF__ENABLED_bw 1
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t enabled :1;
         uint32_t :31;
     } f;
     uint32_t w;
-} csr__switch_interface__forwarding_table__entryx__config_t;
+} csr__switch_interface__forwarding_table__entryx__conf_t;
 
 // regfile - csr.switch_interface.forwarding_table.entry[]
 typedef struct __attribute__ ((__packed__)) {
     csr__switch_interface__forwarding_table__entryx__mac_address_t mac_address;
     csr__switch_interface__forwarding_table__entryx__iface_t iface;
-    csr__switch_interface__forwarding_table__entryx__config_t config;
+    csr__switch_interface__forwarding_table__entryx__conf_t conf;
 } csr__switch_interface__forwarding_table__entryx_t;
 
 // regfile - csr.switch_interface.forwarding_table

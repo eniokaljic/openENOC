@@ -3,26 +3,6 @@
 
 # openENOC Axis Switch Test Suite
 
-## Overview
-
-This test suite validates the `openenoc_axis_switch` module, which routes AXI Stream traffic from multiple inputs to multiple outputs.
-
-## Routing Modes
-
-The switch verification currently targets two routing modes:
-
-### 1. **Unicast (TDEST-based Routing)**
-- Routes each frame to one output port based on TDEST MSBs
-- Useful for classical single-destination forwarding
-- Activated when `PARAM_TUSER_BITMAP_ROUTE := 0`
-
-### 2. **Multicast (TUSER Bitmap Routing)**
-- Routes each frame based on TUSER bitmap bits
-- Supports one-to-many delivery from one input to multiple outputs
-- Includes empty-bitmap drop behavior
-- Includes scheduler/contention scenarios between multiple inputs
-- Activated when `PARAM_TUSER_BITMAP_ROUTE := 1`
-
 ## Configuration
 
 Edit `Makefile` to configure parameters.
@@ -53,16 +33,3 @@ Builds and runs simulation with waveform dumping enabled.
 ```bash
 ./run_tests.sh waves
 ```
-
-## Test Coverage
-
-**Unicast (TDEST) tests:**
-- Single-destination forwarding checks
-- Multiple frame sizes
-- Idle insertion and backpressure scenarios
-
-**Multicast (TUSER bitmap) tests:**
-- Multiple bitmap combinations (including all-target and subset delivery)
-- Empty bitmap drop behavior
-- Scheduler/contention scenario with overlapping output targets
-- Idle insertion and backpressure scenarios

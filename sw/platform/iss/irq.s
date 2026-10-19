@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Enio Kaljic
+# SPDX-FileCopyrightText: 2026 Kerim Bavcic
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 .section .text.irq_entry, "ax", @progbits
 .balign 4
 .globl irq_entry

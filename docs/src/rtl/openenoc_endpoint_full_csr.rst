@@ -6,6 +6,9 @@
 Full endpoint register block -- openenoc_endpoint_full_csr
 ==========================================================
 
+.. index::
+   single: openenoc_endpoint_full_csr
+
 Implements the generated software-visible register bank and its hardware update
 boundary.
 
@@ -18,7 +21,7 @@ Parameters
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 12 18 20 50
 
    * - Name
      - Default value
@@ -38,7 +41,7 @@ The hardware-interface types are imported from
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 20 38 17 25
 
    * - Name
      - Type
@@ -147,12 +150,85 @@ software/hardware field access semantics, forwarding external RMEM and table
 accesses to their request/completion boundaries. Register addresses and field
 layouts are derived from RDL; integration must use generated constants.
 
-Functional scenarios
---------------------
+Transport configuration and status
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
+The endpoint register interface exposes the following transport controls.
+Names below are relative to the endpoint register file within the generated
+CSR map.
 
-* AXI4-Lite register reads and writes through the generated Python model.
-* Configuration storage, reset values, and neighboring-field preservation.
-* Hardware status injection and acknowledged error-clear commands.
+.. list-table:: Transport controls and their hardware owners
+   :class: rtl-reference-table
+   :header-rows: 1
+   :widths: 37 40 23
+
+   * - Register field
+     - Meaning
+     - Hardware consumer or owner
+   * - ``conf.mac_address`` / ``conf.multicast_address``
+     - Individual identity and accepted group destination. Zero disables group
+       reception; broadcast requires the broadcast address in the group field.
+     - :ref:`rtl-oetp-engine`
+   * - ``conf.rmem_timeout.cycles``
+     - 32-bit unicast RMEM response wait in endpoint clock cycles; zero disables
+       the timer.
+     - :ref:`rtl-oetp-engine`
+   * - ``conf.dma_timeout.cycles``
+     - 32-bit response wait for each unicast DMA fragment; zero disables the
+       timer. There is no whole-block timer.
+     - :ref:`rtl-oetp-engine`
+   * - ``conf.dma_max_fragment_size.bytes``
+     - Maximum locally initiated fragment size, rounded down to four bytes and
+       saved at block acceptance. Resets to 8160 bytes for the default frame limit.
+     - :ref:`rtl-dma-engine`
+   * - ``peers.entry[n].dma.error`` / ``error_code``
+     - Shared sticky RMEM/DMA failure record, including received-request failures.
+       Cleared by ``dma.clear_error``; a simultaneous new failure wins.
+     - :ref:`rtl-dma-engine`
+
+``MAX_RAW_FRAME_SIZE`` is an RDL synthesis parameter, not a writable transport
+setting. It fixes the raw frame ceiling and the derived DMA fragment ceiling.
+The software-selected fragment size affects locally initiated blocks; received
+requests remain bounded by the synthesized ceiling. The size calculations and
+timer start/stop rules are specified in :ref:`rtl-oetp-engine`.
+
+RMEM and bulk DMA use the same peer error record but separate RMEM_ERROR and
+PEER_DMA_COMPLETE notification sources. Error recording, IRQ enable, and IRQ
+claim completion are independent: completing a claim does not clear the error.
+Failed incoming requests preserve the status of independent locally initiated
+work. Memory completion and error ownership belong to :ref:`rtl-dma-engine`;
+event admission and software claims belong to :ref:`rtl-endpoint-irq-controller`.
+
+.. _verification-openenoc-endpoint-full-csr:
+
+Verification
+------------
+
+The test suite is in ``dv/hal/openenoc_endpoint_full/``.
+
+Testbench
+~~~~~~~~~
+
+This cocotb suite verifies the generated full-endpoint CSR RTL through AXI4-Lite using the
+generated PeakRDL Python register model. A thin SV wrapper supplies hardware status and command
+acknowledgements. Seven existing cases run through the cocotb Makefile flow; this suite has no
+pytest parameter sweep. FST tracing is enabled on every simulation run.
+
+Coverage
+~~~~~~~~
+
+The suite covers:
+
+- callback-driven Python register-model access to actual AXI4-Lite RTL;
+
+- test register and multi-field register writes, readback, and defaults;
+
+- full-width RMEM/DMA timeout storage and neighboring-register preservation;
+
+- independent unicast/multicast MAC configuration and RMEM_ERROR IRQ enable;
+
+- fragment-size reset, generated register ordering, and unrounded readback;
+
+- per-peer sticky error status and independently acknowledged clear commands;
+
+- independent raw TX/RX error records and held ``clear_errors`` acknowledgements.

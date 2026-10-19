@@ -241,7 +241,7 @@ interface openenoc_endpoint_if #
 
     typedef struct {
         logic [15:0] next;
-    } core_to_csr__irq__claim__sequence__t;
+    } core_to_csr__irq__claim__seq_t;
 
     typedef struct {
         logic next;
@@ -250,7 +250,7 @@ interface openenoc_endpoint_if #
     typedef struct {
         core_to_csr__irq__claim__peer_idx_t peer_idx;
         core_to_csr__irq__claim__source_t source;
-        core_to_csr__irq__claim__sequence__t sequence_;
+        core_to_csr__irq__claim__seq_t seq;
         core_to_csr__irq__claim__valid_t valid;
     } core_to_csr__irq__claim_t;
 
@@ -369,70 +369,70 @@ interface openenoc_endpoint_if #
 
     typedef struct {
         logic [31:0] value;
-    } csr_to_core__config___mac_address__lo_word_t;
+    } csr_to_core__conf__mac_address__lo_word_t;
 
     typedef struct {
         logic [15:0] value;
-    } csr_to_core__config___mac_address__hi_word_t;
+    } csr_to_core__conf__mac_address__hi_word_t;
 
     typedef struct {
-        csr_to_core__config___mac_address__lo_word_t lo_word;
-        csr_to_core__config___mac_address__hi_word_t hi_word;
-    } csr_to_core__config___mac_address_t;
+        csr_to_core__conf__mac_address__lo_word_t lo_word;
+        csr_to_core__conf__mac_address__hi_word_t hi_word;
+    } csr_to_core__conf__mac_address_t;
 
     typedef struct {
         logic [31:0] value;
-    } csr_to_core__config___multicast_address__lo_word_t;
+    } csr_to_core__conf__multicast_address__lo_word_t;
 
     typedef struct {
         logic [15:0] value;
-    } csr_to_core__config___multicast_address__hi_word_t;
+    } csr_to_core__conf__multicast_address__hi_word_t;
 
     typedef struct {
-        csr_to_core__config___multicast_address__lo_word_t lo_word;
-        csr_to_core__config___multicast_address__hi_word_t hi_word;
-    } csr_to_core__config___multicast_address_t;
+        csr_to_core__conf__multicast_address__lo_word_t lo_word;
+        csr_to_core__conf__multicast_address__hi_word_t hi_word;
+    } csr_to_core__conf__multicast_address_t;
 
     typedef struct {
         logic [1:0] value;
-    } csr_to_core__config___non_oetp_control__receive_mode_t;
+    } csr_to_core__conf__non_oetp_control__receive_mode_t;
 
     typedef struct {
-        csr_to_core__config___non_oetp_control__receive_mode_t receive_mode;
-    } csr_to_core__config___non_oetp_control_t;
-
-    typedef struct {
-        logic [31:0] value;
-    } csr_to_core__config___rmem_timeout__cycles_t;
-
-    typedef struct {
-        csr_to_core__config___rmem_timeout__cycles_t cycles;
-    } csr_to_core__config___rmem_timeout_t;
+        csr_to_core__conf__non_oetp_control__receive_mode_t receive_mode;
+    } csr_to_core__conf__non_oetp_control_t;
 
     typedef struct {
         logic [31:0] value;
-    } csr_to_core__config___dma_timeout__cycles_t;
+    } csr_to_core__conf__rmem_timeout__cycles_t;
 
     typedef struct {
-        csr_to_core__config___dma_timeout__cycles_t cycles;
-    } csr_to_core__config___dma_timeout_t;
+        csr_to_core__conf__rmem_timeout__cycles_t cycles;
+    } csr_to_core__conf__rmem_timeout_t;
 
     typedef struct {
         logic [31:0] value;
-    } csr_to_core__config___dma_max_fragment_size__bytes_t;
+    } csr_to_core__conf__dma_timeout__cycles_t;
 
     typedef struct {
-        csr_to_core__config___dma_max_fragment_size__bytes_t bytes;
-    } csr_to_core__config___dma_max_fragment_size_t;
+        csr_to_core__conf__dma_timeout__cycles_t cycles;
+    } csr_to_core__conf__dma_timeout_t;
 
     typedef struct {
-        csr_to_core__config___mac_address_t mac_address;
-        csr_to_core__config___multicast_address_t multicast_address;
-        csr_to_core__config___non_oetp_control_t non_oetp_control;
-        csr_to_core__config___rmem_timeout_t rmem_timeout;
-        csr_to_core__config___dma_timeout_t dma_timeout;
-        csr_to_core__config___dma_max_fragment_size_t dma_max_fragment_size;
-    } csr_to_core__config__t;
+        logic [31:0] value;
+    } csr_to_core__conf__dma_max_fragment_size__bytes_t;
+
+    typedef struct {
+        csr_to_core__conf__dma_max_fragment_size__bytes_t bytes;
+    } csr_to_core__conf__dma_max_fragment_size_t;
+
+    typedef struct {
+        csr_to_core__conf__mac_address_t mac_address;
+        csr_to_core__conf__multicast_address_t multicast_address;
+        csr_to_core__conf__non_oetp_control_t non_oetp_control;
+        csr_to_core__conf__rmem_timeout_t rmem_timeout;
+        csr_to_core__conf__dma_timeout_t dma_timeout;
+        csr_to_core__conf__dma_max_fragment_size_t dma_max_fragment_size;
+    } csr_to_core__conf_t;
 
     typedef struct {
         logic [31:0] value;
@@ -613,7 +613,7 @@ interface openenoc_endpoint_if #
 
     typedef struct {
         logic [15:0] value;
-    } csr_to_core__irq__complete__sequence__t;
+    } csr_to_core__irq__complete__seq_t;
 
     typedef struct {
         logic value;
@@ -622,7 +622,7 @@ interface openenoc_endpoint_if #
     typedef struct {
         csr_to_core__irq__complete__peer_idx_t peer_idx;
         csr_to_core__irq__complete__source_t source;
-        csr_to_core__irq__complete__sequence__t sequence_;
+        csr_to_core__irq__complete__seq_t seq;
         csr_to_core__irq__complete__valid_t valid;
     } csr_to_core__irq__complete_t;
 
@@ -723,7 +723,7 @@ interface openenoc_endpoint_if #
 
     typedef struct {
         csr_to_core__info_t info;
-        csr_to_core__config__t config_;
+        csr_to_core__conf_t conf;
         csr_to_core__axis_if_t axis_if;
         csr_to_core__non_oetp_dma_t non_oetp_dma;
         csr_to_core__irq_t irq;

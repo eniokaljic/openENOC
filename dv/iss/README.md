@@ -120,15 +120,18 @@ reset.
 
 The bridge rejects malformed or out-of-range requests before issuing AXI.
 AW, W, B, AR, and R backpressure is exercised against the real RTL endpoint;
-Spike remains blocked until the final bus response. Within the supported ISS
-address map the generated CSR and RAM blocks return `OKAY`, so an RTL-generated
-`SLVERR`/`DECERR` cannot be triggered without changing that hardware profile.
+Spike remains blocked until the final bus response. The CSR RTL is generated
+with `--err-if-bad-addr` and `--err-if-bad-rw`, so accesses to unassigned
+addresses, writes to read-only registers, and reads from write-only registers
+return `SLVERR`. The bridge suite checks that a read at the final word of the
+decoded CSR window and a write to its read-only information register propagate
+the actual RTL error to the ISS worker.
 An AXI error is returned to the ISS only after the bus operation completes;
 a stalled operation times out after 10 us of simulation time and stops the
-waiting worker. The error/timeout tests use a controlled responder, not an
-RTL-generated `SLVERR`/`DECERR`. They do not claim CPU trap equivalence or
-safe replay of an in-flight AXI write after a timeout. Reset/drain handling
-for such writes belongs to the coordinated lifecycle tests.
+waiting worker. Separate error/timeout tests use a controlled responder to
+exercise `SLVERR`, `DECERR`, and blocked transactions. They do not claim CPU
+trap equivalence or safe replay of an in-flight AXI write after a timeout.
+Reset/drain handling for such writes belongs to the coordinated lifecycle tests.
 The current `accepted_sim_tick` records submission to the AXI BFM, not the
 exact AW/AR handshake; `completed_sim_tick` is recorded after its R/B response.
 

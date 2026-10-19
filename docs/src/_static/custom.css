@@ -180,6 +180,11 @@
     padding: 12px;
 }
 
+/* Captions follow the alignment of centered diagram images. */
+.rst-content figure > img.align-center + figcaption {
+    text-align: center;
+}
+
 /* Tables */
 .rst-content table {
     border: 1px solid #e5e7eb;

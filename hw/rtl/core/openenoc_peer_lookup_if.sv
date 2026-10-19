@@ -15,6 +15,17 @@ interface openenoc_peer_lookup_if #(
     localparam logic [1:0] LOOKUP_BY_RMEM = 2'd1;
     localparam logic [1:0] LOOKUP_BY_MAC = 2'd2;
 
+    localparam logic [1:0] DMA_MODE_DISABLED = 2'd0;
+    localparam logic [1:0] DMA_MODE_RMEM = 2'd1;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_LOCAL = 2'd2;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_REMOTE = 2'd3;
+
+    localparam logic [3:0] LOOKUP_RMEM_MODE_MASK = 4'b0001 << DMA_MODE_RMEM;
+    localparam logic [3:0] LOOKUP_MIRROR_MODE_MASK =
+        (4'b0001 << DMA_MODE_MIRROR_TO_LOCAL) | (4'b0001 << DMA_MODE_MIRROR_TO_REMOTE);
+    localparam logic [3:0] LOOKUP_ACTIVE_MODE_MASK =
+        LOOKUP_RMEM_MODE_MASK | LOOKUP_MIRROR_MODE_MASK;
+
     /* Request channel. Only the key selected by req_type is meaningful. */
     logic req_valid;
     logic req_ready;

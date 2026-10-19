@@ -6,7 +6,6 @@ from itertools import cycle
 import struct
 import logging
 
-import pytest
 import cocotb
 import cocotb_test.simulator
 from cocotb.clock import Clock
@@ -132,8 +131,10 @@ class TB:
                 return
         raise AssertionError(f"Timed out waiting for {name}={value}")
 
-    async def send_direct(self, data):
+    async def send_direct(self, data, wait_ready=False):
         for offset in range(0, len(data), 4):
+            if wait_ready:
+                await self.wait("tx_ready")
             word = data[offset : offset + 4]
             self.dut.tx_data.value = int.from_bytes(word, "little")
             self.dut.tx_keep.value = (1 << len(word)) - 1
@@ -268,6 +269,120 @@ async def test_cut_through_direct_irq_and_backpressure(dut):
     await tb.finish_claim()
     await tb.wait("irq", 0)
     assert int(dut.reserved_count.value) == 0
+
+
+@cocotb.test(timeout_time=1000, timeout_unit="us")
+async def test_direct_tx_ready_with_disabled_event_and_full_irq_fifo(dut):
+    tb = TB(dut)
+    await tb.reset()
+    dut.event_enable.value = 1 << 4
+    assert int(dut.tx_ready.value)
+    for data in [b"first", b"second"]:
+        await tb.source.send(AxiStreamFrame(data))
+        assert await tb.receive_direct() == data
+    await tb.wait("credit_full")
+    assert int(dut.tx_ready.value), "An idle TX must accept its first CSR command"
+
+    async def check_ready():
+        while True:
+            await FallingEdge(dut.clk)
+            ready = int(dut.u_endpoint_interface.u_direct_axis.tx_payload_if.tready.value)
+            await RisingEdge(dut.clk)
+            await Timer(1, unit="ns")
+            assert int(dut.tx_ready.value) == ready
+
+    readiness_check = cocotb.start_soon(check_ready())
+    payload = raw(bytes((index * 7 + 3) & 255 for index in range(498)))
+    tb.sink.pause = True
+    send = cocotb.start_soon(tb.send_direct(payload, wait_ready=True))
+    await tb.wait("tx_ready", 0)
+    assert not send.done(), "A stalled Ethernet sink must backpressure the CSR sender"
+    assert not int(dut.tx_ready.value)
+    tb.sink.pause = False
+    received = await with_timeout(tb.sink.recv(), 100, "us")
+    assert bytes(received.tdata) == payload
+    await send
+    await tb.wait("tx_ready")
+
+    following = raw(bytes(range(52)))
+    await tb.cycles(3)
+    tb.sink.pause = True
+    await tb.send_direct(following, wait_ready=True)
+    dut.event_enable.value = (1 << 3) | (1 << 4)
+    await tb.cycles(3)
+    assert int(dut.tx_ready.value), "An unreserved frame keeps downstream-only readiness"
+    assert not int(dut.reserved_count.value)
+    dut.event_enable.value = 1 << 4
+    tb.sink.pause = False
+    received = await with_timeout(tb.sink.recv(), 100, "us")
+    assert bytes(received.tdata) == following
+    await tb.wait("tx_ready")
+    await tb.cycles(10)
+    assert int(dut.tx_ready.value)
+    assert int(dut.fifo_level.value) == 2
+    assert not int(dut.reserved_count.value)
+    assert not int(dut.overflow.value)
+    readiness_check.cancel()
+
+
+@cocotb.test(timeout_time=1000, timeout_unit="us")
+async def test_direct_tx_ready_waits_for_enabled_event_admission(dut):
+    tb = TB(dut)
+    await tb.reset()
+    dut.event_enable.value = 1 << 4
+    for data in [b"first", b"second"]:
+        await tb.source.send(AxiStreamFrame(data))
+        assert await tb.receive_direct() == data
+    await tb.wait("credit_full")
+    dut.event_enable.value = (1 << 3) | (1 << 4)
+    await tb.cycles(2)
+    assert not int(dut.tx_ready.value)
+
+    payload = raw(bytes(range(52)))
+    tb.sink.pause = True
+    send = cocotb.start_soon(tb.send_direct(payload))
+    await tb.cycles(30)
+    assert not send.done()
+    assert int(dut.tx_valid.value)
+    assert not int(dut.tx_hwclr.value)
+    assert not int(dut.tx_ready.value)
+    assert tb.sink.empty(), "The first word must wait for IRQ admission"
+
+    tokens = [await tb.finish_claim()]
+    await send
+    dut.event_enable.value = 1 << 4
+    await tb.cycles(3)
+    assert not int(dut.tx_ready.value), "A reserved frame still waits for its boundary and commit"
+    assert int(dut.reserved_count.value) == 1
+    tb.sink.pause = False
+    received = await with_timeout(tb.sink.recv(), 100, "us")
+    assert bytes(received.tdata) == payload
+    await tb.wait("fifo_level", 2)
+    await tb.wait("tx_ready")
+    tokens += [await tb.finish_claim(), await tb.finish_claim()]
+    assert [(token >> 11) & 15 for token in tokens] == [4, 4, 3]
+    assert not int(dut.reserved_count.value)
+    assert not int(dut.overflow.value)
+    assert not int(dut.invalid_complete.value)
+
+    dut.event_enable.value = (1 << 3) | (1 << 4)
+    await tb.cycles(2)
+    assert not int(dut.tx_ready.value)
+    tb.sink.pause = True
+    send = cocotb.start_soon(tb.send_direct(payload))
+    await tb.wait("tx_ready")
+    await send
+    await tb.cycles(2)
+    assert not int(dut.tx_ready.value), "TLAST closes the admitted frame"
+    tb.sink.pause = False
+    received = await with_timeout(tb.sink.recv(), 100, "us")
+    assert bytes(received.tdata) == payload
+    await tb.wait("fifo_level", 1)
+    await tb.cycles(3)
+    assert not int(dut.credit_full.value)
+    assert not int(dut.tx_ready.value), "IRQ commit does not admit another frame"
+    await tb.finish_claim()
+    assert not int(dut.tx_ready.value), "Free IRQ space alone does not open a frame"
 
 
 @cocotb.test()
@@ -690,8 +805,7 @@ async def test_error_irq_retention_under_full_fifo(dut):
     assert not int(dut.overflow.value) and not int(dut.invalid_complete.value)
 
 
-@pytest.mark.parametrize("axi_data_w,eth_data_w", [(32, 32), (64, 32), (32, 64), (64, 8)])
-def test_openenoc_endpoint_interface(sim_build_dir, sim_trace_args, axi_data_w, eth_data_w):
+def test_openenoc_endpoint_interface(sim_build_dir, sim_trace_args):
     tests = Path(__file__).resolve().parent
     repo = tests.parents[2]
     core = repo / "hw/rtl/core"
@@ -734,7 +848,6 @@ def test_openenoc_endpoint_interface(sim_build_dir, sim_trace_args, axi_data_w, 
         toplevel="test_openenoc_endpoint_interface",
         module="test_openenoc_endpoint_interface",
         python_search=[str(tests)],
-        parameters={"AXI_DATA_W": axi_data_w, "ETH_DATA_W": eth_data_w},
         timescale="1ns/1ps",
         extra_args=["-Wall", str(repo / "dv/common/config.vlt")],
         plus_args=sim_trace_args,

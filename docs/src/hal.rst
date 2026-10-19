@@ -7,14 +7,27 @@ HAL Architecture Specification
 Introduction
 ------------
 
+.. index::
+   single: HAL
+   single: CSR
+
 The Hardware Abstraction Layer (HAL) provides a software-visible representation of openENOC hardware components and defines a standardized mechanism for accessing their Control and Status Registers (CSRs). The HAL serves as the primary interface between software and hardware, enabling configuration, monitoring, diagnostics, and runtime control of openENOC subsystems.
 
 This document specifies the HAL architecture and CSR organization for the openENOC Switch and the openENOC Endpoint Interface. The described CSR definitions establish a common programming model for software components and serve as the authoritative reference for hardware/software integration.
 
+The application-facing C API, its compatibility contract, and runtime usage are
+documented in :doc:`runtime_api`.
+
 CSR Specification Methodology
 -----------------------------
 
+.. index::
+   single: SystemRDL
+
 Within this flow, Control and Status Registers are defined using `Accellera's SystemRDL 2.0 <https://www.accellera.org/downloads/standards/systemrdl>`_ as the authoritative specification format for all openENOC hardware components.
+
+.. index::
+   single: PeakRDL
 
 For artefact generation, the openENOC toolchain is based on `PeakRDL <https://github.com/SystemRDL/PeakRDL>`_, which processes the SystemRDL description and produces the corresponding CSR-related outputs used throughout the build and verification flow. Since the current PeakRDL implementation `does not support all features <https://peakrdl-regblock.readthedocs.io/en/latest/limitations.html>`_ of the SystemRDL 2.0 standard, CSR definitions are written with this limitation in mind to ensure that the complete register specification can be translated into all required generated artefacts without manual intervention or post-processing.
 
@@ -46,6 +59,9 @@ In managed mode, the HAL therefore provides both configuration access and operat
 
 Forwarding Table
 ~~~~~~~~~~~~~~~~
+
+.. index::
+   single: Forwarding table
 
 A central software-visible structure of the openENOC Switch is the forwarding table, which defines how frames are forwarded based on their destination MAC address. The table is exposed through the CSR space and can be configured by software using the openENOC Switch Interface.
 
@@ -86,7 +102,10 @@ The endpoint interface HAL is organized around a CSR-based management interface 
 
 A central configuration aspect of the endpoint interface HAL is the description of the local endpoint instance and the set of remote peers that it can access. The read-only information register exposes implementation parameters such as the total depth of the virtual remote-memory region and the number of supported remote peers. These values allow software to discover the size and structure of the endpoint address space without relying on hard-coded assumptions.
 
-The endpoint configuration registers define the local unicast MAC address and a separate multicast destination address. The oETP receive filter compares an individual destination against ``config.mac_address`` and a group destination against ``config.multicast_address``. All endpoints in a replication group configure the same multicast address while retaining individual unicast identities; outgoing oETP frames use the unicast address as their source. A zero multicast address disables oETP group reception. The multicast register follows the unicast MAC register, with both response-timeout registers following the non-oETP receive policy. This destination filtering will be implemented in the oETP engine.
+The endpoint configuration registers define the local unicast MAC address and a separate multicast destination address. The oETP receive filter compares an individual destination against ``conf.mac_address`` and a group destination against ``conf.multicast_address``. All endpoints in a replication group configure the same multicast address while retaining individual unicast identities; outgoing oETP frames use the unicast address as their source. A zero multicast address disables oETP group reception. The multicast register follows the unicast MAC register, with both response-timeout registers following the non-oETP receive policy. This destination filtering will be implemented in the oETP engine.
+
+.. index::
+   single: Peer table
 
 Remote communication targets are described through a peer table, where each entry contains the MAC address of a remote peer, the offset of the corresponding virtual remote-memory region, the local memory base address, the remote memory base address, and the size of the region. This structure allows software to describe how local memory resources are related to remote memory regions visible through the endpoint.
 
@@ -96,7 +115,7 @@ This CSR-mapped AXI4-Stream interface mirrors the basic AXI4-Stream handshake se
 
 The second access model is memory-oriented communication through the virtual remote-memory region. This region provides a software-visible address space representing memory associated with one or more remote peers. The mapping between a remote peer and its corresponding portion of the virtual memory space is defined by the peer configuration registers. Accesses to this region may be handled directly or used as the basis for DMA-driven transfers, depending on the configured DMA mode for the selected peer.
 
-The response-timeout configuration uses two 32-bit cycle counts: ``config.rmem_timeout.cycles`` for transparent RMEM and ``config.dma_timeout.cycles`` for individual unicast peer DMA fragments. The DMA setting is shared by all peers; there is no separate whole-transfer timeout. Both reset to zero, which permits an indefinite response wait. A DMA fragment timeout aborts the remaining fragments and reports peer DMA error code 8 (TIMEOUT). Software controls recovery and any restart; hardware does not retransmit automatically. Multicast writes complete locally without waiting for responses. These CSRs define the oETP timeout policy; runtime enforcement is part of the forthcoming oETP engine implementation.
+The response-timeout configuration uses two 32-bit cycle counts: ``conf.rmem_timeout.cycles`` for transparent RMEM and ``conf.dma_timeout.cycles`` for individual unicast peer DMA fragments. The DMA setting is shared by all peers; there is no separate whole-transfer timeout. Both reset to zero, which permits an indefinite response wait. A DMA fragment timeout aborts the remaining fragments and reports peer DMA error code 8 (TIMEOUT). Software controls recovery and any restart; hardware does not retransmit automatically. Multicast writes complete locally without waiting for responses. These CSRs define the oETP timeout policy; runtime enforcement is part of the forthcoming oETP engine implementation.
 
 An RMEM read timeout returns ``0xFFFFFFFF`` with ``cpuif_rd_ack``; an RMEM write timeout asserts ``cpuif_wr_ack``. The existing generated external-RMEM boundary carries ACK and read data and remains unchanged without ERR signals. Transparent RMEM (peer mode 1) and bulk DMA share ``peers.entry[].dma.error`` and the four-bit ``error_code``. Local timeout records code 8; a received ERROR_RSP requires an explicit wire-to-CSR code mapping. Starting or successfully completing another operation preserves the error. Writing one to the peer's ``dma.clear_error`` clears the flag and code; hardware acknowledges by clearing the command field. New failures take precedence over a simultaneous clear. The command does not abort active work, clear done, or complete an IRQ claim.
 
@@ -152,7 +171,7 @@ mode or wire field. The full contract is described in :ref:`rtl-oetp-engine`.
 ``MAX_RAW_FRAME_SIZE`` remains a synthesis-time endpoint RDL parameter and
 defaults to 8192 bytes without FCS. The read-only
 ``info.max_dma_frame_size_bytes`` advertises that raw frame ceiling. The global
-``config.dma_max_fragment_size.bytes`` register follows ``config.dma_timeout``
+``conf.dma_max_fragment_size.bytes`` register follows ``conf.dma_timeout``
 and selects the maximum memory bytes per locally initiated peer DMA fragment.
 Its reset and upper bound are ``4 * floor((MAX_RAW_FRAME_SIZE - 32) / 4)``,
 or 8160 bytes in the default build. Hardware rounds the written value down to
@@ -166,6 +185,10 @@ during a transfer affect only later blocks. Received requests use the physical
 fragment ceiling; raw non-oETP DMA, direct CSR streams, and RMEM are unaffected.
 
 DMA behavior is controlled independently for each peer. When DMA operation is disabled, the peer entry remains configured but no automatic transfer is performed. In transparent mode, accesses to the virtual remote-memory region are translated into corresponding accesses to the remote peer memory region on a word-by-word basis. This mode is suitable when software requires a direct memory-mapped view of remote resources and when simple access semantics are preferred over bulk synchronization.
+
+.. index::
+   single: Mirror-to-local mode
+   single: Mirror-to-remote mode
 
 The endpoint interface HAL also supports mirrored transfer modes. In mirror-to-local mode, the local memory region is used as the software-visible representation of the remote peer memory, and the state of the remote memory region is fetched from the remote peer on demand or periodically. In mirror-to-remote mode, the remote memory region is used as the destination representation, and the state of the local memory region is sent to the remote peer on demand or periodically. These modes allow software to configure endpoint-to-endpoint memory synchronization without directly managing individual transport frames.
 

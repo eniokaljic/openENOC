@@ -226,7 +226,7 @@ module test_openenoc_iss #(
         u_endpoint.endpoint_if.core_to_csr.irq.complete.valid.hwclr;
     wire logic [31:0] irq_complete_token = {
         u_endpoint.endpoint_if.csr_to_core.irq.complete.valid.value,
-        u_endpoint.endpoint_if.csr_to_core.irq.complete.sequence_.value,
+        u_endpoint.endpoint_if.csr_to_core.irq.complete.seq.value,
         u_endpoint.endpoint_if.csr_to_core.irq.complete.source.value,
         u_endpoint.endpoint_if.csr_to_core.irq.complete.peer_idx.value
     };

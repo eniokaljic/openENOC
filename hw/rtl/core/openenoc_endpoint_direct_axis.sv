@@ -6,7 +6,9 @@
 `default_nettype none
 
 /* Direct CSR stream handshakes and IRQ events. */
-module openenoc_endpoint_direct_axis (
+module openenoc_endpoint_direct_axis #(
+    parameter logic [1:0] ROUTE_DIRECT
+) (
     input wire logic clk,
     input wire logic rst,
     input wire logic tx_frame_done,
@@ -16,7 +18,6 @@ module openenoc_endpoint_direct_axis (
     openenoc_irq_event_if.producer tx_event_if,
     openenoc_irq_event_if.producer rx_event_if
 );
-
     taxi_axis_if #(
         .DATA_W(m_axis_csr_tx.DATA_W),
         .KEEP_W(m_axis_csr_tx.KEEP_W),
@@ -89,7 +90,7 @@ module openenoc_endpoint_direct_axis (
     assign tx_registered_if.tready = m_axis_csr_tx.tready;
 
     localparam int PEER_IDX_W = m_axis_csr_tx.DEST_W - 2;
-    logic tx_active_reg, tx_input_done_reg, tx_reserved_reg, tx_commit_reg;
+    logic tx_active_reg, tx_frame_open_reg, tx_reserved_reg, tx_commit_reg;
     logic tx_beat_pending_reg, tx_admit_valid_reg;
     logic rx_frame_reg, rx_commit_reg, rx_admit_valid_reg;
     logic rx_beat_pending_reg;
@@ -99,6 +100,9 @@ module openenoc_endpoint_direct_axis (
     logic rx_clear_ready_reg, rx_valid_reg, rx_last_reg;
 
     wire tx_csr_valid = endpoint_if.csr_to_core.axis_if.source.control.tvalid.value;
+    wire tx_event_enabled =
+        endpoint_if.csr_to_core.irq.event_enable.non_oetp_direct_tx_complete.value;
+    wire tx_event_required = tx_active_reg ? tx_reserved_reg : tx_event_enabled;
     wire rx_csr_ready = endpoint_if.csr_to_core.axis_if.sink.control.tready.value;
     wire rx_visible = rx_payload_if.tvalid && !rx_beat_pending_reg
         && (rx_frame_reg || (!rx_commit_reg && rx_event_if.admit_ready));
@@ -122,10 +126,9 @@ module openenoc_endpoint_direct_axis (
     assign tx_payload_if.tkeep = endpoint_if.csr_to_core.axis_if.source.control.tkeep.value;
     assign tx_payload_if.tstrb = tx_payload_if.tkeep;
     assign tx_payload_if.tlast = endpoint_if.csr_to_core.axis_if.source.control.tlast.value;
-    assign tx_payload_if.tvalid = tx_active_reg && !tx_input_done_reg && !tx_beat_pending_reg
-        && tx_csr_valid;
+    assign tx_payload_if.tvalid = tx_frame_open_reg && !tx_beat_pending_reg && tx_csr_valid;
     assign tx_payload_if.tid = '0;
-    assign tx_payload_if.tdest = {2'b10, {PEER_IDX_W{1'b0}}};
+    assign tx_payload_if.tdest = {ROUTE_DIRECT, {PEER_IDX_W{1'b0}}};
     assign tx_payload_if.tuser = '0;
     assign rx_payload_if.tready = rx_visible && rx_csr_ready;
 
@@ -140,7 +143,7 @@ module openenoc_endpoint_direct_axis (
     always_ff @(posedge clk) begin : transmit_control
         if (rst) begin
             tx_active_reg <= 1'b0;
-            tx_input_done_reg <= 1'b0;
+            tx_frame_open_reg <= 1'b0;
             tx_reserved_reg <= 1'b0;
             tx_commit_reg <= 1'b0;
             tx_admit_valid_reg <= 1'b0;
@@ -151,8 +154,8 @@ module openenoc_endpoint_direct_axis (
             tx_admit_valid_reg <= !tx_active_reg && tx_csr_valid
                 && !(tx_event_if.admit_valid && tx_event_if.admit_ready);
             tx_clear_valid_reg <= tx_input_fire;
-            tx_ready_reg <= tx_active_reg && !tx_input_done_reg && !tx_beat_pending_reg
-                && tx_payload_if.tready;
+            tx_ready_reg <= tx_payload_if.tready
+                && (!tx_event_required || tx_frame_open_reg);
 
             if (!tx_csr_valid) begin
                 tx_beat_pending_reg <= 1'b0;
@@ -160,16 +163,19 @@ module openenoc_endpoint_direct_axis (
 
             if (tx_input_fire) begin
                 tx_beat_pending_reg <= 1'b1;
-                tx_ready_reg <= 1'b0;
                 if (tx_payload_if.tlast) begin
-                    tx_input_done_reg <= 1'b1;
+                    tx_frame_open_reg <= 1'b0;
+                    if (tx_event_required) begin
+                        tx_ready_reg <= 1'b0;
+                    end
                 end
             end
 
             if (tx_event_if.admit_valid && tx_event_if.admit_ready) begin
                 tx_active_reg <= 1'b1;
-                tx_input_done_reg <= 1'b0;
+                tx_frame_open_reg <= 1'b1;
                 tx_reserved_reg <= tx_event_if.admit_reserved;
+                tx_ready_reg <= tx_payload_if.tready;
             end
 
             if (tx_frame_done) begin
@@ -177,7 +183,6 @@ module openenoc_endpoint_direct_axis (
                     tx_commit_reg <= 1'b1;
                 end else begin
                     tx_active_reg <= 1'b0;
-                    tx_input_done_reg <= 1'b0;
                 end
             end
 
@@ -185,7 +190,6 @@ module openenoc_endpoint_direct_axis (
                 tx_commit_reg <= 1'b0;
                 tx_reserved_reg <= 1'b0;
                 tx_active_reg <= 1'b0;
-                tx_input_done_reg <= 1'b0;
             end
         end
     end

@@ -1818,8 +1818,6 @@ def test_openenoc_endpoint_dma_engine(sim_build_dir, sim_trace_args, max_raw_fra
     module = os.path.splitext(os.path.basename(__file__))[0]
     parameters = {
         "NUM_OF_PEERS": NUM_OF_PEERS,
-        "AXI_DATA_W": 32,
-        "AXI_ADDR_W": 32,
         "AXI_ID_W": 8,
         "SEQUENCE_W": 32,
         "MAX_RAW_FRAME_SIZE": max_raw_frame_size,

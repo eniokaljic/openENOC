@@ -206,7 +206,7 @@ openenoc_endpoint_status_t openenoc_endpoint_irq_get_claim(
     }
     claim->peer_index = endpoint->irq.claim.f.peer_idx;
     claim->source = (openenoc_endpoint_irq_source_t)endpoint->irq.claim.f.source;
-    claim->sequence = endpoint->irq.claim.f.sequence;
+    claim->seq = endpoint->irq.claim.f.seq;
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
 
@@ -231,14 +231,14 @@ openenoc_endpoint_status_t openenoc_endpoint_irq_request_complete(
     }
     current.peer_index = endpoint->irq.claim.f.peer_idx;
     current.source = (openenoc_endpoint_irq_source_t)endpoint->irq.claim.f.source;
-    current.sequence = endpoint->irq.claim.f.sequence;
+    current.seq = endpoint->irq.claim.f.seq;
     if (current.source != claim->source || current.peer_index != claim->peer_index ||
-        current.sequence != claim->sequence) {
+        current.seq != claim->seq) {
         return OPENENOC_ENDPOINT_STATUS_INVALID_ARGUMENT;
     }
     endpoint->irq.complete.f.peer_idx = current.peer_index;
     endpoint->irq.complete.f.source = current.source;
-    endpoint->irq.complete.f.sequence = current.sequence;
+    endpoint->irq.complete.f.seq = current.seq;
     endpoint->irq.complete.f.valid = 1U;
     return OPENENOC_ENDPOINT_STATUS_OK;
 }
@@ -307,7 +307,7 @@ openenoc_endpoint_irq_result_t openenoc_endpoint_irq_service(
         }
         claim.peer_index = endpoint->irq.claim.f.peer_idx;
         claim.source = (openenoc_endpoint_irq_source_t)endpoint->irq.claim.f.source;
-        claim.sequence = endpoint->irq.claim.f.sequence;
+        claim.seq = endpoint->irq.claim.f.seq;
 
         if (callbacks != NULL) {
             switch (claim.source) {
@@ -394,10 +394,10 @@ openenoc_endpoint_status_t openenoc_endpoint_irq_complete(
     }
     claim.peer_index = endpoint->irq.claim.f.peer_idx;
     claim.source = (openenoc_endpoint_irq_source_t)endpoint->irq.claim.f.source;
-    claim.sequence = endpoint->irq.claim.f.sequence;
+    claim.seq = endpoint->irq.claim.f.seq;
     endpoint->irq.complete.f.peer_idx = claim.peer_index;
     endpoint->irq.complete.f.source = claim.source;
-    endpoint->irq.complete.f.sequence = claim.sequence;
+    endpoint->irq.complete.f.seq = claim.seq;
     endpoint->irq.complete.f.valid = 1U;
     while (endpoint->irq.complete.f.valid) {
     }

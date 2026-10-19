@@ -155,7 +155,7 @@ openenoc_endpoint_status_t openenoc_endpoint_peer_dma_request(
         return OPENENOC_ENDPOINT_STATUS_NOT_READY;
     }
     mode = endpoint->peers.entry[peer_index].dma.f.mode;
-    effective = endpoint->config.dma_max_fragment_size.f.bytes & ~3U;
+    effective = endpoint->conf.dma_max_fragment_size.f.bytes & ~3U;
     if ((mode != OPENENOC_ENDPOINT_PEER_MIRROR_TO_LOCAL &&
          mode != OPENENOC_ENDPOINT_PEER_MIRROR_TO_REMOTE) ||
         endpoint->peers.entry[peer_index].size.f.bytes == 0U ||

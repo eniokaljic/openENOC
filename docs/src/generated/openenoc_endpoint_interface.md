@@ -28,7 +28,7 @@ Don't override. Generated from: openenoc_endpoint_interface_top
 |Offset| Identifier |                  Name                  |
 |------|------------|----------------------------------------|
 | 0x00 |    info    |    openenoc_endpoint_interface.info    |
-| 0x20 |   config   |   openenoc_endpoint_interface.config   |
+| 0x20 |    conf    |    openenoc_endpoint_interface.conf    |
 | 0x40 |   axis_if  |   openenoc_endpoint_interface.axis_if  |
 | 0x60 |non_oetp_dma|openenoc_endpoint_interface.non_oetp_dma|
 | 0x80 |     irq    |     openenoc_endpoint_interface.irq    |
@@ -98,7 +98,7 @@ header, oETP write metadata, data-word padding and EndOfData. An 8192-byte
 frame limit permits 8160-byte memory fragments. A value of zero indicates
 that DMA is not supported.</p>
 
-## config register file
+## conf register file
 
 - Absolute Address: 0x20
 - Base Offset: 0x20
@@ -106,14 +106,14 @@ that DMA is not supported.</p>
 
 <p>Configuration register file for this openENOC Endpoint Interface instance.</p>
 
-|Offset|      Identifier     |                          Name                          |
-|------|---------------------|--------------------------------------------------------|
-| 0x00 |     mac_address     |     openenoc_endpoint_interface.config.mac_address     |
-| 0x08 |  multicast_address  |  openenoc_endpoint_interface.config.multicast_address  |
-| 0x10 |   non_oetp_control  |   openenoc_endpoint_interface.config.non_oetp_control  |
-| 0x14 |     rmem_timeout    |     openenoc_endpoint_interface.config.rmem_timeout    |
-| 0x18 |     dma_timeout     |     openenoc_endpoint_interface.config.dma_timeout     |
-| 0x1C |dma_max_fragment_size|openenoc_endpoint_interface.config.dma_max_fragment_size|
+|Offset|      Identifier     |                         Name                         |
+|------|---------------------|------------------------------------------------------|
+| 0x00 |     mac_address     |     openenoc_endpoint_interface.conf.mac_address     |
+| 0x08 |  multicast_address  |  openenoc_endpoint_interface.conf.multicast_address  |
+| 0x10 |   non_oetp_control  |   openenoc_endpoint_interface.conf.non_oetp_control  |
+| 0x14 |     rmem_timeout    |     openenoc_endpoint_interface.conf.rmem_timeout    |
+| 0x18 |     dma_timeout     |     openenoc_endpoint_interface.conf.dma_timeout     |
+| 0x1C |dma_max_fragment_size|openenoc_endpoint_interface.conf.dma_max_fragment_size|
 
 ### mac_address register
 
@@ -124,12 +124,12 @@ that DMA is not supported.</p>
 <p>Local endpoint 48-bit unicast MAC address. The oETP engine uses this address
 as its source MAC and compares individual-addressed incoming oETP frames against
 it. The I/G bit in the first MAC octet must be zero. Group-addressed oETP frames
-are compared against config.multicast_address instead.</p>
+are compared against conf.multicast_address instead.</p>
 
-| Bits|Identifier|Access|Reset|                             Name                            |
-|-----|----------|------|-----|-------------------------------------------------------------|
-| 31:0|  lo_word |  rw  | 0x0 | openenoc_endpoint_interface.config.mac_address.lo_word[31:0]|
-|47:32|  hi_word |  rw  | 0x0 |openenoc_endpoint_interface.config.mac_address.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                            Name                           |
+|-----|----------|------|-----|-----------------------------------------------------------|
+| 31:0|  lo_word |  rw  | 0x0 | openenoc_endpoint_interface.conf.mac_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  | 0x0 |openenoc_endpoint_interface.conf.mac_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -153,10 +153,10 @@ reset value and matches no group-addressed destination, disabling oETP group
 reception. Broadcast is accepted only when this address is all ones. This field
 does not change the separate non-oETP receive-mode policy.</p>
 
-| Bits|Identifier|Access|Reset|                                Name                               |
-|-----|----------|------|-----|-------------------------------------------------------------------|
-| 31:0|  lo_word |  rw  | 0x0 | openenoc_endpoint_interface.config.multicast_address.lo_word[31:0]|
-|47:32|  hi_word |  rw  | 0x0 |openenoc_endpoint_interface.config.multicast_address.hi_word[47:32]|
+| Bits|Identifier|Access|Reset|                               Name                              |
+|-----|----------|------|-----|-----------------------------------------------------------------|
+| 31:0|  lo_word |  rw  | 0x0 | openenoc_endpoint_interface.conf.multicast_address.lo_word[31:0]|
+|47:32|  hi_word |  rw  | 0x0 |openenoc_endpoint_interface.conf.multicast_address.hi_word[47:32]|
 
 #### lo_word field
 
@@ -174,9 +174,9 @@ does not change the separate non-oETP receive-mode policy.</p>
 
 <p>Receive policy for Ethernet frames that do not carry oETP traffic.</p>
 
-|Bits| Identifier |Access|Reset|                                 Name                                |
-|----|------------|------|-----|---------------------------------------------------------------------|
-| 1:0|receive_mode|  rw  | 0x1 |openenoc_endpoint_interface.config.non_oetp_control.receive_mode[1:0]|
+|Bits| Identifier |Access|Reset|                                Name                               |
+|----|------------|------|-----|-------------------------------------------------------------------|
+| 1:0|receive_mode|  rw  | 0x1 |openenoc_endpoint_interface.conf.non_oetp_control.receive_mode[1:0]|
 
 #### receive_mode field
 
@@ -199,9 +199,9 @@ is armed; otherwise it is directed to the CSR AXI4-Stream sink.</p>
 
 <p>Timeout configuration for transparent RMEM operations.</p>
 
-|Bits|Identifier|Access|Reset|                            Name                            |
-|----|----------|------|-----|------------------------------------------------------------|
-|31:0|  cycles  |  rw  | 0x0 |openenoc_endpoint_interface.config.rmem_timeout.cycles[31:0]|
+|Bits|Identifier|Access|Reset|                           Name                           |
+|----|----------|------|-----|----------------------------------------------------------|
+|31:0|  cycles  |  rw  | 0x0 |openenoc_endpoint_interface.conf.rmem_timeout.cycles[31:0]|
 
 #### cycles field
 
@@ -229,9 +229,9 @@ peers.entry[].dma register and may generate a separate RMEM_ERROR IRQ event.</p>
 
 <p>Common response timeout for locally initiated unicast peer DMA fragments.</p>
 
-|Bits|Identifier|Access|Reset|                            Name                           |
-|----|----------|------|-----|-----------------------------------------------------------|
-|31:0|  cycles  |  rw  | 0x0 |openenoc_endpoint_interface.config.dma_timeout.cycles[31:0]|
+|Bits|Identifier|Access|Reset|                           Name                          |
+|----|----------|------|-----|---------------------------------------------------------|
+|31:0|  cycles  |  rw  | 0x0 |openenoc_endpoint_interface.conf.dma_timeout.cycles[31:0]|
 
 #### cycles field
 
@@ -260,9 +260,9 @@ writes, non-oETP DMA, or transparent RMEM operations.</p>
 <p>Common software-selected maximum memory fragment size for locally
 initiated peer DMA transfers. The synthesis-time frame limit remains fixed.</p>
 
-|Bits|Identifier|Access| Reset|                                Name                                |
-|----|----------|------|------|--------------------------------------------------------------------|
-|31:0|   bytes  |  rw  |0x1FE0|openenoc_endpoint_interface.config.dma_max_fragment_size.bytes[31:0]|
+|Bits|Identifier|Access| Reset|                               Name                               |
+|----|----------|------|------|------------------------------------------------------------------|
+|31:0|   bytes  |  rw  |0x1FE0|openenoc_endpoint_interface.conf.dma_max_fragment_size.bytes[31:0]|
 
 #### bytes field
 
@@ -370,8 +370,18 @@ interface.</p>
 
 #### tready field
 
-<p>Indicates that the destination AXI4-Stream interface is ready to
-receive data.</p>
+<p>Registered readiness at the input of the direct TX AXI4-Stream
+register slice. With the non_oetp_direct_tx_complete event disabled,
+follows downstream backpressure through the slice's registered READY
+path; CSR acknowledgements and frame boundaries do not force it low.
+With the event enabled, additionally requires frame admission, which
+reserves space for the TX completion event. Acceptance of the final
+word (tlast) into the slice deasserts this field until the next frame
+receives admission. Writing the first word and setting
+source.control.tvalid requests admission even while this field is low.
+The active frame retains its admission decision if event_enable changes.
+Software must retain data, KEEP and LAST until source.control.tvalid
+is cleared by hardware, independently of this readiness status.</p>
 
 ## sink register file
 
@@ -933,7 +943,7 @@ irq.complete request removes the claim.</p>
 |-----|----------|------|-----|----------------------------------------------------|
 | 10:0| peer_idx |   r  |  —  |openenoc_endpoint_interface.irq.claim.peer_idx[10:0]|
 |14:11|  source  |   r  |  —  |  openenoc_endpoint_interface.irq.claim.source[3:0] |
-|30:15| sequence |   r  |  —  |openenoc_endpoint_interface.irq.claim.sequence[15:0]|
+|30:15|    seq   |   r  |  —  |   openenoc_endpoint_interface.irq.claim.seq[15:0]  |
 |  31 |   valid  |   r  |  —  |     openenoc_endpoint_interface.irq.claim.valid    |
 
 #### peer_idx field
@@ -961,7 +971,7 @@ recorded in peers.entry[peer_idx].dma; peer_idx identifies the associated peer.<
 <p></ul>
 This field is meaningful only when valid is set.</p>
 
-#### sequence field
+#### seq field
 
 <p>Monotonically increasing event sequence number, modulo 65536. The sequence
 number distinguishes otherwise identical claims and protects against stale or
@@ -985,7 +995,7 @@ copying the complete 32-bit irq.claim value into this register.</p>
 |-----|----------|------|-----|-------------------------------------------------------|
 | 10:0| peer_idx |  rw  | 0x0 |openenoc_endpoint_interface.irq.complete.peer_idx[10:0]|
 |14:11|  source  |  rw  | 0x0 |  openenoc_endpoint_interface.irq.complete.source[3:0] |
-|30:15| sequence |  rw  | 0x0 |openenoc_endpoint_interface.irq.complete.sequence[15:0]|
+|30:15|    seq   |  rw  | 0x0 |   openenoc_endpoint_interface.irq.complete.seq[15:0]  |
 |  31 |   valid  |  rw  | 0x0 |     openenoc_endpoint_interface.irq.complete.valid    |
 
 #### peer_idx field
@@ -996,7 +1006,7 @@ copying the complete 32-bit irq.claim value into this register.</p>
 
 <p>Event-source portion of the claim token.</p>
 
-#### sequence field
+#### seq field
 
 <p>Sequence-number portion of the claim token.</p>
 

@@ -17,11 +17,14 @@ module openenoc_endpoint_peer_lookup #(
     openenoc_endpoint_if.core endpoint_if,
     openenoc_peer_lookup_if.slv lookup_if[LOOKUP_PORTS]
 );
-
     localparam int PORT_IDX_W = LOOKUP_PORTS > 1 ? $clog2(LOOKUP_PORTS) : 1;
     localparam logic [1:0] LOOKUP_BY_INDEX = lookup_if[0].LOOKUP_BY_INDEX;
     localparam logic [1:0] LOOKUP_BY_RMEM = lookup_if[0].LOOKUP_BY_RMEM;
     localparam logic [1:0] LOOKUP_BY_MAC = lookup_if[0].LOOKUP_BY_MAC;
+    localparam logic [1:0] DMA_MODE_DISABLED = lookup_if[0].DMA_MODE_DISABLED;
+    localparam logic [1:0] DMA_MODE_RMEM = lookup_if[0].DMA_MODE_RMEM;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_LOCAL = lookup_if[0].DMA_MODE_MIRROR_TO_LOCAL;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_REMOTE = lookup_if[0].DMA_MODE_MIRROR_TO_REMOTE;
 
     // Check configuration
     /* verilator lint_off GENUNNAMED */
@@ -169,14 +172,17 @@ module openenoc_endpoint_peer_lookup #(
 
                     case (request_type[port])
                         LOOKUP_BY_INDEX:
-                            match_key = (mode == 2 || mode == 3)
+                            match_key = (mode == DMA_MODE_MIRROR_TO_LOCAL
+                                || mode == DMA_MODE_MIRROR_TO_REMOTE)
                                 && request_peer_index[port] == PEER_IDX_W'(peer);
                         LOOKUP_BY_RMEM:
-                            match_key = mode == 1 && size != 0 &&
+                            match_key = mode == DMA_MODE_RMEM && size != 0 &&
                                 {1'b0, request_rmem_address[port]} >= {1'b0, base_addr} &&
                                 {1'b0, request_rmem_address[port]} < {1'b0, base_addr} + {1'b0,
                                     size};
-                        LOOKUP_BY_MAC: match_key = mode != 0 && request_mac_address[port] == mac;
+                        LOOKUP_BY_MAC:
+                            match_key = mode != DMA_MODE_DISABLED
+                                && request_mac_address[port] == mac;
                         default: begin
                         end
                     endcase

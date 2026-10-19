@@ -45,7 +45,7 @@ module openenoc_endpoint_irq_controller #(
     if (PEER_IDX_W < 1 || PEER_IDX_W > CSR_PEER_IDX_W)
         $fatal(0, {"Error: PEER_IDX_W must fit the CSR peer index ", "field (instance %m)"});
     if (SEQUENCE_W < 1 || SEQUENCE_W > CSR_SEQUENCE_W)
-        $fatal(0, {"Error: SEQUENCE_W must fit the CSR sequence ", "field (instance %m)"});
+        $fatal(0, {"Error: SEQUENCE_W must fit the CSR seq ", "field (instance %m)"});
     /* verilator lint_on GENUNNAMED */
 
     wire global_enable = endpoint_if.csr_to_core.irq.control.global_enable.value;
@@ -109,9 +109,9 @@ module openenoc_endpoint_irq_controller #(
     localparam int CLAIM_PEER_IDX_W = $bits(endpoint_if.core_to_csr.irq.claim.peer_idx.next);
     logic [CLAIM_PEER_IDX_W-1:0] claim_peer_idx_reg;
     assign endpoint_if.core_to_csr.irq.claim.peer_idx.next = claim_peer_idx_reg;
-    localparam int CLAIM_SEQUENCE_W = $bits(endpoint_if.core_to_csr.irq.claim.sequence_.next);
+    localparam int CLAIM_SEQUENCE_W = $bits(endpoint_if.core_to_csr.irq.claim.seq.next);
     logic [CLAIM_SEQUENCE_W-1:0] claim_sequence_reg;
-    assign endpoint_if.core_to_csr.irq.claim.sequence_.next = claim_sequence_reg;
+    assign endpoint_if.core_to_csr.irq.claim.seq.next = claim_sequence_reg;
     localparam int CLAIM_SOURCE_W = $bits(endpoint_if.core_to_csr.irq.claim.source.next);
     logic [CLAIM_SOURCE_W-1:0] claim_source_reg;
     assign endpoint_if.core_to_csr.irq.claim.source.next = claim_source_reg;
@@ -157,7 +157,7 @@ module openenoc_endpoint_irq_controller #(
         && endpoint_if.csr_to_core.irq.complete.peer_idx.value
         == CSR_PEER_IDX_W '(claim_reg[0+:PEER_IDX_W])
         && endpoint_if.csr_to_core.irq.complete.source.value == claim_reg[PEER_IDX_W+:4]
-        && endpoint_if.csr_to_core.irq.complete.sequence_.value
+        && endpoint_if.csr_to_core.irq.complete.seq.value
         == CSR_SEQUENCE_W'(claim_reg[PEER_IDX_W+4+:SEQUENCE_W]);
     wire queue_pop = completion_command && completion_matches;
 

@@ -8,14 +8,13 @@
 /* Isolated test wrapper for the openENOC endpoint DMA engine */
 module test_openenoc_endpoint_dma_engine #(
     parameter int NUM_OF_PEERS = 4,
-    parameter int AXI_DATA_W = 32,
-    parameter int AXI_ADDR_W = 32,
     parameter int AXI_ID_W = 8,
     parameter int SEQUENCE_W = 32,
     parameter int FRAGMENT_SLOTS = 8,
     parameter int MAX_RAW_FRAME_SIZE = 96
 ) ();
 
+    localparam int AXI_ADDR_W = 32;
     localparam int PEER_IDX_W = NUM_OF_PEERS > 1 ? $clog2(NUM_OF_PEERS) : 1;
 
     logic clk;
@@ -185,7 +184,7 @@ module test_openenoc_endpoint_dma_engine #(
     ) irq_event_if[3]();
 
     taxi_axis_if #(
-        .DATA_W(AXI_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1'b1),
         .LAST_EN(1'b1),
         .ID_EN(1'b1),
@@ -197,7 +196,7 @@ module test_openenoc_endpoint_dma_engine #(
     ) m_axis_oetp_if();
 
     taxi_axis_if #(
-        .DATA_W(AXI_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1'b1),
         .LAST_EN(1'b1),
         .ID_EN(1'b1),
@@ -209,14 +208,14 @@ module test_openenoc_endpoint_dma_engine #(
     ) s_axis_oetp_if();
 
     taxi_axi_if #(
-        .DATA_W(AXI_DATA_W),
+        .DATA_W(32),
         .ADDR_W(AXI_ADDR_W),
         .ID_W(AXI_ID_W)
     ) m_axi_if();
 
     always_comb begin
         endpoint_if.csr_to_core = '{default: '0};
-        endpoint_if.csr_to_core.config_.dma_max_fragment_size.bytes.value =
+        endpoint_if.csr_to_core.conf.dma_max_fragment_size.bytes.value =
             dma_max_fragment_size_bytes;
         endpoint_if.csr_to_core.irq.event_enable.peer_dma_complete.value = event_enable[0];
         endpoint_if.csr_to_core.irq.event_enable.rmem_error.value = event_enable[5];

@@ -5,3 +5,5 @@ sphinx
 sphinx-rtd-theme
 sphinx-copybutton
 myst-parser
+sphinxcontrib-wavedrom==3.0.4
+wavedrom==2.0.3.post3

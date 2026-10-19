@@ -6,7 +6,6 @@ from itertools import cycle
 import struct
 import logging
 
-import pytest
 import cocotb
 import cocotb_test.simulator
 from cocotb.clock import Clock
@@ -845,8 +844,7 @@ async def test_registered_outputs_between_clock_edges(dut):
     assert not (await tb.completion())["error"]
 
 
-@pytest.mark.parametrize("local_data_w,eth_data_w", [(32, 32), (64, 8), (32, 64)])
-def test_openenoc_endpoint_oetp_engine(sim_build_dir, sim_trace_args, local_data_w, eth_data_w):
+def test_openenoc_endpoint_oetp_engine(sim_build_dir, sim_trace_args):
     tests = Path(__file__).resolve().parent
     repo = tests.parents[2]
     core = repo / "hw/rtl/core"
@@ -854,7 +852,6 @@ def test_openenoc_endpoint_oetp_engine(sim_build_dir, sim_trace_args, local_data
     sources = [
         repo / "build/hal/rtl/openenoc_endpoint_if.sv",
         taxi / "axis/rtl/taxi_axis_if.sv",
-        taxi / "axis/rtl/taxi_axis_adapter.sv",
         core / "openenoc_peer_lookup_if.sv",
         taxi / "axis/rtl/taxi_axis_register.sv",
         core / "openenoc_dma_transfer_if.sv",
@@ -867,7 +864,6 @@ def test_openenoc_endpoint_oetp_engine(sim_build_dir, sim_trace_args, local_data
         toplevel="test_openenoc_endpoint_oetp_engine",
         module="test_openenoc_endpoint_oetp_engine",
         python_search=[str(tests)],
-        parameters={"LOCAL_DATA_W": local_data_w, "ETH_DATA_W": eth_data_w},
         timescale="1ns/1ps",
         extra_args=["-Wall", str(repo / "dv/common/config.vlt")],
         plus_args=sim_trace_args,

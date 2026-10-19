@@ -6,8 +6,8 @@
 
 /* Isolated oETP transport wrapper. */
 module test_openenoc_endpoint_oetp_engine #(
-    parameter int LOCAL_DATA_W = 32,
-    ETH_DATA_W = 32, MAX_RAW_FRAME_SIZE = 8192) ();
+    parameter int MAX_RAW_FRAME_SIZE = 8192
+) ();
     logic clk, rst;
     logic [47:0] mac_address, multicast_address;
     logic [31:0] rmem_timeout, dma_timeout;
@@ -218,13 +218,13 @@ module test_openenoc_endpoint_oetp_engine #(
     assign raw_claim_valid = responder_if.non_oetp_rx_claim_valid;
     always_comb begin
         endpoint_if.csr_to_core = '{default: '0};
-        endpoint_if.csr_to_core.config_.mac_address.hi_word.value = mac_address[47:32];
-        endpoint_if.csr_to_core.config_.mac_address.lo_word.value = mac_address[31:0];
-        endpoint_if.csr_to_core.config_.multicast_address.hi_word.value = multicast_address[47:32];
-        endpoint_if.csr_to_core.config_.multicast_address.lo_word.value = multicast_address[31:0];
-        endpoint_if.csr_to_core.config_.rmem_timeout.cycles.value = rmem_timeout;
-        endpoint_if.csr_to_core.config_.dma_timeout.cycles.value = dma_timeout;
-        endpoint_if.csr_to_core.config_.non_oetp_control.receive_mode.value = receive_mode;
+        endpoint_if.csr_to_core.conf.mac_address.hi_word.value = mac_address[47:32];
+        endpoint_if.csr_to_core.conf.mac_address.lo_word.value = mac_address[31:0];
+        endpoint_if.csr_to_core.conf.multicast_address.hi_word.value = multicast_address[47:32];
+        endpoint_if.csr_to_core.conf.multicast_address.lo_word.value = multicast_address[31:0];
+        endpoint_if.csr_to_core.conf.rmem_timeout.cycles.value = rmem_timeout;
+        endpoint_if.csr_to_core.conf.dma_timeout.cycles.value = dma_timeout;
+        endpoint_if.csr_to_core.conf.non_oetp_control.receive_mode.value = receive_mode;
         for (int n = 0; n < 4; n++) begin
             endpoint_if.csr_to_core.peers.entry[n].mac_address.hi_word.value =
                 peer_mac[n*48+32+:16];
@@ -233,7 +233,7 @@ module test_openenoc_endpoint_oetp_engine #(
     end
 
     taxi_axis_if #(
-        .DATA_W(LOCAL_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1),
         .ID_EN(1),
@@ -245,7 +245,7 @@ module test_openenoc_endpoint_oetp_engine #(
     ) local_tx_if();
 
     taxi_axis_if #(
-        .DATA_W(LOCAL_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1),
         .ID_EN(1),
@@ -257,13 +257,13 @@ module test_openenoc_endpoint_oetp_engine #(
     ) local_rx_if();
 
     taxi_axis_if #(
-        .DATA_W(ETH_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1)
     ) eth_rx_if();
 
     taxi_axis_if #(
-        .DATA_W(ETH_DATA_W),
+        .DATA_W(32),
         .KEEP_EN(1),
         .LAST_EN(1)
     ) eth_tx_if();

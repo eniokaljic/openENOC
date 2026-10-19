@@ -176,7 +176,7 @@ rtl-lanes-smoke: iss-library memory-map
 rtl-bridge-smoke: iss-library memory-map
 	@mkdir -p $(BUILD_DIR)/reports
 	@$(MAKE) -C tests/rtl COCOTB_RESULTS_FILE=$(BUILD_DIR)/reports/rtl-bridge-smoke.xml \
-		COCOTB_TESTCASE='test_spike_bridge_waits_for_rtl_axi_handshakes,test_spike_bridge_rejects_invalid_request_before_axi,test_spike_bridge_reports_axi_error,test_spike_bridge_times_out_blocked_write'
+		COCOTB_TESTCASE='test_spike_bridge_propagates_rtl_csr_slverr,test_spike_bridge_waits_for_rtl_axi_handshakes,test_spike_bridge_rejects_invalid_request_before_axi,test_spike_bridge_reports_axi_error,test_spike_bridge_times_out_blocked_write'
 
 rtl-lifecycle-smoke: iss-library memory-map
 	@mkdir -p $(BUILD_DIR)/reports

@@ -6,6 +6,9 @@
 Full endpoint CSR bridge -- openenoc_endpoint_full_csr_bridge
 =============================================================
 
+.. index::
+   single: openenoc_endpoint_full_csr_bridge
+
 Connects the generated register bank to endpoint and switch control interfaces.
 
 **Source:** :download:`openenoc_endpoint_full_csr_bridge.sv <../../../build/hal/openenoc_endpoint_full/rtl/openenoc_endpoint_full_csr_bridge.sv>`.
@@ -16,7 +19,7 @@ Parameters
 .. list-table:: Parameters
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 30 18 22 30
+   :widths: 12 18 20 50
 
    * - Name
      - Default value
@@ -39,7 +42,7 @@ The hardware-interface types are imported from
 .. list-table:: Public signals and interfaces
    :class: rtl-reference-table
    :header-rows: 1
-   :widths: 26 27 17 30
+   :widths: 18 38 17 27
 
    * - Name
      - Type
@@ -69,13 +72,3 @@ The project exporter connects PeakRDL ``csr_hwif_out/csr_hwif_in`` to
 ``endpoint_if`` and ``switch_if``. This generated wiring layer converts
 matching struct views, including value, next, hardware-clear, and external
 request/completion members. It does not execute memory or protocol operations.
-
-Functional scenarios
---------------------
-
-This section reserves space for scenario descriptions and WaveDrom timing
-diagrams. The current outline is:
-
-* Software configuration propagation to core interfaces.
-* Hardware status and command-clear propagation to the register bank.
-* External register-file request and acknowledgement mapping.

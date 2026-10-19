@@ -73,13 +73,13 @@ module test_openenoc_endpoint_full #(
         u_openenoc_endpoint_full.endpoint_if.core_to_csr.irq.complete.valid.hwclr;
     wire logic [31:0] irq_claim_token = {
         u_openenoc_endpoint_full.endpoint_if.core_to_csr.irq.claim.valid.next,
-        u_openenoc_endpoint_full.endpoint_if.core_to_csr.irq.claim.sequence_.next,
+        u_openenoc_endpoint_full.endpoint_if.core_to_csr.irq.claim.seq.next,
         u_openenoc_endpoint_full.endpoint_if.core_to_csr.irq.claim.source.next,
         u_openenoc_endpoint_full.endpoint_if.core_to_csr.irq.claim.peer_idx.next
     };
     wire logic [31:0] irq_complete_token = {
         u_openenoc_endpoint_full.endpoint_if.csr_to_core.irq.complete.valid.value,
-        u_openenoc_endpoint_full.endpoint_if.csr_to_core.irq.complete.sequence_.value,
+        u_openenoc_endpoint_full.endpoint_if.csr_to_core.irq.complete.seq.value,
         u_openenoc_endpoint_full.endpoint_if.csr_to_core.irq.complete.source.value,
         u_openenoc_endpoint_full.endpoint_if.csr_to_core.irq.complete.peer_idx.value
     };
@@ -102,7 +102,7 @@ module test_openenoc_endpoint_full #(
     wire logic[3:0] switch_default_forwarding =
         switch_if.csr_to_core.default_forwarding.bitmap.value;
     wire logic[31:0] endpoint_mac_lo_hwif =
-        u_openenoc_endpoint_full.endpoint_if.csr_to_core.config_.mac_address.lo_word.value;
+        u_openenoc_endpoint_full.endpoint_if.csr_to_core.conf.mac_address.lo_word.value;
 
     wire logic [31:0] endpoint_tx_data = eth_if.a2b_axis_if.tdata;
     wire logic [3:0] endpoint_tx_keep = eth_if.a2b_axis_if.tkeep;

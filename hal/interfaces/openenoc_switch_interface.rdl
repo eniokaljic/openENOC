@@ -121,18 +121,18 @@ regfile openenoc_switch_interface #(
                 } bitmap[NUM_OF_INTERFACES-1:0];
             } iface;
 
-            reg config {
-                name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].config"};
+            reg conf {
+                name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].conf"};
                 desc = "Configuration information associated with this forwarding table entry.";
 
                 field {
-                    name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].config.enabled"};
+                    name = {INST_NAME, ".forwarding_table.entry[0..TABLE_DEPTH-1].conf.enabled"};
                     desc = "Enables this forwarding table entry. When cleared, the entry is ignored during forwarding table lookup.";
 
                     sw = rw;
                     hw = rw;
                 } enabled;
-            } config;
+            } conf;
         } entry[TABLE_DEPTH];
     } forwarding_table;
 };

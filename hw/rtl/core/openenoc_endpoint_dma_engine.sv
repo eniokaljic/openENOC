@@ -30,9 +30,46 @@ module openenoc_endpoint_dma_engine #(
     openenoc_irq_event_if.producer rmem_irq_event_if,
     openenoc_irq_event_if.producer responder_irq_event_if
 );
+    localparam int unsigned ADDR_W = 32;
+    localparam int unsigned AXI_DATA_W = 32;
+    localparam int unsigned AXIS_KEEP_W = 4;
+
+    if (m_axi_wr.DATA_W != AXI_DATA_W || m_axi_rd.DATA_W != AXI_DATA_W) begin
+        : g_bad_axi_data_width
+        $fatal(0, "Error: AXI data widths must be 32 bits (instance %m)");
+    end
+
+    if (m_axi_wr.ADDR_W != ADDR_W || m_axi_rd.ADDR_W != ADDR_W) begin : g_bad_axi_addr_width
+        $fatal(0, "Error: AXI address widths must be 32 bits (instance %m)");
+    end
+
+    if (initiator_if.ADDR_W != ADDR_W || responder_if.ADDR_W != ADDR_W
+        || peer_lookup_if.ADDR_W != ADDR_W
+        || m_local_cpuif.ADDR_W != ADDR_W) begin : g_bad_local_addr_width
+        $fatal(
+            0,
+            "Error: transfer, lookup, and local CPUIF addresses must be 32 bits (instance %m)"
+        );
+    end
+
+    if (m_axis_oetp.DATA_W != AXI_DATA_W || s_axis_oetp.DATA_W != AXI_DATA_W) begin
+        : g_bad_axis_data_width
+        $fatal(0, "Error: AXI stream data widths must be 32 bits (instance %m)");
+    end
+
+    if (m_axi_wr.STRB_W != AXIS_KEEP_W || m_axi_rd.STRB_W != AXIS_KEEP_W
+        || m_axis_oetp.KEEP_W != AXIS_KEEP_W
+        || s_axis_oetp.KEEP_W != AXIS_KEEP_W) begin : g_bad_byte_enable_width
+        $fatal(0, "Error: AXI strobes and AXI stream keep widths must be four (instance %m)");
+    end
+
+    if (m_local_cpuif.DATA_W != AXI_DATA_W) begin : g_bad_cpuif_data_width
+        $fatal(0, "Error: local CPUIF data width must be 32 bits (instance %m)");
+    end
+
     taxi_axis_if #(
-        .DATA_W(s_axis_oetp.DATA_W),
-        .KEEP_W(s_axis_oetp.KEEP_W),
+        .DATA_W(AXI_DATA_W),
+        .KEEP_W(AXIS_KEEP_W),
         .KEEP_EN(s_axis_oetp.KEEP_EN),
         .STRB_EN(s_axis_oetp.STRB_EN),
         .LAST_EN(s_axis_oetp.LAST_EN),
@@ -54,8 +91,8 @@ module openenoc_endpoint_dma_engine #(
     );
 
     taxi_axis_if #(
-        .DATA_W(m_axis_oetp.DATA_W),
-        .KEEP_W(m_axis_oetp.KEEP_W),
+        .DATA_W(AXI_DATA_W),
+        .KEEP_W(AXIS_KEEP_W),
         .KEEP_EN(m_axis_oetp.KEEP_EN),
         .STRB_EN(m_axis_oetp.STRB_EN),
         .LAST_EN(m_axis_oetp.LAST_EN),
@@ -68,8 +105,8 @@ module openenoc_endpoint_dma_engine #(
     ) memory_output();
 
     taxi_axis_if #(
-        .DATA_W(m_axis_oetp.DATA_W),
-        .KEEP_W(m_axis_oetp.KEEP_W),
+        .DATA_W(AXI_DATA_W),
+        .KEEP_W(AXIS_KEEP_W),
         .KEEP_EN(m_axis_oetp.KEEP_EN),
         .STRB_EN(m_axis_oetp.STRB_EN),
         .LAST_EN(m_axis_oetp.LAST_EN),
@@ -101,8 +138,8 @@ module openenoc_endpoint_dma_engine #(
     );
 
     taxi_axi_if #(
-        .DATA_W(m_axi_rd.DATA_W),
-        .ADDR_W(m_axi_rd.ADDR_W),
+        .DATA_W(AXI_DATA_W),
+        .ADDR_W(ADDR_W),
         .ID_W(m_axi_rd.ID_W),
         .ARUSER_EN(m_axi_rd.ARUSER_EN),
         .ARUSER_W(m_axi_rd.ARUSER_W),
@@ -121,8 +158,8 @@ module openenoc_endpoint_dma_engine #(
     );
 
     taxi_axi_if #(
-        .DATA_W(m_axi_wr.DATA_W),
-        .ADDR_W(m_axi_wr.ADDR_W),
+        .DATA_W(AXI_DATA_W),
+        .ADDR_W(ADDR_W),
         .ID_W(m_axi_wr.ID_W),
         .AWUSER_EN(m_axi_wr.AWUSER_EN),
         .AWUSER_W(m_axi_wr.AWUSER_W),
@@ -146,14 +183,11 @@ module openenoc_endpoint_dma_engine #(
     localparam int DMA_IRQ_PEER_W = irq_event_if[0].PEER_IDX_W;
     localparam int RMEM_IRQ_PEER_W = rmem_irq_event_if.PEER_IDX_W;
     localparam int RESPONDER_IRQ_PEER_W = responder_irq_event_if.PEER_IDX_W;
-    localparam int unsigned ADDR_W = initiator_if.ADDR_W;
     localparam int unsigned LEN_W = initiator_if.LEN_W;
     localparam int unsigned SEQUENCE_W = initiator_if.SEQUENCE_W;
     localparam int unsigned ERROR_W = initiator_if.ERROR_W;
     localparam logic TRANSFER_KIND_DMA = initiator_if.TRANSFER_KIND_DMA;
     localparam logic TRANSFER_KIND_RMEM = initiator_if.TRANSFER_KIND_RMEM;
-    localparam int unsigned AXI_DATA_W = memory_read.DATA_W;
-    localparam int unsigned AXIS_KEEP_W = memory_output.KEEP_W;
     localparam int unsigned AXIS_DEST_W = PEER_IDX_W + 2;
     localparam int unsigned AXIS_USER_W = initiator_if.AXIS_USER_W;
     localparam int unsigned AXIS_USER_LAST_BIT = initiator_if.AXIS_USER_LAST_BIT;
@@ -161,32 +195,54 @@ module openenoc_endpoint_dma_engine #(
     localparam logic TRANSFER_ROLE_INITIATOR = initiator_if.TRANSFER_ROLE_INITIATOR;
     localparam logic TRANSFER_ROLE_RESPONDER = initiator_if.TRANSFER_ROLE_RESPONDER;
     localparam int unsigned SLOT_IDX_W = FRAGMENT_SLOTS > 1 ? $clog2(FRAGMENT_SLOTS) : 1;
-    localparam logic [1:0] ROUTE_PEER = initiator_if.ROUTE_PEER;
-    localparam logic [1:0] ROUTE_NON_OETP_DMA = initiator_if.ROUTE_NON_OETP_DMA;
-
     localparam logic DMA_OP_READ = initiator_if.DMA_OP_READ;
     localparam logic DMA_OP_WRITE = initiator_if.DMA_OP_WRITE;
 
-    localparam logic [1:0] DMA_MODE_MIRROR_TO_LOCAL = 2'd2;
-    localparam logic [1:0] DMA_MODE_MIRROR_TO_REMOTE = 2'd3;
+    localparam logic [1:0] DMA_MODE_DISABLED = peer_lookup_if.DMA_MODE_DISABLED;
+    localparam logic [1:0] DMA_MODE_RMEM = peer_lookup_if.DMA_MODE_RMEM;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_LOCAL = peer_lookup_if.DMA_MODE_MIRROR_TO_LOCAL;
+    localparam logic [1:0] DMA_MODE_MIRROR_TO_REMOTE = peer_lookup_if.DMA_MODE_MIRROR_TO_REMOTE;
+
+    localparam logic [1:0] LOOKUP_BY_INDEX = peer_lookup_if.LOOKUP_BY_INDEX;
+    localparam logic [1:0] LOOKUP_BY_RMEM = peer_lookup_if.LOOKUP_BY_RMEM;
+    localparam logic [3:0] LOOKUP_RMEM_MODE_MASK = peer_lookup_if.LOOKUP_RMEM_MODE_MASK;
+    localparam logic [3:0] LOOKUP_MIRROR_MODE_MASK = peer_lookup_if.LOOKUP_MIRROR_MODE_MASK;
+
+    localparam logic [1:0] ROUTE_PEER = initiator_if.ROUTE_PEER;
+    localparam logic [1:0] ROUTE_NON_OETP_DMA = initiator_if.ROUTE_NON_OETP_DMA;
 
     localparam logic [ERROR_W-1:0] DMA_ERROR_NONE = initiator_if.ERROR_NONE;
     localparam logic [ERROR_W-1:0] DMA_ERROR_INVALID = initiator_if.ERROR_LOCAL_INVALID;
     localparam logic [ERROR_W-1:0] DMA_ERROR_AXIS = initiator_if.ERROR_LOCAL_AXIS;
     localparam logic [ERROR_W-1:0] DMA_ERROR_OVERFLOW = initiator_if.ERROR_LOCAL_OVERFLOW;
+    localparam logic [ERROR_W-1:0] DMA_ERROR_AXI_RD_SLVERR = initiator_if.ERROR_LOCAL_AXI_RD_SLVERR;
+    localparam logic [ERROR_W-1:0] DMA_ERROR_AXI_RD_DECERR = initiator_if.ERROR_LOCAL_AXI_RD_DECERR;
+    localparam logic [ERROR_W-1:0] DMA_ERROR_AXI_WR_SLVERR = initiator_if.ERROR_LOCAL_AXI_WR_SLVERR;
+    localparam logic [ERROR_W-1:0] DMA_ERROR_AXI_WR_DECERR = initiator_if.ERROR_LOCAL_AXI_WR_DECERR;
+    localparam logic [31:0] RMEM_READ_ERROR_DATA = 32'hffffffff;
+    localparam logic [ADDR_W:0] ADDR_SPACE_LIMIT = {1'b1, {ADDR_W{1'b0}}};
 
-    // Ethernet (14), oETP write metadata (14), and EndOfData (4) take 32 bytes. Data parameters are
-    // rounded to four bytes on the wire in both directions.
-    localparam int unsigned MAX_DMA_FRAGMENT_SIZE_BYTES = MAX_RAW_FRAME_SIZE > 32
-        ? ((MAX_RAW_FRAME_SIZE - 32) / 4) * 4 : 0;
+    localparam int unsigned ETHERNET_HEADER_BYTES = 14;
+    localparam int unsigned OETP_WRITE_METADATA_BYTES = 14;
+    localparam int unsigned OETP_END_OF_DATA_BYTES = 4;
+    localparam int unsigned OETP_DMA_FRAME_OVERHEAD_BYTES =
+        ETHERNET_HEADER_BYTES + OETP_WRITE_METADATA_BYTES + OETP_END_OF_DATA_BYTES;
+    localparam int unsigned OETP_DATA_ALIGNMENT_BYTES = 4;
+    localparam int unsigned RMEM_WORD_BYTES = initiator_if.RMEM_WORD_BYTES;
+
+    localparam int unsigned MAX_DMA_FRAGMENT_SIZE_BYTES =
+        MAX_RAW_FRAME_SIZE > OETP_DMA_FRAME_OVERHEAD_BYTES
+        ? ((MAX_RAW_FRAME_SIZE - OETP_DMA_FRAME_OVERHEAD_BYTES) / OETP_DATA_ALIGNMENT_BYTES)
+            * OETP_DATA_ALIGNMENT_BYTES : 0;
+    localparam int unsigned RAW_TX_READ_CHUNK_BYTES = 8188;
     wire [31:0] configured_fragment_size =
-        endpoint_if.csr_to_core.config_.dma_max_fragment_size.bytes.value;
+        endpoint_if.csr_to_core.conf.dma_max_fragment_size.bytes.value;
     wire [31:0] effective_fragment_size = {configured_fragment_size[31:2], 2'b00};
 
     // CPUIF requests are converted to scalar transport commands.
     openenoc_cpuif_if #(
-        .ADDR_W(32),
-        .DATA_W(32)
+        .ADDR_W(ADDR_W),
+        .DATA_W(AXI_DATA_W)
     ) csr_rmem_cpuif();
 
     assign csr_rmem_cpuif.req = endpoint_if.csr_to_core.rmem.req;
@@ -229,15 +285,17 @@ module openenoc_endpoint_dma_engine #(
             && peer_state_reg != PEER_LOOKUP_RSP);
     wire rmem_cpl_accept = initiator_cpl_fire && initiator_if.cpl_kind == TRANSFER_KIND_RMEM;
     wire rmem_error_valid = (rmem_cpl_accept && initiator_if.cpl_error)
-        || (rmem_state_reg == RM_DONE && rmem_hit_reg && rmem_error_reg != 0);
+        || (rmem_state_reg == RM_DONE && rmem_hit_reg && rmem_error_reg != DMA_ERROR_NONE);
     wire [PEER_IDX_W-1:0] rmem_error_peer_idx = rmem_state_reg == RM_DONE ? rmem_peer_reg
         : initiator_if.cpl_peer_idx;
     wire [ERROR_W-1:0] rmem_error_code = rmem_state_reg == RM_DONE ? rmem_error_reg
         : initiator_if.cpl_error_code;
 
-    localparam logic [3:0] EVENT_PEER_DMA_COMPLETE = 4'd0;
-    localparam logic [3:0] EVENT_NON_OETP_DMA_TX_COMPLETE = 4'd1;
-    localparam logic [3:0] EVENT_NON_OETP_DMA_RX_COMPLETE = 4'd2;
+    localparam logic [3:0] EVENT_PEER_DMA_COMPLETE = irq_event_if[0].EVENT_PEER_DMA_COMPLETE;
+    localparam logic [3:0] EVENT_NON_OETP_DMA_TX_COMPLETE =
+        irq_event_if[1].EVENT_NON_OETP_DMA_TX_COMPLETE;
+    localparam logic [3:0] EVENT_NON_OETP_DMA_RX_COMPLETE =
+        irq_event_if[2].EVENT_NON_OETP_DMA_RX_COMPLETE;
 
     localparam logic [1:0] RD_CLIENT_PEER = 2'd0;
     localparam logic [1:0] RD_CLIENT_RESPONDER = 2'd1;
@@ -259,20 +317,11 @@ module openenoc_endpoint_dma_engine #(
     endfunction
 
     function automatic logic [LEN_W-1:0] keep_count(input logic [AXIS_KEEP_W-1:0] keep);
-        logic [LEN_W-1:0] count;
-
-        count = '0;
-        for (int unsigned n = 0; n < AXIS_KEEP_W; n++) begin
-            count = count + LEN_W'(keep[n]);
-        end
-        return count;
+        return LEN_W'(keep[0]) + LEN_W'(keep[1]) + LEN_W'(keep[2]) + LEN_W'(keep[3]);
     endfunction
 
     function automatic logic keep_contiguous(input logic [AXIS_KEEP_W-1:0] keep);
-        logic [AXIS_KEEP_W:0] extended_keep;
-
-        extended_keep = {1'b0, keep};
-        return keep != '0 && (extended_keep & (extended_keep + 1'b1)) == '0;
+        return keep == 4'h1 || keep == 4'h3 || keep == 4'h7 || keep == 4'hf;
     endfunction
 
     if (NUM_OF_PEERS < 1) begin : g_bad_num_peers
@@ -287,16 +336,7 @@ module openenoc_endpoint_dma_engine #(
         $fatal(0, {"Error: MAX_RAW_FRAME_SIZE must be between 36 ", "and 8192 (instance %m)"});
     end
 
-    if (memory_write.DATA_W != AXI_DATA_W
-        || memory_write.ADDR_W != memory_read.ADDR_W) begin : g_bad_axi_pair
-        $fatal(0, {"Error: AXI read and write interface widths must ", "match (instance %m)"});
-    end
-
-    if (ADDR_W != memory_read.ADDR_W) begin : g_bad_addr_width
-        $fatal(0, {"Error: DMA transfer and AXI address widths must ", "match (instance %m)"});
-    end
-
-    if (responder_if.ADDR_W != ADDR_W || responder_if.LEN_W != LEN_W
+    if (responder_if.LEN_W != LEN_W
         || responder_if.SEQUENCE_W != SEQUENCE_W
         || responder_if.ERROR_W != ERROR_W) begin : g_bad_transfer_pair
         $fatal(
@@ -311,11 +351,6 @@ module openenoc_endpoint_dma_engine #(
     if (peer_lookup_if.PEER_IDX_W != PEER_IDX_W || initiator_if.PEER_IDX_W != PEER_IDX_W
         || responder_if.PEER_IDX_W != PEER_IDX_W) begin : g_bad_peer_width
         $fatal(0, {"Error: peer index widths must match PEER_IDX_W ", "(instance %m)"});
-    end
-
-    if (memory_output.DATA_W != AXI_DATA_W
-        || memory_input.DATA_W != AXI_DATA_W) begin : g_bad_axis_data_width
-        $fatal(0, {"Error: AXI stream data widths must match ", "AXI_DATA_W (instance %m)"});
     end
 
     if (memory_output.ID_W < SEQUENCE_W || memory_input.ID_W < SEQUENCE_W
@@ -507,6 +542,7 @@ module openenoc_endpoint_dma_engine #(
     logic [ADDR_W-1:0] peer_local_addr_reg;
     logic [ADDR_W-1:0] peer_remote_addr_reg;
     logic [LEN_W-1:0] peer_size_reg;
+    
     // Accepted peers retain independent snapshots. Fragment slots form a bounded window of
     // commands, allowing responses to arrive in any peer/sequence order.
     typedef struct packed {
@@ -521,6 +557,7 @@ module openenoc_endpoint_dma_engine #(
         logic irq_reserved;
     } peer_context_t;
     peer_context_t peer_context_reg[NUM_OF_PEERS];
+    
     logic [NUM_OF_PEERS-1:0] peer_active_reg;
     logic [NUM_OF_PEERS-1:0] peer_commit_pending_reg;
     logic [NUM_OF_PEERS-1:0] peer_has_fragment;
@@ -545,6 +582,7 @@ module openenoc_endpoint_dma_engine #(
         logic [ERROR_W-1:0] completion_error;
     } fragment_context_t;
     fragment_context_t fragment_reg[FRAGMENT_SLOTS];
+    
     logic command_valid_reg;
     logic [SLOT_IDX_W-1:0] command_slot_reg;
     logic [SLOT_IDX_W-1:0] memory_read_slot_reg;
@@ -652,10 +690,20 @@ module openenoc_endpoint_dma_engine #(
             + {1'b0, endpoint_if.csr_to_core.peers.entry[peer_idx].size.bytes.value};
         end_addr = {1'b0, addr} + {1'b0, len};
         mode = endpoint_if.csr_to_core.peers.entry[peer_idx].dma.mode.value;
-        return len != 0 && limit_addr <= 33'h100000000 && {1'b0, addr} >= base_addr
+        return len != 0 && limit_addr <= ADDR_SPACE_LIMIT && {1'b0, addr} >= base_addr
             && end_addr <= limit_addr
-            && (kind == TRANSFER_KIND_RMEM ? (mode == 1 && len == 4 && addr[1:0] == 0)
-                : (op == DMA_OP_WRITE ? mode == 2 : mode == 3));
+            && (kind == TRANSFER_KIND_RMEM
+                ? (mode == DMA_MODE_RMEM && len == LEN_W'(RMEM_WORD_BYTES) && addr[1:0] == 0)
+                : (op == DMA_OP_WRITE ? mode == DMA_MODE_MIRROR_TO_LOCAL
+                    : mode == DMA_MODE_MIRROR_TO_REMOTE));
+    endfunction
+
+    function automatic logic is_local_axi_error(input logic [ERROR_W-1:0] error_code);
+        case (error_code)
+            DMA_ERROR_AXI_RD_SLVERR, DMA_ERROR_AXI_RD_DECERR,
+            DMA_ERROR_AXI_WR_SLVERR, DMA_ERROR_AXI_WR_DECERR: return 1'b1;
+            default: return 1'b0;
+        endcase
     endfunction
 
     always_comb begin
@@ -920,8 +968,10 @@ module openenoc_endpoint_dma_engine #(
         peer_lookup_if.req_valid <= rst ? '0
             : ((rmem_lookup_owner ? rmem_state_reg == RM_LOOKUP_REQ
                     : peer_state_reg == PEER_LOOKUP_REQ) && !(lookup_req_fire));
-        peer_lookup_if.req_type <= rst ? '0 : (rmem_lookup_owner ? 2'd1 : 2'd0);
-        peer_lookup_if.req_mode_mask <= rst ? '0 : (rmem_lookup_owner ? 4'b0010 : 4'b1100);
+        peer_lookup_if.req_type <= rst ? '0
+            : (rmem_lookup_owner ? LOOKUP_BY_RMEM : LOOKUP_BY_INDEX);
+        peer_lookup_if.req_mode_mask <= rst ? '0
+            : (rmem_lookup_owner ? LOOKUP_RMEM_MODE_MASK : LOOKUP_MIRROR_MODE_MASK);
         peer_lookup_if.req_peer_idx <= rst ? '0 : peer_index_reg;
         peer_lookup_if.req_rmem_addr <= rst ? '0 : rmem_addr_reg;
         peer_lookup_if.req_mac_addr <= '0;
@@ -932,7 +982,8 @@ module openenoc_endpoint_dma_engine #(
         csr_rmem_cpuif.rd_ack <= rst ? '0 : (!rst && rmem_state_reg == RM_DONE && !rmem_write_reg);
         csr_rmem_cpuif.wr_err <= 1'b0;
         csr_rmem_cpuif.rd_err <= 1'b0;
-        csr_rmem_cpuif.rd_data <= rst ? '0 : (rmem_error_reg != 0 ? 32'hffffffff : rmem_rdata_reg);
+        csr_rmem_cpuif.rd_data <= rst ? '0
+            : (rmem_error_reg != DMA_ERROR_NONE ? RMEM_READ_ERROR_DATA : rmem_rdata_reg);
 
         case (rmem_state_reg)
             RM_IDLE: begin
@@ -951,7 +1002,7 @@ module openenoc_endpoint_dma_engine #(
                 end
             end
             RM_READY: begin
-                if (rmem_error_reg != 0) begin
+                if (rmem_error_reg != DMA_ERROR_NONE) begin
                     rmem_state_reg <= RM_DONE;
                 end else if (!command_valid_reg && !any_sent_fragment) begin
                     rmem_state_reg <= RM_SEND;
@@ -1000,8 +1051,9 @@ module openenoc_endpoint_dma_engine #(
             rmem_irq_enable_reg <= endpoint_if.csr_to_core.irq.event_enable.rmem_error.value;
             rmem_remote_addr_reg <= remote_addr[31:0];
             if (!peer_lookup_if.rsp_hit || rmem_addr_reg[1:0] != 0
-                || displacement + 33'd4 > {1'b0, peer_lookup_if.rsp_size}
-                || remote_addr + 33'd4 > 33'h100000000 || remote_addr[1:0] != 0) begin
+                || displacement + 33'(RMEM_WORD_BYTES) > {1'b0, peer_lookup_if.rsp_size}
+                || remote_addr + 33'(RMEM_WORD_BYTES) > ADDR_SPACE_LIMIT
+                || remote_addr[1:0] != 0) begin
                 rmem_error_reg <= DMA_ERROR_INVALID;
             end
         end
@@ -1013,7 +1065,8 @@ module openenoc_endpoint_dma_engine #(
             if (initiator_if.cpl_peer_idx != rmem_peer_reg
                 || initiator_if.cpl_sequence != rmem_sequence_reg
                 || initiator_if.cpl_op != rmem_write_reg
-                || (!initiator_if.cpl_error && initiator_if.cpl_transferred_len != 4)) begin
+                || (!initiator_if.cpl_error
+                    && initiator_if.cpl_transferred_len != LEN_W'(RMEM_WORD_BYTES))) begin
                 rmem_error_reg <= DMA_ERROR_AXIS;
             end
         end
@@ -1097,7 +1150,7 @@ module openenoc_endpoint_dma_engine #(
                 : rmem_irq_peer_reg + 1'b1;
         end
 
-        if (rmem_state_reg == RM_DONE && rmem_hit_reg && rmem_error_reg != 0
+        if (rmem_state_reg == RM_DONE && rmem_hit_reg && rmem_error_reg != DMA_ERROR_NONE
             && rmem_irq_enable_reg) begin
             rmem_irq_pending_reg[rmem_peer_reg] <= 1'b1;
         end
@@ -1136,7 +1189,8 @@ module openenoc_endpoint_dma_engine #(
             : (rmem_state_reg == RM_SEND ? rmem_remote_addr_reg
                 : fragment_reg[command_slot_reg].remote_addr);
         initiator_if.req_len <= rst ? '0
-            : (rmem_state_reg == RM_SEND ? LEN_W'(4) : fragment_reg[command_slot_reg].len);
+            : (rmem_state_reg == RM_SEND ? LEN_W'(RMEM_WORD_BYTES)
+                : fragment_reg[command_slot_reg].len);
         initiator_if.req_peer_idx <= rst ? '0
             : (rmem_state_reg == RM_SEND ? rmem_peer_reg : fragment_reg[command_slot_reg].peer_idx);
         initiator_if.req_sequence <= rst ? '0
@@ -1178,7 +1232,8 @@ module openenoc_endpoint_dma_engine #(
             end
             PEER_LOOKUP_RSP: begin
                 if (!rmem_lookup_owner && lookup_rsp_fire) begin
-                    peer_mode_reg <= peer_lookup_if.rsp_hit ? peer_lookup_if.rsp_dma_mode : 2'd0;
+                    peer_mode_reg <= peer_lookup_if.rsp_hit ? peer_lookup_if.rsp_dma_mode
+                        : DMA_MODE_DISABLED;
                     peer_irq_enable_reg <= peer_lookup_if.rsp_irq_enable;
                     peer_local_addr_reg <= peer_lookup_if.rsp_local_addr;
                     peer_remote_addr_reg <= peer_lookup_if.rsp_remote_addr;
@@ -1369,7 +1424,7 @@ module openenoc_endpoint_dma_engine #(
 
         // New failures win over clear_error. IRQ production stays with its owner.
         if (rmem_error_valid && int'(rmem_error_peer_idx) < NUM_OF_PEERS
-            && rmem_error_code != 0) begin
+            && rmem_error_code != DMA_ERROR_NONE) begin
             peer_error_reg[rmem_error_peer_idx] <= 1'b1;
             peer_error_code_reg[rmem_error_peer_idx] <= ERROR_W'(rmem_error_code);
         end
@@ -1674,7 +1729,8 @@ module openenoc_endpoint_dma_engine #(
                 responder_rx_error_reg <= DMA_ERROR_AXIS;
             end
 
-            if (responder_if.rx_status_len == 0 && responder_if.rx_status_error_code != 0) begin
+            if (responder_if.rx_status_len == 0
+                && responder_if.rx_status_error_code != DMA_ERROR_NONE) begin
                 responder_memory_done_reg <= 1'b1;
                 responder_payload_done_reg <= 1'b1;
                 responder_cpl_len_reg <= '0;
@@ -1694,8 +1750,8 @@ module openenoc_endpoint_dma_engine #(
             && (!responder_rx_required_reg
                 || (responder_rx_done_reg
                     && (responder_rx_len_reg == 0 || responder_payload_done_reg)))) begin
-            if (responder_rx_error_reg != 0
-                && !(responder_cpl_error_code_reg >= 4 && responder_cpl_error_code_reg <= 7)) begin
+            if (responder_rx_error_reg != DMA_ERROR_NONE
+                && !is_local_axi_error(responder_cpl_error_code_reg)) begin
                 responder_cpl_error_reg <= 1'b1;
                 responder_cpl_error_code_reg <= responder_rx_error_reg;
             end
@@ -1726,7 +1782,7 @@ module openenoc_endpoint_dma_engine #(
                     responder_rx_error_reg <= '0;
                     responder_rx_len_reg <= '0;
 
-                    if (responder_if.req_error_code != 0
+                    if (responder_if.req_error_code != DMA_ERROR_NONE
                         || !responder_window_valid(responder_if.req_peer_idx, responder_if.req_kind,
                             responder_if.req_op, responder_if.req_addr, responder_if.req_len)
                         || responder_if.req_len == 0
@@ -1734,7 +1790,8 @@ module openenoc_endpoint_dma_engine #(
                         || responder_if.req_addr
                             + ADDR_W'(responder_if.req_len - 1'b1) < responder_if.req_addr) begin
                         responder_cpl_error_reg <= 1'b1;
-                        responder_cpl_error_code_reg <= responder_if.req_error_code != 0
+                        responder_cpl_error_code_reg <=
+                            responder_if.req_error_code != DMA_ERROR_NONE
                             ? responder_if.req_error_code : DMA_ERROR_INVALID;
                         responder_memory_done_reg <= 1'b1;
                         responder_state_reg <= responder_if.req_rx_status ? RESP_WAIT
@@ -1742,7 +1799,7 @@ module openenoc_endpoint_dma_engine #(
                     end else if (responder_if.req_kind == TRANSFER_KIND_RMEM) begin
                         if (responder_if.req_op == DMA_OP_WRITE
                             && responder_if.req_biten == 0) begin
-                            responder_cpl_len_reg <= LEN_W'(4);
+                            responder_cpl_len_reg <= LEN_W'(RMEM_WORD_BYTES);
                             responder_state_reg <= RESP_COMPLETE;
                         end else begin
                             responder_state_reg <= RESP_RMEM_REQ;
@@ -1791,13 +1848,13 @@ module openenoc_endpoint_dma_engine #(
             RESP_RMEM_REQ: begin
                 if ((responder_op_reg && m_local_cpuif.wr_ack)
                     || (!responder_op_reg && m_local_cpuif.rd_ack)) begin
-                    responder_cpl_len_reg <= LEN_W'(4);
+                    responder_cpl_len_reg <= LEN_W'(RMEM_WORD_BYTES);
                     responder_rdata_reg <= m_local_cpuif.rd_data;
                     responder_cpl_error_reg <= responder_op_reg ? m_local_cpuif.wr_err
                         : m_local_cpuif.rd_err;
                     responder_cpl_error_code_reg <= responder_op_reg
-                        ? (m_local_cpuif.wr_err ? ERROR_W'(6) : DMA_ERROR_NONE)
-                        : (m_local_cpuif.rd_err ? ERROR_W'(4) : DMA_ERROR_NONE);
+                        ? (m_local_cpuif.wr_err ? DMA_ERROR_AXI_WR_SLVERR : DMA_ERROR_NONE)
+                        : (m_local_cpuif.rd_err ? DMA_ERROR_AXI_RD_SLVERR : DMA_ERROR_NONE);
                     responder_state_reg <= RESP_COMPLETE;
                 end else begin
                     responder_state_reg <= RESP_RMEM_WAIT;
@@ -1806,13 +1863,13 @@ module openenoc_endpoint_dma_engine #(
             RESP_RMEM_WAIT: begin
                 if ((responder_op_reg && m_local_cpuif.wr_ack)
                     || (!responder_op_reg && m_local_cpuif.rd_ack)) begin
-                    responder_cpl_len_reg <= LEN_W'(4);
+                    responder_cpl_len_reg <= LEN_W'(RMEM_WORD_BYTES);
                     responder_rdata_reg <= m_local_cpuif.rd_data;
                     responder_cpl_error_reg <= responder_op_reg ? m_local_cpuif.wr_err
                         : m_local_cpuif.rd_err;
                     responder_cpl_error_code_reg <= responder_op_reg
-                        ? (m_local_cpuif.wr_err ? ERROR_W'(6) : DMA_ERROR_NONE)
-                        : (m_local_cpuif.rd_err ? ERROR_W'(4) : DMA_ERROR_NONE);
+                        ? (m_local_cpuif.wr_err ? DMA_ERROR_AXI_WR_SLVERR : DMA_ERROR_NONE)
+                        : (m_local_cpuif.rd_err ? DMA_ERROR_AXI_RD_SLVERR : DMA_ERROR_NONE);
                     responder_state_reg <= RESP_COMPLETE;
                 end
             end
@@ -1911,11 +1968,11 @@ module openenoc_endpoint_dma_engine #(
                             // TAXI's 13-bit byte/cycle budget includes the first unaligned word.
                             // Read a full-size raw frame in two word-sized chunks; suppress only
                             // the internal TLAST. Peer fragments are already below this boundary.
-                            if (UNALIGNED_EN && (raw_tx_addr_reg & ADDR_W'(AXIS_KEEP_W - 1)) != 0
-                                && raw_tx_len_reg > LEN_W'(8192 - AXIS_KEEP_W)) begin
-                                memory_read_len_reg <= LEN_W'(8192 - AXIS_KEEP_W);
+                            if (UNALIGNED_EN && raw_tx_addr_reg[1:0] != 0
+                                && raw_tx_len_reg > LEN_W'(RAW_TX_READ_CHUNK_BYTES)) begin
+                                memory_read_len_reg <= LEN_W'(RAW_TX_READ_CHUNK_BYTES);
                                 memory_read_remaining_reg <= raw_tx_len_reg
-                                    - LEN_W'(8192 - AXIS_KEEP_W);
+                                    - LEN_W'(RAW_TX_READ_CHUNK_BYTES);
                             end
                             memory_read_peer_idx_reg <= '0;
                             memory_read_sequence_reg <= '0;

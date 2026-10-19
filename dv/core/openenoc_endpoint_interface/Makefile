@@ -53,11 +53,6 @@ VERILOG_SOURCES += $(CORE_DIR)/openenoc_endpoint_oetp_engine.sv
 VERILOG_SOURCES += $(CORE_DIR)/$(DUT).sv
 VERILOG_SOURCES += $(COCOTB_TOPLEVEL).sv
 
-export PARAM_AXI_DATA_W := 32
-export PARAM_ETH_DATA_W := 32
-
-COMPILE_ARGS += $(foreach v,$(filter PARAM_%,$(.VARIABLES)),\
-	-G$(subst PARAM_,,$(v))=$($(v)))
 EXTRA_ARGS += -Wall ../../common/config.vlt
 ifeq ($(WAVES), 1)
 	EXTRA_ARGS += --trace

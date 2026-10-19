@@ -252,7 +252,7 @@ async def run_cpu_write_bit_enables(dut):
 
     assert mac == 0xFF00FFFF0000, f"bit enables not honoured: {mac:012x}"
     assert bitmap == tb.iface_mask
-    assert enabled == 1, "config.enabled modified without its bit enable"
+    assert enabled == 1, "conf.enabled modified without its bit enable"
 
 
 async def run_lookup_managed(dut):
