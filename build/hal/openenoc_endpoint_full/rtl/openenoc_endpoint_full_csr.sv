@@ -306,58 +306,142 @@ module openenoc_endpoint_full_csr (
         automatic logic is_valid_rw;
         automatic logic is_external;
         is_external = '0;
-        is_valid_addr = '1; // No valid address check
-        is_valid_rw = '1; // No valid RW check
+        is_valid_addr = '0;
+        is_valid_rw = '0;
         decoded_reg_strb.test_reg = cpuif_req_masked & (cpuif_addr == 13'h0);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h0);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h0);
         decoded_reg_strb.regB = cpuif_req_masked & (cpuif_addr == 13'h4);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h4);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h4);
         decoded_reg_strb.endpoint_interface.info[0] = cpuif_req_masked & (cpuif_addr == 13'h800) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h800);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h800) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.info[1] = cpuif_req_masked & (cpuif_addr == 13'h804) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h804);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h804) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.conf.mac_address[0] = cpuif_req_masked & (cpuif_addr == 13'h820);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h820);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h820);
         decoded_reg_strb.endpoint_interface.conf.mac_address[1] = cpuif_req_masked & (cpuif_addr == 13'h824);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h824);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h824);
         decoded_reg_strb.endpoint_interface.conf.multicast_address[0] = cpuif_req_masked & (cpuif_addr == 13'h828);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h828);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h828);
         decoded_reg_strb.endpoint_interface.conf.multicast_address[1] = cpuif_req_masked & (cpuif_addr == 13'h82c);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h82c);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h82c);
         decoded_reg_strb.endpoint_interface.conf.non_oetp_control = cpuif_req_masked & (cpuif_addr == 13'h830);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h830);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h830);
         decoded_reg_strb.endpoint_interface.conf.rmem_timeout = cpuif_req_masked & (cpuif_addr == 13'h834);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h834);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h834);
         decoded_reg_strb.endpoint_interface.conf.dma_timeout = cpuif_req_masked & (cpuif_addr == 13'h838);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h838);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h838);
         decoded_reg_strb.endpoint_interface.conf.dma_max_fragment_size = cpuif_req_masked & (cpuif_addr == 13'h83c);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h83c);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h83c);
         decoded_reg_strb.endpoint_interface.axis_if.source.data = cpuif_req_masked & (cpuif_addr == 13'h840);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h840);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h840);
         decoded_reg_strb.endpoint_interface.axis_if.source.control = cpuif_req_masked & (cpuif_addr == 13'h844);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h844);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h844);
         decoded_reg_strb.endpoint_interface.axis_if.source.status = cpuif_req_masked & (cpuif_addr == 13'h848) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h848);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h848) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.axis_if.sink.data = cpuif_req_masked & (cpuif_addr == 13'h850) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h850);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h850) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.axis_if.sink.control = cpuif_req_masked & (cpuif_addr == 13'h854);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h854);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h854);
         decoded_reg_strb.endpoint_interface.axis_if.sink.status = cpuif_req_masked & (cpuif_addr == 13'h858) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h858);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h858) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.non_oetp_dma.tx.buffer_address = cpuif_req_masked & (cpuif_addr == 13'h860);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h860);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h860);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.tx.frame_length = cpuif_req_masked & (cpuif_addr == 13'h864);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h864);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h864);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.tx.command_status = cpuif_req_masked & (cpuif_addr == 13'h868);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h868);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h868);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.tx.transferred_length = cpuif_req_masked & (cpuif_addr == 13'h86c) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h86c);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h86c) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.non_oetp_dma.rx.buffer_address = cpuif_req_masked & (cpuif_addr == 13'h870);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h870);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h870);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.rx.buffer_capacity = cpuif_req_masked & (cpuif_addr == 13'h874);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h874);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h874);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.rx.command_status = cpuif_req_masked & (cpuif_addr == 13'h878);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h878);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h878);
         decoded_reg_strb.endpoint_interface.non_oetp_dma.rx.received_length = cpuif_req_masked & (cpuif_addr == 13'h87c) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h87c);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h87c) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.irq.control = cpuif_req_masked & (cpuif_addr == 13'h880);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h880);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h880);
         decoded_reg_strb.endpoint_interface.irq.event_enable = cpuif_req_masked & (cpuif_addr == 13'h884);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h884);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h884);
         decoded_reg_strb.endpoint_interface.irq.status = cpuif_req_masked & (cpuif_addr == 13'h888) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h888);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h888) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.irq.claim = cpuif_req_masked & (cpuif_addr == 13'h88c) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h88c);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h88c) & !cpuif_req_is_wr;
         decoded_reg_strb.endpoint_interface.irq.complete = cpuif_req_masked & (cpuif_addr == 13'h890);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h890);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h890);
         for(int i0=0; i0<4; i0++) begin
             decoded_reg_strb.endpoint_interface.peers.entry[i0].mac_address[0] = cpuif_req_masked & (cpuif_addr == 13'h900 + (13)'(i0) * 13'h1c);
+            is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h900 + (13)'(i0) * 13'h1c);
+            is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h900 + (13)'(i0) * 13'h1c);
             decoded_reg_strb.endpoint_interface.peers.entry[i0].mac_address[1] = cpuif_req_masked & (cpuif_addr == 13'h904 + (13)'(i0) * 13'h1c);
+            is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h904 + (13)'(i0) * 13'h1c);
+            is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h904 + (13)'(i0) * 13'h1c);
             decoded_reg_strb.endpoint_interface.peers.entry[i0].rmem_address = cpuif_req_masked & (cpuif_addr == 13'h908 + (13)'(i0) * 13'h1c);
+            is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h908 + (13)'(i0) * 13'h1c);
+            is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h908 + (13)'(i0) * 13'h1c);
             decoded_reg_strb.endpoint_interface.peers.entry[i0].local_address = cpuif_req_masked & (cpuif_addr == 13'h90c + (13)'(i0) * 13'h1c);
+            is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h90c + (13)'(i0) * 13'h1c);
+            is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h90c + (13)'(i0) * 13'h1c);
             decoded_reg_strb.endpoint_interface.peers.entry[i0].remote_address = cpuif_req_masked & (cpuif_addr == 13'h910 + (13)'(i0) * 13'h1c);
+            is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h910 + (13)'(i0) * 13'h1c);
+            is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h910 + (13)'(i0) * 13'h1c);
             decoded_reg_strb.endpoint_interface.peers.entry[i0].size = cpuif_req_masked & (cpuif_addr == 13'h914 + (13)'(i0) * 13'h1c);
+            is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h914 + (13)'(i0) * 13'h1c);
+            is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h914 + (13)'(i0) * 13'h1c);
             decoded_reg_strb.endpoint_interface.peers.entry[i0].dma = cpuif_req_masked & (cpuif_addr == 13'h918 + (13)'(i0) * 13'h1c);
+            is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h918 + (13)'(i0) * 13'h1c);
+            is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h918 + (13)'(i0) * 13'h1c);
         end
         decoded_reg_strb.endpoint_interface.rmem = cpuif_req_masked & (cpuif_addr >= 13'hc00) & (cpuif_addr <= 13'hc00 + 13'h3ff);
         is_external |= cpuif_req_masked & (cpuif_addr >= 13'hc00) & (cpuif_addr <= 13'hc00 + 13'h3ff);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr >= 13'hc00) & (cpuif_addr <= 13'hc00 + 13'h3ff);
         is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 13'hc00) & (cpuif_addr <= 13'hc00 + 13'h3ff);
         decoded_reg_strb.switch_interface.info = cpuif_req_masked & (cpuif_addr == 13'h1000) & !cpuif_req_is_wr;
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h1000);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h1000) & !cpuif_req_is_wr;
         decoded_reg_strb.switch_interface.forwarding_control = cpuif_req_masked & (cpuif_addr == 13'h1004);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h1004);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h1004);
         decoded_reg_strb.switch_interface.default_forwarding = cpuif_req_masked & (cpuif_addr == 13'h1008);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr == 13'h1008);
+        is_valid_rw |= cpuif_req_masked & (cpuif_addr == 13'h1008);
         decoded_reg_strb.switch_interface.forwarding_table = cpuif_req_masked & (cpuif_addr >= 13'h1080) & (cpuif_addr <= 13'h1080 + 13'h7f);
         is_external |= cpuif_req_masked & (cpuif_addr >= 13'h1080) & (cpuif_addr <= 13'h1080 + 13'h7f);
+        is_valid_addr |= cpuif_req_masked & (cpuif_addr >= 13'h1080) & (cpuif_addr <= 13'h1080 + 13'h7f);
         is_valid_rw |= cpuif_req_masked & (cpuif_addr >= 13'h1080) & (cpuif_addr <= 13'h1080 + 13'h7f);
-        decoded_err = '0;
+        decoded_err = (~is_valid_addr | (is_valid_addr & ~is_valid_rw)) & decoded_req;
         decoded_req_is_external = is_external;
     end
     logic external_wr_ack;
@@ -2124,7 +2208,7 @@ module openenoc_endpoint_full_csr (
     end
     assign cpuif_wr_ack = external_wr_ack | (decoded_req & decoded_req_is_wr & ~decoded_req_is_external);
     // Writes are always granted with no error response
-    assign cpuif_wr_err = '0;
+    assign cpuif_wr_err = decoded_err;
 
     //--------------------------------------------------------------------------
     // Readback
@@ -2345,7 +2429,7 @@ module openenoc_endpoint_full_csr (
         end
         readback_data = readback_data_var;
         readback_done = decoded_req & ~decoded_req_is_wr & ~decoded_req_is_external;
-        readback_err = '0;
+        readback_err = decoded_err;
     end
 
     assign external_rd_ack = readback_external_rd_ack;

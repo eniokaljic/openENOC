@@ -347,33 +347,50 @@ async def test_spike_bridge_propagates_rtl_csr_slverr(dut):
     dut.rst.value = 0
 
     invalid_csr_address = CSR_BASE + CSR_SIZE - 4
-    image = struct.pack("<3I", 0x200020B7, 0xFFC08093, 0x0000A103)
-    with IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"]).create_endpoint(0) as endpoint:
-        endpoint.load_image(image)
-        endpoint.start(entry_pc=0, max_steps=3)
-        for _ in range(EXECUTION_TIMEOUT_CYCLES):
-            await RisingEdge(dut.clk)
-            request = endpoint.poll()
-            if request is not None:
-                break
-        else:
-            raise AssertionError("Spike did not issue the CSR read")
+    read_only_csr_address = CSR_BASE + 0x800
+    information_before = await read_word(axi_master, read_only_csr_address)
+    accesses = (
+        (
+            RequestKind.DATA_READ,
+            invalid_csr_address,
+            struct.pack("<3I", 0x200020B7, 0xFFC08093, 0x0000A103),
+        ),
+        (
+            RequestKind.DATA_WRITE,
+            read_only_csr_address,
+            struct.pack("<3I", 0x200010B7, 0x80008093, 0x0000A023),
+        ),
+    )
+    for expected_kind, expected_address, image in accesses:
+        with IssLibrary(os.environ["OPENENOC_ISS_LIBRARY"]).create_endpoint(0) as endpoint:
+            endpoint.load_image(image)
+            endpoint.start(entry_pc=0, max_steps=3)
+            for _ in range(EXECUTION_TIMEOUT_CYCLES):
+                await RisingEdge(dut.clk)
+                request = endpoint.poll()
+                if request is not None:
+                    break
+            else:
+                raise AssertionError("Spike did not issue the CSR access")
 
-        assert request.kind == RequestKind.DATA_READ
-        assert request.address == invalid_csr_address
-        await service_request(endpoint, axi_master, request)
-        for _ in range(EXECUTION_TIMEOUT_CYCLES):
-            if endpoint.state().run_state == RunState.ERROR:
-                break
-            await RisingEdge(dut.clk)
-        else:
-            raise AssertionError("CSR SLVERR did not reach the ISS worker")
+            assert request.kind == expected_kind
+            assert request.address == expected_address
+            await service_request(endpoint, axi_master, request)
+            for _ in range(EXECUTION_TIMEOUT_CYCLES):
+                if endpoint.state().run_state == RunState.ERROR:
+                    break
+                await RisingEdge(dut.clk)
+            else:
+                raise AssertionError("CSR SLVERR did not reach the ISS worker")
 
-        assert endpoint.state().pending_request_id == 0
-        assert endpoint.poll() is None
+            assert endpoint.state().pending_request_id == 0
+            assert endpoint.poll() is None
 
     rtl_result = await axi_master.read(invalid_csr_address, 4, prot=0)
     assert int(rtl_result.resp) == 2
+    rtl_result = await axi_master.write(read_only_csr_address, bytes(4), prot=0)
+    assert int(rtl_result.resp) == 2
+    assert await read_word(axi_master, read_only_csr_address) == information_before
     assert int(dut.imem_active.value) == 0
 
 

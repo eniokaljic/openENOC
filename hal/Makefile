@@ -69,10 +69,12 @@ $(BUILDDIR)/$(1)/sw/$(CSR_NAME).h: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS) 
 		-o $$@
 	$(Q)$$(RM) -r $$@.tmp.dir
 
-$(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME).sv $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_pkg.sv &: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS)
+$(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME).sv $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_pkg.sv &: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS) $(HAL_DIR)/Makefile
 	$(LOG) 'Generating CSR RTL files in:' '$(BUILDDIR)/$(1)/rtl'
 	$(Q)mkdir -p $(BUILDDIR)/$(1)/rtl
-	$(Q)peakrdl regblock -I $(INTERFACES_DIR) $$< -o $(BUILDDIR)/$(1)/rtl --cpuif axi4-lite-flat --top $(CSR_NAME) --rename $(1)_$(CSR_NAME)
+	$(Q)peakrdl regblock -I $(INTERFACES_DIR) $$< -o $(BUILDDIR)/$(1)/rtl \
+		--cpuif axi4-lite-flat --top $(CSR_NAME) --rename $(1)_$(CSR_NAME) \
+		--err-if-bad-addr --err-if-bad-rw
 
 $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_bridge.sv: $(ENDPOINTS_DIR)/$(1).rdl $(INTERFACE_SPECS) $(BUILDDIR)/$(1)/rtl/$(1)_$(CSR_NAME)_pkg.sv $(PROJECT_INTERFACES) $(BRIDGE_EXPORTER) $(BRIDGE_TEMPLATE) $(HWIF_HELPER)
 	$(LOG) 'Generating endpoint CSR bridge:' '$$@'

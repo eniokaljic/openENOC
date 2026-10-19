@@ -261,12 +261,15 @@ and software interactions with RTL:
   epoch, and late responses are rejected. An accepted write remains in DMEM;
   an incomplete write does not.
 
-Malformed and out-of-range requests are rejected before AXI submission. Error
-and 10 us timeout tests use a controlled AXI responder: the supported RTL RAM
-and CSR address ranges return ``OKAY``. These checks do not establish CPU trap
-equivalence or safe replay of an in-flight write after timeout. Lifecycle
-recovery coordinates worker stop with bus reset. Recovery from an interrupted
-Ethernet frame resets both endpoints and starts a fresh exchange. The recorded
+Malformed and out-of-range requests are rejected before AXI submission. CSR
+generation enables ``--err-if-bad-addr`` and ``--err-if-bad-rw``. The bridge
+suite checks that an unassigned CSR read and a read-only CSR write return
+RTL-generated ``SLVERR`` and report an error to the ISS worker. Separate error
+and 10 us timeout tests use a controlled AXI responder. These checks do not
+establish CPU trap equivalence or safe replay of an in-flight write after
+timeout. Lifecycle recovery coordinates worker stop with bus reset. Recovery
+from an interrupted Ethernet frame resets both endpoints and starts a fresh
+exchange. The recorded
 ``accepted_sim_tick`` marks submission to the AXI BFM, while
 ``completed_sim_tick`` follows the R/B response.
 
