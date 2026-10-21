@@ -384,8 +384,7 @@ This cocotb suite verifies the ``openenoc_endpoint_full`` SoC wrapper by booting
 continuous transport, periodic backpressure, IRQ claim identity, and the final DMEM report.
 The corruption case verifies assertion diagnostics after an injected payload error and a
 subsequent CPU trap. All cases use fixed 32-bit AXI, AXI4-Lite, and Ethernet data paths.
-Firmware checks are described in the
-:download:`endpoint_test README <../../../sw/apps/endpoint_test/README.md>`.
+Firmware checks are described in ``sw/apps/endpoint_test/README.md``.
 
 The firmware checks configuration, peer mappings, RMEM loopback and timeouts, direct streams,
 raw DMA, fragmented peer DMA push/pull, and IRQ service. Each successful loopback case transfers

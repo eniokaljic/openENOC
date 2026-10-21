@@ -451,7 +451,7 @@ interval; this does not change either frame's metadata association.
                             "DB2",
                             "DB3",
                             "DB4",
-                   14 16 30 40         "DB5",
+                            "DB5",
                             "DB6",
                             "DB7",
                             "DB8"

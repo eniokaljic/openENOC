@@ -48,8 +48,9 @@ The openENOC repository is organized into a set of clearly separated functional 
    demonstrations under ``hw/demos/``.
 
 ``libs/``
-   External hardware libraries tracked as Git submodules, including ``taxi``
-   under ``libs/taxi/`` and ``picorv32`` under ``libs/picorv32/``.
+   External libraries and verification tools tracked as Git submodules, including
+   ``taxi`` under ``libs/taxi/``, ``picorv32`` under ``libs/picorv32/``, and the
+   Spike RISC-V ISA simulator under ``libs/riscv-isa-sim/``.
 
 ``sw/``
    Software libraries, drivers, utilities, and application support code.

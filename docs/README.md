@@ -1,5 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2026 Tarik Hamedovic
+SPDX-FileCopyrightText: 2026 Enio Kaljic
 SPDX-License-Identifier: CC-BY-SA-4.0
 -->
 
@@ -87,8 +88,6 @@ the `sphinxcontrib-wavedrom` extension:
 
 The directive content is indented JSON, separated from the options by a blank
 line. Keys and strings require double quotes.
-The Native CPUIF RTL Reference contains complete read, masked-write, and
-error-response examples.
 
 `docs/requirements.txt` pins the Sphinx extension and Python WaveDrom renderer
 versions. `docs/src/conf.py` enables build-time rendering with
