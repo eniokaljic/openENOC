@@ -1,0 +1,134 @@
+# SPDX-FileCopyrightText: 2026 Kerim Bavcic
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
+name: DV core regression
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the run that is still in progress.
+concurrency:
+  group: dv-core-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  OSS_CAD_SUITE_RELEASE: "2026-09-09"
+  OSS_CAD_SUITE_ARCHIVE: oss-cad-suite-linux-x64-20260909.tgz
+
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-24.04
+    outputs:
+      suites: ${{ steps.discover.outputs.suites }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Every dv/core/<suite>/test_<suite>.py becomes one entry of the test matrix.
+      - name: Discover dv/core test suites
+        id: discover
+        run: |
+          suites=$(for dir in dv/core/*/; do
+                     suite=$(basename "$dir")
+                     if [ -f "$dir/test_$suite.py" ]; then echo "$suite"; fi
+                   done | jq -R . | jq -sc .)
+          echo "suites=$suites" >> "$GITHUB_OUTPUT"
+          echo "Discovered suites: $suites"
+
+      # Downloads OSS CAD Suite only when it is not cached yet. The cache is
+      # saved automatically when this job finishes.
+      - name: Check OSS CAD Suite cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/oss-cad-suite
+          key: ${{ env.OSS_CAD_SUITE_ARCHIVE }}
+          lookup-only: true
+
+      - name: Download OSS CAD Suite
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/$OSS_CAD_SUITE_ARCHIVE" \
+            "https://github.com/YosysHQ/oss-cad-suite-build/releases/download/$OSS_CAD_SUITE_RELEASE/$OSS_CAD_SUITE_ARCHIVE"
+          tar -xzf "$RUNNER_TEMP/$OSS_CAD_SUITE_ARCHIVE" -C "$RUNNER_TEMP"
+          rm "$RUNNER_TEMP/$OSS_CAD_SUITE_ARCHIVE"
+
+  test:
+    name: ${{ matrix.suite }}
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      # Keep running the remaining suites when one of them fails.
+      fail-fast: false
+      matrix:
+        suite: ${{ fromJSON(needs.prepare.outputs.suites) }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # .gitmodules uses SSH URLs, which need a key the runner does not have.
+      - name: Fetch libs/taxi submodule
+        run: |
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git submodule update --init --depth 1 libs/taxi
+
+      - name: Restore OSS CAD Suite
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/oss-cad-suite
+          key: ${{ env.OSS_CAD_SUITE_ARCHIVE }}
+          fail-on-cache-miss: true
+
+      - name: Run ${{ matrix.suite }} tests
+        working-directory: dv/core/${{ matrix.suite }}
+        env:
+          SUITE: ${{ matrix.suite }}
+        run: |
+          source "$RUNNER_TEMP/oss-cad-suite/environment"
+          python3 -m pip install -r "$GITHUB_WORKSPACE/dv/requirements.txt"
+          verilator --version
+          python3 -m pytest "test_$SUITE.py" -v \
+            --junitxml="$GITHUB_WORKSPACE/build/dv/core/$SUITE/report.xml"
+
+      # Runs for passing and failing suites. The artifact contains the pytest
+      # report and the cocotb results of every simulated configuration.
+      - name: Upload test results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dv-core-${{ matrix.suite }}
+          path: |
+            build/dv/core/${{ matrix.suite }}/report.xml
+            build/dv/core/${{ matrix.suite }}/sim_build/**/*results.xml
+          if-no-files-found: ignore
+          retention-days: 14
+
+  # One stable check that is green only when every suite passed. Use this one
+  # as the required status check for branch protection.
+  result:
+    name: DV core result
+    needs: test
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check test results
+        env:
+          RESULT: ${{ needs.test.result }}
+        run: |
+          echo "dv/core regression result: $RESULT"
+          test "$RESULT" = "success"
