@@ -100,7 +100,8 @@ jobs:
           SUITE: ${{ matrix.suite }}
         run: |
           source "$RUNNER_TEMP/oss-cad-suite/environment"
-          python3 -m pip install -r "$GITHUB_WORKSPACE/dv/requirements.txt"
+          python3 -m pip install "cocotb==2.0.1" -r "$GITHUB_WORKSPACE/dv/requirements.txt"
+          cocotb-config --version
           verilator --version
           python3 -m pytest "test_$SUITE.py" -v \
             --junitxml="$GITHUB_WORKSPACE/build/dv/core/$SUITE/report.xml"
