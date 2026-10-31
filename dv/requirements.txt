@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: NONE
 # SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
 
-cocotb
-cocotb-test
-cocotbext-axi
-pyelftools
-pytest
+cocotb==2.0.1
+cocotb-test==0.2.6
+cocotbext-axi==0.1.28
+pyelftools==0.33
+pytest==9.0.3
 
