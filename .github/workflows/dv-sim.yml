@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Kerim Bavcic
-# SPDX-License-Identifier: CC-BY-SA-4.0
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
-name: DV regression
+name: DV Simulation Regression
 
 # Runs only on push. A pull request uses the check results of its head commit,
 # which were reported by the push to the PR branch.
@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Every discovered suite becomes one entry of the test matrix:
       #   dv/{core,endpoints}/<suite>/test_<suite>.py and dv/traffic run with pytest,
@@ -85,7 +85,7 @@ jobs:
       # saved automatically when this job finishes.
       - name: Check OSS CAD Suite cache
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ runner.temp }}/oss-cad-suite
           key: ${{ env.OSS_CAD_SUITE_ARCHIVE }}
@@ -122,7 +122,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # .gitmodules uses SSH URLs, which need a key the runner does not have.
       - name: Fetch submodules
@@ -146,7 +146,7 @@ jobs:
           sudo apt-get install -y -q --no-install-recommends "${packages[@]}"
 
       - name: Restore OSS CAD Suite
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: ${{ runner.temp }}/oss-cad-suite
           key: ${{ env.OSS_CAD_SUITE_ARCHIVE }}
@@ -187,7 +187,7 @@ jobs:
       - name: Restore Spike build
         id: spike-cache
         if: matrix.suite.spike
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: |
             build/dv/iss/spike-build/Makefile
@@ -203,7 +203,7 @@ jobs:
 
       - name: Save Spike build
         if: matrix.suite.spike && steps.spike-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: |
             build/dv/iss/spike-build/Makefile
@@ -239,7 +239,7 @@ jobs:
       # ISS JUnit reports and manifest.
       - name: Upload test results
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dv-${{ matrix.suite.id }}
           path: |
