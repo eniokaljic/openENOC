@@ -4,6 +4,7 @@ SPDX-License-Identifier: CERN-OHL-S-2.0 AND AGPL-3.0-or-later AND CC-BY-SA-4.0
 -->
 [![NLnet Foundation](https://img.shields.io/badge/funded%20by-NLnet%20Foundation-74AA00)](https://nlnet.nl/)
 [![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://eniokaljic.github.io/openENOC/)
+[![DV regression](https://github.com/eniokaljic/openENOC/actions/workflows/dv.yml/badge.svg?branch=feature/DV4_continuous_verification_infrastructure_implementation)](https://github.com/eniokaljic/openENOC/actions/workflows/dv.yml?query=branch%3Afeature/DV4_continuous_verification_infrastructure_implementation)
 [![Discord](https://img.shields.io/discord/1492900141886341313?logo=discord&logoColor=white&label=Discord&color=5662F6)](https://discord.gg/PNh3TfH8ZZ)
 
 # Scalable Ethernet-based Network-on-Chip

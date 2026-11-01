@@ -19,7 +19,8 @@ concurrency:
 # Tool versions follow the reference development environment: Ubuntu 24.04
 # with its system Python 3.12 and RISC-V GCC packages, and the OSS CAD Suite
 # release below for Verilator. Python packages are pinned in dv/requirements.txt
-# and hal/requirements.txt.
+# and hal/requirements.txt. Spike is pinned by the libs/riscv-isa-sim submodule
+# and dv/iss/compatibility.json.
 env:
   OSS_CAD_SUITE_RELEASE: "2026-09-09"
   OSS_CAD_SUITE_ARCHIVE: oss-cad-suite-linux-x64-20260909.tgz
@@ -41,7 +42,8 @@ jobs:
 
       # Every discovered suite becomes one entry of the test matrix:
       #   dv/{core,endpoints}/<suite>/test_<suite>.py and dv/traffic run with pytest,
-      #   dv/hal/<suite>/Makefile runs the cocotb Make flow.
+      #   dv/hal/<suite>/Makefile runs the cocotb Make flow,
+      #   dv/iss runs its aggregate check-all gate.
       # The flags select the extra setup each suite needs.
       - name: Discover dv test suites
         id: discover
@@ -59,8 +61,9 @@ jobs:
                   "id": name.replace("/", "-"),
                   "dir": path.as_posix(),
                   "run": run,
-                  "hal": group in ("endpoints", "hal"),
-                  "firmware": group == "endpoints",
+                  "hal": group in ("endpoints", "hal", "iss"),
+                  "firmware": group in ("endpoints", "iss"),
+                  "spike": group == "iss",
               }
 
           dv = Path("dv")
@@ -69,6 +72,8 @@ jobs:
                     if (d / f"test_{d.name}.py").is_file()]
           suites += [suite(d, "make") for d in sorted(dv.glob("hal/*/"))
                      if (d / "Makefile").is_file()]
+          if (dv / "iss/Makefile").is_file():
+              suites.append(suite(dv / "iss", "iss"))
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as output:
               print(f"suites={json.dumps(suites)}", file=output)
@@ -110,6 +115,7 @@ jobs:
       SUITE_RUN: ${{ matrix.suite.run }}
       NEEDS_HAL: ${{ matrix.suite.hal }}
       NEEDS_FIRMWARE: ${{ matrix.suite.firmware }}
+      NEEDS_SPIKE: ${{ matrix.suite.spike }}
     defaults:
       run:
         shell: bash
@@ -124,6 +130,7 @@ jobs:
           git config --global url."https://github.com/".insteadOf "git@github.com:"
           submodules=(libs/taxi)
           if [ "$NEEDS_FIRMWARE" = true ]; then submodules+=(libs/picorv32); fi
+          if [ "$NEEDS_SPIKE" = true ]; then submodules+=(libs/riscv-isa-sim); fi
           git submodule update --init --depth 1 "${submodules[@]}"
 
       - name: Install system packages
@@ -131,6 +138,9 @@ jobs:
           packages=(python3-dev python3-venv)
           if [ "$NEEDS_FIRMWARE" = true ]; then
             packages+=(binutils-riscv64-unknown-elf gcc-riscv64-unknown-elf xxd)
+          fi
+          if [ "$NEEDS_SPIKE" = true ]; then
+            packages+=(device-tree-compiler libboost-regex-dev libboost-system-dev)
           fi
           sudo apt-get update -q
           sudo apt-get install -y -q --no-install-recommends "${packages[@]}"
@@ -169,6 +179,37 @@ jobs:
           verilator --version
           if [ "$NEEDS_FIRMWARE" = true ]; then riscv64-unknown-elf-gcc --version | head -n 1; fi
 
+      # Spike is built from the pinned submodule only when no cached build of
+      # the commit recorded in dv/iss/compatibility.json exists. Its debug info
+      # is stripped (1.8 GB -> ~90 MB) and only the install tree is cached,
+      # together with spike-build/Makefile: the dv/iss Makefile compares the
+      # timestamps of these two files to decide whether Spike is up to date.
+      - name: Restore Spike build
+        id: spike-cache
+        if: matrix.suite.spike
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            build/dv/iss/spike-build/Makefile
+            build/dv/iss/spike-install
+          key: spike-ubuntu-24.04-${{ hashFiles('dv/iss/compatibility.json') }}
+
+      - name: Build Spike
+        if: matrix.suite.spike && steps.spike-cache.outputs.cache-hit != 'true'
+        run: |
+          make -C dv/iss spike JOBS="$(nproc)"
+          strip --strip-debug build/dv/iss/spike-install/bin/* \
+            build/dv/iss/spike-install/lib/*.so build/dv/iss/spike-install/lib/*.a
+
+      - name: Save Spike build
+        if: matrix.suite.spike && steps.spike-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            build/dv/iss/spike-build/Makefile
+            build/dv/iss/spike-install
+          key: ${{ steps.spike-cache.outputs.cache-primary-key }}
+
       - name: Generate HAL
         if: matrix.suite.hal
         run: make -C hal
@@ -184,6 +225,9 @@ jobs:
             make)
               make
               ;;
+            iss)
+              make check-all JOBS="$(nproc)"
+              ;;
             *)
               echo "Unknown suite runner: $SUITE_RUN" >&2
               exit 1
@@ -191,7 +235,8 @@ jobs:
           esac
 
       # Runs for passing and failing suites. The artifact contains the pytest
-      # report and the cocotb results of every simulated configuration.
+      # report, the cocotb results of every simulated configuration, and the
+      # ISS JUnit reports and manifest.
       - name: Upload test results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
@@ -200,6 +245,7 @@ jobs:
           path: |
             build/dv/${{ matrix.suite.name }}/report.xml
             build/dv/${{ matrix.suite.name }}/**/*results.xml
+            build/dv/${{ matrix.suite.name }}/reports/
           if-no-files-found: ignore
           retention-days: 14
 
