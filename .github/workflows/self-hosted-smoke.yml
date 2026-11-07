@@ -1,0 +1,71 @@
+# SPDX-FileCopyrightText: 2026 Kerim Bavcic
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Self-Hosted Runner Smoke Test
+
+# Checks that the self-hosted runner and its preinstalled tools work by running
+# one dv suite on it. Runs manually, or on a push that changes this file.
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "dv/core suite to run"
+        default: openenoc_axil_ram
+  push:
+    paths:
+      - .github/workflows/self-hosted-smoke.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: self-hosted-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Smoke test (${{ inputs.suite || 'openenoc_axil_ram' }})
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 60
+    env:
+      SUITE: ${{ inputs.suite || 'openenoc_axil_ram' }}
+      # Installed once on the runner machine, see .github/workflows/README.md.
+      OSS_CAD_SUITE: /home/openenoc/tools/oss-cad-suite
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # .gitmodules uses SSH URLs, which need a key the runner does not have.
+      - name: Fetch submodules
+        run: |
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git submodule update --init --depth 1 libs/taxi
+
+      - name: Set up tools
+        run: |
+          /usr/bin/python3 -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/python" -m pip install --disable-pip-version-check \
+            -r dv/requirements.txt
+          source "$OSS_CAD_SUITE/environment"
+          {
+            echo "PATH=$RUNNER_TEMP/venv/bin:$PATH"
+            echo "VIRTUAL_ENV=$RUNNER_TEMP/venv"
+            echo "VERILATOR_ROOT=$VERILATOR_ROOT"
+          } >> "$GITHUB_ENV"
+
+      - name: Show tool versions
+        run: |
+          uname -a
+          nproc
+          python --version
+          cocotb-config --version
+          verilator --version
+          yosys -V
+
+      - name: Run ${{ env.SUITE }} tests
+        working-directory: dv/core/${{ env.SUITE }}
+        run: python -m pytest "test_$SUITE.py" -v
