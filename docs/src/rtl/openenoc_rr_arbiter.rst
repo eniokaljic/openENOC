@@ -1,4 +1,5 @@
 .. SPDX-FileCopyrightText: 2026 Enio Kaljic
+.. SPDX-FileCopyrightText: 2026 Kerim Bavcic
 .. SPDX-License-Identifier: CC-BY-SA-4.0
 
 .. _rtl-rr-arbiter:
@@ -193,6 +194,35 @@ priority at zero, so port 0 wins in tick 8.
         "head": {"tick": 0},
         "config": {"hscale": 2}
     }
+
+.. _verification-openenoc-rr-arbiter:
+
+Verification
+------------
+
+The test suite is in ``dv/core/openenoc_rr_arbiter/``.
+
+Testbench
+~~~~~~~~~
+
+The cocotb testbench compares each combinational grant, validity bit, and
+index with a round-robin reference model before and after the clock edge.
+Pytest runs the suite with ``PORTS`` set to 1, 2, 3, 4, 5, and 8.
+
+Coverage
+~~~~~~~~
+
+The suite checks:
+
+- idle requests, one-hot grants, and priority across request masks;
+
+- no priority advance without acceptance or a valid grant;
+
+- acceptance-controlled rotation, wraparound, and fairness when all ports
+  request or only a subset requests;
+
+- synchronous reset of the priority pointer, including the single-port and
+  non-power-of-two configurations.
 
 Synchronous reset changes priority without masking grant
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

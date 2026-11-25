@@ -1,4 +1,5 @@
 .. SPDX-FileCopyrightText: 2026 Enio Kaljic
+.. SPDX-FileCopyrightText: 2026 Kerim Bavcic
 .. SPDX-License-Identifier: CC-BY-SA-4.0
 
 .. _rtl-endpoint-direct-axis:
@@ -569,3 +570,35 @@ the same pending frame to become visible without losing its first word.
         "config": {"hscale": 1},
         "head": {"tick": 0}
     }
+
+.. _verification-openenoc-endpoint-direct-axis:
+
+Verification
+------------
+
+The test suite is in ``dv/core/openenoc_endpoint_direct_axis/``.
+
+Testbench
+~~~~~~~~~
+
+The cocotb testbench drives the direct TX and RX CSR fields, AXI-Stream
+interfaces, and IRQ event producer handshakes independently. The pytest
+runner uses Verilator with the shared DV simulator configuration.
+
+Coverage
+~~~~~~~~
+
+The suite checks:
+
+- TX admission stalls and reserved versus unreserved completion events;
+
+- CSR TX command acknowledgement without duplicate beats, framing, KEEP and
+  route fields, and output backpressure;
+
+- TX completion only after ``tx_frame_done`` and commit backpressure;
+
+- RX admission before exposing data to software, multi-beat framing and CSR
+  acknowledgements, and reserved versus unreserved event commits;
+
+- RX input backpressure, held data during CSR stalls, and reset while TX or RX
+  transactions are pending.
